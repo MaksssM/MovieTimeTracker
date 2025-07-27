@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/example/movietime/data/db/WatchedItem.kt">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/app/src/main/java/com/example/movietime/data/db/WatchedItem.kt" />
+              <option name="originalContent" value="package com.example.movietime.data.db&#10;&#10;import androidx.room.Entity&#10;import androidx.room.PrimaryKey&#10;import androidx.room.Query&#10;&#10;@Entity(tableName = &quot;watched_items&quot;)&#10;data class WatchedItem(&#10;    @PrimaryKey val id: Int,&#10;    val title: String,&#10;    val posterPath: String,&#10;)&#10;&#10;&#10;@Query(&quot;DELETE FROM watched_items&quot;)&#10;    suspend fun clearAll()&#10;&#10;" />
+              <option name="updatedContent" value="package com.example.movietime.data.db&#10;&#10;import androidx.room.Entity&#10;import androidx.room.PrimaryKey&#10;&#10;@Entity(tableName = &quot;watched_items&quot;)&#10;data class WatchedItem(&#10;    @PrimaryKey val id: Int,&#10;    val title: String,&#10;    val posterPath: String,&#10;)" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
