@@ -9,12 +9,14 @@ import androidx.room.Query
 @Dao
 interface WatchedItemDao {
 
+    // Метод для отримання всіх збережених фільмів/серіалів
     @Query("SELECT * FROM watched_items")
     fun getAll(): LiveData<List<WatchedItem>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: WatchedItem)
 
+    // Додайте інші методи, які вам потрібні (delete, getById і т.д.)
     @Query("DELETE FROM watched_items WHERE id = :id")
     suspend fun deleteById(id: Int)
 

@@ -4,43 +4,44 @@ import androidx.lifecycle.LiveData
 import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.data.db.WatchedItemDao
-import com.example.movietime.data.model.ApiMediaItem
-import com.example.movietime.data.model.ApiMovieDetails
-import com.example.movietime.data.model.ApiTvShowDetails
+import com.example.movietime.data.model.ApiMovie
+import com.example.movietime.data.model.MoviesResponse
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AppRepository(
-    private val watchedItemDao: WatchedItemDao,
-    private val tmdbApi: TmdbApi
+@Singleton
+class AppRepository @Inject constructor(
+    private val api: TmdbApi,
+    private val dao: WatchedItemDao,
+    private val apiKey: String
 ) {
-    val allWatchedItems: LiveData<List<WatchedItem>> = watchedItemDao.getAllWatchedItems()
-    val totalWatchTime: LiveData<Int?> = watchedItemDao.getTotalWatchTimeInMinutes()
 
-    suspend fun search(query: String): List<ApiMediaItem> {
-        return try {
-            val response = tmdbApi.search(query)
-            response.results.filter { it.mediaType == "movie" || it.mediaType == "tv" }
-        } catch (e: Exception) {
-            emptyList()
-        }
+    // --- API Methods ---
+    suspend fun searchMovies(query: String): MoviesResponse {
+        return api.searchMovies(apiKey, query)
     }
 
-    suspend fun getMovieDetails(movieId: Int): ApiMovieDetails? {
-        return try { tmdbApi.getMovieDetails(movieId) } catch (e: Exception) { null }
+    suspend fun getMovieDetails(movieId: Int): ApiMovie {
+        return api.getMovieDetails(movieId, apiKey)
     }
 
-    suspend fun getTvShowDetails(tvId: Int): ApiTvShowDetails? {
-        return try { tmdbApi.getTvShowDetails(tvId) } catch (e: Exception) { null }
+    suspend fun getPopularMovies(): MoviesResponse {
+        return api.getPopularMovies(apiKey)
     }
 
-    fun isItemWatched(id: Int): LiveData<WatchedItem?> {
-        return watchedItemDao.getWatchedItemById(id)
+    fun getWatchedItems(): LiveData<List<WatchedItem>> {
+        return dao.getAll()
     }
 
     suspend fun addWatchedItem(item: WatchedItem) {
-        watchedItemDao.addWatchedItem(item)
+        dao.insert(item)
     }
 
-    suspend fun deleteWatchedItem(id: Int) {
-        watchedItemDao.deleteItemById(id)
+    suspend fun deleteWatchedItem(item: WatchedItem) {
+        dao.deleteById(item.id)
+    }
+
+    suspend fun getWatchedItemById(id: Int): WatchedItem? {
+        return dao.getById(id)
     }
 }

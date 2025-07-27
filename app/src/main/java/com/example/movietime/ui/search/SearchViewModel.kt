@@ -4,26 +4,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movietime.data.model.ApiMediaItem
+import com.example.movietime.data.model.ApiMovie
 import com.example.movietime.data.repository.AppRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import android.util.Log
 
-class SearchViewModel(private val repository: AppRepository) : ViewModel() {
+@HiltViewModel
+class SearchViewModel @Inject constructor(
+    private val repository: AppRepository
+) : ViewModel() {
 
-    private val _searchResults = MutableLiveData<List<ApiMediaItem>>()
-    val searchResults: LiveData<List<ApiMediaItem>> = _searchResults
+    private val _searchResult = MutableLiveData<List<ApiMovie>>()
+    val searchResult: LiveData<List<ApiMovie>> = _searchResult
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
-
-    fun search(query: String) {
-        if (query.isBlank()) return
-
+    fun searchMovies(query: String) {
         viewModelScope.launch {
-            _isLoading.value = true
-            val results = repository.search(query)
-            _searchResults.value = results
-            _isLoading.value = false
+            try {
+                val response = repository.searchMovies(query)
+                _searchResult.value = response.results
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error searching movies", e)
+                _searchResult.value = emptyList()
+            }
         }
     }
 }

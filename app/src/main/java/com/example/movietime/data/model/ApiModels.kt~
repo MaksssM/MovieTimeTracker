@@ -1,0 +1,44 @@
+package com.example.movietime.data.model
+
+import com.google.gson.annotations.SerializedName
+
+data class MovieResponse(
+    val results: List<MovieResult>
+)
+
+data class MovieResult(
+    val id: Int,
+    val overview: String?,
+    @SerializedName("poster_path")
+    val poster_path: String?,
+
+    val title: String?,
+    @SerializedName("release_date")
+    val release_date: String?,
+
+    val name: String?,
+    @SerializedName("first_air_date")
+    val first_air_date: String?,
+
+    @SerializedName("media_type")
+    val media_type: String?
+)
+
+data class MovieDetails(
+    val id: Int,
+    val title: String?,
+    val name: String?,
+    val overview: String?,
+    @SerializedName("poster_path")
+    val poster_path: String?,
+    @SerializedName("release_date")
+    val release_date: String?,
+    @SerializedName("first_air_date")
+    val first_air_date: String?,
+    val runtime: Int?, // Для фільмів
+    @SerializedName("episode_run_time")
+    val episode_run_time: List<Int>? // Для серіалів
+)
+
+data class CreditsResponse(val cast: List<Cast>)
+data class Cast(val name: String, val character: String, @SerializedName("profile_path") val profile_path: String?)

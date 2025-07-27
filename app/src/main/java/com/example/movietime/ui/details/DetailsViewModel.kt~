@@ -1,3 +1,4 @@
+// Попередньо виправлений код для DetailsViewModel.kt
 package com.example.movietime.ui.details
 
 import androidx.lifecycle.LiveData

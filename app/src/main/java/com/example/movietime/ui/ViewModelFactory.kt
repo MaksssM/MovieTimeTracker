@@ -1,23 +1,14 @@
 package com.example.movietime.ui
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.movietime.data.api.TmdbApi
-import com.example.movietime.data.db.AppDatabase
 import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.ui.details.DetailsViewModel
 import com.example.movietime.ui.main.MainViewModel
 import com.example.movietime.ui.search.SearchViewModel
 
-class ViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
-
-    // Создаем репозиторий один раз, чтобы он был доступен для всех ViewModel
-    private val repository: AppRepository by lazy {
-        val db = AppDatabase.getDatabase(application)
-        val api = TmdbApi.create()
-        AppRepository(db.watchedItemDao(), api)
-    }
+@Suppress("UNCHECKED_CAST")
+class ViewModelFactory(private val repository: AppRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
@@ -30,7 +21,7 @@ class ViewModelFactory(private val application: Application) : ViewModelProvider
             modelClass.isAssignableFrom(DetailsViewModel::class.java) -> {
                 DetailsViewModel(repository) as T
             }
-            else -> throw IllegalArgumentException("Unknown ViewModel class")
+            else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }
 }

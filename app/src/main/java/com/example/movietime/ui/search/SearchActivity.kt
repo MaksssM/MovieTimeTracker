@@ -2,54 +2,37 @@ package com.example.movietime.ui.search
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.view.inputmethod.EditorInfo
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movietime.databinding.ActivitySearchBinding
-import com.example.movietime.ui.ViewModelFactory
 import com.example.movietime.ui.details.DetailsActivity
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: SearchViewModel
-    private var searchJob: Job? = null
+    private val viewModel: SearchViewModel by viewModels()
+    private lateinit var searchAdapter: SearchAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModelFactory = ViewModelFactory(application)
-        viewModel = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
-
-        setupToolbar()
         setupRecyclerView()
+        setupSearch()
         observeViewModel()
-        setupSearchInput()
-    }
-
-    private fun setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener {
-            finish()
-        }
     }
 
     private fun setupRecyclerView() {
-        val searchAdapter = SearchAdapter { mediaItem ->
+        searchAdapter = SearchAdapter()
+
+        searchAdapter.onItemClick = { movie ->
             val intent = Intent(this, DetailsActivity::class.java).apply {
-                putExtra(DetailsActivity.EXTRA_ID, mediaItem.id)
-                putExtra(DetailsActivity.EXTRA_TYPE, mediaItem.mediaType)
-                putExtra(DetailsActivity.EXTRA_TITLE, mediaItem.universalTitle)
-                putExtra(DetailsActivity.EXTRA_POSTER_PATH, mediaItem.posterPath)
-                putExtra(DetailsActivity.EXTRA_OVERVIEW, mediaItem.overview)
+                putExtra("MOVIE_ID", movie.id)
             }
             startActivity(intent)
         }
@@ -60,33 +43,22 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupSearchInput() {
-        binding.etSearchQuery.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchJob?.cancel()
-                searchJob = MainScope().launch {
-                    delay(500L) // Задержка в полсекунды
-                    s?.let {
-                        if (it.toString().isNotBlank()) {
-                            viewModel.search(it.toString())
-                        }
-                    }
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
+    private fun observeViewModel() {
+        viewModel.searchResult.observe(this) { movies ->
+            searchAdapter.submitList(movies)
+        }
     }
 
-
-    private fun observeViewModel() {
-        viewModel.searchResults.observe(this) { results ->
-            (binding.rvSearchResults.adapter as SearchAdapter).submitList(results)
-        }
-        viewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.isVisible = isLoading
+    private fun setupSearch() {
+        binding.etSearchQuery.setOnEditorActionListener { textView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val query = textView.text.toString()
+                if (query.isNotBlank()) {
+                    viewModel.searchMovies(query)
+                }
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
         }
     }
 }

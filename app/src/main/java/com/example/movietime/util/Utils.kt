@@ -1,31 +1,44 @@
 package com.example.movietime.util
 
-import android.widget.ImageView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.movietime.R
+import android.content.Context
+import androidx.room.Room
+import com.example.movietime.data.api.TmdbApi
+import com.example.movietime.data.db.AppDatabase
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-fun formatMinutesToHoursAndMinutes(totalMinutes: Int?): String {
-    if (totalMinutes == null || totalMinutes <= 0) {
-        return "0ч 0м"
+object Utils {
+    private const val BASE_URL = "https://api.themoviedb.org/3/"
+
+    val tmdbApi: TmdbApi by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(TmdbApi::class.java)
     }
-    val days = totalMinutes / (60 * 24)
-    val hours = (totalMinutes % (60 * 24)) / 60
-    val minutes = totalMinutes % 60
 
-    return when {
-        days > 0 -> "${days}д ${hours}ч ${minutes}м"
-        hours > 0 -> "${hours}ч ${minutes}м"
-        else -> "${minutes}м"
+    @Volatile
+    private var INSTANCE: AppDatabase? = null
+
+    fun getDatabase(context: Context): AppDatabase {
+        return INSTANCE ?: synchronized(this) {
+            val instance = Room.databaseBuilder(
+                context.applicationContext,
+                AppDatabase::class.java,
+                "movie_database"
+            ).build()
+            INSTANCE = instance
+            instance
+        }
     }
-}
 
-fun ImageView.loadImage(posterPath: String?) {
-    val fullUrl = if (posterPath != null) "https://image.tmdb.org/t/p/w500$posterPath" else null
-    Glide.with(this.context)
-        .load(fullUrl)
-        .placeholder(R.drawable.ic_placeholder) // Мы создадим эту иконку
-        .error(R.drawable.ic_placeholder)
-        .transition(DrawableTransitionOptions.withCrossFade())
-        .into(this)
+    fun formatMinutesToHoursAndMinutes(minutes: Int?): String {
+        if (minutes == null || minutes < 0) {
+            return "0 год 0 хв"
+        }
+        val hours = minutes / 60
+        val remainingMinutes = minutes % 60
+        return "${hours} год ${remainingMinutes} хв"
+    }
 }

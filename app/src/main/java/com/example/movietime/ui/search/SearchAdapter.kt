@@ -5,12 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movietime.data.model.ApiMediaItem
+import coil.load
+import com.example.movietime.data.model.ApiMovie
 import com.example.movietime.databinding.ItemSearchResultBinding
-import com.example.movietime.util.loadImage
 
-class SearchAdapter(private val onItemClick: (ApiMediaItem) -> Unit) :
-    ListAdapter<ApiMediaItem, SearchAdapter.SearchViewHolder>(DiffCallback) {
+class SearchAdapter : ListAdapter<ApiMovie, SearchAdapter.SearchViewHolder>(DiffCallback) {
+
+    var onItemClick: ((ApiMovie) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val binding = ItemSearchResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,25 +21,36 @@ class SearchAdapter(private val onItemClick: (ApiMediaItem) -> Unit) :
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.bind(currentItem)
-        holder.itemView.setOnClickListener {
-            onItemClick(currentItem)
-        }
     }
 
-    class SearchViewHolder(private val binding: ItemSearchResultBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ApiMediaItem) {
-            binding.tvTitle.text = item.universalTitle
-            binding.ivPoster.loadImage(item.posterPath)
+    inner class SearchViewHolder(private val binding: ItemSearchResultBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClick?.invoke(getItem(position))
+                }
+            }
+        }
+
+        fun bind(item: ApiMovie) {
+            binding.tvTitle.text = item.title ?: item.name
+            binding.ivPoster.load("https://image.tmdb.org/t/p/w500" + item.posterPath) {
+                crossfade(true)
+            }
         }
     }
 
     companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<ApiMediaItem>() {
-            override fun areItemsTheSame(oldItem: ApiMediaItem, newItem: ApiMediaItem) =
-                oldItem.id == newItem.id
+        private val DiffCallback = object : DiffUtil.ItemCallback<ApiMovie>() {
+            override fun areItemsTheSame(oldItem: ApiMovie, newItem: ApiMovie): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-            override fun areContentsTheSame(oldItem: ApiMediaItem, newItem: ApiMediaItem) =
-                oldItem == newItem
+            override fun areContentsTheSame(oldItem: ApiMovie, newItem: ApiMovie): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }

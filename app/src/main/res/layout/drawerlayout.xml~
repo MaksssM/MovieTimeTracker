@@ -6,7 +6,6 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainActivity"
     tools:openDrawer="start">
 
     <LinearLayout
@@ -31,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_graph" /> <!-- Ось тут посилання на nav_graph -->
+            app:navGraph="@navigation/nav_graph" />
 
     </LinearLayout>
 
@@ -41,6 +40,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu" /> <!-- Ось тут посилання на nav_menu -->
+        app:menu="@menu/nav_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
