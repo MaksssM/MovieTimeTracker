@@ -1,0 +1,91 @@
+<resources>
+    <string name="app_name">MovieTime</string>
+
+    <!-- Details / Watched -->
+    <string name="add_to_watched">Додати до переглянутих</string>
+    <string name="added">Додано</string>
+    <string name="already_watched">Вже у переглянутих</string>
+    <string name="added_to_watched_toast">Додано до переглянутих</string>
+    <string name="add_failed">Не вдалося додати</string>
+    <string name="data_not_loaded">Дані ще не завантажені</string>
+    <string name="unknown_media">Невідомий тип медіа</string>
+    <string name="poster_description">Постер фільму</string>
+
+    <!-- New: watched header strings -->
+    <string name="watched_count_format">%d переглянутий</string>
+    <string name="watched_count_default">0 переглянутий</string>
+    <string name="total_time_default">0 год 0 хв</string>
+    <string name="search_content_desc">Пошук фільмів</string>
+    <string name="total_minutes_format">%d хв (всього)</string>
+    <string name="total_minutes_default">0 хв (всього)</string>
+
+    <plurals name="watched_count">
+        <item quantity="one">%d переглянутий</item>
+        <item quantity="few">%d переглянуті</item>
+        <item quantity="other">%d переглянутих</item>
+    </plurals>
+
+    <!-- Dialog for TV episodes input -->
+    <string name="enter_episodes_watched">Введіть кількість переглянутих епізодів</string>
+    <string name="enter_episodes_watched_hint">Введіть число епізодів, які ви переглянули (наприклад, 1)</string>
+
+    <!-- Delete / Undo -->
+    <string name="delete">Видалити</string>
+    <string name="deleted">Видалено</string>
+    <string name="undo">Скасувати</string>
+    <string name="undo_message">Елемент видалено</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Екран налаштувань</string>
+    <string name="theme_title">Тема додатку</string>
+    <string name="theme_system">Система</string>
+    <string name="theme_light">Світла</string>
+    <string name="theme_dark">Темна</string>
+    <string name="language_title">Мова додатку</string>
+    <string name="lang_uk">Українська</string>
+    <string name="lang_ru">Русский</string>
+    <string name="lang_en">English</string>
+    <string name="theme_changed">Тему змінено</string>
+    <string name="language_changed">Мову змінено</string>
+
+    <!-- Navigation menu -->
+    <string name="nav_watched">Переглянуті</string>
+    <string name="nav_trending">В тренді</string>
+    <string name="nav_settings">Налаштування</string>
+
+    <!-- New strings for the redesigned UI -->
+    <string name="total_time">Час</string>
+    <string name="trending_header_title">Тренди</string>
+    <string name="search">Пошук</string>
+    <string name="watched_header_title">Переглянуті фільми та серіали</string>
+    <string name="total_count">Кількість</string>
+    <string name="no_seasons_found">Інформація про сезони не знайдена</string>
+    <string name="no_results">Результатів не знайдено</string>
+    <string name="no_watched_items">Немає переглянутих фільмів</string>
+    <string name="runtime">Тривалість</string>
+
+    <!-- New strings for improved search -->
+    <string name="recent_searches">Недавні запити</string>
+    <string name="clear_history">Очистити історію</string>
+    <string name="min_rating">Мін. рейтинг</string>
+    <string name="rating_value">Рейтинг: %1$.1f+</string>
+    <string name="search_hint">Введіть назву фільму або серіалу</string>
+    <string name="no_history">Історія порожня</string>
+    <string name="apply_filters">Застосовано фільтри</string>
+    <string name="history_item_removed">Запит видалено</string>
+    <string name="remove_history">Видалити</string>
+    <string name="reset_filters">Скинути фільтри</string>
+    <string name="filter_all">Все</string>
+    <string name="filter_movies">Фільми</string>
+    <string name="filter_tv_shows">Серіали</string>
+    <string name="sort_by_rating">★ Рейтинг</string>
+    <string name="sort_by_popularity">🔥 Популярне</string>
+    <string name="results_count_default">Результатів: 0</string>
+    <string name="empty_results">Немає результатів</string>
+    <string name="long_press_to_remove">Довгий тап для видалення</string>
+    <string name="item_removed">Елемент видалено зі списку</string>
+    <string name="favorite_added">Додано до улюблених</string>
+    <string name="favorite_removed">Видалено з улюблених</string>
+    <string name="cache_cleared">Кеш очищено</string>
+    <string name="min_2_chars">Мінімум 2 символи для пошуку</string>
+</resources>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base Colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Modern Cinematic Theme - Netflix/Disney+ inspired -->
+    <color name="app_bg">#0A0E27</color>
+    <color name="card_bg">#1A1F3A</color>
+    <color name="card_bg_elevated">#252B4C</color>
+
+    <!-- Primary - Vibrant Blue/Purple -->
+    <color name="primary">#6C63FF</color>
+    <color name="primary_dark">#5548E8</color>
+    <color name="primary_light">#8B84FF</color>
+
+    <!-- Accent - Golden/Orange -->
+    <color name="accent">#FFB800</color>
+    <color name="accent_light">#FFC933</color>
+
+    <!-- Deprecated but still used in layouts -->
+    <color name="secondary">#FFB800</color>
+    <color name="on_secondary">#FFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="primary_text">#FFFFFF</color>
+    <color name="secondary_text">#B8B8D1</color>
+    <color name="tertiary_text">#6E7191</color>
+
+    <!-- Surface Colors -->
+    <color name="surface">#1A1F3A</color>
+    <color name="surface_variant">#252B4C</color>
+    <color name="divider">#2D3354</color>
+
+    <!-- Status Colors -->
+    <color name="success">#00E096</color>
+    <color name="error">#FF6B9D</color>
+    <color name="warning">#FFB800</color>
+    <color name="info">#00C9FF</color>
+
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#6C63FF</color>
+    <color name="gradient_end">#C75AF6</color>
+
+    <!-- Material3 Light Theme Colors -->
+    <color name="md_theme_light_primary">#6C63FF</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#E5E3FF</color>
+    <color name="md_theme_light_onPrimaryContainer">#1A0F5C</color>
+    <color name="md_theme_light_secondary">#FFB800</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#FFEDB8</color>
+    <color name="md_theme_light_onSecondaryContainer">#332800</color>
+    <color name="md_theme_light_tertiary">#C75AF6</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#F5DDFF</color>
+    <color name="md_theme_light_onTertiaryContainer">#3D1551</color>
+    <color name="md_theme_light_error">#FF6B9D</color>
+    <color name="md_theme_light_errorContainer">#FFE0EC</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_onErrorContainer">#5C0A2D</color>
+    <color name="md_theme_light_background">#F8F8FF</color>
+    <color name="md_theme_light_onBackground">#1A1C2E</color>
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#1A1C2E</color>
+
+    <!-- Material3 Dark Theme Colors (base placeholders to satisfy lint) -->
+    <color name="md_theme_dark_primary">#90CAF9</color>
+    <color name="md_theme_dark_onPrimary">#001F3B</color>
+    <color name="md_theme_dark_primaryContainer">#0F3A66</color>
+    <color name="md_theme_dark_onPrimaryContainer">#D4E4FF</color>
+    <color name="md_theme_dark_secondary">#FFB74D</color>
+    <color name="md_theme_dark_onSecondary">#2E1500</color>
+    <color name="md_theme_dark_secondaryContainer">#5B2A00</color>
+    <color name="md_theme_dark_onSecondaryContainer">#FFE0B2</color>
+    <color name="md_theme_dark_tertiary">#E9B8C8</color>
+    <color name="md_theme_dark_onTertiary">#3B1224</color>
+    <color name="md_theme_dark_tertiaryContainer">#5A2A39</color>
+    <color name="md_theme_dark_onTertiaryContainer">#FFD8E4</color>
+    <color name="md_theme_dark_error">#F2B8B5</color>
+    <color name="md_theme_dark_errorContainer">#8C1D18</color>
+    <color name="md_theme_dark_onError">#601410</color>
+    <color name="md_theme_dark_onErrorContainer">#F9DEDC</color>
+    <color name="md_theme_dark_background">#121212</color>
+    <color name="md_theme_dark_onBackground">#E6E1E5</color>
+    <color name="md_theme_dark_surface">#121212</color>
+    <color name="md_theme_dark_onSurface">#E6E1E5</color>
+</resources>

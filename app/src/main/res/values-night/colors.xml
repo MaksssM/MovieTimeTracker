@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Modern Cinematic Dark Theme -->
+    <color name="md_theme_dark_primary">#8B84FF</color>
+    <color name="md_theme_dark_onPrimary">#1A0F5C</color>
+    <color name="md_theme_dark_primaryContainer">#3E35B5</color>
+    <color name="md_theme_dark_onPrimaryContainer">#E5E3FF</color>
+    <color name="md_theme_dark_secondary">#FFC933</color>
+    <color name="md_theme_dark_onSecondary">#332800</color>
+    <color name="md_theme_dark_secondaryContainer">#7A5900</color>
+    <color name="md_theme_dark_onSecondaryContainer">#FFEDB8</color>
+    <color name="md_theme_dark_tertiary">#E5B3FF</color>
+    <color name="md_theme_dark_onTertiary">#3D1551</color>
+    <color name="md_theme_dark_tertiaryContainer">#7A2FB8</color>
+    <color name="md_theme_dark_onTertiaryContainer">#F5DDFF</color>
+    <color name="md_theme_dark_error">#FFB4C8</color>
+    <color name="md_theme_dark_errorContainer">#93004D</color>
+    <color name="md_theme_dark_onError">#5C0A2D</color>
+    <color name="md_theme_dark_onErrorContainer">#FFE0EC</color>
+    <color name="md_theme_dark_background">#0A0E27</color>
+    <color name="md_theme_dark_onBackground">#E6E6F0</color>
+    <color name="md_theme_dark_surface">#1A1F3A</color>
+    <color name="md_theme_dark_onSurface">#E6E6F0</color>
+
+    <!-- App specific dark colors -->
+    <color name="app_bg">#0A0E27</color>
+    <color name="card_bg">#1A1F3A</color>
+    <color name="card_bg_elevated">#252B4C</color>
+</resources>
+
