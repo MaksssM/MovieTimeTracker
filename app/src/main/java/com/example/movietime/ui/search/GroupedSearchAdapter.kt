@@ -135,8 +135,8 @@ class GroupedSearchAdapter : ListAdapter<GroupedSearchItem, RecyclerView.ViewHol
 
             override fun areContentsTheSame(oldItem: GroupedSearchItem, newItem: GroupedSearchItem): Boolean {
                 return when {
-                    oldItem.data is MovieResult && newItem.data is MovieResult -> oldItem.data == newItem.data
-                    oldItem.data is TvShowResult && newItem.data is TvShowResult -> oldItem.data == newItem.data
+                    oldItem.data is MovieResult && newItem.data is MovieResult -> oldItem.data.id == newItem.data.id
+                    oldItem.data is TvShowResult && newItem.data is TvShowResult -> oldItem.data.id == newItem.data.id
                     else -> oldItem == newItem
                 }
             }

@@ -10,14 +10,14 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="260dp"
         android:theme="@style/Widget.App.Toolbar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="@color/md_theme_light_primary"
+            app:contentScrim="@drawable/gradient_primary_modern"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 
@@ -31,11 +31,11 @@
                 app:shapeAppearance="@style/ShapeAppearance.App.MediumComponent"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
-            <!-- Темна маска для читабельності тексту -->
+            <!-- Modern gradient mask для читабельності тексту -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/gradient_overlay"
+                android:background="@drawable/gradient_overlay_modern"
                 app:layout_collapseMode="parallax" />
 
             <com.google.android.material.appbar.MaterialToolbar

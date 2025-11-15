@@ -4,40 +4,31 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg">
 
-    <TextView
-        android:id="@+id/tvTrendingTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/trending_header_title"
-        android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-        android:textColor="@color/primary"
-        android:textStyle="bold"
-        android:gravity="center_horizontal"
-        android:paddingTop="32dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trendingRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingTop="80dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="8dp"/>
+        android:paddingTop="16dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="100dp"
+        android:scrollbars="none"
+        android:overScrollMode="never" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabTrendingSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
+        android:layout_margin="20dp"
         android:contentDescription="@string/search_content_desc"
         android:text="@string/search"
-        app:icon="@drawable/ic_search"
-        app:backgroundTint="@color/secondary"
-        app:iconTint="@color/on_secondary" />
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_search_premium"
+        app:backgroundTint="@color/accent"
+        app:iconTint="@color/white"
+        app:elevation="12dp"
+        app:borderWidth="0dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

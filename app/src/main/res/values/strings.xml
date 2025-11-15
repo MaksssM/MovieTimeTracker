@@ -55,9 +55,9 @@
 
     <!-- New strings for the redesigned UI -->
     <string name="total_time">Час</string>
-    <string name="trending_header_title">Тренди</string>
+    <string name="trending_header_title">Популярне зараз</string>
     <string name="search">Пошук</string>
-    <string name="watched_header_title">Переглянуті фільми та серіали</string>
+    <string name="watched_header_title">Переглянуті</string>
     <string name="total_count">Кількість</string>
     <string name="no_seasons_found">Інформація про сезони не знайдена</string>
     <string name="no_results">Результатів не знайдено</string>

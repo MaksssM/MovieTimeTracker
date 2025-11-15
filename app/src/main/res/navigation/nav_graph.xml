@@ -8,19 +8,16 @@
     <fragment
         android:id="@+id/watchedFragment"
         android:name="com.example.movietime.ui.main.WatchedFragment"
-        android:label="Переглянуті"
         tools:layout="@layout/fragment_watched" />
 
     <fragment
         android:id="@+id/trendingFragment"
         android:name="com.example.movietime.ui.trending.TrendingFragment"
-        android:label="В тренді"
         tools:layout="@layout/fragment_trending" />
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.movietime.ui.settings.SettingsFragment"
-        android:label="Налаштування"
         tools:layout="@layout/fragment_settings" />
 
 </navigation>

@@ -31,6 +31,11 @@ class MainActivity : AppCompatActivity() {
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
+        // Сховання заголовка toolbar для всіх фрагментів
+        navController.addOnDestinationChangedListener { _, _, _ ->
+            binding.toolbar.title = null
+        }
+
         // Підключення NavigationView до NavController
         binding.navView.setupWithNavController(navController)
     }

@@ -33,27 +33,32 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Search Input with Modern Design -->
-        <androidx.cardview.widget.CardView
+        <!-- Premium Search Input -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/surface">
+            android:layout_margin="16dp"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="12dp"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/accent"
+            android:background="@drawable/bg_search_modern">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSearch"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 app:boxBackgroundMode="none"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
-                app:endIconMode="custom"
-                app:endIconDrawable="@drawable/ic_baseline_search_24"
-                app:endIconTint="@color/primary"
-                app:hintTextColor="@color/tertiary_text">
+                app:startIconDrawable="@drawable/ic_search"
+                app:startIconTint="@color/primary"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/secondary_text"
+                app:hintTextColor="@color/secondary_text"
+                app:placeholderTextColor="@color/tertiary_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etSearchQuery"
@@ -63,15 +68,15 @@
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:padding="18dp"
+                    android:padding="16dp"
                     android:textColor="@color/primary_text"
                     android:textColorHint="@color/tertiary_text"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:fontFamily="sans-serif"
                     android:background="@android:color/transparent" />
 
             </com.google.android.material.textfield.TextInputLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Filter Chips with Gradient -->
         <HorizontalScrollView
