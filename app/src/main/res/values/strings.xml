@@ -1,6 +1,22 @@
 <resources>
     <string name="app_name">MovieTime</string>
 
+    <!-- Navigation -->
+    <string name="nav_watched">Переглянуті</string>
+    <string name="nav_planned">Заплановані</string>
+
+
+
+    <!-- Main menu -->
+    <string name="main_menu_title">Головне меню</string>
+    <string name="movies_category">Фільми</string>
+    <string name="tv_shows_category">Серіали</string>
+    <string name="total_time_spent">Загальний час</string>
+    <string name="watched_movies">Переглянуті фільми</string>
+    <string name="watched_tv_shows">Переглянуті серіали</string>
+    <string name="planned_movies">Заплановані фільми</string>
+    <string name="planned_tv_shows">Заплановані серіали</string>
+
     <!-- Details / Watched -->
     <string name="add_to_watched">Додати до переглянутих</string>
     <string name="added">Додано</string>
@@ -48,9 +64,8 @@
     <string name="theme_changed">Тему змінено</string>
     <string name="language_changed">Мову змінено</string>
 
-    <!-- Navigation menu -->
-    <string name="nav_watched">Переглянуті</string>
-    <string name="nav_trending">В тренді</string>
+    <!-- Navigation menu strings needed for nav_menu.xml -->
+    <string name="nav_trending">Популярні</string>
     <string name="nav_settings">Налаштування</string>
 
     <!-- New strings for the redesigned UI -->

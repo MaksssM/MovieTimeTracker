@@ -38,7 +38,29 @@
                 android:scaleType="centerCrop" />
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- App Subtitle removed to reduce clutter on mobile -->
+        <!-- App Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="22sp"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="-0.01"
+            android:shadowColor="#40000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4" />
+
+        <!-- App Subtitle -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Трекер фільмів та серіалів"
+            android:textSize="14sp"
+            android:textColor="#E0FFFFFF"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="2dp" />
     </LinearLayout>
 
 </RelativeLayout>

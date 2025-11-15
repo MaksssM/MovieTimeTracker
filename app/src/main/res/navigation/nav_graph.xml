@@ -10,6 +10,7 @@
         android:name="com.example.movietime.ui.main.WatchedFragment"
         tools:layout="@layout/fragment_watched" />
 
+
     <fragment
         android:id="@+id/trendingFragment"
         android:name="com.example.movietime.ui.trending.TrendingFragment"

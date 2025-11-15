@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [WatchedItem::class], version = 2, exportSchema = false)
+@Database(entities = [WatchedItem::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun watchedItemDao(): WatchedItemDao
 
@@ -32,6 +32,15 @@ abstract class AppDatabase : RoomDatabase() {
 
                 // Rename new table to the original name
                 database.execSQL("ALTER TABLE `watched_items_new` RENAME TO `watched_items`")
+            }
+        }
+
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create planned items table with same structure
+                database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `planned_items` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `posterPath` TEXT, `releaseDate` TEXT, `runtime` INTEGER, `mediaType` TEXT NOT NULL, PRIMARY KEY(`id`,`mediaType`))"
+                )
             }
         }
 

@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Modern Cinematic Dark Theme -->
-    <style name="Theme.MovieTimeTracker" parent="Theme.Material3.Dark.NoActionBar">
-        <!-- Material3 color tokens -->
-        <item name="colorPrimary">@color/md_theme_dark_primary</item>
-        <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
-        <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>
-        <item name="colorOnPrimaryContainer">@color/md_theme_dark_onPrimaryContainer</item>
-        <item name="colorSecondary">@color/md_theme_dark_secondary</item>
-        <item name="colorOnSecondary">@color/md_theme_dark_onSecondary</item>
-        <item name="colorSecondaryContainer">@color/md_theme_dark_secondaryContainer</item>
-        <item name="colorOnSecondaryContainer">@color/md_theme_dark_onSecondaryContainer</item>
-        <item name="colorTertiary">@color/md_theme_dark_tertiary</item>
-        <item name="colorOnTertiary">@color/md_theme_dark_onTertiary</item>
-        <item name="colorTertiaryContainer">@color/md_theme_dark_tertiaryContainer</item>
-        <item name="colorOnTertiaryContainer">@color/md_theme_dark_onTertiaryContainer</item>
-        <item name="colorError">@color/md_theme_dark_error</item>
-        <item name="colorOnError">@color/md_theme_dark_onError</item>
-        <item name="colorErrorContainer">@color/md_theme_dark_errorContainer</item>
-        <item name="colorOnErrorContainer">@color/md_theme_dark_onErrorContainer</item>
-        <item name="android:colorBackground">@color/md_theme_dark_background</item>
-        <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>
-        <item name="colorSurface">@color/md_theme_dark_surface</item>
-        <item name="colorOnSurface">@color/md_theme_dark_onSurface</item>
+    <!-- Light Theme (Default) -->
+    <style name="Theme.MovieTimeTracker" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Material3 color tokens for Light theme -->
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_light_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_light_error</item>
+        <item name="colorOnError">@color/md_theme_light_onError</item>
+        <item name="colorErrorContainer">@color/md_theme_light_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/md_theme_light_background</item>
+        <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
 
         <!-- Status and Navigation Bars -->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@color/md_theme_dark_background</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@color/md_theme_light_background</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
         <!-- Material Components -->
@@ -41,6 +41,12 @@
         <item name="textAppearanceHeadline2">@style/TextAppearance.App.Headline2</item>
         <item name="textAppearanceBody1">@style/TextAppearance.App.Body1</item>
         <item name="textAppearanceBody2">@style/TextAppearance.App.Body2</item>
+    </style>
+
+    <!-- NoActionBar variant -->
+    <style name="Theme.MovieTimeTracker.NoActionBar" parent="Theme.MovieTimeTracker">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- Card View Style -->
@@ -73,43 +79,38 @@
         <item name="labelVisibilityMode">labeled</item>
     </style>
 
-    <!-- FAB Style -->
+    <!-- Floating Action Button Style -->
     <style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
-        <item name="backgroundTint">@drawable/gradient_primary</item>
+        <item name="backgroundTint">@color/primary</item>
         <item name="tint">@color/white</item>
-        <item name="elevation">12dp</item>
-        <item name="pressedTranslationZ">16dp</item>
     </style>
 
     <!-- Typography Styles -->
     <style name="TextAppearance.App.Headline1" parent="TextAppearance.Material3.HeadlineLarge">
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/primary_text</item>
-        <item name="fontFamily">sans-serif-medium</item>
-        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="TextAppearance.App.Headline2" parent="TextAppearance.Material3.HeadlineMedium">
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">28sp</item>
         <item name="android:textColor">@color/primary_text</item>
-        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="TextAppearance.App.Body1" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/secondary_text</item>
-        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/primary_text</item>
     </style>
 
     <style name="TextAppearance.App.Body2" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/tertiary_text</item>
-        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/secondary_text</item>
     </style>
 
     <!-- Button Styles -->
     <style name="Widget.App.Button" parent="Widget.Material3.Button">
-        <item name="backgroundTint">@drawable/gradient_primary</item>
+        <item name="backgroundTint">@color/primary</item>
         <item name="android:textColor">@color/white</item>
         <item name="cornerRadius">12dp</item>
         <item name="android:textAllCaps">false</item>

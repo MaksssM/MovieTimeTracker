@@ -25,7 +25,8 @@
                 android:background="@drawable/gradient_primary_modern"
                 app:titleTextColor="@color/white"
                 app:navigationIconTint="@color/white"
-                android:elevation="0dp" />
+                android:elevation="0dp"
+                android:title="" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.fragment.app.FragmentContainerView
