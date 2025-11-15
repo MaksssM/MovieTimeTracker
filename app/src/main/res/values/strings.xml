@@ -49,6 +49,98 @@
     <string name="delete">Видалити</string>
     <string name="deleted">Видалено</string>
     <string name="undo">Скасувати</string>
+
+    <!-- Enhanced UI strings -->
+    <string name="total_watch_time">Загальний час</string>
+    <string name="this_month">Цей місяць</string>
+    <string name="quick_stats">Швидка статистика</string>
+    <string name="movies">Фільми</string>
+    <string name="tv_shows">Серіали</string>
+    <string name="avg_rating">Сер. рейтинг</string>
+    <string name="categories">Категорії</string>
+    <string name="quick_actions">Швидкі дії</string>
+    <string name="search">Пошук</string>
+    <string name="trending">Популярне</string>
+    <string name="upcoming_releases">Майбутні прем\'єри</string>
+    <string name="friends">Друзі</string>
+    <string name="recent_activity">Недавня активність</string>
+    <string name="quick_add">Швидко додати</string>
+
+    <!-- Statistics -->
+    <string name="statistics">Статистика</string>
+    <string name="your_watching_journey">Ваша подорож переглядів</string>
+    <string name="total_content">Загальний контент</string>
+    <string name="this_year">Цього року</string>
+    <string name="favorite_genres">Улюблені жанри</string>
+    <string name="watching_streak">Серія переглядів</string>
+    <string name="days_streak">%d днів поспіль</string>
+
+    <!-- Social features -->
+    <string name="add_friend">Додати друга</string>
+    <string name="friend_requests">Запрошення в друзі</string>
+    <string name="send_request">Надіслати запрошення</string>
+    <string name="accept_request">Прийняти</string>
+    <string name="decline_request">Відхилити</string>
+    <string name="friend_activity">Активність друзів</string>
+
+    <!-- Rating system -->
+    <string name="your_rating">Ваш рейтинг</string>
+    <string name="rate_content">Оцініть контент</string>
+    <string name="add_review">Додати рецензію</string>
+    <string name="edit_review">Редагувати рецензію</string>
+    <string name="review_placeholder">Поділіться своїми думками про цей контент...</string>
+
+    <!-- Enhanced search and filters -->
+    <string name="advanced_filters">Розширені фільтри</string>
+    <string name="filter_by_genre">За жанром</string>
+    <string name="filter_by_year">За роком</string>
+    <string name="filter_by_rating">За рейтингом</string>
+    <string name="sort_by">Сортувати за</string>
+    <string name="sort_popularity">Популярністю</string>
+    <string name="sort_rating">Рейтингом</string>
+    <string name="sort_release_date">Датою виходу</string>
+    <string name="sort_title">Назвою</string>
+    <string name="apply_filters">Застосувати фільтри</string>
+    <string name="clear_filters">Очистити фільтри</string>
+
+    <!-- Planned content enhancement -->
+    <string name="add_to_planned">Додати до запланованих</string>
+    <string name="remove_from_planned">Видалити з запланованих</string>
+    <string name="priority_high">Високий пріоритет</string>
+    <string name="priority_medium">Середній пріоритет</string>
+    <string name="priority_low">Низький пріоритет</string>
+    <string name="add_notes">Додати нотатки</string>
+    <string name="notes_placeholder">Чому ви хочете подивитися це...</string>
+
+    <!-- Upcoming releases -->
+    <string name="interested">Цікавить</string>
+    <string name="not_interested">Не цікавить</string>
+    <string name="notify_on_release">Сповістити про реліз</string>
+    <string name="releases_this_week">Виходять цього тижня</string>
+    <string name="releases_next_month">Виходять наступного місяця</string>
+
+    <!-- Activity types -->
+    <string name="activity_watched_movie">подивився фільм</string>
+    <string name="activity_watched_tv">подивився серіал</string>
+    <string name="activity_rated_movie">оцінив фільм</string>
+    <string name="activity_rated_tv">оцінив серіал</string>
+    <string name="activity_added_to_planned">додав до запланованих</string>
+    <string name="activity_wrote_review">написав рецензію</string>
+
+    <!-- Time formatting -->
+    <string name="time_format_hours">%d год</string>
+    <string name="time_format_minutes">%d хв</string>
+    <string name="time_format_hours_minutes">%d год %d хв</string>
+    <string name="time_ago_minutes">%d хв тому</string>
+    <string name="time_ago_hours">%d год тому</string>
+    <string name="time_ago_days">%d днів тому</string>
+    <string name="time_ago_weeks">%d тижнів тому</string>
+
+    <!-- Error messages -->
+    <string name="error_loading_data">Помилка завантаження даних</string>
+    <string name="error_network">Помилка мережі</string>
+    <string name="error_no_internet">Немає інтернет-з\'єднання</string>
+    <string name="retry">Повторити</string>
     <string name="undo_message">Елемент видалено</string>
 
     <!-- Settings -->
@@ -71,7 +163,6 @@
     <!-- New strings for the redesigned UI -->
     <string name="total_time">Час</string>
     <string name="trending_header_title">Популярне зараз</string>
-    <string name="search">Пошук</string>
     <string name="watched_header_title">Переглянуті</string>
     <string name="total_count">Кількість</string>
     <string name="no_seasons_found">Інформація про сезони не знайдена</string>
@@ -86,7 +177,6 @@
     <string name="rating_value">Рейтинг: %1$.1f+</string>
     <string name="search_hint">Введіть назву фільму або серіалу</string>
     <string name="no_history">Історія порожня</string>
-    <string name="apply_filters">Застосовано фільтри</string>
     <string name="history_item_removed">Запит видалено</string>
     <string name="remove_history">Видалити</string>
     <string name="reset_filters">Скинути фільтри</string>

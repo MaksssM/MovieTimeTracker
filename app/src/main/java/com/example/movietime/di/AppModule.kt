@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import com.example.movietime.BuildConfig
 import com.example.movietime.data.api.TmdbApi
-import com.example.movietime.data.db.AppDatabase
-import com.example.movietime.data.db.WatchedItemDao
+import com.example.movietime.data.db.*
 import com.example.movietime.data.repository.AppRepository
+import com.example.movietime.data.repository.SimpleEnhancedRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,6 +42,7 @@ object AppModule {
     @Singleton
     fun provideTmdbApi(retrofit: Retrofit): TmdbApi = retrofit.create(TmdbApi::class.java)
 
+
     @Provides
     @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
@@ -51,6 +52,7 @@ object AppModule {
             "movie_tracker_database"
         )
             .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
+            .fallbackToDestructiveMigration()
             .build()
     }
 
@@ -60,9 +62,19 @@ object AppModule {
         return database.watchedItemDao()
     }
 
+
     @Provides
     @Singleton
     fun provideAppRepository(api: TmdbApi, dao: WatchedItemDao): AppRepository {
         return AppRepository(api, dao, BuildConfig.TMDB_API_KEY)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSimpleEnhancedRepository(
+        api: TmdbApi,
+        watchedDao: WatchedItemDao
+    ): SimpleEnhancedRepository {
+        return SimpleEnhancedRepository(api, watchedDao, BuildConfig.TMDB_API_KEY)
     }
 }

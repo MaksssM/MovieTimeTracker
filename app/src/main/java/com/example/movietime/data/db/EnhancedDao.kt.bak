@@ -1,0 +1,172 @@
+package com.example.movietime.data.db
+
+import androidx.room.*
+import com.example.movietime.data.model.*
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface PlannedItemDao {
+
+    @Query("SELECT * FROM planned_items ORDER BY priority DESC, added_date DESC")
+    fun getAllPlanned(): Flow<List<PlannedItem>>
+
+    @Query("SELECT * FROM planned_items WHERE isMovie = :isMovie ORDER BY priority DESC, added_date DESC")
+    fun getPlannedByType(isMovie: Boolean): Flow<List<PlannedItem>>
+
+    @Query("SELECT * FROM planned_items WHERE tmdbId = :tmdbId AND isMovie = :isMovie")
+    suspend fun getPlannedItem(tmdbId: Int, isMovie: Boolean): PlannedItem?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPlanned(item: PlannedItem)
+
+    @Delete
+    suspend fun deletePlanned(item: PlannedItem)
+
+    @Query("DELETE FROM planned_items WHERE tmdbId = :tmdbId AND isMovie = :isMovie")
+    suspend fun deletePlannedByTmdbId(tmdbId: Int, isMovie: Boolean)
+
+    @Query("UPDATE planned_items SET priority = :priority WHERE id = :id")
+    suspend fun updatePriority(id: Int, priority: Int)
+
+    @Query("UPDATE planned_items SET notes = :notes WHERE id = :id")
+    suspend fun updateNotes(id: Int, notes: String?)
+
+    @Query("SELECT COUNT(*) FROM planned_items WHERE isMovie = :isMovie")
+    suspend fun getCountByType(isMovie: Boolean): Int
+}
+
+@Dao
+interface FriendDao {
+
+    @Query("SELECT * FROM friends ORDER BY displayName ASC")
+    fun getAllFriends(): Flow<List<Friend>>
+
+    @Query("SELECT * FROM friends WHERE id = :friendId")
+    suspend fun getFriend(friendId: String): Friend?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFriend(friend: Friend)
+
+    @Delete
+    suspend fun deleteFriend(friend: Friend)
+
+    @Query("DELETE FROM friends WHERE id = :friendId")
+    suspend fun deleteFriendById(friendId: String)
+
+    @Query("UPDATE friends SET last_activity = :lastActivity WHERE id = :friendId")
+    suspend fun updateLastActivity(friendId: String, lastActivity: String)
+}
+
+@Dao
+interface FriendRequestDao {
+
+    @Query("SELECT * FROM friend_requests WHERE to_user_id = :userId AND status = 'PENDING'")
+    fun getIncomingRequests(userId: String): Flow<List<FriendRequest>>
+
+    @Query("SELECT * FROM friend_requests WHERE from_user_id = :userId")
+    fun getOutgoingRequests(userId: String): Flow<List<FriendRequest>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRequest(request: FriendRequest)
+
+    @Query("UPDATE friend_requests SET status = :status WHERE id = :requestId")
+    suspend fun updateRequestStatus(requestId: String, status: RequestStatus)
+
+    @Delete
+    suspend fun deleteRequest(request: FriendRequest)
+}
+
+@Dao
+interface ActivityDao {
+
+    @Query("SELECT * FROM activities ORDER BY created_date DESC LIMIT 50")
+    fun getRecentActivities(): Flow<List<Activity>>
+
+    @Query("SELECT * FROM activities WHERE user_id IN (:userIds) ORDER BY created_date DESC LIMIT 50")
+    fun getFriendsActivities(userIds: List<String>): Flow<List<Activity>>
+
+    @Query("SELECT * FROM activities WHERE user_id = :userId ORDER BY created_date DESC")
+    fun getUserActivities(userId: String): Flow<List<Activity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertActivity(activity: Activity)
+
+    @Query("DELETE FROM activities WHERE created_date < :cutoffDate")
+    suspend fun deleteOldActivities(cutoffDate: String)
+}
+
+@Dao
+interface UpcomingReleaseDao {
+
+    @Query("SELECT * FROM upcoming_releases WHERE releaseDate >= :currentDate ORDER BY releaseDate ASC")
+    fun getUpcomingReleases(currentDate: String): Flow<List<UpcomingRelease>>
+
+    @Query("SELECT * FROM upcoming_releases WHERE is_interested = 1 ORDER BY releaseDate ASC")
+    fun getInterestedReleases(): Flow<List<UpcomingRelease>>
+
+    @Query("SELECT * FROM upcoming_releases WHERE tmdbId = :tmdbId AND isMovie = :isMovie")
+    suspend fun getUpcomingRelease(tmdbId: Int, isMovie: Boolean): UpcomingRelease?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUpcomingRelease(release: UpcomingRelease)
+
+    @Query("UPDATE upcoming_releases SET is_interested = :isInterested WHERE tmdbId = :tmdbId AND isMovie = :isMovie")
+    suspend fun updateInterest(tmdbId: Int, isMovie: Boolean, isInterested: Boolean)
+
+    @Query("UPDATE upcoming_releases SET notification_enabled = :enabled WHERE tmdbId = :tmdbId AND isMovie = :isMovie")
+    suspend fun updateNotification(tmdbId: Int, isMovie: Boolean, enabled: Boolean)
+
+    @Query("DELETE FROM upcoming_releases WHERE releaseDate < :cutoffDate AND is_interested = 0")
+    suspend fun deleteOldReleases(cutoffDate: String)
+}
+
+// Enhanced WatchedItemDao
+@Dao
+interface EnhancedWatchedItemDao {
+
+    @Query("SELECT * FROM watched_items ORDER BY watched_date DESC")
+    fun getAllWatched(): Flow<List<WatchedItem>>
+
+    @Query("SELECT * FROM watched_items WHERE isMovie = :isMovie ORDER BY watched_date DESC")
+    fun getWatchedByType(isMovie: Boolean): Flow<List<WatchedItem>>
+
+    @Query("SELECT * FROM watched_items WHERE is_favorite = 1 ORDER BY watched_date DESC")
+    fun getFavorites(): Flow<List<WatchedItem>>
+
+    @Query("SELECT * FROM watched_items WHERE tmdbId = :tmdbId AND isMovie = :isMovie")
+    suspend fun getWatchedItem(tmdbId: Int, isMovie: Boolean): WatchedItem?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWatched(item: WatchedItem)
+
+    @Delete
+    suspend fun deleteWatched(item: WatchedItem)
+
+    @Query("UPDATE watched_items SET user_rating = :rating WHERE id = :id")
+    suspend fun updateRating(id: Int, rating: Float?)
+
+    @Query("UPDATE watched_items SET review = :review WHERE id = :id")
+    suspend fun updateReview(id: Int, review: String?)
+
+    @Query("UPDATE watched_items SET is_favorite = :isFavorite WHERE id = :id")
+    suspend fun updateFavorite(id: Int, isFavorite: Boolean)
+
+    @Query("UPDATE watched_items SET rewatch_count = rewatch_count + 1 WHERE id = :id")
+    suspend fun incrementRewatchCount(id: Int)
+
+    // Statistics queries
+    @Query("SELECT COUNT(*) FROM watched_items WHERE isMovie = :isMovie")
+    suspend fun getCountByType(isMovie: Boolean): Int
+
+    @Query("SELECT SUM(runtime) FROM watched_items")
+    suspend fun getTotalWatchTime(): Int?
+
+    @Query("SELECT AVG(user_rating) FROM watched_items WHERE user_rating IS NOT NULL")
+    suspend fun getAverageUserRating(): Float?
+
+    @Query("SELECT COUNT(*) FROM watched_items WHERE DATE(watched_date) >= DATE('now', '-30 days')")
+    suspend fun getWatchedCountLastMonth(): Int
+
+    @Query("SELECT COUNT(*) FROM watched_items WHERE DATE(watched_date) >= DATE('now', 'start of year')")
+    suspend fun getWatchedCountThisYear(): Int
+}

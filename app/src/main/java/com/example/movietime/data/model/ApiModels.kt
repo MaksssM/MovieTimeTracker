@@ -2,143 +2,82 @@ package com.example.movietime.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class MoviesResponse(
-    val results: List<MovieResult>
+// API Response models for existing API
+data class MovieSearchResponse(
+    val page: Int,
+    val results: List<Movie>,
+    @SerializedName("total_pages") val totalPages: Int,
+    @SerializedName("total_results") val totalResults: Int
 )
 
-data class TvShowsResponse(
-    val results: List<TvShowResult>
+data class TvSearchResponse(
+    val page: Int,
+    val results: List<TvShow>,
+    @SerializedName("total_pages") val totalPages: Int,
+    @SerializedName("total_results") val totalResults: Int
 )
 
-data class MovieResult(
+data class Movie(
     val id: Int,
     val title: String?,
-    val name: String?,
-    @SerializedName("poster_path")
-    val posterPath: String?,
-    @SerializedName("overview")
     val overview: String?,
-    @SerializedName("release_date")
-    val releaseDate: String?,
-    @SerializedName("vote_average")
-    val voteAverage: Double?,
-    @SerializedName("popularity")
-    val popularity: Double?,
+    @SerializedName("poster_path") val posterPath: String?,
+    @SerializedName("backdrop_path") val backdropPath: String?,
+    @SerializedName("release_date") val releaseDate: String?,
     val runtime: Int?,
-    val mediaType: String = "movie"
+    @SerializedName("vote_average") val voteAverage: Float,
+    @SerializedName("vote_count") val voteCount: Int,
+    val popularity: Float,
+    @SerializedName("genre_ids") val genreIds: List<Int> = emptyList(),
+    val genres: List<Genre>? = null
 )
 
-data class TvSeasonResult(
-    val season_number: Int,
+data class TvShow(
+    val id: Int,
     val name: String?,
-    val episode_count: Int
+    val overview: String?,
+    @SerializedName("poster_path") val posterPath: String?,
+    @SerializedName("backdrop_path") val backdropPath: String?,
+    @SerializedName("first_air_date") val firstAirDate: String?,
+    @SerializedName("last_air_date") val lastAirDate: String?,
+    @SerializedName("episode_run_time") val episodeRunTime: List<Int>?,
+    @SerializedName("number_of_episodes") val numberOfEpisodes: Int?,
+    @SerializedName("number_of_seasons") val numberOfSeasons: Int?,
+    @SerializedName("vote_average") val voteAverage: Float,
+    @SerializedName("vote_count") val voteCount: Int,
+    val popularity: Float,
+    @SerializedName("genre_ids") val genreIds: List<Int> = emptyList(),
+    val genres: List<Genre>? = null
 )
 
-data class TvShowResult(
+data class Genre(
     val id: Int,
-    val name: String?,
-    val title: String?,
-    @SerializedName("poster_path")
-    val posterPath: String?,
-    @SerializedName("overview")
-    val overview: String?,
-    @SerializedName("first_air_date")
-    val firstAirDate: String?,
-    @SerializedName("vote_average")
-    val voteAverage: Double?,
-    @SerializedName("popularity")
-    val popularity: Double?,
-    @SerializedName("episode_run_time")
-    val episodeRunTime: List<Int>?,
-    @SerializedName("seasons")
-    val seasons: List<TvSeasonResult>?,
-    val mediaType: String = "tv"
-) {
-    val runtime: Int?
-        get() = episodeRunTime?.firstOrNull()
-}
-
-sealed class SearchItem {
-    abstract val id: Int
-    abstract val title: String?
-    abstract val name: String?
-    abstract val posterPath: String?
-    abstract val overview: String?
-    abstract val releaseDate: String?
-    abstract val voteAverage: Double?
-    abstract val runtime: Int?
-    abstract val mediaType: String
-    
-    @Suppress("unused")
-    data class Movie(
-        override val id: Int,
-        override val title: String?,
-        override val name: String?,
-        @SerializedName("poster_path")
-        override val posterPath: String?,
-        @SerializedName("overview")
-        override val overview: String?,
-        @SerializedName("release_date")
-        override val releaseDate: String?,
-        @SerializedName("vote_average")
-        override val voteAverage: Double?,
-        override val runtime: Int?
-    ) : SearchItem() {
-        override val mediaType: String = "movie"
-    }
-    
-    @Suppress("unused")
-    data class TvShow(
-        override val id: Int,
-        override val name: String?,
-        override val title: String?,
-        @SerializedName("poster_path")
-        override val posterPath: String?,
-        @SerializedName("overview")
-        override val overview: String?,
-        @SerializedName("first_air_date")
-        override val releaseDate: String?,
-        @SerializedName("vote_average")
-        override val voteAverage: Double?,
-        @SerializedName("episode_run_time")
-        val episodeRunTime: List<Int>?
-    ) : SearchItem() {
-        override val mediaType: String = "tv"
-        override val runtime: Int? = episodeRunTime?.firstOrNull()
-    }
-}
-
-// Deprecated - will be removed in favor of SearchItem
-@Suppress("unused")
-data class ApiMovie(
-    val id: Int,
-    val title: String?,
-    val name: String?,
-    @SerializedName("poster_path")
-    val posterPath: String?,
-    @SerializedName("overview")
-    val overview: String?,
-    @SerializedName("release_date")
-    val releaseDate: String?,
-    @SerializedName("vote_average")
-    val voteAverage: Double?,
-    val runtime: Int?
+    val name: String
 )
 
-// Deprecated - will be removed in favor of SearchItem
-@Suppress("unused")
-data class ApiTvShow(
+data class GenresResponse(
+    val genres: List<Genre>
+)
+
+data class MultiSearchResponse(
+    val page: Int,
+    val results: List<MultiSearchResult>,
+    @SerializedName("total_pages") val total_pages: Int,
+    @SerializedName("total_results") val total_results: Int
+)
+
+data class MultiSearchResult(
     val id: Int,
-    val name: String?,
-    val title: String?,
-    @SerializedName("poster_path")
-    val posterPath: String?,
-    @SerializedName("overview")
+    @SerializedName("media_type") val media_type: String, // "movie" or "tv"
+    val title: String? = null, // для фільмів
+    val name: String? = null, // для серіалів
     val overview: String?,
-    @SerializedName("first_air_date")
-    val firstAirDate: String?,
-    @SerializedName("vote_average")
-    val voteAverage: Double?,
-    @SerializedName("episode_run_time")
-    val episodeRunTime: List<Int>?
+    @SerializedName("poster_path") val poster_path: String?,
+    @SerializedName("backdrop_path") val backdrop_path: String?,
+    @SerializedName("release_date") val release_date: String? = null, // для фільмів
+    @SerializedName("first_air_date") val first_air_date: String? = null, // для серіалів
+    @SerializedName("vote_average") val vote_average: Float = 0f,
+    @SerializedName("vote_count") val vote_count: Int = 0,
+    val popularity: Float = 0f,
+    @SerializedName("genre_ids") val genre_ids: List<Int> = emptyList()
 )

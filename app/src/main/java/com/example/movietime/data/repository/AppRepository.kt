@@ -112,8 +112,8 @@ class AppRepository @Inject constructor(
         val uniqueMap = linkedMapOf<Pair<Int, String>, MutableList<Any>>()
         allItems.forEach { item ->
             val key = when (item) {
-                is MovieResult -> item.id to item.mediaType
-                is TvShowResult -> item.id to item.mediaType
+                is MovieResult -> item.id to "movie"
+                is TvShowResult -> item.id to "tv"
                 else -> 0 to ""
             }
             uniqueMap.getOrPut(key) { mutableListOf() }.add(item)
@@ -142,8 +142,8 @@ class AppRepository @Inject constructor(
             // occurrences contains same item from different language results; pick first as representative
             val item = occurrences.first()
             val titles = when (item) {
-                is MovieResult -> listOf(item.title, item.name)
-                is TvShowResult -> listOf(item.name, item.title)
+                is MovieResult -> listOf(item.title)
+                is TvShowResult -> listOf(item.name)
                 else -> listOf(null)
             }.map { normalize(it) }
 
@@ -174,8 +174,8 @@ class AppRepository @Inject constructor(
 
             // boost by popularity if available
             val popularityBoost = when (item) {
-                is MovieResult -> ((item.voteAverage ?: 0.0) * 10).toInt()
-                is TvShowResult -> ((item.voteAverage ?: 0.0) * 10).toInt()
+                is MovieResult -> (item.voteAverage * 10).toInt()
+                is TvShowResult -> (item.voteAverage * 10).toInt()
                 else -> 0
             }
             score += popularityBoost
