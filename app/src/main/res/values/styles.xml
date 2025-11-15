@@ -2,30 +2,42 @@
 <resources>
 
     <style name="Widget.App.FAB" parent="Widget.Material3.ExtendedFloatingActionButton.Primary">
-        <item name="android:backgroundTint">@color/md_theme_light_primary</item>
-        <item name="elevation">8dp</item>
-        <item name="android:layout_margin">20dp</item>
+        <item name="elevation">12dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="cornerRadius">28dp</item>
     </style>
 
-    <style name="Widget.App.Card" parent="Widget.Material3.CardView.Outlined">
+    <style name="Widget.App.Card" parent="Widget.Material3.CardView.Elevated">
         <item name="cardCornerRadius">24dp</item>
-        <item name="cardElevation">10dp</item>
-        <item name="cardBackgroundColor">@color/card_bg</item>
+        <item name="cardElevation">16dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/border</item>
     </style>
 
     <style name="Widget.App.Toolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">@color/md_theme_light_primary</item>
+        <item name="android:background">@drawable/gradient_primary_modern</item>
         <item name="titleTextColor">@color/white</item>
-        <item name="android:elevation">8dp</item>
+        <item name="android:elevation">12dp</item>
     </style>
 
     <style name="Widget.App.TextView.Title" parent="TextAppearance.Material3.HeadlineSmall">
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="Widget.App.TextView.Subtitle" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:alpha">0.9</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="Widget.App.TextView.Caption" parent="TextAppearance.Material3.BodySmall">
         <item name="android:textColor">@color/tertiary_text</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 
 
@@ -40,7 +52,51 @@
     <!-- Search Result Card -->
     <style name="Widget.App.SearchResultCard" parent="Widget.Material3.CardView.Elevated">
         <item name="cardCornerRadius">20dp</item>
-        <item name="cardElevation">8dp</item>
-        <item name="cardBackgroundColor">@color/card_bg</item>
+        <item name="cardElevation">12dp</item>
+        <item name="android:background">@drawable/bg_card_modern</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <!-- Premium Button Style -->
+    <style name="Widget.App.Button.Primary" parent="Widget.Material3.Button.UnelevatedButton">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.03</item>
+        <item name="cornerRadius">28dp</item>
+        <item name="android:elevation">8dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- Glass Chip Style -->
+    <style name="Widget.App.Chip.Glass" parent="Widget.Material3.Chip.Filter">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStrokeColor">@color/border</item>
+        <item name="android:elevation">6dp</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <!-- CollapsingToolbar Text Styles -->
+    <style name="TextAppearance.App.CollapsingToolbar.Expanded" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <style name="TextAppearance.App.CollapsingToolbar.Collapsed" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Additional unique styles (non-duplicated) -->
+    <style name="Widget.App.SearchBar" parent="Widget.Material3.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/surface_variant</item>
+        <item name="boxCornerRadiusTopStart">28dp</item>
+        <item name="boxCornerRadiusTopEnd">28dp</item>
+        <item name="boxCornerRadiusBottomStart">28dp</item>
+        <item name="boxCornerRadiusBottomEnd">28dp</item>
+        <item name="boxStrokeColor">@color/primary</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="hintTextColor">@color/secondary_text</item>
     </style>
 </resources>

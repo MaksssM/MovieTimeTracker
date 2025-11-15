@@ -10,22 +10,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Modern Header with Gradient Background -->
-        <androidx.cardview.widget.CardView
+        <!-- Enhanced Header with Premium Gradient -->
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/header_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            android:backgroundTint="@android:color/transparent">
+            android:layout_margin="12dp"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="16dp"
+            app:cardBackgroundColor="@color/card_bg_elevated"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/border">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/gradient_card"
-                android:padding="28dp">
+                android:background="@drawable/gradient_primary_modern"
+                android:padding="24dp">
 
                 <!-- Title with Icon -->
                 <LinearLayout
@@ -47,9 +49,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="12dp"
                         android:text="@string/watched_header_title"
-                        android:textSize="28sp"
+                        android:textSize="24sp"
                         android:textColor="@color/primary_text"
                         android:fontFamily="sans-serif-medium"
                         android:letterSpacing="-0.02" />
@@ -64,25 +66,27 @@
                     android:baselineAligned="false">
 
                     <!-- Total Count Card -->
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="8dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp"
-                        app:cardBackgroundColor="@color/card_bg_elevated">
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="8dp"
+                        app:cardBackgroundColor="@color/card_bg_elevated"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/border">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="center"
-                            android:padding="20dp">
+                            android:padding="16dp">
 
                             <ImageView
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
                                 android:src="@drawable/ic_movie_time"
                                 app:tint="@color/primary"
                                 android:contentDescription="@string/total_count" />
@@ -91,8 +95,8 @@
                                 android:id="@+id/tvTotalCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:textSize="32sp"
+                                android:layout_marginTop="10dp"
+                                android:textSize="28sp"
                                 android:textColor="@color/primary_text"
                                 android:fontFamily="sans-serif-medium"
                                 android:text="0"
@@ -102,33 +106,35 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:textSize="12sp"
+                                android:textSize="11sp"
                                 android:textColor="@color/tertiary_text"
                                 android:text="Переглянуто"
                                 android:fontFamily="sans-serif" />
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
 
                     <!-- Total Time Card -->
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="8dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp"
-                        app:cardBackgroundColor="@color/card_bg_elevated">
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="8dp"
+                        app:cardBackgroundColor="@color/card_bg_elevated"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/border">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="center"
-                            android:padding="20dp">
+                            android:padding="16dp">
 
                             <ImageView
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
                                 android:src="@drawable/ic_time"
                                 app:tint="@color/accent"
                                 android:contentDescription="@string/total_time" />
@@ -137,8 +143,8 @@
                                 android:id="@+id/tvTotalTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:textSize="20sp"
+                                android:layout_marginTop="10dp"
+                                android:textSize="18sp"
                                 android:textColor="@color/primary_text"
                                 android:fontFamily="sans-serif-medium"
                                 android:text="0 год"
@@ -150,15 +156,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:textSize="12sp"
+                                android:textSize="11sp"
                                 android:textColor="@color/tertiary_text"
                                 android:text="Час перегляду"
                                 android:fontFamily="sans-serif" />
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- RecyclerView with improved styling -->
         <androidx.recyclerview.widget.RecyclerView
@@ -167,9 +173,9 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="12dp"
             android:paddingTop="8dp"
-            android:paddingBottom="100dp"
+            android:paddingBottom="80dp"
             android:scrollbars="vertical"
             tools:listitem="@layout/item_watched" />
 
@@ -215,20 +221,19 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Modern Gradient FAB -->
+    <!-- Premium Gradient FAB -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="28dp"
+        android:layout_margin="20dp"
         android:text="@string/search"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/ic_search_premium"
         android:textColor="@color/white"
-        android:fontFamily="sans-serif-medium"
+        app:backgroundTint="@color/accent"
         app:iconTint="@color/white"
-        app:backgroundTint="@color/primary"
         app:elevation="12dp"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+        app:borderWidth="0dp"
         android:contentDescription="@string/search" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

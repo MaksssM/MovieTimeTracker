@@ -16,13 +16,16 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:elevation="8dp">
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:titleTextColor="?attr/colorOnPrimary" />
+                android:background="@drawable/gradient_primary_modern"
+                app:titleTextColor="@color/white"
+                app:navigationIconTint="@color/white"
+                android:elevation="0dp" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.fragment.app.FragmentContainerView
@@ -37,10 +40,15 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/surface"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu" /> <!-- Ось тут посилання на nav_menu -->
+        app:menu="@menu/nav_menu"
+        app:itemIconTint="@color/primary"
+        app:itemTextColor="@color/secondary_text"
+        app:itemBackground="@drawable/selector_card_ripple"
+        android:elevation="16dp" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

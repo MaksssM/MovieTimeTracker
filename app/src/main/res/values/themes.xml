@@ -67,8 +67,8 @@
     <!-- Bottom Navigation Style -->
     <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="backgroundTint">@color/surface</item>
-        <item name="itemIconTint">@color/bottom_nav_colors</item>
-        <item name="itemTextColor">@color/bottom_nav_colors</item>
+        <item name="itemIconTint">@color/primary</item>
+        <item name="itemTextColor">@color/secondary_text</item>
         <item name="elevation">16dp</item>
         <item name="labelVisibilityMode">labeled</item>
     </style>

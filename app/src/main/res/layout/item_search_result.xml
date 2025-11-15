@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="8dp"
-    app:cardBackgroundColor="@color/card_bg"
-    android:foreground="?attr/selectableItemBackground">
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="16dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/border"
+    android:background="@drawable/selector_card_modern"
+    android:foreground="@drawable/selector_card_modern">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:background="@drawable/gradient_card">
+        android:padding="20dp"
+        android:background="@color/card_bg_elevated">
 
-        <!-- Poster with modern styling -->
-        <androidx.cardview.widget.CardView
+        <!-- Premium Poster with glow -->
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/posterCard"
-            android:layout_width="90dp"
-            android:layout_height="135dp"
-            app:cardCornerRadius="14dp"
-            app:cardElevation="12dp"
+            android:layout_width="85dp"
+            android:layout_height="128dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="16dp"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -36,7 +40,14 @@
                 android:contentDescription="@string/poster_description"
                 android:background="@drawable/bg_poster_placeholder"
                 tools:src="@tools:sample/backgrounds/scenic" />
-        </androidx.cardview.widget.CardView>
+
+            <!-- Subtle overlay for better text readability -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_overlay"
+                android:alpha="0.1" />
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Content Container -->
         <LinearLayout
@@ -63,26 +74,36 @@
                 android:letterSpacing="-0.01"
                 tools:text="Шоу Трумена" />
 
-            <!-- Rating Badge -->
-            <LinearLayout
+            <!-- Rating Badge with enhanced design -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_chip"
-                android:orientation="horizontal"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="5dp"
-                android:gravity="center_vertical">
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp"
+                android:background="@drawable/gradient_accent">
 
-                <TextView
-                    android:id="@+id/tvRating"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="13sp"
-                    android:textColor="@color/accent"
-                    android:fontFamily="sans-serif-medium"
-                    tools:text="★ 8.5" />
-            </LinearLayout>
+                    android:background="@drawable/gradient_accent"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="sans-serif-medium"
+                        android:textStyle="bold"
+                        tools:text="★ 8.5" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Media Type Badge -->
             <TextView
@@ -111,4 +132,4 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
