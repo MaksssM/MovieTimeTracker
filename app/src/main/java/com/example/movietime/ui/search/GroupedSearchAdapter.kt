@@ -74,15 +74,15 @@ class GroupedSearchAdapter : ListAdapter<GroupedSearchItem, RecyclerView.ViewHol
         fun bind(item: Any) {
             when (item) {
                 is MovieResult -> {
-                    binding.tvTitle.text = item.title ?: item.name ?: "Без назви"
+                    binding.tvTitle.text = item.title ?: "Без назви"
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                     binding.ivPoster.load(posterUrl) {
                         crossfade(true)
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)
                     }
-                    val rating = item.voteAverage ?: 0.0
-                    binding.tvRating.text = if (rating > 0) {
+                    val rating = item.voteAverage
+                    binding.tvRating.text = if (rating > 0f) {
                         String.format(Locale.US, "★ %.1f", rating)
                     } else {
                         "★ N/A"
@@ -92,15 +92,15 @@ class GroupedSearchAdapter : ListAdapter<GroupedSearchItem, RecyclerView.ViewHol
                         ?: "Опис не доступний"
                 }
                 is TvShowResult -> {
-                    binding.tvTitle.text = item.name ?: item.title ?: "Без назви"
+                    binding.tvTitle.text = item.name ?: "Без назви"
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                     binding.ivPoster.load(posterUrl) {
                         crossfade(true)
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)
                     }
-                    val rating = item.voteAverage ?: 0.0
-                    binding.tvRating.text = if (rating > 0) {
+                    val rating = item.voteAverage
+                    binding.tvRating.text = if (rating > 0f) {
                         String.format(Locale.US, "★ %.1f", rating)
                     } else {
                         "★ N/A"

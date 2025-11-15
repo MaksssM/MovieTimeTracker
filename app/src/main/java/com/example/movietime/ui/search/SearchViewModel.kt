@@ -151,8 +151,8 @@ class SearchViewModel @Inject constructor(
         if (minR > 0.0) {
             filtered = filtered.filter { any ->
                 when (any) {
-                    is MovieResult -> (any.voteAverage ?: 0.0) >= minR
-                    is TvShowResult -> (any.voteAverage ?: 0.0) >= minR
+                    is MovieResult -> (any.voteAverage?.toDouble() ?: 0.0) >= minR
+                    is TvShowResult -> (any.voteAverage?.toDouble() ?: 0.0) >= minR
                     else -> false
                 }
             }.toMutableList()
@@ -162,8 +162,8 @@ class SearchViewModel @Inject constructor(
         if (_sortByRating.value == true) {
             filtered.sortByDescending { item ->
                 when (item) {
-                    is MovieResult -> item.voteAverage ?: 0.0
-                    is TvShowResult -> item.voteAverage ?: 0.0
+                    is MovieResult -> item.voteAverage?.toDouble() ?: 0.0
+                    is TvShowResult -> item.voteAverage?.toDouble() ?: 0.0
                     else -> 0.0
                 }
             }
@@ -173,8 +173,8 @@ class SearchViewModel @Inject constructor(
         if (_sortByPopularity.value == true && _sortByRating.value != true) {
             filtered.sortByDescending { item ->
                 when (item) {
-                    is MovieResult -> item.popularity ?: 0.0
-                    is TvShowResult -> item.popularity ?: 0.0
+                    is MovieResult -> item.popularity?.toDouble() ?: 0.0
+                    is TvShowResult -> item.popularity?.toDouble() ?: 0.0
                     else -> 0.0
                 }
             }

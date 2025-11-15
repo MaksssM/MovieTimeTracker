@@ -3,13 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/watchedFragment">
+    app:startDestination="@id/enhancedMainFragment">
 
     <fragment
         android:id="@+id/watchedFragment"
         android:name="com.example.movietime.ui.main.WatchedFragment"
         tools:layout="@layout/fragment_watched" />
 
+    <fragment
+        android:id="@+id/enhancedMainFragment"
+        android:name="com.example.movietime.ui.main.EnhancedMainFragment"
+        tools:layout="@layout/fragment_enhanced_main">
+
+        <action
+            android:id="@+id/action_main_to_watched_list"
+            app:destination="@id/watchedFragment">
+            <argument
+                android:name="isMovie"
+                app:argType="boolean"
+                android:defaultValue="true" />
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/trendingFragment"

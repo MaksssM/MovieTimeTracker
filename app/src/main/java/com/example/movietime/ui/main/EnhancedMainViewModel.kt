@@ -1,0 +1,77 @@
+package com.example.movietime.ui.main
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.movietime.data.model.*
+import com.example.movietime.data.repository.SimpleEnhancedRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class EnhancedMainViewModel @Inject constructor(
+    private val repository: SimpleEnhancedRepository
+) : ViewModel() {
+
+    private val _backgroundImage = MutableStateFlow<String?>(null)
+    val backgroundImage: StateFlow<String?> = _backgroundImage.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error.asStateFlow()
+
+    fun getDetailedStatistics(): Flow<DetailedStatistics> {
+        return repository.getDetailedStatistics()
+    }
+
+    fun getRecentActivities(): Flow<List<Activity>> {
+        return repository.getRecentActivities()
+    }
+
+    fun loadStatistics() {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                // Statistics are loaded via Flow, no need for explicit loading
+            } catch (e: Exception) {
+                _error.value = e.message
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun loadRecentActivities() {
+        viewModelScope.launch {
+            try {
+                // Activities are loaded via Flow, no need for explicit loading
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
+    fun loadTrendingForBackground() {
+        viewModelScope.launch {
+            try {
+                val result = repository.getTrendingContent("week")
+                result.onSuccess { backdropPath ->
+                    _backgroundImage.value = backdropPath
+                }.onFailure { error ->
+                    _error.value = error.message
+                }
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
+    // Removed loadUpcomingReleases for now - will implement later
+
+    fun clearError() {
+        _error.value = null
+    }
+}

@@ -65,7 +65,7 @@ class DetailsActivity : AppCompatActivity() {
                 }
                 is com.example.movietime.data.model.TvShowResult -> {
                     id = current.id
-                    title = current.name ?: current.title
+                    title = current.name ?: ""
                     posterPath = current.posterPath
                     releaseDate = current.firstAirDate
                     runtimeFromApi = current.episodeRunTime?.firstOrNull() ?: 0
@@ -190,13 +190,13 @@ class DetailsActivity : AppCompatActivity() {
         viewModel.item.observe(this) { item ->
             when (item) {
                 is com.example.movietime.data.model.MovieResult -> {
-                    binding.toolbarLayout.title = item.title ?: item.name ?: getString(R.string.unknown_media)
+                    binding.toolbarLayout.title = item.title ?: getString(R.string.unknown_media)
                     binding.tvOverview.text = item.overview
                     val poster = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                     binding.ivPoster.load(poster)
                 }
                 is com.example.movietime.data.model.TvShowResult -> {
-                    binding.toolbarLayout.title = item.name ?: item.title ?: getString(R.string.unknown_media)
+                    binding.toolbarLayout.title = item.name ?: getString(R.string.unknown_media)
                     binding.tvOverview.text = item.overview
                     val poster = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                     binding.ivPoster.load(poster)

@@ -70,7 +70,7 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
             when (item) {
                 is MovieResult -> {
                     // Назва фільму
-                    binding.tvTitle.text = item.title ?: item.name ?: "Без назви"
+                    binding.tvTitle.text = item.title ?: "Без назви"
 
                     // Постер із завантаженням та кешуванням
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
@@ -81,8 +81,8 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                     }
 
                     // Рейтинг
-                    val rating = item.voteAverage ?: 0.0
-                    binding.tvRating.text = if (rating > 0) {
+                    val rating = item.voteAverage
+                    binding.tvRating.text = if (rating > 0f) {
                         String.format(Locale.US, "★ %.1f", rating)
                     } else {
                         "★ N/A"
@@ -100,7 +100,7 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                 }
                 is TvShowResult -> {
                     // Назва серіалу
-                    binding.tvTitle.text = item.name ?: item.title ?: "Без назви"
+                    binding.tvTitle.text = item.name ?: "Без назви"
 
                     // Постер із завантаженням та кешуванням
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
@@ -111,8 +111,8 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                     }
 
                     // Рейтинг
-                    val rating = item.voteAverage ?: 0.0
-                    binding.tvRating.text = if (rating > 0) {
+                    val rating = item.voteAverage
+                    binding.tvRating.text = if (rating > 0f) {
                         String.format(Locale.US, "★ %.1f", rating)
                     } else {
                         "★ N/A"

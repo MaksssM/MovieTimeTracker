@@ -38,6 +38,26 @@
             android:name=".ui.details.TvDetailsActivity"
             android:exported="false"
             android:theme="@style/Theme.MovieTimeTracker.NoActionBar" />
+
+        <activity
+            android:name=".ui.search.EnhancedSearchActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MovieTimeTracker" />
+
+        <activity
+            android:name=".ui.upcoming.UpcomingReleasesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MovieTimeTracker" />
+
+        <activity
+            android:name=".ui.friends.FriendsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MovieTimeTracker" />
+
+        <activity
+            android:name=".ui.planned.PlannedActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MovieTimeTracker" />
     </application>
 
 </manifest>
