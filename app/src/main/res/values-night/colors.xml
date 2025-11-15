@@ -26,5 +26,16 @@
     <color name="app_bg">#0A0E27</color>
     <color name="card_bg">#1A1F3A</color>
     <color name="card_bg_elevated">#252B4C</color>
+
+    <!-- Light theme color overrides for dark mode -->
+    <color name="primary_text">#F8FAFC</color>
+    <color name="secondary_text">#CBD5E1</color>
+    <color name="tertiary_text">#94A3B8</color>
+    <color name="muted_text">#64748B</color>
+    <color name="surface">#1A1F3A</color>
+    <color name="surface_variant">#252B4C</color>
+    <color name="surface_elevated">#2D3648</color>
+    <color name="divider">#334155</color>
+    <color name="border">#475569</color>
 </resources>
 

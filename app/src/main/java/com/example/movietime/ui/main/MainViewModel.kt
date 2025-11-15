@@ -5,11 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.asFlow
 import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.data.repository.AppRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.movietime.util.Utils
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -58,6 +63,34 @@ class MainViewModel @Inject constructor(
                 repository.deleteWatchedItem(item)
             } catch (e: Exception) {
                 Log.e("MainViewModel", "Failed to delete watched item: ${e.message}")
+            }
+        }
+    }
+
+    private val _statistics = MutableStateFlow(WatchedStatistics())
+
+    fun getWatchedStatistics(): StateFlow<WatchedStatistics> = _statistics
+
+    fun loadStatistics() {
+        viewModelScope.launch {
+            try {
+                // Load data from watched items only
+                repository.getWatchedItems().asFlow().collect { watchedItems ->
+                    val totalMinutes = watchedItems.sumOf { it.runtime ?: 0 }
+                    val movieCount = watchedItems.count { it.mediaType == "movie" }
+                    val tvShowCount = watchedItems.count { it.mediaType == "tv" }
+
+                    val stats = WatchedStatistics(
+                        totalMinutes = totalMinutes,
+                        movieCount = movieCount,
+                        tvShowCount = tvShowCount,
+                        plannedMovieCount = 0, // Temporarily set to 0
+                        plannedTvShowCount = 0  // Temporarily set to 0
+                    )
+                    _statistics.value = stats
+                }
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Failed to load statistics: ${e.message}")
             }
         }
     }

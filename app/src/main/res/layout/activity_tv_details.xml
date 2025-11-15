@@ -126,7 +126,7 @@
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@drawable/ic_movie_time"
-                            android:tint="@color/md_theme_light_primary"
+                            app:tint="@color/md_theme_light_primary"
                             android:contentDescription="Сезони" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -170,7 +170,7 @@
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@drawable/ic_time"
-                            android:tint="@color/md_theme_light_secondary"
+                            app:tint="@color/md_theme_light_secondary"
                             android:contentDescription="Епізоди" />
 
                         <com.google.android.material.textview.MaterialTextView

@@ -105,7 +105,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_time"
-                    android:tint="@color/secondary"
+                    app:tint="@color/secondary"
                     android:contentDescription="@string/total_time" />
 
                 <TextView

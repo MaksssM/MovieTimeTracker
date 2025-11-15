@@ -19,11 +19,9 @@ class MainActivity : AppCompatActivity() {
         binding = DrawerlayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Налаштування Navigation Component
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // Налаштування Toolbar для роботи з Navigation Drawer
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.watchedFragment, R.id.trendingFragment, R.id.settingsFragment
@@ -31,12 +29,7 @@ class MainActivity : AppCompatActivity() {
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
-        // Сховання заголовка toolbar для всіх фрагментів
-        navController.addOnDestinationChangedListener { _, _, _ ->
-            binding.toolbar.title = null
-        }
 
-        // Підключення NavigationView до NavController
         binding.navView.setupWithNavController(navController)
     }
 }
