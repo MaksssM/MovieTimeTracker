@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import coil.load
 import com.example.movietime.R
 import com.example.movietime.databinding.FragmentEnhancedMainBinding
 import com.example.movietime.data.model.DetailedStatistics
@@ -18,7 +16,7 @@ import com.example.movietime.ui.search.EnhancedSearchActivity
 import com.example.movietime.ui.upcoming.UpcomingReleasesActivity
 import com.example.movietime.ui.friends.FriendsActivity
 import com.example.movietime.ui.planned.PlannedActivity
-import com.example.movietime.ui.adapters.ActivityAdapter
+import com.example.movietime.ui.watching.WatchingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -30,7 +28,6 @@ class EnhancedMainFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: EnhancedMainViewModel by viewModels()
-    private lateinit var activityAdapter: ActivityAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,64 +40,74 @@ class EnhancedMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
         setupClickListeners()
         observeViewModel()
         loadData()
         animateEntranceElements()
     }
 
-    private fun setupRecyclerView() {
-        activityAdapter = ActivityAdapter { activity ->
-            // Handle activity item click - navigate to details
-            // TODO: Implement navigation to movie/TV show details
-        }
 
-        binding.rvRecentActivity.apply {
-            adapter = activityAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-            isNestedScrollingEnabled = false
-        }
-    }
+    private var lastClickTime = 0L
+    private val clickDebounceTime = 500L // 500ms debounce
 
     private fun setupClickListeners() {
-        // Category cards
-        binding.cardWatchedMovies.setOnClickListener {
-            navigateToWatchedList(isMovie = true)
+        // Category cards - unified
+        binding.cardWatched.setOnClickListener {
+            handleClickWithDebounce {
+                findNavController().navigate(R.id.watchedFragment)
+            }
         }
 
-        binding.cardWatchedTvShows.setOnClickListener {
-            navigateToWatchedList(isMovie = false)
+        binding.cardPlanned.setOnClickListener {
+            handleClickWithDebounce {
+                startActivity(Intent(requireActivity(), PlannedActivity::class.java))
+            }
         }
 
-        binding.cardPlannedMovies.setOnClickListener {
-            navigateToPlannedList(isMovie = true)
-        }
-
-        binding.cardPlannedTvShows.setOnClickListener {
-            navigateToPlannedList(isMovie = false)
+        binding.cardWatching.setOnClickListener {
+            handleClickWithDebounce {
+                startActivity(Intent(requireActivity(), WatchingActivity::class.java))
+            }
         }
 
         // Quick action buttons
         binding.btnSearchMovies.setOnClickListener {
-            startActivity(Intent(requireActivity(), EnhancedSearchActivity::class.java))
+            handleClickWithDebounce {
+                startActivity(Intent(requireActivity(), EnhancedSearchActivity::class.java))
+            }
         }
 
         binding.btnTrending.setOnClickListener {
-            findNavController().navigate(R.id.trendingFragment)
+            handleClickWithDebounce {
+                findNavController().navigate(R.id.trendingFragment)
+            }
         }
 
         binding.btnUpcomingReleases.setOnClickListener {
-            startActivity(Intent(requireActivity(), UpcomingReleasesActivity::class.java))
+            handleClickWithDebounce {
+                startActivity(Intent(requireActivity(), UpcomingReleasesActivity::class.java))
+            }
         }
 
         binding.btnFriends.setOnClickListener {
-            startActivity(Intent(requireActivity(), FriendsActivity::class.java))
+            handleClickWithDebounce {
+                startActivity(Intent(requireActivity(), FriendsActivity::class.java))
+            }
         }
 
         // Floating Action Button
         binding.fabQuickAdd.setOnClickListener {
-            showQuickAddDialog()
+            handleClickWithDebounce {
+                showQuickAddDialog()
+            }
+        }
+    }
+
+    private fun handleClickWithDebounce(action: () -> Unit) {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastClickTime > clickDebounceTime) {
+            lastClickTime = currentTime
+            action()
         }
     }
 
@@ -109,29 +116,6 @@ class EnhancedMainFragment : Fragment() {
             // Observe statistics
             viewModel.getDetailedStatistics().collect { stats ->
                 updateStatistics(stats)
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            // Observe recent activities
-            viewModel.getRecentActivities().collect { activities ->
-                activityAdapter.submitList(activities)
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            // Load trending content for header background
-            viewModel.loadTrendingForBackground()
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            // Observe trending background
-            viewModel.backgroundImage.collect { imageUrl ->
-                imageUrl?.let {
-                    binding.ivHeaderBackground.load("https://image.tmdb.org/t/p/w780$it") {
-                        crossfade(true)
-                    }
-                }
             }
         }
     }
@@ -151,15 +135,19 @@ class EnhancedMainFragment : Fragment() {
                 "—"
             }
 
-            // Update category cards
-            tvWatchedMoviesCountCard.text = stats.totalWatchedMovies.toString()
-            tvWatchedTvShowsCountCard.text = stats.totalWatchedTvShows.toString()
-            tvPlannedMoviesCount.text = stats.totalPlannedMovies.toString()
-            tvPlannedTvShowsCount.text = stats.totalPlannedTvShows.toString()
+            // Update unified category cards
+            val totalWatched = stats.totalWatchedMovies + stats.totalWatchedTvShows
+            val totalPlanned = stats.totalPlannedMovies + stats.totalPlannedTvShows
+            val totalWatching = stats.totalWatchingMovies + stats.totalWatchingTvShows
+
+            tvWatchedCount.text = totalWatched.toString()
+            tvPlannedCount.text = totalPlanned.toString()
+            tvWatchingCount.text = totalWatching.toString()
 
             // Animate counter updates
-            animateCounterUpdate(tvWatchedMoviesCount, stats.totalWatchedMovies)
-            animateCounterUpdate(tvWatchedTvShowsCount, stats.totalWatchedTvShows)
+            animateCounterUpdate(tvWatchedCount, totalWatched)
+            animateCounterUpdate(tvPlannedCount, totalPlanned)
+            animateCounterUpdate(tvWatchingCount, totalWatching)
         }
     }
 
@@ -178,10 +166,9 @@ class EnhancedMainFragment : Fragment() {
 
     private fun animateEntranceElements() {
         val elementsToAnimate = listOf(
-            binding.cardWatchedMovies,
-            binding.cardWatchedTvShows,
-            binding.cardPlannedMovies,
-            binding.cardPlannedTvShows
+            binding.cardWatched,
+            binding.cardPlanned,
+            binding.cardWatching
         )
 
         elementsToAnimate.forEachIndexed { index, view ->
@@ -235,8 +222,6 @@ class EnhancedMainFragment : Fragment() {
 
     private fun loadData() {
         viewModel.loadStatistics()
-        viewModel.loadRecentActivities()
-        // loadUpcomingReleases will be added later
     }
 
     override fun onResume() {

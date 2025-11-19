@@ -58,6 +58,17 @@
             android:name=".ui.planned.PlannedActivity"
             android:exported="false"
             android:theme="@style/Theme.MovieTimeTracker" />
+
+        <activity
+            android:name=".ui.watching.WatchingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MovieTimeTracker" />
+
+        <activity
+            android:name=".ui.test.TestDatabaseActivity"
+            android:exported="true"
+            android:label="Test Database"
+            android:theme="@style/Theme.MovieTimeTracker" />
     </application>
 
 </manifest>

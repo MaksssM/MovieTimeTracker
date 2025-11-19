@@ -5,13 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movietime.R
 import com.example.movietime.databinding.FragmentWatchedBinding
-import com.example.movietime.ui.search.SearchActivity
+import com.example.movietime.ui.adapters.ContentAdapter
+import com.example.movietime.ui.details.DetailsActivity
+import com.example.movietime.ui.details.TvDetailsActivity
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -22,6 +26,13 @@ class WatchedFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var contentAdapter: ContentAdapter
+
+    private var currentFilter = FilterType.ALL
+
+    enum class FilterType {
+        ALL, MOVIES, TV_SHOWS
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,88 +45,104 @@ class WatchedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupClickListeners()
+        setupRecyclerView()
+        setupTabs()
         observeViewModel()
         loadData()
     }
 
-    private fun setupClickListeners() {
-        // Category cards
-        binding.cardWatchedMovies.setOnClickListener {
-            // Navigate to watched movies list
-            navigateToWatchedList(isMovie = true)
-        }
+    private fun setupRecyclerView() {
+        contentAdapter = ContentAdapter(
+            onItemClick = { item ->
+                val intent = if (item.mediaType == "movie") {
+                    Intent(requireContext(), DetailsActivity::class.java).apply {
+                        putExtra("ITEM_ID", item.id)
+                        putExtra("MEDIA_TYPE", "movie")
+                    }
+                } else {
+                    Intent(requireContext(), TvDetailsActivity::class.java).apply {
+                        putExtra("ITEM_ID", item.id)
+                        putExtra("MEDIA_TYPE", "tv")
+                    }
+                }
+                startActivity(intent)
+            },
+            onDeleteClick = { item ->
+                viewModel.deleteWatchedItem(item)
+            }
+        )
 
-        binding.cardWatchedTvShows.setOnClickListener {
-            // Navigate to watched TV shows list
-            navigateToWatchedList(isMovie = false)
-        }
-
-        binding.cardPlannedMovies.setOnClickListener {
-            // TODO: Navigate to planned movies list when implemented
-        }
-
-        binding.cardPlannedTvShows.setOnClickListener {
-            // TODO: Navigate to planned TV shows list when implemented
-        }
-
-        // Quick action buttons
-        binding.btnSearchMovies.setOnClickListener {
-            val intent = Intent(requireActivity(), SearchActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.btnTrending.setOnClickListener {
-            findNavController().navigate(R.id.trendingFragment)
+        binding.rvWatchedItems.apply {
+            adapter = contentAdapter
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            setHasFixedSize(true)
         }
     }
 
-    private fun navigateToWatchedList(isMovie: Boolean) {
-        // TODO: Create separate fragments or activities for filtered lists
-        // For now, show a placeholder
-        val type = if (isMovie) "фільми" else "серіали"
-        val message = "Перегляд переглянутих: $type"
-        // Could navigate to a filtered version of the list
+    private fun setupTabs() {
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText(R.string.all))
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText(R.string.movies))
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText(R.string.tv_shows))
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                currentFilter = when (tab?.position) {
+                    0 -> FilterType.ALL
+                    1 -> FilterType.MOVIES
+                    2 -> FilterType.TV_SHOWS
+                    else -> FilterType.ALL
+                }
+                updateFilteredList()
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
     }
-
-
 
     private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            // Observe statistics
-            viewModel.getWatchedStatistics().collect { stats ->
-                updateStatistics(stats)
-            }
+        // Observe total watch time
+        viewModel.totalMinutes.observe(viewLifecycleOwner) { totalMinutes ->
+            binding.tvTotalTime.text = formatTotalTime(totalMinutes)
+        }
+
+        // Observe watched list
+        viewModel.watchedList.observe(viewLifecycleOwner) { watchedItems ->
+            binding.tvTotalCount.text = watchedItems.size.toString()
+            updateFilteredList()
         }
     }
 
-    private fun updateStatistics(stats: WatchedStatistics) {
-        with(binding) {
-            // Update total time
-            tvTotalTime.text = formatTotalTime(stats.totalMinutes)
+    private fun updateFilteredList() {
+        val allItems = viewModel.watchedList.value ?: emptyList()
 
-            // Update counts
-            tvWatchedMoviesCount.text = stats.movieCount.toString()
-            tvWatchedTvShowsCount.text = stats.tvShowCount.toString()
-
-            // Update planned counts (if available)
-            tvPlannedMoviesCount.text = stats.plannedMovieCount.toString()
-            tvPlannedTvShowsCount.text = stats.plannedTvShowCount.toString()
+        val filteredItems = when (currentFilter) {
+            FilterType.ALL -> allItems
+            FilterType.MOVIES -> allItems.filter { it.mediaType == "movie" }
+            FilterType.TV_SHOWS -> allItems.filter { it.mediaType == "tv" }
         }
+
+        contentAdapter.updateItems(filteredItems)
+        binding.layoutEmpty.isVisible = filteredItems.isEmpty()
     }
 
     private fun formatTotalTime(totalMinutes: Int): String {
         val hours = totalMinutes / 60
         val minutes = totalMinutes % 60
         return when {
-            hours == 0 -> "${minutes} хв"
-            minutes == 0 -> "${hours} год"
-            else -> "${hours} год ${minutes} хв"
+            hours == 0 -> getString(R.string.time_format_minutes, minutes)
+            minutes == 0 -> getString(R.string.time_format_hours, hours)
+            else -> getString(R.string.time_format_hours_minutes, hours, minutes)
         }
     }
 
     private fun loadData() {
-        viewModel.loadStatistics()
+        // Data is automatically loaded through Flow observers
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadData()
     }
 
     override fun onDestroyView() {

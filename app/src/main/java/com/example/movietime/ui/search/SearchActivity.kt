@@ -98,7 +98,8 @@ class SearchActivity : AppCompatActivity() {
                 }
                 is TvShowResult -> {
                     val intent = Intent(this, TvDetailsActivity::class.java)
-                    intent.putExtra("TV_ID", item.id)
+                    intent.putExtra("ITEM_ID", item.id)
+                    intent.putExtra("MEDIA_TYPE", "tv")
                     startActivity(intent)
                 }
             }

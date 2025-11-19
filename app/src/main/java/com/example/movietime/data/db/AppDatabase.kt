@@ -6,13 +6,15 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
-    entities = [WatchedItem::class],
-    version = 3,
+    entities = [WatchedItem::class, PlannedItem::class, WatchingItem::class],
+    version = 7,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun watchedItemDao(): WatchedItemDao
+    abstract fun plannedItemDao(): PlannedDao
+    abstract fun watchingItemDao(): WatchingDao
 
 
     companion object {
@@ -46,6 +48,46 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add dateAdded column to planned_items table
+                database.execSQL("ALTER TABLE `planned_items` ADD COLUMN `dateAdded` INTEGER NOT NULL DEFAULT ${System.currentTimeMillis()}")
+            }
+        }
 
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create watching items table
+                database.execSQL(
+                    """CREATE TABLE IF NOT EXISTS `watching_items` (
+                        `id` INTEGER NOT NULL, 
+                        `title` TEXT NOT NULL, 
+                        `posterPath` TEXT, 
+                        `releaseDate` TEXT, 
+                        `runtime` INTEGER, 
+                        `mediaType` TEXT NOT NULL, 
+                        `dateAdded` INTEGER NOT NULL DEFAULT ${System.currentTimeMillis()},
+                        `currentEpisode` INTEGER,
+                        `currentSeason` INTEGER,
+                        PRIMARY KEY(`id`,`mediaType`)
+                    )"""
+                )
+            }
+        }
+
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add overview and voteAverage columns to watched_items table
+                database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `overview` TEXT DEFAULT NULL")
+                database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `voteAverage` REAL DEFAULT NULL")
+            }
+        }
+
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add userRating column to watched_items table
+                database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `userRating` REAL DEFAULT NULL")
+            }
+        }
     }
 }

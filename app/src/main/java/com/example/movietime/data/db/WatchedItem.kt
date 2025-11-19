@@ -9,5 +9,8 @@ data class WatchedItem(
     val posterPath: String?,
     val releaseDate: String?,
     val runtime: Int?,
-    val mediaType: String
+    val mediaType: String,
+    val overview: String? = null,
+    val voteAverage: Double? = null,
+    val userRating: Float? = null
 )

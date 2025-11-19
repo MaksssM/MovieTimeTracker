@@ -11,6 +11,14 @@
             </PendingDiffInfo>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/collect_logs.bat">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/collect_logs.bat" />
+              <option name="updatedContent" value="@echo off&#10;echo ========================================&#10;echo MovieTime Logger - Starting...&#10;echo ========================================&#10;echo.&#10;&#10;REM Clear previous logs&#10;adb logcat -c&#10;&#10;echo Clearing old logs...&#10;echo Starting app...&#10;adb shell am force-stop com.example.movietime&#10;timeout /t 1 /nobreak &gt; nul&#10;adb shell am start -n com.example.movietime/.ui.main.MainActivity&#10;&#10;echo.&#10;echo Collecting logs... (Press Ctrl+C to stop)&#10;echo ========================================&#10;echo.&#10;&#10;REM Capture logs related to MovieTime&#10;adb logcat -v time | findstr /i &quot;movietime DetailsViewModel AppRepository MainViewModel WatchedItem Exception Error FATAL&quot;&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

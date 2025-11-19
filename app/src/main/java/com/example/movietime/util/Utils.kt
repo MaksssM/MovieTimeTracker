@@ -33,7 +33,10 @@ object Utils {
         posterPath: String?,
         releaseDate: String?,
         runtime: Int?,
-        mediaType: String
+        mediaType: String,
+        overview: String? = null,
+        voteAverage: Double? = null,
+        userRating: Float? = null
     ): WatchedItem {
         return WatchedItem(
             id = id,
@@ -41,7 +44,10 @@ object Utils {
             posterPath = posterPath,
             releaseDate = releaseDate,
             runtime = runtime ?: 0,
-            mediaType = mediaType
+            mediaType = mediaType,
+            overview = overview,
+            voteAverage = voteAverage,
+            userRating = userRating
         )
     }
 }

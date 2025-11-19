@@ -51,7 +51,14 @@ object AppModule {
             AppDatabase::class.java,
             "movie_tracker_database"
         )
-            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
+            .addMigrations(
+                AppDatabase.MIGRATION_1_2,
+                AppDatabase.MIGRATION_2_3,
+                AppDatabase.MIGRATION_3_4,
+                AppDatabase.MIGRATION_4_5,
+                AppDatabase.MIGRATION_5_6,
+                AppDatabase.MIGRATION_6_7
+            )
             .fallbackToDestructiveMigration()
             .build()
     }
@@ -62,19 +69,30 @@ object AppModule {
         return database.watchedItemDao()
     }
 
+    @Provides
+    @Singleton
+    fun providePlannedDao(database: AppDatabase): PlannedDao {
+        return database.plannedItemDao()
+    }
 
     @Provides
     @Singleton
-    fun provideAppRepository(api: TmdbApi, dao: WatchedItemDao): AppRepository {
-        return AppRepository(api, dao, BuildConfig.TMDB_API_KEY)
+    fun provideWatchingDao(database: AppDatabase): WatchingDao {
+        return database.watchingItemDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppRepository(api: TmdbApi, dao: WatchedItemDao, plannedDao: PlannedDao, watchingDao: WatchingDao): AppRepository {
+        return AppRepository(api, dao, plannedDao, watchingDao, BuildConfig.TMDB_API_KEY)
     }
 
     @Provides
     @Singleton
     fun provideSimpleEnhancedRepository(
         api: TmdbApi,
-        watchedDao: WatchedItemDao
+        appRepository: AppRepository
     ): SimpleEnhancedRepository {
-        return SimpleEnhancedRepository(api, watchedDao, BuildConfig.TMDB_API_KEY)
+        return SimpleEnhancedRepository(api, appRepository, BuildConfig.TMDB_API_KEY)
     }
 }
