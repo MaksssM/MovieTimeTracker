@@ -22,13 +22,13 @@ class MovieTimeApp : Application() {
             else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
 
-        // Apply saved locale
-        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
+        // Apply saved locale (default: English)
+        val langPref = prefs.getString("pref_lang", "en") ?: "en"
         val locale = when (langPref) {
             "uk" -> Locale("uk")
             "ru" -> Locale("ru")
             "en" -> Locale("en")
-            else -> Locale("uk")
+            else -> Locale("en")
         }
         Locale.setDefault(locale)
         val res = resources

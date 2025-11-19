@@ -52,7 +52,8 @@ class TrendingFragment : Fragment() {
                 }
                 is TvShowResult -> {
                     val intent = Intent(requireActivity(), TvDetailsActivity::class.java)
-                    intent.putExtra("TV_ID", item.id)
+                    intent.putExtra("ITEM_ID", item.id)
+                    intent.putExtra("MEDIA_TYPE", "tv")
                     startActivity(intent)
                 }
             }

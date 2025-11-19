@@ -158,6 +158,8 @@ data class DetailedStatistics(
     val totalWatchedTvShows: Int = 0,
     val totalPlannedMovies: Int = 0,
     val totalPlannedTvShows: Int = 0,
+    val totalWatchingMovies: Int = 0,
+    val totalWatchingTvShows: Int = 0,
     val totalWatchTimeMinutes: Int = 0,
     val averageUserRating: Float = 0f,
     val topGenres: List<GenreStats> = emptyList(),

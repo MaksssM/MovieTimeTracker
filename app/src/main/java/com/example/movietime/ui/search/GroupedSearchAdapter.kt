@@ -22,10 +22,16 @@ data class GroupedSearchItem(
     }
 }
 
-class GroupedSearchAdapter : ListAdapter<GroupedSearchItem, RecyclerView.ViewHolder>(GroupedDiffCallback) {
+class GroupedSearchAdapter(
+    private val onItemClickListener: (Any) -> Unit
+) : ListAdapter<GroupedSearchItem, RecyclerView.ViewHolder>(GroupedDiffCallback) {
 
-    var onItemClick: ((Any) -> Unit)? = null
+    var onItemClick: ((Any) -> Unit)? = onItemClickListener
     var currentQuery: String = ""
+
+    fun updateItems(items: List<GroupedSearchItem>) {
+        submitList(items)
+    }
 
     fun updateQueryHighlight(q: String) {
         currentQuery = q.trim()

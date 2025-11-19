@@ -5,6 +5,10 @@ import androidx.lifecycle.LiveData
 import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.data.db.WatchedItemDao
+import com.example.movietime.data.db.PlannedItem
+import com.example.movietime.data.db.PlannedDao
+import com.example.movietime.data.db.WatchingItem
+import com.example.movietime.data.db.WatchingDao
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.MoviesResponse
 import com.example.movietime.data.model.TvShowResult
@@ -19,6 +23,8 @@ import javax.inject.Singleton
 class AppRepository @Inject constructor(
     private val api: TmdbApi,
     private val dao: WatchedItemDao,
+    private val plannedDao: PlannedDao,
+    private val watchingDao: WatchingDao,
     private val apiKey: String
 ) {
 
@@ -214,8 +220,23 @@ class AppRepository @Inject constructor(
         return dao.getAll()
     }
 
+    suspend fun getWatchedItemsSync(): List<WatchedItem> {
+        return dao.getAllSync()
+    }
+
+    suspend fun getWatchedItemsCount(): Int {
+        return dao.getCount()
+    }
+
     suspend fun addWatchedItem(item: WatchedItem) {
-        dao.insert(item)
+        Log.d("AppRepository", "Inserting watched item: id=${item.id}, title=${item.title}, mediaType=${item.mediaType}, runtime=${item.runtime}")
+        try {
+            dao.insert(item)
+            Log.d("AppRepository", "Successfully inserted watched item: ${item.id}")
+        } catch (e: Exception) {
+            Log.e("AppRepository", "Failed to insert watched item: ${e.message}", e)
+            throw e
+        }
     }
 
     suspend fun deleteWatchedItem(item: WatchedItem) {
@@ -225,5 +246,130 @@ class AppRepository @Inject constructor(
     // Updated: get watched item by id + mediaType (composite primary key)
     suspend fun getWatchedItemById(id: Int, mediaType: String): WatchedItem? {
         return dao.getById(id, mediaType)
+    }
+
+    // --- Planned Content Methods ---
+    @Suppress("unused")
+    fun getPlannedContent(): LiveData<List<PlannedItem>> {
+        return plannedDao.getAll()
+    }
+
+    suspend fun getPlannedContentSync(): List<WatchedItem> {
+        return plannedDao.getAllSync().map { plannedItem ->
+            WatchedItem(
+                id = plannedItem.id,
+                title = plannedItem.title,
+                posterPath = plannedItem.posterPath,
+                releaseDate = plannedItem.releaseDate,
+                runtime = plannedItem.runtime,
+                mediaType = plannedItem.mediaType
+            )
+        }
+    }
+
+    suspend fun addToPlanned(item: WatchedItem) {
+        val plannedItem = PlannedItem(
+            id = item.id,
+            title = item.title,
+            posterPath = item.posterPath,
+            releaseDate = item.releaseDate,
+            runtime = item.runtime,
+            mediaType = item.mediaType
+        )
+        plannedDao.insert(plannedItem)
+    }
+
+    suspend fun removeFromPlanned(id: Int, mediaType: String) {
+        plannedDao.deleteById(id, mediaType)
+    }
+
+    suspend fun getPlannedItemById(id: Int, mediaType: String): PlannedItem? {
+        return plannedDao.getById(id, mediaType)
+    }
+
+    suspend fun isItemPlanned(id: Int, mediaType: String): Boolean {
+        return getPlannedItemById(id, mediaType) != null
+    }
+
+    @Suppress("unused")
+    suspend fun getPlannedMoviesCount(): Int {
+        return plannedDao.getCountByMediaType("movie")
+    }
+
+    @Suppress("unused")
+    suspend fun getPlannedTvShowsCount(): Int {
+        return plannedDao.getCountByMediaType("tv")
+    }
+
+    @Suppress("unused")
+    suspend fun getTotalPlannedCount(): Int {
+        return plannedDao.getCount()
+    }
+
+    // Method to check if an item exists in any list (watched or planned)
+    @Suppress("unused")
+    suspend fun isItemExists(id: Int, mediaType: String): Pair<Boolean, Boolean> {
+        val isWatched = getWatchedItemById(id, mediaType) != null
+        val isPlanned = isItemPlanned(id, mediaType)
+        return Pair(isWatched, isPlanned)
+    }
+
+    // --- Watching Content Methods ---
+    @Suppress("unused")
+    fun getWatchingContent(): LiveData<List<WatchingItem>> {
+        return watchingDao.getAll()
+    }
+
+    suspend fun getWatchingContentSync(): List<WatchedItem> {
+        return watchingDao.getAllSync().map { watchingItem ->
+            WatchedItem(
+                id = watchingItem.id,
+                title = watchingItem.title,
+                posterPath = watchingItem.posterPath,
+                releaseDate = watchingItem.releaseDate,
+                runtime = watchingItem.runtime,
+                mediaType = watchingItem.mediaType
+            )
+        }
+    }
+
+    suspend fun addToWatching(item: WatchedItem) {
+        val watchingItem = WatchingItem(
+            id = item.id,
+            title = item.title,
+            posterPath = item.posterPath,
+            releaseDate = item.releaseDate,
+            runtime = item.runtime,
+            mediaType = item.mediaType
+        )
+        watchingDao.insert(watchingItem)
+    }
+
+    suspend fun removeFromWatching(id: Int, mediaType: String) {
+        watchingDao.deleteById(id, mediaType)
+    }
+
+    suspend fun getWatchingItemById(id: Int, mediaType: String): WatchingItem? {
+        return watchingDao.getById(id, mediaType)
+    }
+
+    @Suppress("unused")
+    suspend fun isItemWatching(id: Int, mediaType: String): Boolean {
+        return getWatchingItemById(id, mediaType) != null
+    }
+
+    @Suppress("unused")
+    suspend fun getWatchingMoviesCount(): Int {
+        return watchingDao.getCountByMediaType("movie")
+    }
+
+    @Suppress("unused")
+    suspend fun getWatchingTvShowsCount(): Int {
+        return watchingDao.getCountByMediaType("tv")
+    }
+
+    @Suppress("unused")
+    suspend fun getTotalWatchingCount(): Int {
+        return watchingDao.getCount()
     }
 }

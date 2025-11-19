@@ -14,6 +14,10 @@ class WatchedAdapter : ListAdapter<WatchedItem, WatchedAdapter.WatchedViewHolder
     var onItemClick: ((WatchedItem) -> Unit)? = null
     var onDeleteClick: ((WatchedItem) -> Unit)? = null
 
+    fun updateItems(items: List<WatchedItem>) {
+        submitList(items)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WatchedViewHolder {
         val binding = ItemWatchedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return WatchedViewHolder(binding)

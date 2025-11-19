@@ -30,7 +30,7 @@ class SettingsFragment : Fragment() {
 
         val prefs: SharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val themePref = prefs.getString("pref_theme", "system") ?: "system"
-        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
+        val langPref = prefs.getString("pref_lang", "en") ?: "en"
 
         val radioThemeGroup = view.findViewById<RadioGroup>(R.id.radioGroupTheme)
         val radioLangGroup = view.findViewById<RadioGroup>(R.id.radioGroupLanguage)
@@ -48,7 +48,7 @@ class SettingsFragment : Fragment() {
             "uk" -> radioLangGroup.check(R.id.radioLangUk)
             "ru" -> radioLangGroup.check(R.id.radioLangRu)
             "en" -> radioLangGroup.check(R.id.radioLangEn)
-            else -> radioLangGroup.check(R.id.radioLangUk)
+            else -> radioLangGroup.check(R.id.radioLangEn)
         }
 
         radioThemeGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -68,7 +68,7 @@ class SettingsFragment : Fragment() {
                 R.id.radioLangUk -> "uk"
                 R.id.radioLangRu -> "ru"
                 R.id.radioLangEn -> "en"
-                else -> "uk"
+                else -> "en"
             }
             prefs.edit { putString("pref_lang", value) }
             applyLocale(value)
@@ -92,7 +92,7 @@ class SettingsFragment : Fragment() {
             "uk" -> Locale("uk")
             "ru" -> Locale("ru")
             "en" -> Locale("en")
-            else -> Locale("uk")
+            else -> Locale("en")
         }
         Locale.setDefault(locale)
         val activity = requireActivity()

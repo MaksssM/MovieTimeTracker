@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.repository.AppRepository
+import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,11 +16,21 @@ import android.util.Log
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val repository: AppRepository
+    private val repository: AppRepository,
+    private val api: TmdbApi
 ) : ViewModel() {
+
+    private val apiKey = BuildConfig.TMDB_API_KEY
 
     private val _searchResult = MutableLiveData<List<Any>>()
     val searchResult: LiveData<List<Any>> = _searchResult
+
+    // For EnhancedSearchActivity
+    private val _searchResults = MutableLiveData<List<Any>>()
+    val searchResults: LiveData<List<Any>> = _searchResults
+
+    private val _popularContent = MutableLiveData<List<Any>>()
+    val popularContent: LiveData<List<Any>> = _popularContent
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -367,5 +378,94 @@ class SearchViewModel @Inject constructor(
     @Suppress("unused")
     fun getCacheSize(): Int {
         return searchCache.size
+    }
+
+    // Enhanced Search Methods for EnhancedSearchActivity
+    fun searchAll(query: String) {
+        if (query.isBlank()) {
+            _searchResults.value = emptyList()
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                var results = repository.searchMultiLanguage(query)
+                results = removeDuplicates(results)
+                _searchResults.value = results
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error searching all content", e)
+                _searchResults.value = emptyList()
+                _errorMessage.value = "Помилка при пошуці: ${e.localizedMessage ?: e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun searchMovies(query: String) {
+        if (query.isBlank()) {
+            _searchResults.value = emptyList()
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                val response = api.searchMovies(apiKey, query, "uk-UA")
+                _searchResults.value = response.results
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error searching movies", e)
+                _searchResults.value = emptyList()
+                _errorMessage.value = "Помилка при пошуці фільмів: ${e.localizedMessage ?: e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun searchTvShows(query: String) {
+        if (query.isBlank()) {
+            _searchResults.value = emptyList()
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                val response = api.searchTvShows(apiKey, query, "uk-UA")
+                _searchResults.value = response.results
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error searching TV shows", e)
+                _searchResults.value = emptyList()
+                _errorMessage.value = "Помилка при пошуці серіалів: ${e.localizedMessage ?: e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun loadPopularContent() {
+        viewModelScope.launch {
+            try {
+                val popularMoviesResponse = api.getPopularMovies(apiKey, "uk-UA")
+                val popularTvShowsResponse = api.getPopularTvShows(apiKey, "uk-UA")
+
+                val popularMovies = popularMoviesResponse.results.take(10)
+                val popularTvShows = popularTvShowsResponse.results.take(10)
+
+                val combined = mutableListOf<Any>()
+                combined.addAll(popularMovies)
+                combined.addAll(popularTvShows)
+
+                _popularContent.value = combined
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error loading popular content", e)
+                _popularContent.value = emptyList()
+            }
+        }
     }
 }

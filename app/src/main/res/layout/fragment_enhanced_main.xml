@@ -7,66 +7,46 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSurface">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="0dp"
-        app:elevation="0dp">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginStart="16dp"
-            app:expandedTitleMarginEnd="64dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/ivHeaderBackground"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:alpha="0.3"
-                android:contentDescription="@string/poster_description"
-                app:layout_collapseMode="parallax"
-                tools:src="@drawable/ic_launcher_background" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/gradient_overlay" />
-
-            <LinearLayout
+            <!-- Total Time Card at Top -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp">
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="?attr/colorPrimaryContainer">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    app:strokeWidth="0dp">
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:orientation="vertical"
-                        android:padding="16dp"
                         android:gravity="center">
 
                         <TextView
-                            android:id="@+id/tvTotalTimeHeader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/total_watch_time"
-                            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
-                            android:textColor="?attr/colorOnSurfaceVariant" />
+                            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+                            android:textColor="?attr/colorOnPrimaryContainer" />
 
                         <TextView
                             android:id="@+id/tvTotalTime"
@@ -74,36 +54,30 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                            android:textColor="?attr/colorOnSurface"
+                            android:textColor="?attr/colorPrimary"
                             android:textStyle="bold"
                             tools:text="125 год" />
 
                     </LinearLayout>
 
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    app:strokeWidth="0dp">
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/colorOutlineVariant" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:orientation="vertical"
-                        android:padding="16dp"
                         android:gravity="center">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/this_month"
-                            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
-                            android:textColor="?attr/colorOnSurfaceVariant" />
+                            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+                            android:textColor="?attr/colorOnPrimaryContainer" />
 
                         <TextView
                             android:id="@+id/tvThisMonthCount"
@@ -117,24 +91,9 @@
 
                     </LinearLayout>
 
-                </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
-            </LinearLayout>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Quick Stats Section -->
             <com.google.android.material.card.MaterialCardView
@@ -264,7 +223,7 @@
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Watched Content -->
+            <!-- Categories Row 1 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -272,98 +231,102 @@
                 android:layout_marginBottom="12dp">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardWatchedMovies"
+                    android:id="@+id/cardWatched"
                     android:layout_width="0dp"
-                    android:layout_height="120dp"
+                    android:layout_height="140dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="3dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="8dp"
                     app:strokeWidth="0dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:stateListAnimator="@null"
+                    app:cardBackgroundColor="?attr/colorPrimaryContainer"
                     app:rippleColor="?attr/colorPrimary">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="16dp"
-                        android:gravity="center"
-                        android:background="@drawable/gradient_primary">
+                        android:padding="20dp"
+                        android:gravity="center">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_movie_24"
-                            android:layout_marginBottom="8dp"
-                            app:tint="?attr/colorOnPrimary" />
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_check_24"
+                            android:layout_marginBottom="12dp"
+                            android:contentDescription="@string/nav_watched"
+                            app:tint="?attr/colorPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/watched_movies"
+                            android:text="@string/nav_watched"
                             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                            android:textColor="?attr/colorOnPrimary"
+                            android:textColor="?attr/colorOnPrimaryContainer"
                             android:gravity="center" />
 
                         <TextView
-                            android:id="@+id/tvWatchedMoviesCountCard"
+                            android:id="@+id/tvWatchedCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                            android:textColor="?attr/colorOnPrimary"
+                            android:layout_marginTop="6dp"
+                            android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                            android:textColor="?attr/colorPrimary"
                             android:textStyle="bold"
-                            tools:text="15" />
+                            tools:text="23" />
 
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardWatchedTvShows"
+                    android:id="@+id/cardPlanned"
                     android:layout_width="0dp"
-                    android:layout_height="120dp"
+                    android:layout_height="140dp"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="3dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="8dp"
                     app:strokeWidth="0dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:stateListAnimator="@null"
+                    app:cardBackgroundColor="?attr/colorSecondaryContainer"
                     app:rippleColor="?attr/colorSecondary">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="16dp"
-                        android:gravity="center"
-                        android:background="@drawable/gradient_secondary">
+                        android:padding="20dp"
+                        android:gravity="center">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_tv_24"
-                            android:layout_marginBottom="8dp"
-                            app:tint="?attr/colorOnSecondary" />
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_bookmark_filled_24"
+                            android:layout_marginBottom="12dp"
+                            android:contentDescription="@string/nav_planned"
+                            app:tint="?attr/colorSecondary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/watched_tv_shows"
+                            android:text="@string/nav_planned"
                             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                            android:textColor="?attr/colorOnSecondary"
+                            android:textColor="?attr/colorOnSecondaryContainer"
                             android:gravity="center" />
 
                         <TextView
-                            android:id="@+id/tvWatchedTvShowsCountCard"
+                            android:id="@+id/tvPlannedCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                            android:textColor="?attr/colorOnSecondary"
+                            android:layout_marginTop="6dp"
+                            android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                            android:textColor="?attr/colorSecondary"
                             android:textStyle="bold"
                             tools:text="8" />
 
@@ -373,7 +336,7 @@
 
             </LinearLayout>
 
-            <!-- Planned Content -->
+            <!-- Categories Row 2 - Watching -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -381,104 +344,55 @@
                 android:layout_marginBottom="24dp">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardPlannedMovies"
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="3dp"
+                    android:id="@+id/cardWatching"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="8dp"
                     app:strokeWidth="0dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:stateListAnimator="@null"
+                    app:cardBackgroundColor="?attr/colorTertiaryContainer"
                     app:rippleColor="?attr/colorTertiary">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="16dp"
-                        android:gravity="center"
-                        android:background="@drawable/gradient_tertiary">
+                        android:padding="20dp"
+                        android:gravity="center">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_bookmark_24"
-                            android:layout_marginBottom="8dp"
-                            app:tint="?attr/colorOnTertiary" />
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_play_circle_24"
+                            android:layout_marginBottom="12dp"
+                            android:contentDescription="@string/nav_watching"
+                            app:tint="?attr/colorTertiary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/planned_movies"
+                            android:text="@string/nav_watching"
                             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                            android:textColor="?attr/colorOnTertiary"
+                            android:textColor="?attr/colorOnTertiaryContainer"
                             android:gravity="center" />
 
                         <TextView
-                            android:id="@+id/tvPlannedMoviesCount"
+                            android:id="@+id/tvWatchingCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                            android:textColor="?attr/colorOnTertiary"
-                            android:textStyle="bold"
-                            tools:text="5" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardPlannedTvShows"
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="3dp"
-                    app:strokeWidth="0dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:rippleColor="?attr/colorError">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        android:gravity="center"
-                        android:background="@drawable/gradient_error">
-
-                        <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_bookmark_24"
-                            android:layout_marginBottom="8dp"
-                            app:tint="?attr/colorOnError" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/planned_tv_shows"
-                            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                            android:textColor="?attr/colorOnError"
-                            android:gravity="center" />
-
-                        <TextView
-                            android:id="@+id/tvPlannedTvShowsCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                            android:textColor="?attr/colorOnError"
+                            android:layout_marginTop="6dp"
+                            android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                            android:textColor="?attr/colorTertiary"
                             android:textStyle="bold"
                             tools:text="3" />
 
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
+
 
             </LinearLayout>
 
@@ -495,7 +409,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:baselineAligned="false">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSearchMovies"
@@ -505,8 +420,12 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:text="@string/search"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:stateListAnimator="@null"
                     app:icon="@drawable/ic_search_24"
-                    app:cornerRadius="16dp" />
+                    app:cornerRadius="16dp"
+                    app:rippleColor="?attr/colorPrimary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnTrending"
@@ -516,8 +435,12 @@
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:text="@string/trending"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:stateListAnimator="@null"
                     app:icon="@drawable/ic_trending_up_24"
-                    app:cornerRadius="16dp" />
+                    app:cornerRadius="16dp"
+                    app:rippleColor="?attr/colorPrimary" />
 
             </LinearLayout>
 
@@ -525,7 +448,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="24dp"
+                android:baselineAligned="false">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnUpcomingReleases"
@@ -534,9 +458,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    android:text="@string/upcoming_releases"
+                    android:text="@string/movie_premieres"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:stateListAnimator="@null"
                     app:icon="@drawable/ic_calendar_24"
-                    app:cornerRadius="16dp" />
+                    app:cornerRadius="16dp"
+                    app:rippleColor="?attr/colorPrimary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnFriends"
@@ -546,8 +474,12 @@
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:text="@string/friends"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:stateListAnimator="@null"
                     app:icon="@drawable/ic_people_24"
-                    app:cornerRadius="16dp" />
+                    app:cornerRadius="16dp"
+                    app:rippleColor="?attr/colorPrimary" />
 
             </LinearLayout>
 
@@ -560,12 +492,164 @@
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="16dp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRecentActivity"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_activity" />
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Activity Item 1 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_check_24"
+                            android:contentDescription="@string/nav_watched"
+                            app:tint="?attr/colorPrimary"
+                            android:background="@drawable/circle_background"
+                            android:backgroundTint="?attr/colorPrimaryContainer"
+                            android:padding="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ви переглянули фільм"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2 години тому"
+                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?attr/colorOutlineVariant"
+                        android:layout_marginVertical="8dp" />
+
+                    <!-- Activity Item 2 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_bookmark_filled_24"
+                            android:contentDescription="@string/nav_planned"
+                            app:tint="?attr/colorSecondary"
+                            android:background="@drawable/circle_background"
+                            android:backgroundTint="?attr/colorSecondaryContainer"
+                            android:padding="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Додано до запланованих"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Вчора"
+                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?attr/colorOutlineVariant"
+                        android:layout_marginVertical="8dp" />
+
+                    <!-- Activity Item 3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_play_circle_24"
+                            android:contentDescription="@string/nav_watching"
+                            app:tint="?attr/colorTertiary"
+                            android:background="@drawable/circle_background"
+                            android:backgroundTint="?attr/colorTertiaryContainer"
+                            android:padding="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Почали дивитись серіал"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3 дні тому"
+                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 

@@ -59,9 +59,12 @@ class DetailsViewModel @Inject constructor(
     fun addWatchedItem(item: WatchedItem, callback: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
+                android.util.Log.d("DetailsViewModel", "Adding watched item: id=${item.id}, title=${item.title}, mediaType=${item.mediaType}, runtime=${item.runtime}")
                 repository.addWatchedItem(item)
+                android.util.Log.d("DetailsViewModel", "Successfully added watched item: ${item.id}")
                 callback(true)
             } catch (e: Exception) {
+                android.util.Log.e("DetailsViewModel", "Failed to add watched item: ${e.message}", e)
                 callback(false)
             }
         }
