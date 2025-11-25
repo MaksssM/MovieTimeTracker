@@ -1,41 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Modern Cinematic Dark Theme -->
-    <color name="md_theme_dark_primary">#8B84FF</color>
-    <color name="md_theme_dark_onPrimary">#1A0F5C</color>
-    <color name="md_theme_dark_primaryContainer">#3E35B5</color>
-    <color name="md_theme_dark_onPrimaryContainer">#E5E3FF</color>
-    <color name="md_theme_dark_secondary">#FFC933</color>
-    <color name="md_theme_dark_onSecondary">#332800</color>
-    <color name="md_theme_dark_secondaryContainer">#7A5900</color>
-    <color name="md_theme_dark_onSecondaryContainer">#FFEDB8</color>
-    <color name="md_theme_dark_tertiary">#E5B3FF</color>
-    <color name="md_theme_dark_onTertiary">#3D1551</color>
-    <color name="md_theme_dark_tertiaryContainer">#7A2FB8</color>
-    <color name="md_theme_dark_onTertiaryContainer">#F5DDFF</color>
-    <color name="md_theme_dark_error">#FFB4C8</color>
+    <!-- Modern Cinematic Dark Theme - Blue/Purple Palette -->
+    <color name="md_theme_dark_primary">#5A9CF5</color>
+    <color name="md_theme_dark_onPrimary">#0A1929</color>
+    <color name="md_theme_dark_primaryContainer">#2A4A6F</color>
+    <color name="md_theme_dark_onPrimaryContainer">#D0E4F7</color>
+    <color name="md_theme_dark_secondary">#7C4DFF</color>
+    <color name="md_theme_dark_onSecondary">#1A0A3D</color>
+    <color name="md_theme_dark_secondaryContainer">#3D2873</color>
+    <color name="md_theme_dark_onSecondaryContainer">#E8E0FF</color>
+    <color name="md_theme_dark_tertiary">#7EB5FF</color>
+    <color name="md_theme_dark_onTertiary">#0A2240</color>
+    <color name="md_theme_dark_tertiaryContainer">#1A3A60</color>
+    <color name="md_theme_dark_onTertiaryContainer">#D0E8FF</color>
+    <color name="md_theme_dark_error">#FF8A80</color>
     <color name="md_theme_dark_errorContainer">#93004D</color>
-    <color name="md_theme_dark_onError">#5C0A2D</color>
+    <color name="md_theme_dark_onError">#5C1A1A</color>
     <color name="md_theme_dark_onErrorContainer">#FFE0EC</color>
-    <color name="md_theme_dark_background">#0A0E27</color>
-    <color name="md_theme_dark_onBackground">#E6E6F0</color>
-    <color name="md_theme_dark_surface">#1A1F3A</color>
-    <color name="md_theme_dark_onSurface">#E6E6F0</color>
+    <color name="md_theme_dark_background">#0D1117</color>
+    <color name="md_theme_dark_onBackground">#E6EDF5</color>
+    <color name="md_theme_dark_surface">#161B22</color>
+    <color name="md_theme_dark_onSurface">#E6EDF5</color>
 
     <!-- App specific dark colors -->
-    <color name="app_bg">#0A0E27</color>
-    <color name="card_bg">#1A1F3A</color>
-    <color name="card_bg_elevated">#252B4C</color>
+    <color name="app_bg">#0D1117</color>
+    <color name="card_bg">#161B22</color>
+    <color name="card_bg_elevated">#21262D</color>
+    
+    <!-- Primary colors -->
+    <color name="primary">#5A9CF5</color>
+    <color name="primary_dark">#3A7CD5</color>
+    <color name="primary_light">#7EB5FF</color>
+    
+    <!-- Accent colors -->
+    <color name="accent">#7EB5FF</color>
+    <color name="accent_light">#A8CFFF</color>
+    <color name="accent_dark">#5A9CF5</color>
 
     <!-- Light theme color overrides for dark mode -->
-    <color name="primary_text">#F8FAFC</color>
-    <color name="secondary_text">#CBD5E1</color>
-    <color name="tertiary_text">#94A3B8</color>
-    <color name="muted_text">#64748B</color>
-    <color name="surface">#1A1F3A</color>
-    <color name="surface_variant">#252B4C</color>
-    <color name="surface_elevated">#2D3648</color>
-    <color name="divider">#334155</color>
-    <color name="border">#475569</color>
+    <color name="primary_text">#E6EDF5</color>
+    <color name="secondary_text">#8B949E</color>
+    <color name="tertiary_text">#6E7681</color>
+    <color name="muted_text">#484F58</color>
+    <color name="surface">#161B22</color>
+    <color name="surface_variant">#21262D</color>
+    <color name="surface_elevated">#30363D</color>
+    <color name="divider">#30363D</color>
+    <color name="border">#484F58</color>
+    
+    <!-- New Modern UI Colors for Dark Theme -->
+    <color name="background">#0D1117</color>
+    <color name="surface_card">#161B22</color>
+    <color name="stat_card_bg">#21262D</color>
+    <color name="text_primary">#E6EDF5</color>
+    <color name="text_secondary">#8B949E</color>
+    <color name="text_hint">#6E7681</color>
+    <color name="text_on_dark">#FFFFFF</color>
 </resources>
 

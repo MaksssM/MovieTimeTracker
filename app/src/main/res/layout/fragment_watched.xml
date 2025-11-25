@@ -138,64 +138,54 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Content -->
-    <androidx.core.widget.NestedScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvWatchedItems"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:clipToPadding="false"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_watched" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <!-- Empty state -->
+    <LinearLayout
+        android:id="@+id/layoutEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_movie"
+            android:alpha="0.3"
+            app:tint="?attr/colorOnSurface"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:text="@string/no_watched_content"
+            android:textSize="18sp"
+            android:textColor="?attr/colorOnSurface"
+            android:alpha="0.6"
+            android:layout_marginTop="16dp" />
 
-            <!-- RecyclerView for watched items -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvWatchedItems"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                tools:listitem="@layout/item_watched" />
-
-            <!-- Empty state -->
-            <LinearLayout
-                android:id="@+id/layoutEmpty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/ic_movie"
-                    android:alpha="0.3"
-                    app:tint="?attr/colorOnSurface"
-                    android:contentDescription="@string/app_name" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Нічого не переглянуто"
-                    android:textSize="18sp"
-                    android:textColor="?attr/colorOnSurface"
-                    android:alpha="0.6"
-                    android:layout_marginTop="16dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Почніть переглядати фільми та серіали"
-                    android:textSize="14sp"
-                    android:textColor="?attr/colorOnSurface"
-                    android:alpha="0.4"
-                    android:layout_marginTop="8dp" />
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_watching_hint"
+            android:textSize="14sp"
+            android:textColor="?attr/colorOnSurface"
+            android:alpha="0.4"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
 
     <!-- Loading indicator -->
     <ProgressBar
@@ -206,4 +196,3 @@
         android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-

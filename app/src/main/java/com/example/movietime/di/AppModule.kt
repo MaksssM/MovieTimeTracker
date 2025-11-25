@@ -84,6 +84,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAppRepository(api: TmdbApi, dao: WatchedItemDao, plannedDao: PlannedDao, watchingDao: WatchingDao): AppRepository {
+        android.util.Log.d("AppModule", "Creating AppRepository with API key: ${BuildConfig.TMDB_API_KEY.take(10)}...")
+        if (BuildConfig.TMDB_API_KEY.isBlank() || BuildConfig.TMDB_API_KEY.contains("YOUR_DEFAULT_KEY")) {
+            android.util.Log.e("AppModule", "WARNING: TMDB API key is not configured properly!")
+        }
         return AppRepository(api, dao, plannedDao, watchingDao, BuildConfig.TMDB_API_KEY)
     }
 

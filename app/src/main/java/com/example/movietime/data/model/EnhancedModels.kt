@@ -3,42 +3,8 @@ package com.example.movietime.data.model
 import androidx.room.*
 import com.example.movietime.util.DateTimeUtils
 
-// Enhanced WatchedItem with rating and social features
-@Entity(tableName = "watched_items")
-data class WatchedItem(
-    @PrimaryKey val id: Int,
-    val title: String,
-    val posterPath: String?,
-    val overview: String?,
-    val releaseDate: String?,
-    val runtime: Int = 0,
-    val isMovie: Boolean = true,
-    val tmdbId: Int,
-    val backdropPath: String? = null,
-    @ColumnInfo(name = "watched_date") val watchedDate: String = DateTimeUtils.getCurrentDateTime(),
-    @ColumnInfo(name = "user_rating") val userRating: Float? = null, // User's personal rating 0-10
-    @ColumnInfo(name = "review") val review: String? = null, // User's review
-    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean = false,
-    @ColumnInfo(name = "rewatch_count") val rewatchCount: Int = 0
-)
-
-// New entity for planned items
-@Entity(tableName = "planned_items")
-data class PlannedItem(
-    @PrimaryKey val id: Int,
-    val title: String,
-    val posterPath: String?,
-    val overview: String?,
-    val releaseDate: String?,
-    val runtime: Int = 0,
-    val isMovie: Boolean = true,
-    val tmdbId: Int,
-    val backdropPath: String? = null,
-    @ColumnInfo(name = "added_date") val addedDate: String = DateTimeUtils.getCurrentDateTime(),
-    @ColumnInfo(name = "priority") val priority: Int = 0, // 0 = low, 1 = medium, 2 = high
-    @ColumnInfo(name = "expected_rating") val expectedRating: Float? = null,
-    @ColumnInfo(name = "notes") val notes: String? = null
-)
+// Note: WatchedItem, PlannedItem, WatchingItem are defined in data.db package
+// This file contains additional enhanced models for social features and statistics
 
 // Friends system
 @Entity(tableName = "friends")

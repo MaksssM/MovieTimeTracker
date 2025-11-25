@@ -12,7 +12,6 @@ import coil.load
 import com.example.movietime.databinding.ActivityDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.movietime.util.Utils
-import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.R
 import java.util.Locale
 
@@ -28,12 +27,12 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun applyLocale(context: Context): Context {
         val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val langPref = prefs.getString("pref_lang", "en") ?: "en"
+        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
         val locale = when (langPref) {
             "uk" -> Locale("uk")
             "ru" -> Locale("ru")
             "en" -> Locale("en")
-            else -> Locale("en")
+            else -> Locale("uk")
         }
         Locale.setDefault(locale)
         val config = Configuration(context.resources.configuration)
@@ -61,194 +60,187 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         observeViewModel()
+        setupCategoryButtons()
+    }
 
-        // Обробник додавання в переглянуті
-        binding.fabAdd.setOnClickListener {
-            val current = viewModel.item.value
-            if (current == null) {
-                Toast.makeText(this, getString(R.string.data_not_loaded), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+    private fun setupCategoryButtons() {
+        // Кнопка "Заплановані"
+        binding.btnPlanned.setOnClickListener {
+            addToCategory("planned")
+        }
+
+        // Кнопка "Переглянуті"
+        binding.btnWatched.setOnClickListener {
+            addToCategory("watched")
+        }
+
+        // Кнопка "Дивлюсь"
+        binding.btnWatching.setOnClickListener {
+            addToCategory("watching")
+        }
+    }
+
+    private fun addToCategory(category: String) {
+        val current = viewModel.item.value
+        if (current == null) {
+            Toast.makeText(this, getString(R.string.data_not_loaded), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val id: Int
+        val title: String?
+        val posterPath: String?
+        val releaseDate: String?
+        val runtimeFromApi: Int?
+        val mType: String
+
+        when (current) {
+            is com.example.movietime.data.model.MovieResult -> {
+                id = current.id
+                title = current.title
+                posterPath = current.posterPath
+                releaseDate = current.releaseDate
+                runtimeFromApi = current.runtime
+                mType = "movie"
             }
-
-            val id: Int
-            val title: String?
-            val posterPath: String?
-            val releaseDate: String?
-            val runtimeFromApi: Int?
-            val mType: String
-
-            when (current) {
-                is com.example.movietime.data.model.MovieResult -> {
-                    id = current.id
-                    title = current.title
-                    posterPath = current.posterPath
-                    releaseDate = current.releaseDate
-                    runtimeFromApi = current.runtime
-                    mType = "movie"
-                }
-                is com.example.movietime.data.model.TvShowResult -> {
-                    id = current.id
-                    title = current.name ?: ""
-                    posterPath = current.posterPath
-                    releaseDate = current.firstAirDate
-                    runtimeFromApi = current.episodeRunTime?.firstOrNull() ?: 0
-                    mType = "tv"
-                }
-                else -> {
-                    Toast.makeText(this, getString(R.string.unknown_media), Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
+            is com.example.movietime.data.model.TvShowResult -> {
+                id = current.id
+                title = current.name ?: ""
+                posterPath = current.posterPath
+                releaseDate = current.firstAirDate
+                runtimeFromApi = current.episodeRunTime?.firstOrNull() ?: 0
+                mType = "tv"
             }
+            else -> {
+                Toast.makeText(this, getString(R.string.unknown_media), Toast.LENGTH_SHORT).show()
+                return
+            }
+        }
 
-            // Перевіримо, чи вже є в БД — передаём mediaType в ViewModel
-            android.util.Log.d("DetailsActivity", "FAB clicked: id=$id, title=$title, mediaType=$mType")
-            viewModel.isItemWatched(id, mType) { exists ->
-                android.util.Log.d("DetailsActivity", "isItemWatched callback: exists=$exists")
-                if (exists) {
+        when (category) {
+            "watched" -> addToWatched(id, title, posterPath, releaseDate, runtimeFromApi, mType, current)
+            "planned" -> addToPlanned(id, title, posterPath, releaseDate, runtimeFromApi, mType)
+            "watching" -> addToWatching(id, title, posterPath, releaseDate, runtimeFromApi, mType)
+        }
+    }
+
+    private fun addToWatched(id: Int, title: String?, posterPath: String?, releaseDate: String?, runtimeFromApi: Int?, mType: String, current: Any) {
+        viewModel.isItemWatched(id, mType) { exists ->
+            if (exists) {
+                runOnUiThread {
+                    Toast.makeText(this, getString(R.string.already_watched), Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                val overview = when (current) {
+                    is com.example.movietime.data.model.MovieResult -> current.overview
+                    is com.example.movietime.data.model.TvShowResult -> current.overview
+                    else -> null
+                }
+                val voteAverage = when (current) {
+                    is com.example.movietime.data.model.MovieResult -> current.voteAverage?.toDouble()
+                    is com.example.movietime.data.model.TvShowResult -> current.voteAverage?.toDouble()
+                    else -> null
+                }
+
+                val watched = Utils.createWatchedItemFromMovie(
+                    id = id,
+                    title = title,
+                    name = null,
+                    posterPath = posterPath,
+                    releaseDate = releaseDate,
+                    runtime = runtimeFromApi,
+                    mediaType = mType,
+                    overview = overview,
+                    voteAverage = voteAverage,
+                    userRating = null  // Без оцінки
+                )
+
+                viewModel.addWatchedItem(watched) { success ->
                     runOnUiThread {
-                        binding.fabAdd.text = getString(R.string.already_watched)
-                        Toast.makeText(this, getString(R.string.already_watched), Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    android.util.Log.d("DetailsActivity", "Item not in DB, showing add dialog")
-                    // If TV, ask how many episodes were watched to compute total runtime
-                    if (mType == "tv") {
-                        runOnUiThread {
-                            val input = EditText(this)
-                            input.inputType = android.text.InputType.TYPE_CLASS_NUMBER
-                            input.setText("1")
-
-                            // Предпросмотр часа
-                            val previewText = com.google.android.material.textview.MaterialTextView(this)
-                            previewText.text = "Час: ${(runtimeFromApi ?: 0)}хв"
-                            previewText.textSize = 14f
-                            previewText.textAlignment = android.view.View.TEXT_ALIGNMENT_CENTER
-                            previewText.setTextColor(getColor(R.color.secondary_text))
-
-                            input.addTextChangedListener(object : android.text.TextWatcher {
-                                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                                    val episodes = s.toString().toIntOrNull() ?: 1
-                                    val totalMinutes = (runtimeFromApi ?: 0) * episodes
-                                    val hours = totalMinutes / 60
-                                    val minutes = totalMinutes % 60
-                                    previewText.text = "Час: ${hours}г ${minutes}хв (${episodes} епізодів)"
-                                }
-                                override fun afterTextChanged(s: android.text.Editable?) {}
-                            })
-
-                            val container = android.widget.LinearLayout(this)
-                            container.orientation = android.widget.LinearLayout.VERTICAL
-                            container.addView(input, android.widget.LinearLayout.LayoutParams(
-                                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
-                            ).apply { setMargins(16, 16, 16, 8) })
-                            container.addView(previewText, android.widget.LinearLayout.LayoutParams(
-                                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
-                            ).apply { setMargins(16, 8, 16, 16) })
-
-                            AlertDialog.Builder(this)
-                                .setTitle(getString(R.string.enter_episodes_watched))
-                                .setMessage(getString(R.string.enter_episodes_watched_hint))
-                                .setView(container)
-                                .setPositiveButton(android.R.string.ok) { _, _ ->
-                                    val episodes = input.text.toString().toIntOrNull() ?: 1
-                                    val totalRuntime = (runtimeFromApi ?: 0) * episodes
-
-                                    android.util.Log.d("DetailsActivity", "Creating TV watched item: episodes=$episodes, totalRuntime=$totalRuntime")
-
-                                    val overview = when (current) {
-                                        is com.example.movietime.data.model.TvShowResult -> current.overview
-                                        else -> null
-                                    }
-                                    val voteAverage = when (current) {
-                                        is com.example.movietime.data.model.TvShowResult -> current.voteAverage?.toDouble()
-                                        else -> null
-                                    }
-
-                                    val watched = Utils.createWatchedItemFromMovie(
-                                        id = id,
-                                        title = title,
-                                        name = null,
-                                        posterPath = posterPath,
-                                        releaseDate = releaseDate,
-                                        runtime = totalRuntime,
-                                        mediaType = mType,
-                                        overview = overview,
-                                        voteAverage = voteAverage
-                                    )
-
-                                    android.util.Log.d("DetailsActivity", "Created watched item: $watched")
-
-                                    viewModel.addWatchedItem(watched) { success ->
-                                        android.util.Log.d("DetailsActivity", "addWatchedItem callback for TV: success=$success")
-                                        runOnUiThread {
-                                            if (success) {
-                                                android.util.Log.d("DetailsActivity", "Successfully added TV show to DB")
-                                                try { binding.fabAdd.setIconResource(0) } catch (_: Throwable) {}
-                                                binding.fabAdd.text = getString(R.string.added)
-                                                val hours = totalRuntime / 60
-                                                val minutes = totalRuntime % 60
-                                                Toast.makeText(this, "Додано: $episodes епізодів (${hours}г ${minutes}хв)", Toast.LENGTH_LONG).show()
-                                            } else {
-                                                android.util.Log.e("DetailsActivity", "Failed to add TV show to DB")
-                                                Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
-                                            }
-                                        }
-                                    }
-                                }
-                                .setNegativeButton(android.R.string.cancel, null)
-                                .show()
-                        }
-                    } else {
-                        // Movie: add as-is, but ask for rating first
-                        android.util.Log.d("DetailsActivity", "Showing rating dialog for movie")
-                        val overview = when (current) {
-                            is com.example.movietime.data.model.MovieResult -> current.overview
-                            else -> null
-                        }
-                        val voteAverage = when (current) {
-                            is com.example.movietime.data.model.MovieResult -> current.voteAverage?.toDouble()
-                            else -> null
-                        }
-
-                        showRatingDialog { userRating ->
-                            android.util.Log.d("DetailsActivity", "Rating selected: $userRating")
-                            val watched = Utils.createWatchedItemFromMovie(
-                                id = id,
-                                title = title,
-                                name = null,
-                                posterPath = posterPath,
-                                releaseDate = releaseDate,
-                                runtime = runtimeFromApi,
-                                mediaType = mType,
-                                overview = overview,
-                                voteAverage = voteAverage,
-                                userRating = userRating
-                            )
-
-                            android.util.Log.d("DetailsActivity", "Created movie watched item: $watched")
-
-                            viewModel.addWatchedItem(watched) { success ->
-                                android.util.Log.d("DetailsActivity", "addWatchedItem callback: success=$success")
-                                runOnUiThread {
-                                    if (success) {
-                                        android.util.Log.d("DetailsActivity", "Successfully added movie to DB")
-                                        try { binding.fabAdd.setIconResource(0) } catch (_: Throwable) {}
-                                        binding.fabAdd.text = getString(R.string.added)
-                                        Toast.makeText(this, getString(R.string.added_to_watched_toast), Toast.LENGTH_SHORT).show()
-                                    } else {
-                                        android.util.Log.e("DetailsActivity", "Failed to add movie to DB")
-                                        Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
-                                    }
-                                }
-                            }
+                        if (success) {
+                            disableButton(binding.btnWatched)
+                            Toast.makeText(this, getString(R.string.added_to_watched_toast), Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun addToPlanned(id: Int, title: String?, posterPath: String?, releaseDate: String?, runtimeFromApi: Int?, mType: String) {
+        viewModel.isItemPlanned(id, mType) { exists ->
+            if (exists) {
+                runOnUiThread {
+                    Toast.makeText(this, getString(R.string.already_planned), Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                val planned = Utils.createWatchedItemFromMovie(
+                    id = id,
+                    title = title,
+                    name = null,
+                    posterPath = posterPath,
+                    releaseDate = releaseDate,
+                    runtime = runtimeFromApi,
+                    mediaType = mType,
+                    overview = null,
+                    voteAverage = null,
+                    userRating = null
+                )
+
+                viewModel.addToPlanned(planned) { success ->
+                    runOnUiThread {
+                        if (success) {
+                            disableButton(binding.btnPlanned)
+                            Toast.makeText(this, getString(R.string.added_to_planned), Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun addToWatching(id: Int, title: String?, posterPath: String?, releaseDate: String?, runtimeFromApi: Int?, mType: String) {
+        viewModel.isItemWatching(id, mType) { exists ->
+            if (exists) {
+                runOnUiThread {
+                    Toast.makeText(this, getString(R.string.already_watching), Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                val watching = Utils.createWatchedItemFromMovie(
+                    id = id,
+                    title = title,
+                    name = null,
+                    posterPath = posterPath,
+                    releaseDate = releaseDate,
+                    runtime = runtimeFromApi,
+                    mediaType = mType,
+                    overview = null,
+                    voteAverage = null,
+                    userRating = null
+                )
+
+                viewModel.addToWatching(watching) { success ->
+                    runOnUiThread {
+                        if (success) {
+                            disableButton(binding.btnWatching)
+                            Toast.makeText(this, getString(R.string.added_to_watching), Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun disableButton(view: android.view.View) {
+        view.alpha = 0.5f
+        view.isClickable = false
+        view.isFocusable = false
     }
 
     private fun showRatingDialog(onRatingSelected: (Float?) -> Unit) {
@@ -268,8 +260,10 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.item.observe(this) { item ->
+            android.util.Log.d("DetailsActivity", "ViewModel item updated: $item")
             when (item) {
                 is com.example.movietime.data.model.MovieResult -> {
+                    android.util.Log.d("DetailsActivity", "Displaying movie: ${item.title}, runtime=${item.runtime}")
                     binding.toolbarLayout.title = item.title ?: getString(R.string.unknown_media)
                     binding.tvOverview.text = item.overview ?: getString(R.string.no_description_available)
 
@@ -315,8 +309,15 @@ class DetailsActivity : AppCompatActivity() {
                         error(R.drawable.ic_placeholder)
                     }
                 }
+                null -> {
+                    android.util.Log.w("DetailsActivity", "Item is null - failed to load data")
+                    binding.toolbarLayout.title = getString(R.string.error_loading_data)
+                    binding.tvOverview.text = getString(R.string.no_description_available)
+                    binding.tvRuntime.text = "N/A"
+                }
                 else -> {
                     // nothing to show
+                    android.util.Log.w("DetailsActivity", "Unknown item type: ${item?.javaClass?.simpleName}")
                 }
             }
         }

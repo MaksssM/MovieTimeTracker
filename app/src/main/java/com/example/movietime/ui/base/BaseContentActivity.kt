@@ -34,12 +34,12 @@ abstract class BaseContentActivity : AppCompatActivity() {
 
     private fun applyLocale(context: Context): Context {
         val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val langPref = prefs.getString("pref_lang", "en") ?: "en"
+        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
         val locale = when (langPref) {
             "uk" -> Locale("uk")
             "ru" -> Locale("ru")
             "en" -> Locale("en")
-            else -> Locale("en")
+            else -> Locale("uk")
         }
         Locale.setDefault(locale)
         val config = Configuration(context.resources.configuration)

@@ -1,41 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
-    android:background="@drawable/gradient_primary_modern"
-    android:padding="20dp">
+    android:layout_height="200dp">
 
-    <!-- Background overlay for depth -->
+    <!-- Gradient Background -->
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_overlay"
-        android:alpha="0.3" />
+        android:background="@drawable/bg_premium_gradient" />
 
-    <!-- Content container -->
+    <!-- Glow Effect -->
+    <View
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_glow_accent"
+        android:alpha="0.25" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="start">
+        android:gravity="bottom"
+        android:padding="20dp">
 
-        <!-- App Icon with enhanced styling -->
+        <!-- App Icon -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="8dp"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="6dp"
-            app:strokeWidth="2dp"
-            app:strokeColor="#33FFFFFF"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="0dp">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@mipmap/ic_launcher_round"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/app_name" />
+
         </com.google.android.material.card.MaterialCardView>
 
         <!-- App Title -->
@@ -43,24 +50,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize="22sp"
-            android:textColor="@color/white"
-            android:fontFamily="sans-serif-medium"
-            android:letterSpacing="-0.01"
-            android:shadowColor="#40000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="4" />
+            android:textSize="26sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
 
         <!-- App Subtitle -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Трекер фільмів та серіалів"
-            android:textSize="14sp"
-            android:textColor="#E0FFFFFF"
-            android:fontFamily="sans-serif"
-            android:layout_marginTop="2dp" />
+            android:text="@string/app_description_short"
+            android:textSize="13sp"
+            android:textColor="@color/text_on_dark"
+            android:alpha="0.8"
+            android:layout_marginTop="4dp" />
+
     </LinearLayout>
 
-</RelativeLayout>
+</FrameLayout>

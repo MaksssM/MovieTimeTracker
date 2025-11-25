@@ -25,12 +25,12 @@ class TvDetailsActivity : AppCompatActivity() {
 
     private fun applyLocale(context: Context): Context {
         val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val langPref = prefs.getString("pref_lang", "en") ?: "en"
+        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
         val locale = when (langPref) {
             "uk" -> Locale("uk")
             "ru" -> Locale("ru")
             "en" -> Locale("en")
-            else -> Locale("en")
+            else -> Locale("uk")
         }
         Locale.setDefault(locale)
         val config = Configuration(context.resources.configuration)
@@ -58,8 +58,10 @@ class TvDetailsActivity : AppCompatActivity() {
         // Обробник додавання в переглянуті
         binding.fabAdd.setOnClickListener {
             val current = viewModel.tvShow.value
+            android.util.Log.d("TvDetailsActivity", "FAB clicked, current item: $current")
             if (current == null) {
-                Toast.makeText(this, getString(R.string.data_not_loaded), Toast.LENGTH_SHORT).show()
+                android.util.Log.w("TvDetailsActivity", "Cannot add to watched: data not loaded yet")
+                Toast.makeText(this, getString(R.string.data_not_loaded) + "\nПеревірте з'єднання з інтернетом", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
