@@ -5,9 +5,9 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/watchedFragment"
-            android:icon="@drawable/ic_watched_list"
-            android:title="@string/nav_watched" />
+            android:id="@+id/enhancedMainFragment"
+            android:icon="@drawable/ic_movie"
+            android:title="@string/main_menu_title" />
         <item
             android:id="@+id/trendingFragment"
             android:icon="@drawable/ic_trending"

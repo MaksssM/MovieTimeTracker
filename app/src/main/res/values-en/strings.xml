@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MovieTime</string>
+
+    <!-- Navigation -->
+    <string name="nav_watched">Watched</string>
+    <string name="nav_planned">Planned</string>
+    <string name="nav_watching">Watching</string>
+
+    <!-- Main menu -->
+    <string name="main_menu_title">Main Menu</string>
+    <string name="movies_category">Movies</string>
+    <string name="tv_shows_category">TV Shows</string>
+    <string name="total_time_spent">Total Time</string>
+    <string name="watched_movies">Watched Movies</string>
+    <string name="watched_tv_shows">Watched TV Shows</string>
+    <string name="planned_movies">Planned Movies</string>
+    <string name="planned_tv_shows">Planned TV Shows</string>
+    <string name="watching_movies">Currently Watching</string>
+    <string name="watching_tv_shows">Currently Watching</string>
+
+    <!-- Details / Watched -->
+    <string name="add_to_watched">Add to Watched</string>
+    <string name="added">Added</string>
+    <string name="already_watched">Already Watched</string>
+    <string name="added_to_watched_toast">Added to Watched</string>
+    <string name="add_failed">Failed to Add</string>
+    <string name="data_not_loaded">Data not loaded yet</string>
+    <string name="error_loading_data">Error loading data</string>
+    <string name="unknown_media">Unknown media type</string>
+    <string name="poster_description">Movie Poster</string>
+
+    <!-- Enhanced Interface Strings -->
+    <string name="search">Search</string>
+    <string name="search_movies_tv_shows">Search movies and TV shows</string>
+    <string name="search_hint">Enter movie or TV show name</string>
+    <string name="search_filters">Search Filters</string>
+    <string name="all">All</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="search_results">Search Results</string>
+    <string name="search_results_count">Results found: %d</string>
+    <string name="popular_now">Popular Now</string>
+    <string name="searching">Searching…</string>
+    <string name="planned">Planned</string>
+    <string name="filter_by_type">Filter by Type</string>
+    <string name="your_planned_content">Your Planned Content</string>
+    <string name="no_planned_content">No Planned Content</string>
+    <string name="add_content_to_planned">Add something to your watchlist</string>
+    <string name="browse_content">Browse Content</string>
+    <string name="add_to_planned">Add to Planned</string>
+    <string name="loading">Loading…</string>
+
+    <!-- Category buttons -->
+    <string name="watched">Watched</string>
+    <string name="watching">Watching</string>
+    <string name="added_to_planned">Added to Planned</string>
+    <string name="added_to_watching">Added to Watching</string>
+    <string name="already_planned">Already Planned</string>
+    <string name="already_watching">Already Watching</string>
+
+    <string name="planned_movies_count">Planned Movies: %d</string>
+    <string name="planned_tv_shows_count">Planned TV Shows: %d</string>
+    <string name="planned_content_count">Planned Content: %d</string>
+    <string name="total_watch_time">Total Watch Time</string>
+    <string name="this_month">This Month</string>
+    <string name="quick_stats">Quick Stats</string>
+    <string name="avg_rating">Avg Rating</string>
+    <string name="rating_short">Rating</string>
+    <string name="categories">Categories</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="trending">Trending</string>
+    <string name="movie_premieres">Upcoming Premieres</string>
+    <string name="friends">Friends</string>
+    <string name="recent_activity">Recent Activity</string>
+    <string name="quick_add">Quick Add</string>
+
+    <string name="watching_count">Watching: %d</string>
+    <string name="add_to_watching">Add to Watching</string>
+    <string name="remove_from_watching">Remove from Watching</string>
+    <string name="no_watching_content">Nothing currently watching</string>
+    <string name="watching_movies_count">Watching Movies: %d</string>
+    <string name="watching_tv_shows_count">Watching TV Shows: %d</string>
+    <string name="your_watching_content">Currently Watching</string>
+
+    <!-- Navigation menu strings -->
+    <string name="nav_trending">Trending</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="theme_title">App Theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_changed">Theme Changed</string>
+
+    <!-- Basic strings -->
+    <string name="delete">Delete</string>
+    <string name="undo">Undo</string>
+
+    <!-- Time formatting -->
+    <string name="time_format_hours">%d h</string>
+    <string name="time_format_minutes">%d min</string>
+    <string name="time_format_hours_minutes" formatted="false">%d h %d min</string>
+
+    <!-- Additional strings -->
+    <string name="total_time">Total Time</string>
+    <string name="total_time_default">0 h 0 min</string>
+    <string name="runtime">Duration</string>
+    <string name="release_date">Release Date</string>
+    <string name="rate_content">Rate Content</string>
+    <string name="skip_rating">Skip Rating</string>
+    <string name="no_description_available">No description available</string>
+
+    <!-- Search filters -->
+    <string name="filter_all">All</string>
+    <string name="filter_movies">Movies</string>
+    <string name="filter_tv_shows">TV Shows</string>
+    <string name="sort_by_rating">Sort by Rating</string>
+    <string name="sort_by_popularity">Sort by Popularity</string>
+    <string name="results_count_default">Found: 0</string>
+    <string name="empty_results">Nothing Found</string>
+    <string name="recent_searches">Recent Searches</string>
+    <string name="clear_history">Clear History</string>
+    <string name="min_rating">Minimum Rating</string>
+    <string name="reset_filters">Reset Filters</string>
+
+    <!-- Language settings -->
+    <string name="language_title">App Language</string>
+    <string name="lang_uk">Українська</string>
+    <string name="lang_ru">Русский</string>
+    <string name="lang_en">English</string>
+
+    <!-- Content descriptions -->
+    <string name="search_content_desc">Search</string>
+
+    <!-- Activity strings -->
+    <string name="activity_watched_movie">watched a movie</string>
+    <string name="activity_watched_tv">watched a TV show</string>
+    <string name="activity_rated_movie">rated a movie</string>
+    <string name="activity_rated_tv">rated a TV show</string>
+    <string name="activity_added_to_planned">added to planned</string>
+    <string name="activity_wrote_review">wrote a review</string>
+
+    <!-- Episodes -->
+    <string name="enter_episodes_watched">Enter watched episodes count</string>
+    <string name="enter_episodes_watched_hint">Number of episodes</string>
+
+    <!-- Additional search strings -->
+    <string name="no_results">Nothing Found</string>
+    <string name="rating_value">Rating: %.1f</string>
+    <string name="history_item_removed">Removed from History</string>
+
+    <!-- Settings -->
+    <string name="language_changed">Language Changed</string>
+
+    <!-- Empty states -->
+    <string name="no_watched_content">Nothing Watched</string>
+    <string name="start_watching_hint">Start watching movies and TV shows</string>
+
+    <!-- About -->
+    <string name="about_title">About</string>
+    <string name="app_version">Version %s</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="clear_cache_success">Cache Cleared</string>
+    <string name="data_management">Data Management</string>
+    <string name="export_data">Export Data</string>
+    <string name="import_data">Import Data</string>
+    <string name="clear_all_data">Clear All Data</string>
+    <string name="clear_all_data_confirm">Are you sure you want to delete all data? This action cannot be undone.</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="notifications_title">Notifications</string>
+    <string name="enable_notifications">Enable Notifications</string>
+    <string name="notification_new_releases">New Releases</string>
+    <string name="notification_reminders">Reminders</string>
+
+    <!-- New Settings Strings -->
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_content">Content</string>
+    <string name="tmdb_content_language">TMDB Content Language</string>
+    <string name="tmdb_content_language_desc">Language for movie and TV show descriptions</string>
+    <string name="show_ratings">Show Ratings</string>
+    <string name="show_ratings_desc">Display ratings on cards</string>
+    <string name="compact_mode">Compact Mode</string>
+    <string name="compact_mode_desc">More content on screen</string>
+    <string name="autoplay_trailers">Autoplay Trailers</string>
+    <string name="autoplay_trailers_desc">Automatically play trailers</string>
+    <string name="calculating">Calculating…</string>
+    <string name="export_data_desc">Save data to file</string>
+    <string name="clear_all_data_desc">Delete all history and lists</string>
+    <string name="version_placeholder">Version 1.0.0</string>
+    <string name="app_description">Your personal movie and TV show tracker. Track what you watch, plan to watch, and have watched.</string>
+    <string name="powered_by_tmdb">Powered by TMDB API</string>
+    <string name="cache_size_format">%s used</string>
+    <string name="app_description_short">Movie and TV Show Tracker</string>
+
+    <!-- New Modern UI Strings -->
+    <string name="welcome_back">Welcome back,</string>
+    <string name="currently_in_progress">Currently Watching</string>
+    <string name="premieres">Premieres</string>
+    <string name="new_releases">New Releases</string>
+    <string name="activity_added_planned">Added to Planned</string>
+    <string name="activity_started_series">Started watching a series</string>
+    <string name="two_hours_ago">2 hours ago</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="three_days_ago">3 days ago</string>
+    <string name="text_on_dark">@android:color/white</string>
+</resources>

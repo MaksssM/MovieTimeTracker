@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginVertical="8dp"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="8dp"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
     app:strokeWidth="0dp"
-    android:background="@android:color/white"
+    app:cardBackgroundColor="@color/surface_elevated"
     android:foreground="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
@@ -17,16 +17,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:background="@color/card_bg">
+        android:padding="12dp">
 
-        <!-- Premium Poster with Shadow -->
+        <!-- Poster with rounded corners -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/posterCard"
-            android:layout_width="75dp"
-            android:layout_height="110dp"
+            android:layout_width="70dp"
+            android:layout_height="105dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="8dp"
+            app:cardElevation="6dp"
             app:strokeWidth="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,16 +37,9 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/poster_description"
-                android:background="@drawable/bg_poster_placeholder"
+                android:background="@color/shimmer_base"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
-            <!-- Gradient Overlay -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/gradient_overlay"
-                android:alpha="0.6" />
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Content Container -->
@@ -62,21 +54,20 @@
             app:layout_constraintStart_toEndOf="@id/posterCard"
             app:layout_constraintTop_toTopOf="@id/posterCard">
 
-            <!-- Title with improved typography -->
+            <!-- Title -->
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="@color/primary_text"
+                android:textSize="15sp"
+                android:textColor="@color/text_primary"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:lineSpacingExtra="2dp"
-                android:letterSpacing="0.01"
+                android:lineSpacingMultiplier="1.1"
                 tools:text="Інтерстеллар" />
 
-            <!-- Release Date with icon -->
+            <!-- Release Date -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,7 +79,7 @@
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:src="@drawable/ic_calendar"
-                    app:tint="@color/secondary_text"
+                    app:tint="@color/text_hint"
                     android:contentDescription="@string/release_date" />
 
                 <TextView
@@ -97,27 +88,27 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:textSize="12sp"
-                    android:textColor="@color/secondary_text"
-                    android:fontFamily="sans-serif"
+                    android:textColor="@color/text_secondary"
                     tools:text="2014" />
+
             </LinearLayout>
 
-            <!-- Runtime Badge with modern design -->
+            <!-- Runtime Badge -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_chip"
                 android:orientation="horizontal"
                 android:paddingHorizontal="10dp"
-                android:paddingVertical="5dp"
+                android:paddingVertical="4dp"
                 android:gravity="center_vertical">
 
                 <ImageView
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:src="@drawable/ic_time"
-                    app:tint="@color/primary"
+                    app:tint="@color/accent"
                     android:contentDescription="@string/runtime" />
 
                 <TextView
@@ -126,30 +117,35 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:textSize="11sp"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/accent"
                     android:fontFamily="sans-serif-medium"
                     tools:text="169 хв" />
+
             </LinearLayout>
+
         </LinearLayout>
 
-        <!-- Delete Button with modern style -->
-        <com.google.android.material.button.MaterialButton
+        <!-- Delete Button -->
+        <FrameLayout
             android:id="@+id/btnDelete"
-            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:contentDescription="@string/delete"
-            app:icon="@drawable/ic_delete_forever_24"
-            app:iconSize="20dp"
-            app:iconTint="@color/error"
-            app:iconGravity="textStart"
-            app:backgroundTint="?attr/colorErrorContainer"
-            app:cornerRadius="20dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_stat_card"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_delete_forever_24"
+                app:tint="@color/error"
+                android:contentDescription="@string/delete" />
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

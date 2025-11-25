@@ -8,7 +8,15 @@
     <fragment
         android:id="@+id/watchedFragment"
         android:name="com.example.movietime.ui.main.WatchedFragment"
-        tools:layout="@layout/fragment_watched" />
+        tools:layout="@layout/fragment_watched">
+        <action
+            android:id="@+id/action_watched_to_main"
+            app:destination="@id/enhancedMainFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
 
     <fragment
         android:id="@+id/enhancedMainFragment"
@@ -17,22 +25,58 @@
 
         <action
             android:id="@+id/action_main_to_watched_list"
-            app:destination="@id/watchedFragment">
+            app:destination="@id/watchedFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
             <argument
                 android:name="isMovie"
                 app:argType="boolean"
                 android:defaultValue="true" />
         </action>
+        
+        <action
+            android:id="@+id/action_main_to_trending"
+            app:destination="@id/trendingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+            
+        <action
+            android:id="@+id/action_main_to_settings"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/scale_fade_out"
+            app:popEnterAnim="@anim/scale_fade_in"
+            app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
 
     <fragment
         android:id="@+id/trendingFragment"
         android:name="com.example.movietime.ui.trending.TrendingFragment"
-        tools:layout="@layout/fragment_trending" />
+        tools:layout="@layout/fragment_trending">
+        <action
+            android:id="@+id/action_trending_to_main"
+            app:destination="@id/enhancedMainFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.movietime.ui.settings.SettingsFragment"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_to_main"
+            app:destination="@id/enhancedMainFragment"
+            app:enterAnim="@anim/scale_fade_in"
+            app:exitAnim="@anim/slide_out_bottom"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/scale_fade_out" />
+    </fragment>
 
 </navigation>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Light Theme (Default) -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- PREMIUM CINEMA LIGHT THEME -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <style name="Theme.MovieTimeTracker" parent="Theme.Material3.Light.NoActionBar">
         <!-- Material3 color tokens for Light theme -->
         <item name="colorPrimary">@color/md_theme_light_primary</item>
@@ -23,11 +25,15 @@
         <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
         <item name="colorSurface">@color/md_theme_light_surface</item>
         <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_light_outline</item>
 
         <!-- Status and Navigation Bars -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@color/md_theme_light_background</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/md_theme_light_primary</item>
+        <item name="android:navigationBarColor">@color/md_theme_light_surface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
         <!-- Material Components -->
@@ -35,6 +41,7 @@
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+        <item name="chipStyle">@style/Widget.App.Chip</item>
 
         <!-- Typography -->
         <item name="textAppearanceHeadline1">@style/TextAppearance.App.Headline1</item>
@@ -49,89 +56,81 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Card View Style -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- CARD STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <style name="Widget.App.CardView" parent="Widget.Material3.CardView.Elevated">
         <item name="cardBackgroundColor">@color/card_bg</item>
-        <item name="cardCornerRadius">20dp</item>
-        <item name="cardElevation">8dp</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">4dp</item>
         <item name="contentPadding">16dp</item>
+        <item name="strokeColor">@color/divider</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <style name="Widget.App.CardView.Outlined" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">@color/card_bg</item>
+        <item name="cardCornerRadius">16dp</item>
         <item name="strokeColor">@color/divider</item>
         <item name="strokeWidth">1dp</item>
     </style>
 
-    <!-- Text Input Layout Style -->
+    <style name="Widget.App.CardView.Featured" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/md_theme_light_primaryContainer</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">6dp</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- TEXT INPUT STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <style name="Widget.App.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/primary</item>
         <item name="boxStrokeWidth">2dp</item>
-        <item name="boxCornerRadiusTopStart">16dp</item>
-        <item name="boxCornerRadiusTopEnd">16dp</item>
-        <item name="boxCornerRadiusBottomStart">16dp</item>
-        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
         <item name="hintTextColor">@color/secondary_text</item>
     </style>
 
-    <!-- Bottom Navigation Style -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- BOTTOM NAVIGATION STYLE -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="backgroundTint">@color/surface</item>
-        <item name="itemIconTint">@color/primary</item>
-        <item name="itemTextColor">@color/secondary_text</item>
-        <item name="elevation">16dp</item>
+        <item name="itemIconTint">@color/nav_item_color</item>
+        <item name="itemTextColor">@color/nav_item_color</item>
+        <item name="elevation">8dp</item>
         <item name="labelVisibilityMode">labeled</item>
     </style>
 
-    <!-- Floating Action Button Style -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- FLOATING ACTION BUTTON STYLE -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
-        <item name="backgroundTint">@color/primary</item>
+        <item name="backgroundTint">@color/accent</item>
         <item name="tint">@color/white</item>
+        <item name="fabSize">normal</item>
     </style>
 
-    <!-- Typography Styles -->
-    <style name="TextAppearance.App.Headline1" parent="TextAppearance.Material3.HeadlineLarge">
-        <item name="android:textSize">32sp</item>
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- CHIP STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <style name="Widget.App.Chip" parent="Widget.Material3.Chip.Suggestion">
         <item name="android:textColor">@color/primary_text</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="chipBackgroundColor">@color/surface_variant</item>
+        <item name="chipStrokeColor">@color/divider</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipCornerRadius">8dp</item>
     </style>
 
-    <style name="TextAppearance.App.Headline2" parent="TextAppearance.Material3.HeadlineMedium">
-        <item name="android:textSize">28sp</item>
-        <item name="android:textColor">@color/primary_text</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+    <style name="Widget.App.Chip.Choice" parent="Widget.Material3.Chip.Filter">
+        <item name="android:textColor">@color/chip_text_color</item>
+        <item name="chipBackgroundColor">@color/chip_background_color</item>
+        <item name="chipCornerRadius">12dp</item>
     </style>
 
-    <style name="TextAppearance.App.Body1" parent="TextAppearance.Material3.BodyLarge">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/primary_text</item>
-    </style>
-
-    <style name="TextAppearance.App.Body2" parent="TextAppearance.Material3.BodyMedium">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/secondary_text</item>
-    </style>
-
-    <!-- Button Styles -->
-    <style name="Widget.App.Button" parent="Widget.Material3.Button">
-        <item name="backgroundTint">@color/primary</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="cornerRadius">12dp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:letterSpacing">0.01</item>
-    </style>
-
-    <style name="Widget.App.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="strokeColor">@color/primary</item>
-        <item name="android:textColor">@color/primary</item>
-        <item name="cornerRadius">12dp</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
-
-    <!-- Shape Appearance Styles -->
-    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item>
-    </style>
-
-    <!-- History Chip Style -->
     <style name="Widget.App.HistoryChip" parent="Widget.Material3.Chip.Suggestion">
         <item name="android:textColor">@color/primary_text</item>
         <item name="chipBackgroundColor">@drawable/bg_chip</item>
@@ -139,10 +138,172 @@
         <item name="android:padding">4dp</item>
     </style>
 
-    <!-- Rating Slider Style -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- TYPOGRAPHY STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <style name="TextAppearance.App.Headline1" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+
+    <style name="TextAppearance.App.Headline2" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:lineSpacingMultiplier">1.25</item>
+    </style>
+
+    <style name="TextAppearance.App.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="TextAppearance.App.Subtitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+    </style>
+
+    <style name="TextAppearance.App.Body1" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:lineSpacingMultiplier">1.5</item>
+    </style>
+
+    <style name="TextAppearance.App.Body2" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
+    </style>
+
+    <style name="TextAppearance.App.Caption" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_hint</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+    </style>
+    
+    <style name="TextAppearance.App.Label" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+    
+    <style name="TextAppearance.App.StatValue" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+    
+    <style name="TextAppearance.App.StatLabel" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- BUTTON STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <style name="Widget.App.Button" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="Widget.App.Button.Secondary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/accent</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="Widget.App.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/primary</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
+    <style name="Widget.App.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SHAPE STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SLIDER & RATING STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <style name="Widget.App.RatingSlider" parent="Widget.Material3.Slider">
-        <item name="trackColorActive">@color/primary</item>
+        <item name="trackColorActive">@color/accent</item>
         <item name="trackColorInactive">@color/surface_variant</item>
         <item name="thumbColor">@color/accent</item>
+        <item name="tickColorActive">@color/accent_light</item>
     </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- NAVIGATION DRAWER STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <style name="Widget.App.NavigationView" parent="Widget.Material3.NavigationView">
+        <item name="itemIconTint">@color/nav_drawer_icon_color</item>
+        <item name="itemTextColor">@color/nav_drawer_text_color</item>
+        <item name="itemShapeFillColor">@color/nav_drawer_item_bg</item>
+        <item name="itemShapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- DIALOG STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <style name="Widget.App.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.MediumComponent</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SWITCH/TOGGLE STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <style name="Widget.App.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/switch_thumb_color</item>
+        <item name="trackTint">@color/switch_track_color</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- FAB SHAPE STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <style name="ShapeAppearance.App.FAB" parent="ShapeAppearance.Material3.Corner.Full">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">28dp</item>
+    </style>
+
 </resources>

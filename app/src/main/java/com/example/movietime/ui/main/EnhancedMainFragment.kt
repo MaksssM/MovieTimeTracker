@@ -1,10 +1,15 @@
 package com.example.movietime.ui.main
 
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -40,7 +45,12 @@ class EnhancedMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Postpone transition until layout is ready
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+
         setupClickListeners()
+        setupCardPressEffects()
         observeViewModel()
         loadData()
         animateEntranceElements()
@@ -118,6 +128,17 @@ class EnhancedMainFragment : Fragment() {
                 updateStatistics(stats)
             }
         }
+
+        // Observe errors
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.error.collect { error ->
+                error?.let {
+                    // Don't show Snackbar for errors - just log them
+                    android.util.Log.w("EnhancedMainFragment", "Error: $it")
+                    viewModel.clearError()
+                }
+            }
+        }
     }
 
     private fun updateStatistics(stats: DetailedStatistics) {
@@ -165,27 +186,107 @@ class EnhancedMainFragment : Fragment() {
     }
 
     private fun animateEntranceElements() {
+        // Initial state - hide elements
         val elementsToAnimate = listOf(
             binding.cardWatched,
             binding.cardPlanned,
-            binding.cardWatching
+            binding.cardWatching,
+            binding.btnSearchMovies,
+            binding.btnTrending,
+            binding.btnUpcomingReleases,
+            binding.btnFriends
         )
 
-        elementsToAnimate.forEachIndexed { index, view ->
+        elementsToAnimate.forEach { view ->
             view.alpha = 0f
-            view.translationY = 100f
+            view.scaleX = 0.8f
+            view.scaleY = 0.8f
+            view.translationY = 50f
+        }
 
+        // Animate FAB
+        binding.fabQuickAdd.alpha = 0f
+        binding.fabQuickAdd.scaleX = 0f
+        binding.fabQuickAdd.scaleY = 0f
+
+        // Staggered animation for cards
+        elementsToAnimate.forEachIndexed { index, view ->
             viewLifecycleOwner.lifecycleScope.launch {
-                delay(index * 100L)
-                ObjectAnimator.ofFloat(view, "alpha", 0f, 1f).apply {
+                delay(100L + index * 80L)
+                
+                val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.8f, 1f)
+                val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.8f, 1f)
+                val alpha = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f)
+                val translateY = ObjectAnimator.ofFloat(view, "translationY", 50f, 0f)
+                
+                AnimatorSet().apply {
+                    playTogether(scaleX, scaleY, alpha, translateY)
                     duration = 400
+                    interpolator = OvershootInterpolator(1.2f)
                     start()
                 }
-                ObjectAnimator.ofFloat(view, "translationY", 100f, 0f).apply {
-                    duration = 400
-                    interpolator = DecelerateInterpolator()
-                    start()
+            }
+        }
+
+        // FAB bounce animation
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(600L)
+            
+            val scaleX = ObjectAnimator.ofFloat(binding.fabQuickAdd, "scaleX", 0f, 1.2f, 1f)
+            val scaleY = ObjectAnimator.ofFloat(binding.fabQuickAdd, "scaleY", 0f, 1.2f, 1f)
+            val alpha = ObjectAnimator.ofFloat(binding.fabQuickAdd, "alpha", 0f, 1f)
+            
+            AnimatorSet().apply {
+                playTogether(scaleX, scaleY, alpha)
+                duration = 500
+                interpolator = OvershootInterpolator(2f)
+                start()
+            }
+        }
+    }
+
+    private fun setupCardPressEffects() {
+        val cardsWithPressEffect = listOf(
+            binding.cardWatched,
+            binding.cardPlanned,
+            binding.cardWatching,
+            binding.btnSearchMovies,
+            binding.btnTrending,
+            binding.btnUpcomingReleases,
+            binding.btnFriends
+        )
+
+        cardsWithPressEffect.forEach { card ->
+            card.setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        animatePress(v, true)
+                    }
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                        animatePress(v, false)
+                    }
                 }
+                false // Don't consume the event - let click listener handle it
+            }
+        }
+    }
+
+    private fun animatePress(view: View, isPressed: Boolean) {
+        val scale = if (isPressed) 0.95f else 1f
+        val elevation = if (isPressed) 2f else 8f
+        
+        view.animate()
+            .scaleX(scale)
+            .scaleY(scale)
+            .setDuration(100)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .start()
+            
+        // For MaterialCardViews, also animate elevation
+        if (view is com.google.android.material.card.MaterialCardView) {
+            ObjectAnimator.ofFloat(view, "cardElevation", view.cardElevation, elevation).apply {
+                duration = 100
+                start()
             }
         }
     }

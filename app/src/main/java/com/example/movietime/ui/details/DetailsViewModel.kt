@@ -21,12 +21,18 @@ class DetailsViewModel @Inject constructor(
     private val _item = MutableLiveData<Any?>()
     val item: LiveData<Any?> = _item
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun loadMovie(movieId: Int) {
         viewModelScope.launch {
             try {
+                android.util.Log.d("DetailsViewModel", "Loading movie with ID: $movieId")
                 val response = repository.getMovieDetails(movieId)
+                android.util.Log.d("DetailsViewModel", "Movie loaded successfully: ${response.title}, runtime=${response.runtime}")
                 _item.value = response
             } catch (e: Exception) {
+                android.util.Log.e("DetailsViewModel", "Failed to load movie: ${e.message}", e)
                 _item.value = null
             }
         }
@@ -35,9 +41,12 @@ class DetailsViewModel @Inject constructor(
     fun loadTvShow(tvId: Int) {
         viewModelScope.launch {
             try {
+                android.util.Log.d("DetailsViewModel", "Loading TV show with ID: $tvId")
                 val response = repository.getTvShowDetails(tvId)
+                android.util.Log.d("DetailsViewModel", "TV show loaded successfully: ${response.name}")
                 _item.value = response
             } catch (e: Exception) {
+                android.util.Log.e("DetailsViewModel", "Failed to load TV show: ${e.message}", e)
                 _item.value = null
             }
         }
@@ -65,6 +74,58 @@ class DetailsViewModel @Inject constructor(
                 callback(true)
             } catch (e: Exception) {
                 android.util.Log.e("DetailsViewModel", "Failed to add watched item: ${e.message}", e)
+                callback(false)
+            }
+        }
+    }
+
+    // Check if item exists in planned list
+    fun isItemPlanned(id: Int, mediaType: String, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val found = repository.getPlannedItemById(id, mediaType)
+                callback(found != null)
+            } catch (e: Exception) {
+                callback(false)
+            }
+        }
+    }
+
+    // Add item to planned list
+    fun addToPlanned(item: WatchedItem, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                repository.addToPlanned(item)
+                android.util.Log.d("DetailsViewModel", "Successfully added to planned: ${item.id}")
+                callback(true)
+            } catch (e: Exception) {
+                android.util.Log.e("DetailsViewModel", "Failed to add to planned: ${e.message}", e)
+                callback(false)
+            }
+        }
+    }
+
+    // Check if item exists in watching list
+    fun isItemWatching(id: Int, mediaType: String, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val found = repository.getWatchingItemById(id, mediaType)
+                callback(found != null)
+            } catch (e: Exception) {
+                callback(false)
+            }
+        }
+    }
+
+    // Add item to watching list
+    fun addToWatching(item: WatchedItem, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                repository.addToWatching(item)
+                android.util.Log.d("DetailsViewModel", "Successfully added to watching: ${item.id}")
+                callback(true)
+            } catch (e: Exception) {
+                android.util.Log.e("DetailsViewModel", "Failed to add to watching: ${e.message}", e)
                 callback(false)
             }
         }

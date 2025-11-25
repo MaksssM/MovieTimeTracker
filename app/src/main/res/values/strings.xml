@@ -25,6 +25,7 @@
     <string name="added_to_watched_toast">Додано до переглянутих</string>
     <string name="add_failed">Не вдалося додати</string>
     <string name="data_not_loaded">Дані ще не завантажені</string>
+    <string name="error_loading_data">Помилка завантаження даних</string>
     <string name="unknown_media">Невідомий тип медіа</string>
     <string name="poster_description">Постер фільму</string>
 
@@ -48,6 +49,15 @@
     <string name="browse_content">Переглянути контент</string>
     <string name="add_to_planned">Додати до запланованих</string>
     <string name="loading">Завантаження…</string>
+
+    <!-- Category buttons -->
+    <string name="watched">Переглянуто</string>
+    <string name="watching">Дивлюсь</string>
+    <string name="added_to_planned">Додано до запланованих</string>
+    <string name="added_to_watching">Додано до "Дивлюсь"</string>
+    <string name="already_planned">Вже у запланованих</string>
+    <string name="already_watching">Вже у "Дивлюсь"</string>
+
     <string name="planned_movies_count">Заплановані фільми: %d</string>
     <string name="planned_tv_shows_count">Заплановані серіали: %d</string>
     <string name="planned_content_count">Запланований контент: %d</string>
@@ -55,6 +65,7 @@
     <string name="this_month">Цього місяця</string>
     <string name="quick_stats">Швидка статистика</string>
     <string name="avg_rating">Середній рейтинг</string>
+    <string name="rating_short">Рейтинг</string>
     <string name="categories">Категорії</string>
     <string name="quick_actions">Швидкі дії</string>
     <string name="trending">Тренди</string>
@@ -63,7 +74,6 @@
     <string name="recent_activity">Недавня активність</string>
     <string name="quick_add">Швидке додавання</string>
 
-    <string name="watching">Дивлюсь</string>
     <string name="watching_count">Дивлюсь: %d</string>
     <string name="add_to_watching">Додати до списку "Дивлюсь"</string>
     <string name="remove_from_watching">Видалити зі списку "Дивлюсь"</string>
@@ -143,4 +153,57 @@
 
     <!-- Settings -->
     <string name="language_changed">Мову змінено</string>
+
+    <!-- Empty states -->
+    <string name="no_watched_content">Нічого не переглянуто</string>
+    <string name="start_watching_hint">Почніть переглядати фільми та серіали</string>
+
+    <!-- About -->
+    <string name="about_title">Про додаток</string>
+    <string name="app_version">Версія %s</string>
+    <string name="clear_cache">Очистити кеш</string>
+    <string name="clear_cache_success">Кеш очищено</string>
+    <string name="data_management">Керування даними</string>
+    <string name="export_data">Експортувати дані</string>
+    <string name="import_data">Імпортувати дані</string>
+    <string name="clear_all_data">Очистити всі дані</string>
+    <string name="clear_all_data_confirm">Ви впевнені, що хочете видалити всі дані? Цю дію не можна скасувати.</string>
+    <string name="cancel">Скасувати</string>
+    <string name="confirm">Підтвердити</string>
+    <string name="notifications_title">Сповіщення</string>
+    <string name="enable_notifications">Увімкнути сповіщення</string>
+    <string name="notification_new_releases">Нові релізи</string>
+    <string name="notification_reminders">Нагадування</string>
+
+    <!-- New Settings Strings -->
+    <string name="settings_appearance">Зовнішній вигляд</string>
+    <string name="settings_content">Контент</string>
+    <string name="tmdb_content_language">Мова контенту TMDB</string>
+    <string name="tmdb_content_language_desc">Мова для опису фільмів та серіалів</string>
+    <string name="show_ratings">Показувати рейтинги</string>
+    <string name="show_ratings_desc">Відображати рейтинг на картках</string>
+    <string name="compact_mode">Компактний режим</string>
+    <string name="compact_mode_desc">Більше контенту на екрані</string>
+    <string name="autoplay_trailers">Автовідтворення трейлерів</string>
+    <string name="autoplay_trailers_desc">Автоматично відтворювати трейлери</string>
+    <string name="calculating">Обчислення…</string>
+    <string name="export_data_desc">Зберегти дані у файл</string>
+    <string name="clear_all_data_desc">Видалити всю історію та списки</string>
+    <string name="version_placeholder">Версія 1.0.0</string>
+    <string name="app_description">Ваш особистий трекер фільмів та серіалів. Відстежуйте, що ви дивитесь, плануєте дивитись та вже подивились.</string>
+    <string name="powered_by_tmdb">Працює на базі TMDB API</string>
+    <string name="cache_size_format">%s використано</string>
+    <string name="app_description_short">Трекер фільмів та серіалів</string>
+
+    <!-- New Modern UI Strings -->
+    <string name="welcome_back">Вітаємо назад,</string>
+    <string name="currently_in_progress">Зараз у процесі</string>
+    <string name="premieres">Прем\'єри</string>
+    <string name="new_releases">Новинки</string>
+    <string name="activity_added_planned">Додано до запланованих</string>
+    <string name="activity_started_series">Почали дивитись серіал</string>
+    <string name="two_hours_ago">2 години тому</string>
+    <string name="yesterday">Вчора</string>
+    <string name="three_days_ago">3 дні тому</string>
+    <string name="text_on_dark">@android:color/white</string>
 </resources>

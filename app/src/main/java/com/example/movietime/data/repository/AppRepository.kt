@@ -201,11 +201,45 @@ class AppRepository @Inject constructor(
 
     // Details endpoints return single objects
     suspend fun getMovieDetails(movieId: Int, language: String = "en-US"): MovieResult {
-        return api.getMovieDetails(movieId, apiKey, language)
+        Log.d("AppRepo", "getMovieDetails: movieId=$movieId, apiKey=${apiKey.take(10)}..., language=$language")
+        try {
+            val result = api.getMovieDetails(movieId, apiKey, language)
+            Log.d("AppRepo", "getMovieDetails success: title=${result.title}, runtime=${result.runtime}")
+            return result
+        } catch (e: retrofit2.HttpException) {
+            Log.e("AppRepo", "HTTP Error ${e.code()}: ${e.message()}", e)
+            throw e
+        } catch (e: java.net.UnknownHostException) {
+            Log.e("AppRepo", "Network Error: Cannot resolve host api.themoviedb.org - check internet connection", e)
+            throw e
+        } catch (e: java.net.SocketTimeoutException) {
+            Log.e("AppRepo", "Network Error: Connection timeout - check internet connection", e)
+            throw e
+        } catch (e: Exception) {
+            Log.e("AppRepo", "getMovieDetails failed: ${e.javaClass.simpleName} - ${e.message}", e)
+            throw e
+        }
     }
 
     suspend fun getTvShowDetails(tvId: Int, language: String = "en-US"): TvShowResult {
-        return api.getTvShowDetails(tvId, apiKey, language)
+        Log.d("AppRepo", "getTvShowDetails: tvId=$tvId, apiKey=${apiKey.take(10)}..., language=$language")
+        try {
+            val result = api.getTvShowDetails(tvId, apiKey, language)
+            Log.d("AppRepo", "getTvShowDetails success: name=${result.name}")
+            return result
+        } catch (e: retrofit2.HttpException) {
+            Log.e("AppRepo", "HTTP Error ${e.code()}: ${e.message()}", e)
+            throw e
+        } catch (e: java.net.UnknownHostException) {
+            Log.e("AppRepo", "Network Error: Cannot resolve host api.themoviedb.org - check internet connection", e)
+            throw e
+        } catch (e: java.net.SocketTimeoutException) {
+            Log.e("AppRepo", "Network Error: Connection timeout - check internet connection", e)
+            throw e
+        } catch (e: Exception) {
+            Log.e("AppRepo", "getTvShowDetails failed: ${e.javaClass.simpleName} - ${e.message}", e)
+            throw e
+        }
     }
 
     suspend fun getPopularMovies(language: String = "en-US"): MoviesResponse {

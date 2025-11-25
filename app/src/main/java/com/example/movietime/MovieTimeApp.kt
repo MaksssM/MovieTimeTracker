@@ -22,13 +22,18 @@ class MovieTimeApp : Application() {
             else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
 
-        // Apply saved locale (default: English)
-        val langPref = prefs.getString("pref_lang", "en") ?: "en"
+        // Apply saved locale (default: Ukrainian)
+        applyLocale()
+    }
+
+    private fun applyLocale() {
+        val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
         val locale = when (langPref) {
             "uk" -> Locale("uk")
             "ru" -> Locale("ru")
             "en" -> Locale("en")
-            else -> Locale("en")
+            else -> Locale("uk")
         }
         Locale.setDefault(locale)
         val res = resources
@@ -36,7 +41,11 @@ class MovieTimeApp : Application() {
         val localeList = android.os.LocaleList(locale)
         android.os.LocaleList.setDefault(localeList)
         config.setLocales(localeList)
-        // Create configuration context to apply locale for the app
-        createConfigurationContext(config)
+        @Suppress("DEPRECATION")
+        res.updateConfiguration(config, res.displayMetrics)
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
     }
 }

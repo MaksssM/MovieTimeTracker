@@ -43,12 +43,12 @@ class EnhancedSearchActivity : AppCompatActivity() {
 
     private fun applyLocale(context: Context): Context {
         val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val langPref = prefs.getString("pref_lang", "en") ?: "en"
+        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
         val locale = when (langPref) {
             "uk" -> Locale("uk")
             "ru" -> Locale("ru")
             "en" -> Locale("en")
-            else -> Locale("en")
+            else -> Locale("uk")
         }
         Locale.setDefault(locale)
         val config = Configuration(context.resources.configuration)
@@ -205,16 +205,21 @@ class EnhancedSearchActivity : AppCompatActivity() {
     }
 
     private fun navigateToDetails(item: Any) {
+        android.util.Log.d("EnhancedSearchActivity", "Navigating to details for item: $item")
         when (item) {
             is MovieResult -> {
+                android.util.Log.d("EnhancedSearchActivity", "Opening movie details: id=${item.id}, title=${item.title}")
                 val intent = Intent(this, DetailsActivity::class.java).apply {
-                    putExtra("MOVIE_ID", item.id)
+                    putExtra("ITEM_ID", item.id)
+                    putExtra("MEDIA_TYPE", "movie")
                 }
                 startActivity(intent)
             }
             is TvShowResult -> {
+                android.util.Log.d("EnhancedSearchActivity", "Opening TV show details: id=${item.id}, name=${item.name}")
                 val intent = Intent(this, TvDetailsActivity::class.java).apply {
-                    putExtra("TV_ID", item.id)
+                    putExtra("ITEM_ID", item.id)
+                    putExtra("MEDIA_TYPE", "tv")
                 }
                 startActivity(intent)
             }

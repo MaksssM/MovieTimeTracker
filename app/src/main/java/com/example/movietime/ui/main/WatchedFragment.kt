@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movietime.R
 import com.example.movietime.databinding.FragmentWatchedBinding
 import com.example.movietime.ui.adapters.ContentAdapter
@@ -17,7 +16,6 @@ import com.example.movietime.ui.details.DetailsActivity
 import com.example.movietime.ui.details.TvDetailsActivity
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WatchedFragment : Fragment() {
@@ -74,8 +72,8 @@ class WatchedFragment : Fragment() {
 
         binding.rvWatchedItems.apply {
             adapter = contentAdapter
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(false)
         }
     }
 
