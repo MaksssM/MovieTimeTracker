@@ -65,17 +65,41 @@ class TvDetailsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val tvId = intent.getIntExtra("ITEM_ID", -1)
+        Log.d(TAG, "Opening TV show details: id=$tvId")
 
         if (tvId != -1) {
+            Log.d(TAG, "Calling viewModel.loadTvShow($tvId)")
             viewModel.loadTvShow(tvId)
+        } else {
+            Log.e(TAG, "Invalid TV show ID: $tvId")
         }
 
         observeViewModel()
+        
+        // Додаємо плавну анімацію появи FAB
+        binding.fabAdd.apply {
+            alpha = 0f
+            scaleX = 0.8f
+            scaleY = 0.8f
+            animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(400)
+                .setInterpolator(android.view.animation.OvershootInterpolator())
+                .setStartDelay(200)
+                .start()
+        }
 
         // Обробник додавання в переглянуті
         binding.fabAdd.setOnClickListener {
+            Log.d(TAG, "FAB clicked for TV show")
             val current = viewModel.tvShow.value
+            Log.d(TAG, "Current tvShow value: ${if (current == null) "NULL" else current.name}, episodes: ${current?.numberOfEpisodes}")
+            
             if (current == null) {
+                Log.w(TAG, "Cannot add TV show: data is null")
+                // Дані ще завантажуються, показуємо повідомлення
                 Toast.makeText(this, getString(R.string.data_not_loaded), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -123,13 +147,7 @@ class TvDetailsActivity : AppCompatActivity() {
                         episodes = info.totalEpisodes
                         runtime = info.averageEpisodeRuntime
 
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                this@TvDetailsActivity,
-                                "Отримано точні дані: $episodes епізодів по $runtime хв",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                        // Дані отримано успішно
                     }
                     is TvShowEpisodeService.ExactRuntimeResult.Error -> {
                         Log.d(TAG, "Точний розрахунок не вдався, використовуємо оцінку")
@@ -149,13 +167,7 @@ class TvDetailsActivity : AppCompatActivity() {
                             }
                         }
 
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                this@TvDetailsActivity,
-                                "Використано розрахункові дані: $episodes епізодів по $runtime хв",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                        // Використано розрахункові дані
                     }
                 }
 
@@ -174,8 +186,7 @@ class TvDetailsActivity : AppCompatActivity() {
 
                 Log.d(TAG, "Додаємо серіал: episodes=$episodes, runtime=$runtime")
 
-                // Розраховуємо загальний час
-                val totalMinutes = episodes * runtime
+                // Розраховуємо загальний час за допомогою спеціалізованого методу
                 val runtimeInfo = Utils.autoComputeTvShowRuntime(tvShow)
 
                 // Створюємо елемент для збереження
@@ -184,12 +195,12 @@ class TvDetailsActivity : AppCompatActivity() {
                     title = tvShow.name ?: "",
                     posterPath = tvShow.posterPath,
                     releaseDate = tvShow.firstAirDate,
-                    runtime = totalMinutes,
+                    runtime = runtimeInfo.totalMinutes,
                     mediaType = "tv",
                     overview = tvShow.overview,
                     voteAverage = tvShow.voteAverage.toDouble(),
-                    episodeRuntime = runtime,
-                    totalEpisodes = episodes,
+                    episodeRuntime = runtimeInfo.episodeRuntime,
+                    totalEpisodes = runtimeInfo.episodes,
                     isOngoing = runtimeInfo.isOngoing,
                     status = tvShow.status,
                     lastUpdated = System.currentTimeMillis()
@@ -236,8 +247,11 @@ class TvDetailsActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
+        Log.d(TAG, "Setting up tvShow observer")
         viewModel.tvShow.observe(this) { tvShow ->
+            Log.d(TAG, "tvShow observer triggered: ${if (tvShow == null) "NULL" else tvShow.name}")
             if (tvShow != null) {
+                Log.d(TAG, "Displaying TV show: ${tvShow.name}, episodes: ${tvShow.numberOfEpisodes}, seasons: ${tvShow.numberOfSeasons}")
                 binding.toolbarLayout.title = tvShow.name ?: getString(R.string.unknown_media)
                 binding.tvOverview.text = tvShow.overview ?: getString(R.string.no_description_available)
 
@@ -247,13 +261,36 @@ class TvDetailsActivity : AppCompatActivity() {
                     placeholder(R.drawable.ic_placeholder)
                     error(R.drawable.ic_placeholder)
                 }
+                
+                // Анімація для контенту
+                binding.tvOverview.apply {
+                    alpha = 0f
+                    translationY = 30f
+                    animate()
+                        .alpha(1f)
+                        .translationY(0f)
+                        .setDuration(400)
+                        .setInterpolator(android.view.animation.DecelerateInterpolator())
+                        .setStartDelay(100)
+                        .start()
+                }
 
-                // Show season and episode counts
+                // Show season and episode counts (hide if null or 0)
                 val seasonCount = tvShow.numberOfSeasons ?: 0
-                binding.tvSeasonCount.text = seasonCount.toString()
+                if (seasonCount > 0) {
+                    binding.tvSeasonCount.text = seasonCount.toString()
+                    binding.tvSeasonCount.visibility = android.view.View.VISIBLE
+                } else {
+                    binding.tvSeasonCount.visibility = android.view.View.GONE
+                }
 
                 val totalEpisodes = tvShow.numberOfEpisodes ?: 0
-                binding.tvTotalEpisodes.text = totalEpisodes.toString()
+                if (totalEpisodes > 0) {
+                    binding.tvTotalEpisodes.text = totalEpisodes.toString()
+                    binding.tvTotalEpisodes.visibility = android.view.View.VISIBLE
+                } else {
+                    binding.tvTotalEpisodes.visibility = android.view.View.GONE
+                }
 
                 // Initial calculation from API (fallback)
                 updateTotalWatchTime(tvShow, viewModel.watchedItem.value)
@@ -281,20 +318,23 @@ class TvDetailsActivity : AppCompatActivity() {
             Log.d(TAG, "Using runtime from DB: ${watchedItem.runtime}")
             val formattedTime = Utils.formatMinutesToHoursAndMinutes(watchedItem.runtime)
             
-            val statusInfo = when {
-                watchedItem.isOngoing -> getString(R.string.status_ongoing)
-                watchedItem.status == "Ended" -> getString(R.string.status_ended)
-                watchedItem.status == "Canceled" -> getString(R.string.status_canceled)
-                else -> ""
+            binding.tvTotalWatchTime.text = formattedTime
+            binding.tvTotalWatchTime.visibility = android.view.View.VISIBLE
+            
+            // Анімація оновлення тексту
+            binding.tvTotalWatchTime.apply {
+                alpha = 0f
+                scaleX = 0.92f
+                scaleY = 0.92f
+                animate()
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(420)
+                    .setInterpolator(android.view.animation.OvershootInterpolator(0.8f))
+                    .start()
             }
             
-            val fullTimeText = if (statusInfo.isNotEmpty()) {
-                getString(R.string.time_with_status, formattedTime, statusInfo)
-            } else {
-                formattedTime
-            }
-            
-            binding.tvTotalWatchTime.text = fullTimeText
             return
         }
 
@@ -302,66 +342,25 @@ class TvDetailsActivity : AppCompatActivity() {
         val fallbackRuntimeInfo = Utils.autoComputeTvShowRuntime(tvShow)
         val fallbackTime = Utils.formatMinutesToHoursAndMinutes(fallbackRuntimeInfo.totalMinutes)
 
-        val statusInfo = when {
-            fallbackRuntimeInfo.isOngoing -> " • Серіал виходить"
-            tvShow.status == "Ended" -> " • Завершено"
-            tvShow.status == "Canceled" -> " • Скасовано"
-            else -> ""
+        binding.tvTotalWatchTime.text = fallbackTime
+        binding.tvTotalWatchTime.visibility = android.view.View.VISIBLE
+        
+        // Плавна анімація появи
+        binding.tvTotalWatchTime.apply {
+            alpha = 0f
+            scaleX = 0.92f
+            scaleY = 0.92f
+            animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(420)
+                .setInterpolator(android.view.animation.OvershootInterpolator(0.8f))
+                .start()
         }
 
-        binding.tvTotalWatchTime.text = "$fallbackTime (розрахунок)$statusInfo"
-
-        // Намагаємось покращити дані в фоновому режимі (необов'язково)
-        lifecycleScope.launch {
-            try {
-                Log.d(TAG, "Trying to improve display data...")
-
-                // Простий запит з коротким таймаутом
-                val apiResult = withTimeoutOrNull(5000) {
-                    episodeService.getQuickRuntimeEstimate(tvShow.id)
-                }
-
-                when (apiResult) {
-                    is TvShowEpisodeService.QuickEstimateResult.Success -> {
-                        val totalSeasons = tvShow.numberOfSeasons ?: 1
-                        val estimatedTotal = apiResult.firstSeasonTotalMinutes * totalSeasons
-                        val timeStr = Utils.formatMinutesToHoursAndMinutes(estimatedTotal)
-
-                        runOnUiThread {
-                            val statusInfo = when {
-                                fallbackRuntimeInfo.isOngoing -> getString(R.string.status_ongoing)
-                                tvShow.status == "Ended" -> getString(R.string.status_ended)
-                                tvShow.status == "Canceled" -> getString(R.string.status_canceled)
-                                else -> ""
-                            }
-
-                            val displayText = if (statusInfo.isNotEmpty()) {
-                                getString(R.string.time_with_status, timeStr, statusInfo)
-                            } else {
-                                timeStr
-                            }
-
-                            val precision = if (apiResult.episodesWithRuntime > 0) {
-                                getString(R.string.precision_with_api, apiResult.episodesWithRuntime)
-                            } else {
-                                getString(R.string.precision_calculated)
-                            }
-
-                            binding.tvTotalWatchTime.text = getString(R.string.time_with_precision, displayText, precision)
-                        }
-                    }
-                    null -> {
-                        Log.d(TAG, "API timeout, keeping calculation")
-                    }
-                    else -> {
-                        Log.d(TAG, "API data not available, keeping calculation")
-                    }
-                }
-            } catch (e: Exception) {
-                Log.d(TAG, "API improvement failed: ${e.message}")
-                // Користувач не побачить помилки - просто залишимо розрахункові дані
-            }
-        }
+        // Показуємо лише час без додаткових статусів чи уточнень
+        // (залишаємо базове форматування з updateTotalWatchTime)
     }
 
     override fun onSupportNavigateUp(): Boolean {

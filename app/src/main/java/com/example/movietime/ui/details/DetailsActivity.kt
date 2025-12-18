@@ -13,6 +13,7 @@ import com.example.movietime.databinding.ActivityDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.movietime.util.Utils
 import com.example.movietime.R
+import com.example.movietime.data.db.WatchedItem
 import android.util.Log
 import java.util.Locale
 
@@ -124,8 +125,8 @@ class DetailsActivity : AppCompatActivity() {
 
         when (category) {
             "watched" -> addToWatched(id, title, posterPath, releaseDate, runtimeFromApi, mType, current)
-            "planned" -> addToPlanned(id, title, posterPath, releaseDate, runtimeFromApi, mType)
-            "watching" -> addToWatching(id, title, posterPath, releaseDate, runtimeFromApi, mType)
+            "planned" -> addToPlanned(id, title, posterPath, releaseDate, runtimeFromApi, mType, current)
+            "watching" -> addToWatching(id, title, posterPath, releaseDate, runtimeFromApi, mType, current)
         }
     }
 
@@ -136,37 +137,60 @@ class DetailsActivity : AppCompatActivity() {
                     Toast.makeText(this, getString(R.string.already_watched), Toast.LENGTH_SHORT).show()
                 }
             } else {
-                val overview = when (current) {
-                    is com.example.movietime.data.model.MovieResult -> current.overview
-                    is com.example.movietime.data.model.TvShowResult -> current.overview
-                    else -> null
-                }
-                val voteAverage = when (current) {
-                    is com.example.movietime.data.model.MovieResult -> current.voteAverage?.toDouble()
-                    is com.example.movietime.data.model.TvShowResult -> current.voteAverage?.toDouble()
-                    else -> null
-                }
+                when (current) {
+                    is com.example.movietime.data.model.MovieResult -> {
+                        // Для фільмів все працює як раніше
+                        val watched = Utils.createWatchedItemFromMovie(
+                            id = id,
+                            title = title,
+                            name = null,
+                            posterPath = posterPath,
+                            releaseDate = releaseDate,
+                            runtime = runtimeFromApi,
+                            mediaType = mType,
+                            overview = current.overview,
+                            voteAverage = current.voteAverage?.toDouble(),
+                            userRating = null
+                        )
 
-                val watched = Utils.createWatchedItemFromMovie(
-                    id = id,
-                    title = title,
-                    name = null,
-                    posterPath = posterPath,
-                    releaseDate = releaseDate,
-                    runtime = runtimeFromApi,
-                    mediaType = mType,
-                    overview = overview,
-                    voteAverage = voteAverage,
-                    userRating = null  // Без оцінки
-                )
+                        viewModel.addWatchedItem(watched) { success ->
+                            runOnUiThread {
+                                if (success) {
+                                    disableButton(binding.btnWatched)
+                                    Toast.makeText(this, getString(R.string.added_to_watched_toast), Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+                    is com.example.movietime.data.model.TvShowResult -> {
+                        // Для серіалів використовуємо спеціальний метод з розрахунком
+                        val runtimeInfo = Utils.autoComputeTvShowRuntime(current)
+                        val watched = WatchedItem(
+                            id = id,
+                            title = title ?: "",
+                            posterPath = posterPath,
+                            releaseDate = releaseDate,
+                            runtime = runtimeInfo.totalMinutes,
+                            mediaType = mType,
+                            overview = current.overview,
+                            voteAverage = current.voteAverage?.toDouble(),
+                            episodeRuntime = runtimeInfo.episodeRuntime,
+                            totalEpisodes = runtimeInfo.episodes,
+                            isOngoing = runtimeInfo.isOngoing,
+                            status = current.status
+                        )
 
-                viewModel.addWatchedItem(watched) { success ->
-                    runOnUiThread {
-                        if (success) {
-                            disableButton(binding.btnWatched)
-                            Toast.makeText(this, getString(R.string.added_to_watched_toast), Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
+                        viewModel.addWatchedItem(watched) { success ->
+                            runOnUiThread {
+                                if (success) {
+                                    disableButton(binding.btnWatched)
+                                    Toast.makeText(this, getString(R.string.added_to_watched_toast), Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
                     }
                 }
@@ -174,25 +198,42 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun addToPlanned(id: Int, title: String?, posterPath: String?, releaseDate: String?, runtimeFromApi: Int?, mType: String) {
+    private fun addToPlanned(id: Int, title: String?, posterPath: String?, releaseDate: String?, runtimeFromApi: Int?, mType: String, current: Any) {
         viewModel.isItemPlanned(id, mType) { exists ->
             if (exists) {
                 runOnUiThread {
                     Toast.makeText(this, getString(R.string.already_planned), Toast.LENGTH_SHORT).show()
                 }
             } else {
-                val planned = Utils.createWatchedItemFromMovie(
-                    id = id,
-                    title = title,
-                    name = null,
-                    posterPath = posterPath,
-                    releaseDate = releaseDate,
-                    runtime = runtimeFromApi,
-                    mediaType = mType,
-                    overview = null,
-                    voteAverage = null,
-                    userRating = null
-                )
+                val planned = if (current is com.example.movietime.data.model.TvShowResult) {
+                    val runtimeInfo = Utils.autoComputeTvShowRuntime(current)
+                    WatchedItem(
+                        id = id,
+                        title = title ?: "",
+                        posterPath = posterPath,
+                        releaseDate = releaseDate,
+                        runtime = runtimeInfo.totalMinutes,
+                        mediaType = mType,
+                        overview = null,
+                        voteAverage = null,
+                        episodeRuntime = runtimeInfo.episodeRuntime,
+                        totalEpisodes = runtimeInfo.episodes,
+                        isOngoing = runtimeInfo.isOngoing
+                    )
+                } else {
+                    Utils.createWatchedItemFromMovie(
+                        id = id,
+                        title = title,
+                        name = null,
+                        posterPath = posterPath,
+                        releaseDate = releaseDate,
+                        runtime = runtimeFromApi,
+                        mediaType = mType,
+                        overview = null,
+                        voteAverage = null,
+                        userRating = null
+                    )
+                }
 
                 viewModel.addToPlanned(planned) { success ->
                     runOnUiThread {
@@ -208,25 +249,42 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun addToWatching(id: Int, title: String?, posterPath: String?, releaseDate: String?, runtimeFromApi: Int?, mType: String) {
+    private fun addToWatching(id: Int, title: String?, posterPath: String?, releaseDate: String?, runtimeFromApi: Int?, mType: String, current: Any) {
         viewModel.isItemWatching(id, mType) { exists ->
             if (exists) {
                 runOnUiThread {
                     Toast.makeText(this, getString(R.string.already_watching), Toast.LENGTH_SHORT).show()
                 }
             } else {
-                val watching = Utils.createWatchedItemFromMovie(
-                    id = id,
-                    title = title,
-                    name = null,
-                    posterPath = posterPath,
-                    releaseDate = releaseDate,
-                    runtime = runtimeFromApi,
-                    mediaType = mType,
-                    overview = null,
-                    voteAverage = null,
-                    userRating = null
-                )
+                val watching = if (current is com.example.movietime.data.model.TvShowResult) {
+                    val runtimeInfo = Utils.autoComputeTvShowRuntime(current)
+                    WatchedItem(
+                        id = id,
+                        title = title ?: "",
+                        posterPath = posterPath,
+                        releaseDate = releaseDate,
+                        runtime = runtimeInfo.totalMinutes,
+                        mediaType = mType,
+                        overview = null,
+                        voteAverage = null,
+                        episodeRuntime = runtimeInfo.episodeRuntime,
+                        totalEpisodes = runtimeInfo.episodes,
+                        isOngoing = runtimeInfo.isOngoing
+                    )
+                } else {
+                    Utils.createWatchedItemFromMovie(
+                        id = id,
+                        title = title,
+                        name = null,
+                        posterPath = posterPath,
+                        releaseDate = releaseDate,
+                        runtime = runtimeFromApi,
+                        mediaType = mType,
+                        overview = null,
+                        voteAverage = null,
+                        userRating = null
+                    )
+                }
 
                 viewModel.addToWatching(watching) { success ->
                     runOnUiThread {

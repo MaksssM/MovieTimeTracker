@@ -59,10 +59,13 @@ object Utils {
         val numberOfSeasons = tvShow.numberOfSeasons ?: 0
         val isOngoing = tvShow.status in listOf("Returning Series", "In Production") || tvShow.inProduction == true
 
+        Log.d(TAG, "Processing: totalEpisodes=$totalEpisodes, numberOfSeasons=$numberOfSeasons, status=${tvShow.status}")
+
         // Визначаємо тип серіалу та розумні дефолти
         val smartDefaults = when {
             // Міні-серіал (1 сезон, менше 10 епізодів)
-            numberOfSeasons == 1 && (totalEpisodes ?: 0) <= 10 -> {
+            numberOfSeasons == 1 && (totalEpisodes ?: 0) > 0 && (totalEpisodes ?: 0) <= 10 -> {
+                Log.d(TAG, "Detected: Mini-series")
                 TvShowDefaults(
                     episodeRuntime = episodeRuntime ?: 60, // Драматичні міні-серіали зазвичай 60 хв
                     episodes = totalEpisodes ?: 6, // Типовий міні-серіал 6 епізодів
@@ -71,6 +74,7 @@ object Utils {
             }
             // Серіал що виходить (статус активний)
             isOngoing -> {
+                Log.d(TAG, "Detected: Ongoing series")
                 TvShowDefaults(
                     episodeRuntime = episodeRuntime ?: estimateEpisodeRuntime(tvShow),
                     episodes = estimateCurrentEpisodes(tvShow),
@@ -79,6 +83,7 @@ object Utils {
             }
             // Закінчений серіал
             tvShow.status == "Ended" -> {
+                Log.d(TAG, "Detected: Ended series")
                 TvShowDefaults(
                     episodeRuntime = episodeRuntime ?: estimateEpisodeRuntime(tvShow),
                     episodes = totalEpisodes ?: estimateCompletedEpisodes(numberOfSeasons),
@@ -87,23 +92,48 @@ object Utils {
             }
             // Скасований серіал
             tvShow.status == "Canceled" -> {
+                Log.d(TAG, "Detected: Canceled series")
                 TvShowDefaults(
                     episodeRuntime = episodeRuntime ?: estimateEpisodeRuntime(tvShow),
                     episodes = totalEpisodes ?: estimateCanceledEpisodes(numberOfSeasons),
                     description = "Скасований серіал"
                 )
             }
+            // Серіал з відомою кількістю епізодів
+            totalEpisodes != null && totalEpisodes > 0 -> {
+                Log.d(TAG, "Detected: Series with known episodes=$totalEpisodes")
+                TvShowDefaults(
+                    episodeRuntime = episodeRuntime ?: estimateEpisodeRuntime(tvShow),
+                    episodes = totalEpisodes,
+                    description = "Серіал"
+                )
+            }
             // Інші випадки
             else -> {
+                Log.d(TAG, "Detected: Default series (estimating by seasons)")
                 TvShowDefaults(
                     episodeRuntime = episodeRuntime ?: 45, // Стандартний час
-                    episodes = totalEpisodes ?: (numberOfSeasons * 12), // Приблизно 12 епізодів на сезон
+                    episodes = if (numberOfSeasons > 0) numberOfSeasons * 12 else 12, // Приблизно 12 епізодів на сезон
                     description = "Серіал"
                 )
             }
         }
 
         val totalMinutes = smartDefaults.episodeRuntime * smartDefaults.episodes
+
+        // Валідація результатів
+        if (smartDefaults.episodeRuntime <= 0 || smartDefaults.episodes <= 0) {
+            Log.w(TAG, "⚠️ Invalid calculation: episodeRuntime=${smartDefaults.episodeRuntime}, episodes=${smartDefaults.episodes}")
+            // Дефолтні значення, якщо розрахунок не вдався
+            return TvShowRuntimeInfo(
+                episodeRuntime = 45,
+                episodes = 12,
+                totalMinutes = 45 * 12,
+                description = "Дефолт (помилка розрахунку)",
+                isEstimated = true,
+                isOngoing = isOngoing
+            )
+        }
 
         Log.d(TAG, "Smart defaults: ${smartDefaults.description}")
         Log.d(TAG, "Episode runtime: ${smartDefaults.episodeRuntime}, Episodes: ${smartDefaults.episodes}")
@@ -121,7 +151,7 @@ object Utils {
 
     private fun estimateEpisodeRuntime(tvShow: com.example.movietime.data.model.TvShowResult): Int {
         // Оцінка на основі жанрів, якщо доступно
-        val genres = tvShow.genreIds
+        val genres = tvShow.genreIds ?: emptyList()
         return when {
             genres.contains(35) -> 22 // Comedy - 22 хв
             genres.contains(18) -> 50 // Drama - 50 хв
