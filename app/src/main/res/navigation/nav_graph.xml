@@ -12,10 +12,10 @@
         <action
             android:id="@+id/action_watched_to_main"
             app:destination="@id/enhancedMainFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:enterAnim="@anim/fragment_enter_backwards"
+            app:exitAnim="@anim/fragment_exit_backwards"
+            app:popEnterAnim="@anim/fragment_enter_backwards"
+            app:popExitAnim="@anim/fragment_exit_backwards" />
     </fragment>
 
     <fragment
@@ -26,10 +26,10 @@
         <action
             android:id="@+id/action_main_to_watched_list"
             app:destination="@id/watchedFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right">
+            app:enterAnim="@anim/fragment_enter"
+            app:exitAnim="@anim/fragment_exit"
+            app:popEnterAnim="@anim/fragment_enter_backwards"
+            app:popExitAnim="@anim/fragment_exit_backwards">
             <argument
                 android:name="isMovie"
                 app:argType="boolean"
@@ -39,18 +39,18 @@
         <action
             android:id="@+id/action_main_to_trending"
             app:destination="@id/trendingFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:enterAnim="@anim/fragment_enter"
+            app:exitAnim="@anim/fragment_exit"
+            app:popEnterAnim="@anim/fragment_enter_backwards"
+            app:popExitAnim="@anim/fragment_exit_backwards" />
             
         <action
             android:id="@+id/action_main_to_settings"
             app:destination="@id/settingsFragment"
-            app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@anim/scale_fade_out"
-            app:popEnterAnim="@anim/scale_fade_in"
-            app:popExitAnim="@anim/slide_out_bottom" />
+            app:enterAnim="@anim/slide_up_bounce"
+            app:exitAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_up_bounce" />
     </fragment>
 
     <fragment
@@ -60,10 +60,10 @@
         <action
             android:id="@+id/action_trending_to_main"
             app:destination="@id/enhancedMainFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:enterAnim="@anim/fragment_enter_backwards"
+            app:exitAnim="@anim/fragment_exit_backwards"
+            app:popEnterAnim="@anim/fragment_enter_backwards"
+            app:popExitAnim="@anim/fragment_exit_backwards" />
     </fragment>
 
     <fragment
@@ -73,10 +73,10 @@
         <action
             android:id="@+id/action_settings_to_main"
             app:destination="@id/enhancedMainFragment"
-            app:enterAnim="@anim/scale_fade_in"
-            app:exitAnim="@anim/slide_out_bottom"
-            app:popEnterAnim="@anim/slide_in_bottom"
-            app:popExitAnim="@anim/scale_fade_out" />
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/slide_up_bounce"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_up_bounce" />
     </fragment>
 
 </navigation>

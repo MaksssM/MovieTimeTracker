@@ -72,11 +72,13 @@
 
     <!-- Bottom Navigation Style -->
     <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
-        <item name="backgroundTint">@color/surface</item>
-        <item name="itemIconTint">@color/primary</item>
+        <item name="backgroundTint">@color/surface_elevated</item>
+        <item name="itemIconTint">@color/secondary_text</item>
         <item name="itemTextColor">@color/secondary_text</item>
+        <item name="itemActiveTintColor">@color/primary</item>
         <item name="elevation">16dp</item>
         <item name="labelVisibilityMode">labeled</item>
+        <item name="android:paddingBottom">4dp</item>
     </style>
 
     <!-- Floating Action Button Style -->
