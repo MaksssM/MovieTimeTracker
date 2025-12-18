@@ -11,7 +11,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EnhancedMainViewModel @Inject constructor(
-    private val repository: SimpleEnhancedRepository
+    private val repository: SimpleEnhancedRepository,
+    private val recommendationService: com.example.movietime.service.RecommendationService
 ) : ViewModel() {
 
     private val _backgroundImage = MutableStateFlow<String?>(null)
@@ -27,7 +28,7 @@ class EnhancedMainViewModel @Inject constructor(
         return repository.getDetailedStatistics()
     }
 
-    fun getRecentActivities(): Flow<List<Activity>> {
+    fun getRecentActivities(): Flow<List<RecentActivityItem>> {
         return repository.getRecentActivities()
     }
 
@@ -70,6 +71,26 @@ class EnhancedMainViewModel @Inject constructor(
     }
 
     // Removed loadUpcomingReleases for now - will implement later
+
+    private val _recommendations = MutableStateFlow<List<Any>>(emptyList())
+    val recommendations: StateFlow<List<Any>> = _recommendations.asStateFlow()
+
+    fun loadRecommendations() {
+        viewModelScope.launch {
+            try {
+                // Fetch personalized recommendations
+                val recs = recommendationService.getPersonalizedRecommendations()
+                
+                // Combine movies and tv shows into a single list
+                val allRecs = (recs.movies + recs.tvShows).shuffled()
+                
+                _recommendations.value = allRecs
+            } catch (e: Exception) {
+                // Silently fail for recommendations, don't show error
+                _recommendations.value = emptyList()
+            }
+        }
+    }
 
     fun clearError() {
         _error.value = null

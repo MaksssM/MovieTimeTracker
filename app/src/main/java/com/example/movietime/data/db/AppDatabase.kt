@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [WatchedItem::class, PlannedItem::class, WatchingItem::class],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -87,6 +87,17 @@ abstract class AppDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Add userRating column to watched_items table
                 database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `userRating` REAL DEFAULT NULL")
+            }
+        }
+
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add TV show specific columns to watched_items table
+                database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `episodeRuntime` INTEGER DEFAULT NULL")
+                database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `totalEpisodes` INTEGER DEFAULT NULL")
+                database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `isOngoing` INTEGER NOT NULL DEFAULT 0")
+                database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `status` TEXT DEFAULT NULL")
+                database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `lastUpdated` INTEGER DEFAULT NULL")
             }
         }
     }

@@ -39,5 +39,45 @@ data class TvShowResult(
     @SerializedName("vote_average") val voteAverage: Float = 0f,
     @SerializedName("vote_count") val voteCount: Int = 0,
     val popularity: Float = 0f,
-    @SerializedName("genre_ids") val genreIds: List<Int> = emptyList()
+    @SerializedName("genre_ids") val genreIds: List<Int> = emptyList(),
+    // Додаткові поля для кращого визначення статусу та часу
+    val status: String? = null, // "Returning Series", "Ended", "In Production", "Canceled"
+    @SerializedName("in_production") val inProduction: Boolean? = null,
+    val seasons: List<TvSeason>? = null
 )
+
+data class TvSeason(
+    @SerializedName("air_date") val airDate: String?,
+    @SerializedName("episode_count") val episodeCount: Int?,
+    val id: Int?,
+    val name: String?,
+    val overview: String?,
+    @SerializedName("poster_path") val posterPath: String?,
+    @SerializedName("season_number") val seasonNumber: Int?
+)
+
+// Детальна інформація про сезон з епізодами
+data class TvSeasonDetails(
+    @SerializedName("air_date") val airDate: String?,
+    val episodes: List<TvEpisodeDetails>?,
+    val id: Int?,
+    val name: String?,
+    val overview: String?,
+    @SerializedName("poster_path") val posterPath: String?,
+    @SerializedName("season_number") val seasonNumber: Int?
+)
+
+// Детальна інформація про епізод з тривалістю
+data class TvEpisodeDetails(
+    @SerializedName("air_date") val airDate: String?,
+    @SerializedName("episode_number") val episodeNumber: Int?,
+    val id: Int?,
+    val name: String?,
+    val overview: String?,
+    @SerializedName("runtime") val runtime: Int?, // Тривалість епізоду в хвилинах!
+    @SerializedName("season_number") val seasonNumber: Int?,
+    @SerializedName("still_path") val stillPath: String?,
+    @SerializedName("vote_average") val voteAverage: Float?,
+    @SerializedName("vote_count") val voteCount: Int?
+)
+

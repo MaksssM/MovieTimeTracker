@@ -22,6 +22,7 @@
     <string name="add_to_watched">Додати до переглянутих</string>
     <string name="added">Додано</string>
     <string name="already_watched">Вже у переглянутих</string>
+    <string name="edit_watched_data">Редагувати дані</string>
     <string name="added_to_watched_toast">Додано до переглянутих</string>
     <string name="add_failed">Не вдалося додати</string>
     <string name="data_not_loaded">Дані ще не завантажені</string>
@@ -49,6 +50,7 @@
     <string name="browse_content">Переглянути контент</string>
     <string name="add_to_planned">Додати до запланованих</string>
     <string name="loading">Завантаження…</string>
+    <string name="loading_show_data">Отримання даних про серіал…</string>
 
     <!-- Category buttons -->
     <string name="watched">Переглянуто</string>
@@ -72,6 +74,8 @@
     <string name="movie_premieres">Майбутні прем\'єри</string>
     <string name="friends">Друзі</string>
     <string name="recent_activity">Недавня активність</string>
+    <string name="nav_library">Бібліотека</string>
+    <string name="nav_discover">Огляд</string>
     <string name="quick_add">Швидке додавання</string>
 
     <string name="watching_count">Дивлюсь: %d</string>
@@ -110,6 +114,9 @@
     <string name="release_date">Дата виходу</string>
     <string name="rate_content">Оцініть контент</string>
     <string name="skip_rating">Пропустити оцінку</string>
+    <string name="no_title">Без назви</string>
+    <string name="media_type_movie">🎬 Фільм</string>
+    <string name="media_type_tv_show">📺 Серіал</string>
     <string name="no_description_available">Опис недоступний</string>
 
     <!-- Search filters -->
@@ -200,10 +207,20 @@
     <string name="currently_in_progress">Зараз у процесі</string>
     <string name="premieres">Прем\'єри</string>
     <string name="new_releases">Новинки</string>
+    <string name="add_movie">Додати фільм</string>
     <string name="activity_added_planned">Додано до запланованих</string>
     <string name="activity_started_series">Почали дивитись серіал</string>
     <string name="two_hours_ago">2 години тому</string>
     <string name="yesterday">Вчора</string>
     <string name="three_days_ago">3 дні тому</string>
     <string name="text_on_dark">@android:color/white</string>
+
+    <!-- TV Show Status -->
+    <string name="status_ongoing"> • Серіал виходить</string>
+    <string name="status_ended"> • Завершено</string>
+    <string name="status_canceled"> • Скасовано</string>
+    <string name="time_with_status">%1$s%2$s</string>
+    <string name="precision_with_api">(з API: %d епізодів)</string>
+    <string name="precision_calculated">(розрахунок)</string>
+    <string name="time_with_precision">%1$s %2$s</string>
 </resources>

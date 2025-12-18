@@ -13,6 +13,8 @@ import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.MoviesResponse
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.model.TvShowsResponse
+import com.example.movietime.data.model.TvSeasonDetails
+import com.example.movietime.data.model.TvEpisodeDetails
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.awaitAll
@@ -262,6 +264,82 @@ class AppRepository @Inject constructor(
         return dao.getCount()
     }
 
+    suspend fun getAllWatchedSync(): List<WatchedItem> {
+        return dao.getAllSync()
+    }
+
+    /**
+     * Отримує детальну інформацію про сезон з усіма епізодами та їх тривалістю
+     */
+    suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int, language: String = "uk-UA"): TvSeasonDetails {
+        Log.d("AppRepo", "getSeasonDetails: tvId=$tvId, seasonNumber=$seasonNumber, language=$language")
+        Log.d("AppRepo", "API Key length: ${apiKey.length} (${apiKey.take(8)}...)")
+
+        return try {
+            Log.d("AppRepo", "Making API request to TMDB...")
+            val result = api.getSeasonDetails(tvId, seasonNumber, apiKey, language)
+            Log.d("AppRepo", "getSeasonDetails success:")
+            Log.d("AppRepo", "- Season name: ${result.name}")
+            Log.d("AppRepo", "- Episodes count: ${result.episodes?.size}")
+            Log.d("AppRepo", "- Season number: ${result.seasonNumber}")
+
+            result.episodes?.forEachIndexed { index, episode ->
+                if (index < 3) { // Log only first 3 episodes to avoid spam
+                    Log.d("AppRepo", "  Episode ${episode.episodeNumber}: ${episode.name}, runtime=${episode.runtime}")
+                }
+            }
+
+            result
+        } catch (e: retrofit2.HttpException) {
+            Log.e("AppRepo", "HTTP Error ${e.code()}: ${e.message()}")
+            Log.e("AppRepo", "Response: ${e.response()?.errorBody()?.string()}")
+
+            // Fallback to English if Ukrainian fails and it's a 404
+            if (language != "en-US" && e.code() == 404) {
+                Log.d("AppRepo", "Retrying with English due to 404...")
+                try {
+                    api.getSeasonDetails(tvId, seasonNumber, apiKey, "en-US")
+                } catch (enE: Exception) {
+                    Log.e("AppRepo", "English fallback also failed: ${enE.message}")
+                    throw enE
+                }
+            } else {
+                throw e
+            }
+        } catch (e: java.net.SocketTimeoutException) {
+            Log.e("AppRepo", "Timeout getting season details", e)
+            throw Exception("Таймаут API: перевірте інтернет з'єднання")
+        } catch (e: java.net.UnknownHostException) {
+            Log.e("AppRepo", "Network error getting season details", e)
+            throw Exception("Немає інтернет з'єднання")
+        } catch (e: Exception) {
+            Log.e("AppRepo", "getSeasonDetails failed: ${e.javaClass.simpleName}: ${e.message}", e)
+            throw e
+        }
+    }
+
+    /**
+     * Отримує детальну інформацію про всі сезони серіалу з епізодами
+     */
+    suspend fun getAllSeasonsDetails(tvId: Int, totalSeasons: Int, language: String = "uk-UA"): List<TvSeasonDetails> {
+        Log.d("AppRepo", "getAllSeasonsDetails: tvId=$tvId, totalSeasons=$totalSeasons")
+        val seasons = mutableListOf<TvSeasonDetails>()
+
+        for (seasonNumber in 1..totalSeasons) {
+            try {
+                val seasonDetails = getSeasonDetails(tvId, seasonNumber, language)
+                seasons.add(seasonDetails)
+                Log.d("AppRepo", "Loaded season $seasonNumber with ${seasonDetails.episodes?.size} episodes")
+            } catch (e: Exception) {
+                Log.e("AppRepo", "Failed to load season $seasonNumber: ${e.message}")
+                // Continue loading other seasons even if one fails
+            }
+        }
+
+        Log.d("AppRepo", "getAllSeasonsDetails completed: loaded ${seasons.size} seasons")
+        return seasons
+    }
+
     suspend fun addWatchedItem(item: WatchedItem) {
         Log.d("AppRepository", "Inserting watched item: id=${item.id}, title=${item.title}, mediaType=${item.mediaType}, runtime=${item.runtime}")
         try {
@@ -405,5 +483,55 @@ class AppRepository @Inject constructor(
     @Suppress("unused")
     suspend fun getTotalWatchingCount(): Int {
         return watchingDao.getCount()
+    }
+
+    suspend fun getRecentActivity(limit: Int = 10): List<com.example.movietime.data.model.RecentActivityItem> = coroutineScope {
+        val watchedDeferred = async { dao.getAllSync() }
+        val plannedDeferred = async { plannedDao.getAllSync() }
+        val watchingDeferred = async { watchingDao.getAllSync() }
+
+        val watched = watchedDeferred.await()
+        val planned = plannedDeferred.await()
+        val watching = watchingDeferred.await()
+
+        val allItems = mutableListOf<com.example.movietime.data.model.RecentActivityItem>()
+
+        // Planned & Watching have timestamps
+        allItems.addAll(planned.map { 
+            com.example.movietime.data.model.RecentActivityItem.Planned(it.id, it.title, it.dateAdded, it.mediaType) 
+        })
+        allItems.addAll(watching.map { 
+            com.example.movietime.data.model.RecentActivityItem.Watching(it.id, it.title, it.dateAdded, it.mediaType) 
+        })
+        
+        // Watched: use lastUpdated timestamp or 0 if missing
+        // We take the LAST items from the list as "recent" (insertion order)
+        val recentWatched = watched.reversed().take(limit)
+        allItems.addAll(recentWatched.map {
+            com.example.movietime.data.model.RecentActivityItem.Watched(it.id, it.title, it.lastUpdated ?: 0L, it.mediaType)
+        })
+
+        // Sort by timestamp desc to show actual most recent items at the top
+        allItems.sortedByDescending { it.timestamp }.take(limit)
+    }
+
+    // --- Recommendations & Similar Content ---
+
+    suspend fun getMovieRecommendations(movieId: Int, language: String = "uk-UA"): List<MovieResult> {
+        return try {
+            val response = api.getMovieRecommendations(movieId, apiKey, language)
+            response.results
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getTvShowRecommendations(tvId: Int, language: String = "uk-UA"): List<TvShowResult> {
+        return try {
+            val response = api.getTvShowRecommendations(tvId, apiKey, language)
+            response.results
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 }

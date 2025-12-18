@@ -24,6 +24,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.core.widget.addTextChangedListener
 import com.example.movietime.R
+import android.util.Log
 import java.util.*
 
 @AndroidEntryPoint
@@ -66,7 +67,7 @@ class SearchActivity : AppCompatActivity() {
         // If launched with a test query (adb), trigger search immediately for reliable testing
         intent?.getStringExtra("TEST_QUERY")?.let { testQ ->
             if (testQ.isNotBlank()) {
-                android.util.Log.d("SearchActivity", "TEST_QUERY received: $testQ")
+                Log.d("SearchActivity", "TEST_QUERY received: $testQ")
                 // populate UI for visibility
                 binding.etSearchQuery.setText(testQ)
                 // trigger search without debounce
@@ -121,21 +122,16 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun setupFilters() {
-        // Filter by type - встановлюємо перший фільтр як активний
-        binding.btnFilterAll.isSelected = true
-
+        // Filter by type - встановити слухачі без ручного оновлення UI (через спостерігач)
         binding.btnFilterAll.setOnClickListener {
-            updateFilterButtons(0)
             viewModel.setFilterType(SearchViewModel.FilterType.ALL)
         }
 
         binding.btnFilterMovies.setOnClickListener {
-            updateFilterButtons(1)
             viewModel.setFilterType(SearchViewModel.FilterType.MOVIES)
         }
 
         binding.btnFilterTv.setOnClickListener {
-            updateFilterButtons(2)
             viewModel.setFilterType(SearchViewModel.FilterType.TV_SHOWS)
         }
 
@@ -166,11 +162,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateFilterButtons(selected: Int) {
-        binding.btnFilterAll.isSelected = selected == 0
-        binding.btnFilterMovies.isSelected = selected == 1
-        binding.btnFilterTv.isSelected = selected == 2
-    }
+    // updateFilterButtons removed - handled by ChipGroup and ViewModel observer
 
     private fun updateActiveFiltersLabel() {
         val type = viewModel.filterType.value
@@ -206,8 +198,18 @@ class SearchActivity : AppCompatActivity() {
             } else {
                 binding.emptyLayout.visibility = View.GONE
                 binding.rvSearchResults.visibility = View.VISIBLE
-                val count = items.size
-                binding.tvResultCount.text = "Знайдено: $count"
+                
+                // Show breakdown of results by type
+                val movieCount = items.count { it is MovieResult }
+                val tvCount = items.count { it is TvShowResult }
+                val totalCount = items.size
+                
+                binding.tvResultCount.text = when {
+                    movieCount > 0 && tvCount > 0 -> "Знайдено: $totalCount (🎬 $movieCount / 📺 $tvCount)"
+                    movieCount > 0 -> "Знайдено: $movieCount 🎬"
+                    tvCount > 0 -> "Знайдено: $tvCount 📺"
+                    else -> "Знайдено: $totalCount"
+                }
             }
             searchAdapter.submitList(items)
             searchAdapter.updateQueryHighlight(binding.etSearchQuery.text?.toString().orEmpty())
@@ -270,8 +272,14 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.filterType.observe(this) { _ ->
+        viewModel.filterType.observe(this) { type ->
             updateActiveFiltersLabel()
+            // Sync UI state
+            when (type) {
+                SearchViewModel.FilterType.MOVIES -> binding.btnFilterMovies.isChecked = true
+                SearchViewModel.FilterType.TV_SHOWS -> binding.btnFilterTv.isChecked = true
+                else -> binding.btnFilterAll.isChecked = true
+            }
         }
         viewModel.sortByRating.observe(this) { _ ->
             updateActiveFiltersLabel()

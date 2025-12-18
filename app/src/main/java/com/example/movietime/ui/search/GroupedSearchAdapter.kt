@@ -80,7 +80,7 @@ class GroupedSearchAdapter(
         fun bind(item: Any) {
             when (item) {
                 is MovieResult -> {
-                    binding.tvTitle.text = item.title ?: "Без назви"
+                    binding.tvTitle.text = item.title ?: binding.root.context.getString(R.string.no_title)
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                     binding.ivPoster.load(posterUrl) {
                         crossfade(true)
@@ -93,12 +93,12 @@ class GroupedSearchAdapter(
                     } else {
                         "★ N/A"
                     }
-                    binding.tvMediaType.text = "🎬 Фільм"
+                    binding.tvMediaType.text = binding.root.context.getString(R.string.media_type_movie)
                     binding.tvOverview.text = item.overview?.takeIf { it.isNotBlank() }
-                        ?: "Опис не доступний"
+                        ?: binding.root.context.getString(R.string.no_description_available)
                 }
                 is TvShowResult -> {
-                    binding.tvTitle.text = item.name ?: "Без назви"
+                    binding.tvTitle.text = item.name ?: binding.root.context.getString(R.string.no_title)
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                     binding.ivPoster.load(posterUrl) {
                         crossfade(true)
@@ -111,9 +111,9 @@ class GroupedSearchAdapter(
                     } else {
                         "★ N/A"
                     }
-                    binding.tvMediaType.text = "📺 Серіал"
+                    binding.tvMediaType.text = binding.root.context.getString(R.string.media_type_tv_show)
                     binding.tvOverview.text = item.overview?.takeIf { it.isNotBlank() }
-                        ?: "Опис не доступний"
+                        ?: binding.root.context.getString(R.string.no_description_available)
                 }
             }
         }

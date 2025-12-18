@@ -78,7 +78,7 @@
             </com.google.android.material.textfield.TextInputLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Filter Chips with Gradient -->
+        <!-- Filter Chips with improved visual feedback -->
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,9 +98,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:text="@string/filter_all"
-                    android:textColor="@color/primary_text"
+                    android:textColor="@color/filter_chip_text_color"
                     android:fontFamily="sans-serif-medium"
-                    app:chipBackgroundColor="@drawable/bg_chip"
+                    app:chipBackgroundColor="@drawable/bg_filter_chip_selector"
                     app:checkedIconVisible="false"
                     android:checked="true" />
 
@@ -110,9 +110,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:text="@string/filter_movies"
-                    android:textColor="@color/primary_text"
+                    android:textColor="@color/filter_chip_text_color"
                     android:fontFamily="sans-serif-medium"
-                    app:chipBackgroundColor="@drawable/bg_chip"
+                    app:chipBackgroundColor="@drawable/bg_filter_chip_selector"
+                    app:chipIcon="@drawable/ic_movie_24"
+                    app:chipIconTint="@color/filter_chip_text_color"
                     app:checkedIconVisible="false" />
 
                 <com.google.android.material.chip.Chip
@@ -121,9 +123,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:text="@string/filter_tv_shows"
-                    android:textColor="@color/primary_text"
+                    android:textColor="@color/filter_chip_text_color"
                     android:fontFamily="sans-serif-medium"
-                    app:chipBackgroundColor="@drawable/bg_chip"
+                    app:chipBackgroundColor="@drawable/bg_filter_chip_selector"
+                    app:chipIcon="@drawable/ic_tv_24"
+                    app:chipIconTint="@color/filter_chip_text_color"
                     app:checkedIconVisible="false" />
 
                 <com.google.android.material.chip.Chip
@@ -132,11 +136,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:text="@string/sort_by_rating"
-                    android:textColor="@color/primary_text"
+                    android:textColor="@color/filter_chip_text_color"
                     android:fontFamily="sans-serif-medium"
-                    app:chipBackgroundColor="@drawable/bg_chip"
-                    app:chipIcon="@drawable/ic_filter"
-                    app:chipIconTint="@color/accent"
+                    app:chipBackgroundColor="@drawable/bg_filter_chip_selector"
+                    app:chipIcon="@drawable/ic_star_filled_24"
+                    app:chipIconTint="@color/filter_chip_text_color"
                     app:checkedIconVisible="false" />
 
                 <com.google.android.material.chip.Chip
@@ -145,11 +149,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:text="@string/sort_by_popularity"
-                    android:textColor="@color/primary_text"
+                    android:textColor="@color/filter_chip_text_color"
                     android:fontFamily="sans-serif-medium"
-                    app:chipBackgroundColor="@drawable/bg_chip"
-                    app:chipIcon="@drawable/ic_trending"
-                    app:chipIconTint="@color/accent"
+                    app:chipBackgroundColor="@drawable/bg_filter_chip_selector"
+                    app:chipIcon="@drawable/ic_trending_up_24"
+                    app:chipIconTint="@color/filter_chip_text_color"
                     app:checkedIconVisible="false" />
 
             </com.google.android.material.chip.ChipGroup>

@@ -12,5 +12,11 @@ data class WatchedItem(
     val mediaType: String,
     val overview: String? = null,
     val voteAverage: Double? = null,
-    val userRating: Float? = null
+    val userRating: Float? = null,
+    // Нові поля для серіалів
+    val episodeRuntime: Int? = null, // Тривалість одного епізоду
+    val totalEpisodes: Int? = null,  // Кількість епізодів
+    val isOngoing: Boolean = false,  // Чи серіал ще виходить
+    val status: String? = null,      // Статус серіалу
+    val lastUpdated: Long? = null    // Час останнього оновлення
 )

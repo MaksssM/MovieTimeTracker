@@ -111,6 +111,9 @@
     <string name="release_date">Release Date</string>
     <string name="rate_content">Rate Content</string>
     <string name="skip_rating">Skip Rating</string>
+    <string name="no_title">Untitled</string>
+    <string name="media_type_movie">🎬 Movie</string>
+    <string name="media_type_tv_show">📺 TV show</string>
     <string name="no_description_available">No description available</string>
 
     <!-- Search filters -->

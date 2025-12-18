@@ -111,6 +111,9 @@
     <string name="release_date">Дата выхода</string>
     <string name="rate_content">Оцените контент</string>
     <string name="skip_rating">Пропустить оценку</string>
+    <string name="no_title">Без названия</string>
+    <string name="media_type_movie">🎬 Фильм</string>
+    <string name="media_type_tv_show">📺 Сериал</string>
     <string name="no_description_available">Описание недоступно</string>
 
     <!-- Search filters -->

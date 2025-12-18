@@ -31,14 +31,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/ivPoster"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/poster_description"
-                android:background="@color/shimmer_base"
-                tools:src="@tools:sample/backgrounds/scenic" />
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/ivPoster"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/poster_description"
+                    android:background="@color/shimmer_base"
+                    tools:src="@tools:sample/backgrounds/scenic" />
+
+                <!-- Media Type Badge -->
+                <TextView
+                    android:id="@+id/tvMediaType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|start"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/bg_chip"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:textSize="9sp"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAllCaps="true"
+                    tools:text="TV" />
+
+            </FrameLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
