@@ -346,14 +346,14 @@ class SearchViewModel @Inject constructor(
 
     // Видалення дублювань результатів
     private fun removeDuplicates(items: List<Any>): List<Any> {
-        val seen = mutableSetOf<Int>()
+        val seen = mutableSetOf<String>()
         return items.filter { item ->
-            val id = when (item) {
-                is MovieResult -> item.id
-                is TvShowResult -> item.id
+            val key = when (item) {
+                is MovieResult -> "movie_${item.id}"
+                is TvShowResult -> "tv_${item.id}"
                 else -> return@filter true
             }
-            seen.add(id)
+            seen.add(key)
         }
     }
 

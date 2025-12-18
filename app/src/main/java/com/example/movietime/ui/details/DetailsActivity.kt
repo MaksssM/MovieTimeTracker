@@ -13,6 +13,7 @@ import com.example.movietime.databinding.ActivityDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.movietime.util.Utils
 import com.example.movietime.R
+import android.util.Log
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -20,6 +21,10 @@ class DetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailsBinding
     private val viewModel: DetailsViewModel by viewModels()
+
+    companion object {
+        private const val TAG = "DetailsActivity"
+    }
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(applyLocale(newBase))
@@ -260,10 +265,10 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.item.observe(this) { item ->
-            android.util.Log.d("DetailsActivity", "ViewModel item updated: $item")
+            Log.d(TAG, "ViewModel item updated: $item")
             when (item) {
                 is com.example.movietime.data.model.MovieResult -> {
-                    android.util.Log.d("DetailsActivity", "Displaying movie: ${item.title}, runtime=${item.runtime}")
+                    Log.d(TAG, "Displaying movie: ${item.title}, runtime=${item.runtime}")
                     binding.toolbarLayout.title = item.title ?: getString(R.string.unknown_media)
                     binding.tvOverview.text = item.overview ?: getString(R.string.no_description_available)
 
@@ -310,14 +315,14 @@ class DetailsActivity : AppCompatActivity() {
                     }
                 }
                 null -> {
-                    android.util.Log.w("DetailsActivity", "Item is null - failed to load data")
+                    Log.w(TAG, "Item is null - failed to load data")
                     binding.toolbarLayout.title = getString(R.string.error_loading_data)
                     binding.tvOverview.text = getString(R.string.no_description_available)
                     binding.tvRuntime.text = "N/A"
                 }
                 else -> {
                     // nothing to show
-                    android.util.Log.w("DetailsActivity", "Unknown item type: ${item?.javaClass?.simpleName}")
+                    Log.w(TAG, "Unknown item type: ${item?.javaClass?.simpleName}")
                 }
             }
         }
@@ -328,3 +333,4 @@ class DetailsActivity : AppCompatActivity() {
         return true
     }
 }
+

@@ -48,6 +48,15 @@ class ContentAdapter(
                 tvReleaseDate.text = item.releaseDate?.take(4) ?: "N/A"
                 tvRuntime.text = formatRuntime(item.runtime)
 
+                // Display media type badge
+                if (item.mediaType == "tv") {
+                    tvMediaType.text = "TV"
+                    tvMediaType.setBackgroundResource(R.drawable.bg_badge_tv)
+                } else {
+                    tvMediaType.text = "Фільм"
+                    tvMediaType.setBackgroundResource(R.drawable.bg_badge_movie)
+                }
+
                 // Display rating if available
                 item.voteAverage?.let { rating ->
                     if (rating > 0) {

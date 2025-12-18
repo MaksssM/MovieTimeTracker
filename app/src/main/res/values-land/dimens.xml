@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Landscape Mode Adaptive Dimensions -->
+    
+    <!-- Compact margins for landscape to maximize horizontal space -->
+    <dimen name="default_margin">12dp</dimen>
+    <dimen name="small_margin">6dp</dimen>
+    <dimen name="medium_margin">10dp</dimen>
+    <dimen name="large_margin">20dp</dimen>
+    <dimen name="xlarge_margin">28dp</dimen>
+
+    <dimen name="default_padding">12dp</dimen>
+    <dimen name="small_padding">6dp</dimen>
+    <dimen name="medium_padding">10dp</dimen>
+    <dimen name="large_padding">20dp</dimen>
+    <dimen name="xlarge_padding">28dp</dimen>
+
+    <!-- Slightly smaller Card Properties for landscape -->
+    <dimen name="card_corner_radius">20dp</dimen>
+    <dimen name="card_corner_radius_small">14dp</dimen>
+    <dimen name="card_corner_radius_large">24dp</dimen>
+    <dimen name="card_elevation">8dp</dimen>
+    <dimen name="card_elevation_high">12dp</dimen>
+
+    <!-- Compact App Bar in landscape -->
+    <dimen name="app_bar_height">160dp</dimen>
+    <dimen name="collapsing_toolbar_height">240dp</dimen>
+
+    <!-- Grid columns for landscape -->
+    <integer name="grid_span_count">2</integer>
+    <dimen name="list_item_min_height">100dp</dimen>
+</resources>

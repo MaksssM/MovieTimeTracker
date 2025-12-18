@@ -70,7 +70,7 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
             when (item) {
                 is MovieResult -> {
                     // Назва фільму
-                    binding.tvTitle.text = item.title ?: "Без назви"
+                    binding.tvTitle.text = item.title ?: binding.root.context.getString(R.string.no_title)
 
                     // Постер із завантаженням та кешуванням
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
@@ -89,18 +89,18 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                     }
 
                     // Тип медіа
-                    binding.tvMediaType.text = "🎬 Фільм"
+                    binding.tvMediaType.text = binding.root.context.getString(R.string.media_type_movie)
 
                     // Опис
                     binding.tvOverview.text = item.overview?.takeIf { it.isNotBlank() }
-                        ?: "Опис не доступний"
+                        ?: binding.root.context.getString(R.string.no_description_available)
 
                     highlightText(binding.tvTitle, binding.tvTitle.text.toString())
                     highlightText(binding.tvOverview, binding.tvOverview.text.toString())
                 }
                 is TvShowResult -> {
                     // Назва серіалу
-                    binding.tvTitle.text = item.name ?: "Без назви"
+                    binding.tvTitle.text = item.name ?: binding.root.context.getString(R.string.no_title)
 
                     // Постер із завантаженням та кешуванням
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
@@ -119,11 +119,11 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                     }
 
                     // Тип медіа
-                    binding.tvMediaType.text = "📺 Серіал"
+                    binding.tvMediaType.text = binding.root.context.getString(R.string.media_type_tv_show)
 
                     // Опис
                     binding.tvOverview.text = item.overview?.takeIf { it.isNotBlank() }
-                        ?: "Опис не доступний"
+                        ?: binding.root.context.getString(R.string.no_description_available)
 
                     highlightText(binding.tvTitle, binding.tvTitle.text.toString())
                     highlightText(binding.tvOverview, binding.tvOverview.text.toString())

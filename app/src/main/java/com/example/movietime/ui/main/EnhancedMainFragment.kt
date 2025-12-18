@@ -22,6 +22,9 @@ import com.example.movietime.ui.upcoming.UpcomingReleasesActivity
 import com.example.movietime.ui.friends.FriendsActivity
 import com.example.movietime.ui.planned.PlannedActivity
 import com.example.movietime.ui.watching.WatchingActivity
+import com.example.movietime.ui.details.DetailsActivity
+import com.example.movietime.ui.details.TvDetailsActivity
+import com.example.movietime.data.model.RecentActivityItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,6 +36,8 @@ class EnhancedMainFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: EnhancedMainViewModel by viewModels()
+    private lateinit var recentActivityAdapter: RecentActivityAdapter
+    private lateinit var recommendationsAdapter: com.example.movietime.ui.adapters.RecommendationsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,11 +56,12 @@ class EnhancedMainFragment : Fragment() {
 
         setupClickListeners()
         setupCardPressEffects()
+        setupRecentActivity()
+        setupRecommendations()
         observeViewModel()
         loadData()
         animateEntranceElements()
     }
-
 
     private var lastClickTime = 0L
     private val clickDebounceTime = 500L // 500ms debounce
@@ -106,7 +112,7 @@ class EnhancedMainFragment : Fragment() {
         }
 
         // Floating Action Button
-        binding.fabQuickAdd.setOnClickListener {
+        binding.fabAdd.setOnClickListener {
             handleClickWithDebounce {
                 showQuickAddDialog()
             }
@@ -121,11 +127,50 @@ class EnhancedMainFragment : Fragment() {
         }
     }
 
+    private fun setupRecommendations() {
+        recommendationsAdapter = com.example.movietime.ui.adapters.RecommendationsAdapter { id, mediaType ->
+            val intent = if (mediaType == "tv") {
+                Intent(requireContext(), TvDetailsActivity::class.java).apply {
+                    putExtra("ITEM_ID", id)
+                    putExtra("MEDIA_TYPE", "tv")
+                }
+            } else {
+                Intent(requireContext(), DetailsActivity::class.java).apply {
+                    putExtra("ITEM_ID", id)
+                    putExtra("MEDIA_TYPE", "movie")
+                }
+            }
+            startActivity(intent)
+        }
+
+        binding.rvRecommendations.apply {
+            adapter = recommendationsAdapter
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(), androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
+
+    // ...
+
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             // Observe statistics
             viewModel.getDetailedStatistics().collect { stats ->
+                android.util.Log.d("EnhancedMainFragment", "Statistics received: totalWatchTimeMinutes=${stats.totalWatchTimeMinutes}, movies=${stats.totalWatchedMovies}, tv=${stats.totalWatchedTvShows}")
                 updateStatistics(stats)
+            }
+        }
+
+        // Observe recommendations
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.recommendations.collect { recs ->
+                if (recs.isNotEmpty()) {
+                    binding.tvRecommendationsTitle.visibility = View.VISIBLE
+                    binding.rvRecommendations.visibility = View.VISIBLE
+                    recommendationsAdapter.submitList(recs)
+                } else {
+                    binding.tvRecommendationsTitle.visibility = View.GONE
+                    binding.rvRecommendations.visibility = View.GONE
+                }
             }
         }
 
@@ -139,12 +184,22 @@ class EnhancedMainFragment : Fragment() {
                 }
             }
         }
+
+        // Observe recent activities
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getRecentActivities().collect { activities ->
+                recentActivityAdapter.submitList(activities)
+            }
+        }
     }
 
     private fun updateStatistics(stats: DetailedStatistics) {
+        android.util.Log.d("EnhancedMainFragment", "updateStatistics called with: $stats")
         with(binding) {
             // Update header stats
-            tvTotalTime.text = formatTotalTime(stats.totalWatchTimeMinutes)
+            val formattedTime = formatTotalTime(stats.totalWatchTimeMinutes)
+            android.util.Log.d("EnhancedMainFragment", "Formatted time: $formattedTime for ${stats.totalWatchTimeMinutes} minutes")
+            tvTotalTime.text = formattedTime
             tvThisMonthCount.text = stats.thisMonthWatched.toString()
 
             // Update quick stats
@@ -205,9 +260,9 @@ class EnhancedMainFragment : Fragment() {
         }
 
         // Animate FAB
-        binding.fabQuickAdd.alpha = 0f
-        binding.fabQuickAdd.scaleX = 0f
-        binding.fabQuickAdd.scaleY = 0f
+        binding.fabAdd.alpha = 0f
+        binding.fabAdd.scaleX = 0f
+        binding.fabAdd.scaleY = 0f
 
         // Staggered animation for cards
         elementsToAnimate.forEachIndexed { index, view ->
@@ -232,9 +287,9 @@ class EnhancedMainFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             delay(600L)
             
-            val scaleX = ObjectAnimator.ofFloat(binding.fabQuickAdd, "scaleX", 0f, 1.2f, 1f)
-            val scaleY = ObjectAnimator.ofFloat(binding.fabQuickAdd, "scaleY", 0f, 1.2f, 1f)
-            val alpha = ObjectAnimator.ofFloat(binding.fabQuickAdd, "alpha", 0f, 1f)
+            val scaleX = ObjectAnimator.ofFloat(binding.fabAdd, "scaleX", 0f, 1.2f, 1f)
+            val scaleY = ObjectAnimator.ofFloat(binding.fabAdd, "scaleY", 0f, 1.2f, 1f)
+            val alpha = ObjectAnimator.ofFloat(binding.fabAdd, "alpha", 0f, 1f)
             
             AnimatorSet().apply {
                 playTogether(scaleX, scaleY, alpha)
@@ -329,6 +384,29 @@ class EnhancedMainFragment : Fragment() {
         super.onResume()
         // Refresh data when returning to fragment
         loadData()
+    }
+
+    private fun setupRecentActivity() {
+        recentActivityAdapter = RecentActivityAdapter { item ->
+            // Use mediaType from item to decide destination and params
+            val intent = if (item.mediaType == "tv") {
+                Intent(requireContext(), TvDetailsActivity::class.java).apply {
+                    putExtra("ITEM_ID", item.id)
+                    putExtra("MEDIA_TYPE", "tv")
+                }
+            } else {
+                Intent(requireContext(), DetailsActivity::class.java).apply {
+                    putExtra("ITEM_ID", item.id)
+                    putExtra("MEDIA_TYPE", "movie")
+                }
+            }
+            startActivity(intent)
+        }
+        
+        binding.rvRecentActivity.apply {
+            adapter = recentActivityAdapter
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext())
+        }
     }
 
     override fun onDestroyView() {

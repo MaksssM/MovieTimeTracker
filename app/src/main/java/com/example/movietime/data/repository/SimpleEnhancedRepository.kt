@@ -2,9 +2,7 @@ package com.example.movietime.data.repository
 
 import androidx.lifecycle.asFlow
 import com.example.movietime.data.api.TmdbApi
-import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.data.model.*
-import com.example.movietime.util.DateTimeUtils
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,12 +18,23 @@ class SimpleEnhancedRepository @Inject constructor(
     // Real data from database using LiveData flow
     fun getDetailedStatistics(): Flow<DetailedStatistics> =
         appRepository.getWatchedItems().asFlow().map { watchedItems ->
+            android.util.Log.d("SimpleEnhancedRepository", "getDetailedStatistics: got ${watchedItems.size} watched items")
             try {
                 val totalWatchedMovies = watchedItems.count { it.mediaType == "movie" }
                 val totalWatchedTvShows = watchedItems.count { it.mediaType == "tv" }
 
                 // Calculate watch time from runtime
                 val totalWatchTimeMinutes = watchedItems.sumOf { it.runtime ?: 0 }
+                android.util.Log.d("SimpleEnhancedRepository", "Calculated totalWatchTimeMinutes: $totalWatchTimeMinutes from ${watchedItems.size} items")
+                watchedItems.forEach { item ->
+                    android.util.Log.d("SimpleEnhancedRepository", "  - ${item.title}: runtime=${item.runtime}, mediaType=${item.mediaType}, episodes=${item.totalEpisodes}, episodeRuntime=${item.episodeRuntime}")
+
+                    // Перевірка: якщо runtime null або 0 для серіалу, спробуємо перерахувати
+                    if (item.mediaType == "tv" && (item.runtime == null || item.runtime == 0)) {
+                        val calculatedRuntime = (item.totalEpisodes ?: 0) * (item.episodeRuntime ?: 45)
+                        android.util.Log.w("SimpleEnhancedRepository", "  ⚠️ TV show '${item.title}' has null/zero runtime! Calculated: $calculatedRuntime (${item.totalEpisodes} eps × ${item.episodeRuntime} min)")
+                    }
+                }
 
                 // Calculate average user rating from items with ratings
                 val itemsWithRatings = watchedItems.filter { it.userRating != null && it.userRating > 0 }
@@ -97,32 +106,14 @@ class SimpleEnhancedRepository @Inject constructor(
         val watchingTvShows: Int
     )
 
-    // Mock activities for demonstration
-    fun getRecentActivities(): Flow<List<Activity>> = flow {
-        val activities = listOf(
-            Activity(
-                id = "1",
-                userId = "user1",
-                username = "Ви",
-                type = ActivityType.WATCHED_MOVIE,
-                movieId = 550,
-                movieTitle = "Бійцівський клуб",
-                moviePoster = "/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
-                rating = 9.0f,
-                createdDate = DateTimeUtils.getCurrentDateTime()
-            ),
-            Activity(
-                id = "2",
-                userId = "user1",
-                username = "Ви",
-                type = ActivityType.ADDED_TO_PLANNED,
-                movieId = 157336,
-                movieTitle = "Інтерстеллар",
-                moviePoster = "/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
-                createdDate = DateTimeUtils.getCurrentDateTime()
-            )
-        )
-        emit(activities)
+    // Real recent activities
+    fun getRecentActivities(): Flow<List<RecentActivityItem>> = flow {
+        // Poll every 5 seconds or just emit once? 
+        // Emitting once is safer to avoid endless loop if DB is slow. 
+        // But the existing stats loop suggests polling is established pattern here.
+        // Let's just emit once for now, and maybe re-fetch on resume in Fragment.
+        val items = appRepository.getRecentActivity(limit = 10)
+        emit(items)
     }
 
     suspend fun getTrendingContent(timeWindow: String = "week"): Result<String?> {

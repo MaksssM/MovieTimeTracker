@@ -64,11 +64,29 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    // Add watched item
+    // Add watched item and remove from other lists (Planned, Watching)
     fun addWatchedItem(item: WatchedItem, callback: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
                 android.util.Log.d("DetailsViewModel", "Adding watched item: id=${item.id}, title=${item.title}, mediaType=${item.mediaType}, runtime=${item.runtime}")
+                
+                // Remove from Planned if exists
+                try {
+                    repository.removeFromPlanned(item.id, item.mediaType)
+                    android.util.Log.d("DetailsViewModel", "Removed from planned: ${item.id}")
+                } catch (e: Exception) {
+                    // Ignore if not in planned
+                }
+                
+                // Remove from Watching if exists
+                try {
+                    repository.removeFromWatching(item.id, item.mediaType)
+                    android.util.Log.d("DetailsViewModel", "Removed from watching: ${item.id}")
+                } catch (e: Exception) {
+                    // Ignore if not in watching
+                }
+                
+                // Add to watched
                 repository.addWatchedItem(item)
                 android.util.Log.d("DetailsViewModel", "Successfully added watched item: ${item.id}")
                 callback(true)
@@ -117,10 +135,18 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    // Add item to watching list
+    // Add item to watching list and remove from Planned
     fun addToWatching(item: WatchedItem, callback: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
+                // Remove from Planned if exists
+                try {
+                    repository.removeFromPlanned(item.id, item.mediaType)
+                    android.util.Log.d("DetailsViewModel", "Removed from planned before adding to watching: ${item.id}")
+                } catch (e: Exception) {
+                    // Ignore if not in planned
+                }
+                
                 repository.addToWatching(item)
                 android.util.Log.d("DetailsViewModel", "Successfully added to watching: ${item.id}")
                 callback(true)

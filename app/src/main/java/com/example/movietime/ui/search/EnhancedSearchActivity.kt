@@ -23,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import android.util.Log
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -119,6 +120,8 @@ class EnhancedSearchActivity : AppCompatActivity() {
                 val query = binding.etSearch.text?.toString()?.trim() ?: ""
                 if (query.isNotEmpty()) {
                     performSearch(query)
+                } else {
+                    updatePopularContent()
                 }
             }
 
@@ -158,6 +161,30 @@ class EnhancedSearchActivity : AppCompatActivity() {
         binding.layoutLoading.isVisible = false
     }
 
+    private fun updatePopularContent() {
+        val allPopular = viewModel.popularContent.value ?: emptyList()
+        if (allPopular.isEmpty()) return
+
+        val filtered = when (currentFilter) {
+            "movie" -> allPopular.filterIsInstance<MovieResult>()
+            "tv" -> allPopular.filterIsInstance<TvShowResult>()
+            else -> allPopular
+        }
+
+        if (filtered.isNotEmpty()) {
+            val groupedItems = filtered.map { item ->
+                when (item) {
+                    is MovieResult -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
+                    is TvShowResult -> GroupedSearchItem(GroupedSearchItem.ItemType.TV_SHOW, item)
+                    else -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
+                }
+            }
+            popularAdapter.updateItems(groupedItems)
+        } else {
+             popularAdapter.updateItems(emptyList())
+        }
+    }
+
     private fun observeViewModel() {
         viewModel.searchResults.observe(this) { results ->
             binding.layoutLoading.isVisible = false
@@ -182,17 +209,8 @@ class EnhancedSearchActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.popularContent.observe(this) { popular ->
-            if (popular.isNotEmpty()) {
-                val groupedItems = popular.map { item ->
-                    when (item) {
-                        is MovieResult -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
-                        is TvShowResult -> GroupedSearchItem(GroupedSearchItem.ItemType.TV_SHOW, item)
-                        else -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
-                    }
-                }
-                popularAdapter.updateItems(groupedItems)
-            }
+        viewModel.popularContent.observe(this) { 
+            updatePopularContent()
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
@@ -205,10 +223,10 @@ class EnhancedSearchActivity : AppCompatActivity() {
     }
 
     private fun navigateToDetails(item: Any) {
-        android.util.Log.d("EnhancedSearchActivity", "Navigating to details for item: $item")
+        Log.d("EnhancedSearchActivity", "Navigating to details for item: $item")
         when (item) {
             is MovieResult -> {
-                android.util.Log.d("EnhancedSearchActivity", "Opening movie details: id=${item.id}, title=${item.title}")
+                Log.d("EnhancedSearchActivity", "Opening movie details: id=${item.id}, title=${item.title}")
                 val intent = Intent(this, DetailsActivity::class.java).apply {
                     putExtra("ITEM_ID", item.id)
                     putExtra("MEDIA_TYPE", "movie")
@@ -216,7 +234,7 @@ class EnhancedSearchActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             is TvShowResult -> {
-                android.util.Log.d("EnhancedSearchActivity", "Opening TV show details: id=${item.id}, name=${item.name}")
+                Log.d("EnhancedSearchActivity", "Opening TV show details: id=${item.id}, name=${item.name}")
                 val intent = Intent(this, TvDetailsActivity::class.java).apply {
                     putExtra("ITEM_ID", item.id)
                     putExtra("MEDIA_TYPE", "tv")
@@ -226,3 +244,4 @@ class EnhancedSearchActivity : AppCompatActivity() {
         }
     }
 }
+

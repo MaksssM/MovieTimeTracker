@@ -32,9 +32,19 @@ class MainViewModel @Inject constructor(
     val totalMinutes: LiveData<Int> = watchedList.map { list ->
         val sum = list.sumOf { it.runtime ?: 0 }
         // Log details for debugging
-        val details = list.map { "${it.id}:${it.mediaType}:${it.runtime ?: 0}" }
-        Log.d("MainViewModel", "watchedList updated: count=${list.size}, items=$details")
-        Log.d("MainViewModel", "computed totalMinutes = $sum")
+        val details = list.map { item ->
+            val runtimeStr = if (item.runtime == null) "null" else item.runtime.toString()
+            "${item.title}(id:${item.id},type:${item.mediaType},runtime:$runtimeStr)"
+        }
+
+        val movieCount = list.count { it.mediaType == "movie" }
+        val tvCount = list.count { it.mediaType == "tv" }
+        val movieRuntime = list.filter { it.mediaType == "movie" }.sumOf { it.runtime ?: 0 }
+        val tvRuntime = list.filter { it.mediaType == "tv" }.sumOf { it.runtime ?: 0 }
+
+        Log.d("MainViewModel", "watchedList updated: total count=${list.size}, movies=$movieCount, tv=$tvCount")
+        Log.d("MainViewModel", "Runtime breakdown: movies=$movieRuntime min, tv=$tvRuntime min, total=$sum min")
+        Log.d("MainViewModel", "Items: $details")
         sum
     }
 
