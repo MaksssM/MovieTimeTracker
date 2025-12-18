@@ -20,7 +20,6 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import android.util.Log
 import com.example.movietime.data.db.WatchedItemDao
-import com.example.movietime.debug.TestDataHelper
 import com.example.movietime.data.migration.TvShowRuntimeFixer
 import com.google.android.material.snackbar.Snackbar
 
@@ -150,31 +149,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Додає тестові дані для демонстрації
-     * Викликається через меню розробника (3 тапи на лого/тулбар)
+     * Додає тестові дані для демонстрації (видалено - більше не доступно)
      */
     private fun addTestData() {
-        lifecycleScope.launch {
-            try {
-                Log.d(TAG, "Adding test data...")
-                val helper = TestDataHelper(watchedItemDao)
-                helper.addTestData()
+        try {
+            Log.d(TAG, "Test data function deprecated - use real app data instead")
 
-                Snackbar.make(
-                    binding.root,
-                    "Тестові дані додано! (4 фільми/серіали, ~4.7к хв)",
-                    Snackbar.LENGTH_LONG
-                ).show()
+            Snackbar.make(
+                binding.root,
+                "Тестові дані більше не доступні. Використовуйте додаток як звичайно.",
+                Snackbar.LENGTH_LONG
+            ).show()
 
-                Log.d(TAG, "Test data added successfully")
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to add test data: ${e.message}", e)
-                Snackbar.make(
-                    binding.root,
-                    "Помилка додавання тестових даних: ${e.message}",
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
+            Log.d(TAG, "Test data function called but disabled")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed: ${e.message}", e)
         }
     }
 

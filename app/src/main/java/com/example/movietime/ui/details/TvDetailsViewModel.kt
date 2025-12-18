@@ -25,12 +25,16 @@ class TvDetailsViewModel @Inject constructor(
     fun loadTvShow(tvId: Int) {
         viewModelScope.launch {
             try {
+                android.util.Log.d("TvDetailsViewModel", "Loading TV show with ID: $tvId")
                 val response = repository.getTvShowDetails(tvId)
+                android.util.Log.d("TvDetailsViewModel", "TV show loaded successfully: ${response.name}, episodes: ${response.numberOfEpisodes}, seasons: ${response.numberOfSeasons}")
                 _tvShow.value = response
+                android.util.Log.d("TvDetailsViewModel", "LiveData updated with TV show data")
                 
                 // Also check if it's watched
                 checkIfWatched(tvId)
             } catch (e: Exception) {
+                android.util.Log.e("TvDetailsViewModel", "Failed to load TV show: ${e.message}", e)
                 _tvShow.value = null
             }
         }

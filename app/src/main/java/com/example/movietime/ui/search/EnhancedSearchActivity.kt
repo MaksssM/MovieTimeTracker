@@ -89,11 +89,19 @@ class EnhancedSearchActivity : AppCompatActivity() {
         binding.rvSearchResults.apply {
             adapter = searchAdapter
             layoutManager = LinearLayoutManager(this@EnhancedSearchActivity)
+            layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
+                context, 
+                R.anim.layout_animation_fall_down
+            )
         }
 
         binding.rvPopular.apply {
             adapter = popularAdapter
             layoutManager = LinearLayoutManager(this@EnhancedSearchActivity)
+            layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
+                context,
+                R.anim.layout_animation_fall_down
+            )
         }
     }
 
