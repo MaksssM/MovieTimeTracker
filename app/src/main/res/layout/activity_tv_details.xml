@@ -73,19 +73,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                app:cardElevation="4dp"
-                app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="@color/card_bg">
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="18dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvOverview"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                    android:textColor="@color/primary_text"
-                    android:lineSpacingMultiplier="1.3"
-                    tools:text="Опис серіалу..." />
+                    android:background="@drawable/bg_glass_card"
+                    android:padding="2dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvOverview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                        android:textColor="@color/primary_text"
+                        android:lineSpacingMultiplier="1.3"
+                        tools:text="Опис серіалу..." />
+
+                </FrameLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Інформація про сезони та епізоди -->
@@ -111,42 +121,60 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    app:cardElevation="4dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardBackgroundColor="@color/card_bg">
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:strokeWidth="0dp">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="20dp">
+                        android:background="@drawable/bg_stat_tile_primary"
+                        android:padding="2dp">
 
-                        <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_movie_time"
-                            app:tint="@color/md_theme_light_primary"
-                            android:contentDescription="Сезони" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvSeasonCount"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                            android:textColor="@color/primary_text"
-                            android:textStyle="bold"
-                            tools:text="5" />
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="20dp">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:textColor="@color/tertiary_text"
-                            android:text="Сезонів" />
-                    </LinearLayout>
+                            <FrameLayout
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:background="@drawable/bg_glass_card">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_movie_time"
+                                    app:tint="@android:color/white"
+                                    android:contentDescription="Сезони" />
+
+                            </FrameLayout>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvSeasonCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold"
+                                tools:text="5" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                android:textColor="@android:color/white"
+                                android:text="Сезонів" />
+                        </LinearLayout>
+
+                    </FrameLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <!-- Всього епізодів -->
@@ -155,42 +183,60 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
-                    app:cardElevation="4dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardBackgroundColor="@color/card_bg">
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:strokeWidth="0dp">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="20dp">
+                        android:background="@drawable/bg_stat_tile_accent"
+                        android:padding="2dp">
 
-                        <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_tv_24"
-                            app:tint="@color/md_theme_light_secondary"
-                            android:contentDescription="Епізоди" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvTotalEpisodes"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                            android:textColor="@color/primary_text"
-                            android:textStyle="bold"
-                            tools:text="62" />
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="20dp">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:textColor="@color/tertiary_text"
-                            android:text="Епізодів" />
-                    </LinearLayout>
+                            <FrameLayout
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:background="@drawable/bg_glass_card">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_tv_24"
+                                    app:tint="@android:color/white"
+                                    android:contentDescription="Епізоди" />
+
+                            </FrameLayout>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvTotalEpisodes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold"
+                                tools:text="62" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                android:textColor="@android:color/white"
+                                android:text="Епізодів" />
+                        </LinearLayout>
+
+                    </FrameLayout>
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
@@ -200,15 +246,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                app:cardElevation="8dp"
-                app:cardCornerRadius="20dp"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="22dp"
                 app:strokeWidth="0dp"
                 app:cardBackgroundColor="@android:color/transparent">
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_card_primary_ripple">
+                    android:background="@drawable/bg_stat_tile_primary"
+                    android:padding="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -219,17 +267,12 @@
 
                         <FrameLayout
                             android:layout_width="56dp"
-                            android:layout_height="56dp">
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/bg_glow_accent"
-                                android:alpha="0.15" />
+                            android:layout_height="56dp"
+                            android:background="@drawable/bg_glass_card">
 
                             <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_time"
                                 android:contentDescription="Час перегляду"
@@ -249,9 +292,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@android:color/white"
-                                android:textSize="28sp"
+                                android:textSize="32sp"
                                 android:textStyle="bold"
                                 android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="0.02"
                                 tools:text="48 год 34 хв" />
 
                         </LinearLayout>
