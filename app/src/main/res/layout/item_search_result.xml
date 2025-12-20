@@ -11,12 +11,13 @@
     app:strokeWidth="0dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@color/surface_elevated">
+    app:cardBackgroundColor="@android:color/transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:background="@drawable/bg_card_surface_gradient">
 
         <!-- Poster -->
         <com.google.android.material.card.MaterialCardView

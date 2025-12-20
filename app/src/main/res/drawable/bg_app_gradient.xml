@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Soft light blue wash for entire screen (light theme) -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="180"
+                android:startColor="#FFFFFFFF"
+                android:centerColor="#FFF3F7FF"
+                android:endColor="#FFEFF5FF" />
+        </shape>
+    </item>
+    <!-- Subtle diagonal blue accent -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="45"
+                android:startColor="#002563EB"
+                android:centerColor="#0D2563EB"
+                android:endColor="#002563EB" />
+        </shape>
+    </item>
+</layer-list>

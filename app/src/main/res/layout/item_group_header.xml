@@ -7,7 +7,7 @@
     android:paddingHorizontal="18dp"
     android:paddingTop="12dp"
     android:paddingBottom="6dp"
-    android:background="@color/app_bg">
+    android:background="@android:color/transparent">
 
     <TextView
         android:id="@+id/tvHeaderTitle"

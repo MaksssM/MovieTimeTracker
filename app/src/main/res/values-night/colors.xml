@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Ultra-Dark Modern Theme - Sleek Deep Navy/Black -->
-    <color name="md_theme_dark_primary">#6BA3FF</color>
-    <color name="md_theme_dark_onPrimary">#000000</color>
-    <color name="md_theme_dark_primaryContainer">#1A2F4F</color>
-    <color name="md_theme_dark_onPrimaryContainer">#B8D7FF</color>
-    <color name="md_theme_dark_secondary">#8B63FF</color>
-    <color name="md_theme_dark_onSecondary">#000000</color>
-    <color name="md_theme_dark_secondaryContainer">#2D1B4A</color>
-    <color name="md_theme_dark_onSecondaryContainer">#E8D7FF</color>
-    <color name="md_theme_dark_tertiary">#7EB5FF</color>
-    <color name="md_theme_dark_onTertiary">#000000</color>
-    <color name="md_theme_dark_tertiaryContainer">#0F2C4A</color>
-    <color name="md_theme_dark_onTertiaryContainer">#C4E5FF</color>
+    <color name="md_theme_dark_primary">#5DA0FF</color>
+    <color name="md_theme_dark_onPrimary">#0B1220</color>
+    <color name="md_theme_dark_primaryContainer">#0D1B32</color>
+    <color name="md_theme_dark_onPrimaryContainer">#D7E6FF</color>
+    <color name="md_theme_dark_secondary">#5DA0FF</color>
+    <color name="md_theme_dark_onSecondary">#0B1220</color>
+    <color name="md_theme_dark_secondaryContainer">#132137</color>
+    <color name="md_theme_dark_onSecondaryContainer">#D7E6FF</color>
+    <color name="md_theme_dark_tertiary">#4FD68F</color>
+    <color name="md_theme_dark_onTertiary">#03130B</color>
+    <color name="md_theme_dark_tertiaryContainer">#0B2A1A</color>
+    <color name="md_theme_dark_onTertiaryContainer">#CFF6E1</color>
     <color name="md_theme_dark_error">#FF6B5B</color>
     <color name="md_theme_dark_errorContainer">#5C0A0A</color>
     <color name="md_theme_dark_onError">#FFFFFF</color>
     <color name="md_theme_dark_onErrorContainer">#FFD8D0</color>
     <color name="md_theme_dark_background">#050607</color>
-    <color name="md_theme_dark_onBackground">#EFF0F3</color>
-    <color name="md_theme_dark_surface">#0A0E14</color>
-    <color name="md_theme_dark_onSurface">#EFF0F3</color>
+    <color name="md_theme_dark_onBackground">#E5E7EB</color>
+    <color name="md_theme_dark_surface">#0D1117</color>
+    <color name="md_theme_dark_onSurface">#E5E7EB</color>
 
     <!-- App specific ultra-dark colors -->
     <color name="app_bg">#050607</color>
@@ -28,40 +28,40 @@
     <color name="card_bg_elevated">#151B24</color>
     
     <!-- Primary colors -->
-    <color name="primary">#6BA3FF</color>
-    <color name="primary_dark">#4A82D4</color>
-    <color name="primary_light">#8BB9FF</color>
+    <color name="primary">#5DA0FF</color>
+    <color name="primary_dark">#3C7AD9</color>
+    <color name="primary_light">#8CC0FF</color>
     
     <!-- Accent colors -->
-    <color name="accent">#8BB9FF</color>
-    <color name="accent_light">#B3D3FF</color>
-    <color name="accent_dark">#5A9CF5</color>
+    <color name="accent">#5DA0FF</color>
+    <color name="accent_light">#8CC0FF</color>
+    <color name="accent_dark">#3C7AD9</color>
 
     <!-- Light theme color overrides for dark mode -->
-    <color name="primary_text">#EFF0F3</color>
-    <color name="secondary_text">#A5ADB8</color>
-    <color name="tertiary_text">#7A8390</color>
-    <color name="muted_text">#555E6D</color>
-    <color name="surface">#0F1419</color>
-    <color name="surface_variant">#151B24</color>
-    <color name="surface_elevated">#1F2734</color>
+    <color name="primary_text">#E5E7EB</color>
+    <color name="secondary_text">#9CA3AF</color>
+    <color name="tertiary_text">#6B7280</color>
+    <color name="muted_text">#4B5563</color>
+    <color name="surface">#0D1117</color>
+    <color name="surface_variant">#121824</color>
+    <color name="surface_elevated">#121824</color>
     <color name="divider">#1F2734</color>
-    <color name="border">#2A333F</color>
+    <color name="border">#1F2734</color>
     
     <!-- New Modern UI Colors for Dark Theme -->
     <color name="background">#050607</color>
-    <color name="surface_card">#0F1419</color>
-    <color name="stat_card_bg">#0A0E14</color>
-    <color name="text_primary">#EFF0F3</color>
-    <color name="text_secondary">#A5ADB8</color>
-    <color name="text_hint">#7A8390</color>
+    <color name="surface_card">#0D1117</color>
+    <color name="stat_card_bg">#0D1117</color>
+    <color name="text_primary">#E5E7EB</color>
+    <color name="text_secondary">#9CA3AF</color>
+    <color name="text_hint">#6B7280</color>
     <color name="text_on_dark">#FFFFFF</color>
     <color name="text_on_accent">#050607</color>
     
     <!-- Semantic Action Colors -->
-    <color name="icon_primary">#6BA3FF</color>
-    <color name="icon_secondary">#A5ADB8</color>
-    <color name="icon_accent">#8BB9FF</color>
+    <color name="icon_primary">#5DA0FF</color>
+    <color name="icon_secondary">#9CA3AF</color>
+    <color name="icon_accent">#5DA0FF</color>
     <color name="icon_success">#4FD68F</color>
     
     <!-- Status Colors -->

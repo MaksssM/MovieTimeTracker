@@ -12,22 +12,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/bg_app_gradient">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="12dp"
-            android:background="@color/surface_elevated">
+            android:elevation="0dp"
+            android:background="@android:color/transparent">
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@drawable/gradient_primary_modern"
-                app:titleTextColor="@color/white"
-                app:navigationIconTint="@color/white"
+                android:background="@android:color/transparent"
+                app:titleTextColor="?attr/colorOnSurface"
+                app:navigationIconTint="?attr/colorOnSurface"
+                app:titleCentered="true"
                 android:elevation="0dp"
-                android:title="" />
+                android:title="@string/app_name" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.fragment.app.FragmentContainerView
@@ -45,7 +47,7 @@
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@drawable/bg_drawer_rounded"
+        android:background="@drawable/bg_drawer_modern"
         android:paddingBottom="16dp"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu"

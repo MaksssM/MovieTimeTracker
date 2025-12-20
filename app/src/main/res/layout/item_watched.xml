@@ -19,7 +19,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:background="@drawable/bg_card_surface_gradient">
 
         <!-- Poster with rounded corners -->
         <com.google.android.material.card.MaterialCardView

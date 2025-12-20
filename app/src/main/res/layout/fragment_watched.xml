@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_bg">
+    android:background="@android:color/transparent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_bg"
+        android:background="@android:color/transparent"
         app:elevation="0dp">
 
         <LinearLayout
@@ -27,14 +27,15 @@
                 app:cardCornerRadius="24dp"
                 app:cardElevation="12dp"
                 app:strokeWidth="0dp"
-                app:cardBackgroundColor="?attr/colorPrimaryContainer">
+                app:cardBackgroundColor="@android:color/transparent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="24dp"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:background="@drawable/bg_time_panel">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -47,7 +48,7 @@
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@drawable/ic_time"
-                            app:tint="?attr/colorOnPrimaryContainer"
+                            app:tint="@color/text_secondary"
                             android:contentDescription="@string/total_time_spent"
                             android:layout_marginBottom="8dp" />
 
@@ -56,8 +57,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/total_time_default"
-                            android:textSize="24sp"
-                            android:textColor="?attr/colorOnPrimaryContainer"
+                            android:textSize="28sp"
+                            android:textColor="@color/primary"
                             android:fontFamily="sans-serif-medium"
                             tools:text="42 год 15 хв" />
 
@@ -66,7 +67,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/total_time_spent"
                             android:textSize="12sp"
-                            android:textColor="?attr/colorOnPrimaryContainer"
+                            android:textColor="@color/text_secondary"
                             android:alpha="0.8"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
@@ -74,8 +75,8 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="60dp"
-                        android:background="?attr/colorOnPrimaryContainer"
-                        android:alpha="0.2"
+                        android:background="@color/border"
+                        android:alpha="0.6"
                         android:layout_marginHorizontal="20dp" />
 
                     <LinearLayout
@@ -89,7 +90,7 @@
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@drawable/ic_movie"
-                            app:tint="?attr/colorOnPrimaryContainer"
+                            app:tint="@color/text_secondary"
                             android:contentDescription="Переглянуто"
                             android:layout_marginBottom="8dp" />
 
@@ -98,8 +99,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
-                            android:textSize="24sp"
-                            android:textColor="?attr/colorOnPrimaryContainer"
+                            android:textSize="28sp"
+                            android:textColor="@color/primary"
                             android:fontFamily="sans-serif-medium"
                             tools:text="127" />
 
@@ -108,7 +109,7 @@
                             android:layout_height="wrap_content"
                             android:text="Переглянуто"
                             android:textSize="12sp"
-                            android:textColor="?attr/colorOnPrimaryContainer"
+                            android:textColor="@color/text_secondary"
                             android:alpha="0.8"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
@@ -120,7 +121,7 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_rounded_card"
+                android:background="@drawable/bg_card_surface_gradient"
                 android:elevation="4dp"
                 app:tabMode="fixed"
                 app:tabGravity="fill"

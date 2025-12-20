@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Light theme header: soft blue on white -->
+    <!-- Dark theme header: deep navy/black with subtle blue -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:angle="160"
-                android:startColor="#FFF7FAFF"
-                android:centerColor="#FFEAF2FF"
-                android:endColor="#FFF7FAFF"
+                android:startColor="#0B0F16"
+                android:centerColor="#0D1117"
+                android:endColor="#0B0F16"
                 android:type="linear" />
         </shape>
     </item>
-    <!-- Gentle blue wash -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:angle="45"
-                android:startColor="#002563EB"
-                android:centerColor="#142563EB"
-                android:endColor="#002563EB"
+                android:startColor="#002A3F66"
+                android:centerColor="#142A3F66"
+                android:endColor="#002A3F66"
                 android:type="linear" />
         </shape>
     </item>
-    <!-- Subtle accent band -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:angle="90"
-                android:startColor="#002563EB"
-                android:centerColor="#0D2563EB"
-                android:endColor="#002563EB"
+                android:startColor="#003C7AD9"
+                android:centerColor="#0D3C7AD9"
+                android:endColor="#003C7AD9"
                 android:type="linear" />
         </shape>
     </item>
