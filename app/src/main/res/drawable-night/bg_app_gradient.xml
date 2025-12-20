@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Deep dark to slightly lighter, with blue hint (dark theme) -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="180"
+                android:startColor="#FF050607"
+                android:centerColor="#FF0B0F16"
+                android:endColor="#FF0D1117" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="45"
+                android:startColor="#003C7AD9"
+                android:centerColor="#0A3C7AD9"
+                android:endColor="#003C7AD9" />
+        </shape>
+    </item>
+</layer-list>

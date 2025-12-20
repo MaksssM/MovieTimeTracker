@@ -30,9 +30,9 @@
         <item name="colorOutline">@color/md_theme_light_outline</item>
 
         <!-- Status and Navigation Bars -->
-        <item name="android:statusBarColor">@color/md_theme_light_primary</item>
+        <item name="android:statusBarColor">@color/md_theme_light_surface</item>
         <item name="android:navigationBarColor">@color/md_theme_light_surface</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 

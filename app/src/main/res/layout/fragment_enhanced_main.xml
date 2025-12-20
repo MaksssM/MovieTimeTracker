@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@android:color/transparent">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -703,7 +703,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="@color/accent_light"
-                        app:cardBackgroundColor="@color/surface_card">
+                        app:cardBackgroundColor="@android:color/transparent">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -711,7 +711,8 @@
                             android:orientation="vertical"
                             android:paddingVertical="14dp"
                             android:paddingHorizontal="8dp"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:background="@drawable/bg_card_surface_gradient">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -748,7 +749,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="@color/accent_light"
-                        app:cardBackgroundColor="@color/surface_card">
+                        app:cardBackgroundColor="@android:color/transparent">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -756,7 +757,8 @@
                             android:orientation="vertical"
                             android:paddingVertical="14dp"
                             android:paddingHorizontal="8dp"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:background="@drawable/bg_card_surface_gradient">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -793,7 +795,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="@color/accent_light"
-                        app:cardBackgroundColor="@color/surface_card">
+                        app:cardBackgroundColor="@android:color/transparent">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -801,7 +803,8 @@
                             android:orientation="vertical"
                             android:paddingVertical="14dp"
                             android:paddingHorizontal="8dp"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:background="@drawable/bg_card_surface_gradient">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -838,7 +841,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="@color/accent_light"
-                        app:cardBackgroundColor="@color/surface_card">
+                        app:cardBackgroundColor="@android:color/transparent">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -846,7 +849,8 @@
                             android:orientation="vertical"
                             android:paddingVertical="14dp"
                             android:paddingHorizontal="8dp"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:background="@drawable/bg_card_surface_gradient">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -948,7 +952,7 @@
                         app:cardCornerRadius="20dp"
                         app:cardElevation="2dp"
                         app:strokeWidth="0dp"
-                        app:cardBackgroundColor="@color/surface_card">
+                        app:cardBackgroundColor="@android:color/transparent">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvRecentActivity"
@@ -958,7 +962,8 @@
                             tools:listitem="@layout/item_recent_activity"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             android:nestedScrollingEnabled="false"
-                            android:paddingVertical="8dp" />
+                            android:paddingVertical="8dp"
+                            android:background="@drawable/bg_card_surface_gradient" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -980,7 +985,7 @@
         android:contentDescription="@string/add_movie"
         android:src="@drawable/ic_add_24"
         app:tint="@android:color/white"
-        app:backgroundTint="@color/accent"
+        android:background="@drawable/bg_fab_modern"
         app:elevation="12dp"
         app:borderWidth="0dp" />
 
