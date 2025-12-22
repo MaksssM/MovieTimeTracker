@@ -30,6 +30,10 @@
     <item android:title="@string/nav_discover">
         <menu>
             <item
+                android:id="@+id/calendarFragment"
+                android:icon="@drawable/ic_calendar_24"
+                android:title="@string/nav_calendar" />
+            <item
                 android:id="@+id/trendingFragment"
                 android:icon="@drawable/ic_trending"
                 android:title="@string/nav_trending" />

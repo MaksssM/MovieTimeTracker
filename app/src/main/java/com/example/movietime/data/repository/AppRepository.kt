@@ -534,4 +534,24 @@ class AppRepository @Inject constructor(
             emptyList()
         }
     }
+
+    suspend fun getUpcomingMovies(): List<MovieResult> {
+        return try {
+            val response = api.getUpcomingMovies(apiKey, "uk-UA", "UA")
+            response.results
+        } catch (e: Exception) {
+            Log.e("AppRepo", "Failed to get upcoming movies: ${e.message}")
+            emptyList()
+        }
+    }
+
+    suspend fun getUpcomingTvShows(): List<TvShowResult> {
+        return try {
+            val response = api.getOnTheAirTvShows(apiKey, "uk-UA")
+            response.results
+        } catch (e: Exception) {
+            Log.e("AppRepo", "Failed to get on-the-air TV shows: ${e.message}")
+            emptyList()
+        }
+    }
 }

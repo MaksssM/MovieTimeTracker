@@ -74,33 +74,39 @@ class MainActivity : AppCompatActivity() {
         // Визначаємо top-level destinations - на них буде іконка меню замість стрілки назад
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.enhancedMainFragment, R.id.watchedFragment, R.id.trendingFragment, R.id.settingsFragment
+                R.id.enhancedMainFragment, R.id.watchedFragment, R.id.trendingFragment, R.id.settingsFragment, R.id.calendarFragment
             ), binding.drawerLayout
         )
 
         // Налаштовуємо toolbar з навігацією
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
-        // Налаштовуємо NavigationView
+        // Налаштовуємо NavigationView з навігацією
         binding.navView.setupWithNavController(navController)
 
-        // Закриваємо drawer після вибору пункту меню
-        // Закриваємо drawer після вибору пункту меню
+        // Додаємо обробник для Activity (не Fragment)
         binding.navView.setNavigationItemSelectedListener { menuItem ->
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            
+            Log.d(TAG, "Menu item clicked: ${menuItem.itemId}, title: ${menuItem.title}")
             when (menuItem.itemId) {
                 R.id.nav_planned -> {
+                    Log.d(TAG, "Opening PlannedActivity")
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
                     startActivity(android.content.Intent(this, com.example.movietime.ui.planned.PlannedActivity::class.java))
                     true
                 }
                 R.id.nav_watching -> {
+                    Log.d(TAG, "Opening WatchingActivity")
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
                     startActivity(android.content.Intent(this, com.example.movietime.ui.watching.WatchingActivity::class.java))
                     true
                 }
                 else -> {
-                    NavigationUI.onNavDestinationSelected(menuItem, navController)
-                    true
+                    // Для Fragment навігації
+                    Log.d(TAG, "Navigating to fragment: ${menuItem.itemId}")
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    val navigated = NavigationUI.onNavDestinationSelected(menuItem, navController)
+                    Log.d(TAG, "Navigation result: $navigated")
+                    navigated
                 }
             }
         }
