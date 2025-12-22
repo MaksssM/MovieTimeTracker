@@ -88,6 +88,7 @@
 
     <!-- Navigation menu strings needed for nav_menu.xml -->
     <string name="nav_trending">Популярні</string>
+    <string name="nav_calendar">Новинки</string>
     <string name="nav_settings">Налаштування</string>
 
     <!-- Settings -->
@@ -223,4 +224,14 @@
     <string name="precision_with_api">(з API: %d епізодів)</string>
     <string name="precision_calculated">(розрахунок)</string>
     <string name="time_with_precision">%1$s %2$s</string>
+
+    <!-- Calendar -->
+    <string name="previous_month">Попередній місяць</string>
+    <string name="next_month">Наступний місяць</string>
+    <string name="empty_calendar">Календар</string>
+    <string name="no_releases">Немає релізів у цей період</string>
+    <string name="check_back_later">Перевірте пізніше</string>
+    <string name="date">Дата</string>
+    <string name="movie">Фільм</string>
+    <string name="tv_show">Серіал</string>
 </resources>

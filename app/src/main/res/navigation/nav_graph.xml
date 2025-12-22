@@ -79,4 +79,17 @@
             app:popExitAnim="@anim/slide_up_bounce" />
     </fragment>
 
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.movietime.ui.calendar.CalendarFragment"
+        tools:layout="@layout/fragment_calendar">
+        <action
+            android:id="@+id/action_calendar_to_main"
+            app:destination="@id/enhancedMainFragment"
+            app:enterAnim="@anim/fragment_enter_backwards"
+            app:exitAnim="@anim/fragment_exit_backwards"
+            app:popEnterAnim="@anim/fragment_enter_backwards"
+            app:popExitAnim="@anim/fragment_exit_backwards" />
+    </fragment>
+
 </navigation>
