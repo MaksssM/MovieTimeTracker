@@ -63,8 +63,17 @@ class CalendarFragment : Fragment() {
             Log.d(TAG, "CalendarAdapter set to RecyclerView")
 
             eventAdapter = CalendarEventAdapter(requireContext()) { release ->
-                // Handle release click if needed
-                Log.d(TAG, "Release clicked: ${release.title}")
+                val intent = if (release.isMovie) {
+                    android.content.Intent(requireContext(), com.example.movietime.ui.details.DetailsActivity::class.java).apply {
+                        putExtra("ITEM_ID", release.id.toInt())
+                        putExtra("MEDIA_TYPE", "movie")
+                    }
+                } else {
+                    android.content.Intent(requireContext(), com.example.movietime.ui.details.TvDetailsActivity::class.java).apply {
+                        putExtra("ITEM_ID", release.id.toInt())
+                    }
+                }
+                startActivity(intent)
             }
             Log.d(TAG, "CalendarEventAdapter created")
             
@@ -114,6 +123,10 @@ class CalendarFragment : Fragment() {
 
         binding.btnPrevMonth.setOnClickListener {
             viewModel.previousMonth()
+        }
+
+        binding.btnToday.setOnClickListener {
+            viewModel.resetToToday()
         }
     }
 

@@ -47,6 +47,10 @@ class CalendarViewModel @Inject constructor(
         loadMonth(prev)
     }
 
+    fun resetToToday() {
+        loadMonth(YearMonth.now())
+    }
+
     private fun loadMonth(yearMonth: YearMonth) {
         _currentMonth.value = yearMonth
         updateCalendarDays()
