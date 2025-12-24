@@ -1,111 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="12dp"
-    android:layout_marginBottom="8dp"
-    android:background="?attr/selectableItemBackgroundBorderless"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp"
+    app:cardBackgroundColor="@color/surface_card"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
 
-    <!-- Poster Thumbnail -->
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="48dp"
-        android:layout_height="72dp"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="0dp"
-        app:strokeWidth="0dp"
-        android:layout_marginEnd="12dp">
-
-        <ImageView
-            android:id="@+id/ivPoster"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/poster_description"
-            android:background="@color/shimmer_base"
-            tools:src="@tools:sample/backgrounds/scenic" />
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <!-- Content -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="top">
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
 
-        <!-- Title -->
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Фільм / Серіал"
-            android:textSize="14sp"
-            android:textColor="@color/text_primary"
-            android:fontFamily="sans-serif-medium"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:lineSpacingMultiplier="1.1"
-            tools:text="The Matrix" />
+        <!-- Poster with rounded corners -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="60dp"
+            android:layout_height="90dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="4dp"
+            app:strokeWidth="0dp">
 
-        <!-- Meta Info -->
+            <ImageView
+                android:id="@+id/ivPoster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/poster_description"
+                android:background="@color/shimmer_base"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Content -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="4dp">
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="14dp">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Movie Title"
+                android:textSize="15sp"
+                android:textColor="@color/text_primary"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.15"
+                tools:text="Аватар: Шлях води" />
 
             <!-- Type Badge -->
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipType"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:text="Фільм"
-                android:textSize="10sp"
-                app:chipBackgroundColor="@drawable/bg_chip"
-                app:chipIcon="@drawable/ic_movie_24"
-                app:chipIconSize="12dp"
-                android:layout_marginEnd="6dp"
-                tools:text="Фільм" />
-
-            <!-- Rating Badge -->
             <LinearLayout
-                android:id="@+id/ratingBadge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_chip"
                 android:orientation="horizontal"
-                android:paddingHorizontal="6dp"
-                android:paddingVertical="2dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp">
 
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:src="@drawable/ic_star_filled_24"
-                    app:tint="@color/accent"
-                    android:contentDescription="@null" />
-
-                <TextView
-                    android:id="@+id/tvRating"
+                <!-- Movie/TV Badge -->
+                <LinearLayout
+                    android:id="@+id/badgeType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:textSize="10sp"
-                    android:textColor="@color/accent"
-                    android:fontFamily="sans-serif-medium"
-                    tools:text="8.5" />
+                    android:background="@drawable/bg_type_badge"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/ivTypeIcon"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_movie_24"
+                        app:tint="@color/accent"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:id="@+id/tvType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:textSize="11sp"
+                        android:textColor="@color/accent"
+                        android:fontFamily="sans-serif-medium"
+                        tools:text="Фільм" />
+
+                </LinearLayout>
+
+                <!-- Rating Badge -->
+                <LinearLayout
+                    android:id="@+id/ratingBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_rating_badge"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="8dp">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_star_filled_24"
+                        app:tint="@color/rating_star"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:id="@+id/tvRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="sans-serif-medium"
+                        tools:text="8.5" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
 
+        <!-- Arrow indicator -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_arrow_right"
+            app:tint="@color/text_hint"
+            android:contentDescription="@null" />
+
     </LinearLayout>
 
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

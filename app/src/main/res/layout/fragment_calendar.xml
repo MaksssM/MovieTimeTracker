@@ -17,7 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp">
 
             <!-- Month/Year Navigation -->
             <LinearLayout
@@ -27,37 +29,55 @@
                 android:gravity="center_vertical"
                 android:layout_marginBottom="16dp">
 
-                <ImageButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnPrevMonth"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_arrow_back_24"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:scaleType="centerInside"
-                    android:contentDescription="@string/previous_month"
-                    android:tint="@color/text_primary" />
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    app:icon="@drawable/ic_arrow_back_24"
+                    app:iconTint="@color/text_primary"
+                    android:contentDescription="@string/previous_month" />
 
-                <TextView
-                    android:id="@+id/tvMonthYear"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:orientation="vertical"
                     android:gravity="center"
-                    android:text="Грудень 2025"
-                    android:textColor="@color/text_primary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium" />
+                    android:layout_marginHorizontal="12dp">
 
-                <ImageButton
+                    <TextView
+                        android:id="@+id/tvMonthYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Грудень 2025"
+                        android:textColor="@color/text_primary"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnToday"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:text="@string/today"
+                        android:textSize="12sp"
+                        app:icon="@drawable/ic_calendar_24"
+                        app:iconSize="14dp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnNextMonth"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_arrow_right"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:scaleType="centerInside"
-                    android:contentDescription="@string/next_month"
-                    android:tint="@color/text_primary" />
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    app:icon="@drawable/ic_arrow_right"
+                    app:iconTint="@color/text_primary"
+                    android:contentDescription="@string/next_month" />
 
             </LinearLayout>
 
@@ -75,7 +95,7 @@
                     android:layout_weight="1"
                     android:text="Пн"
                     android:gravity="center"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_secondary"
                     android:fontFamily="sans-serif-medium" />
 
@@ -85,7 +105,7 @@
                     android:layout_weight="1"
                     android:text="Вт"
                     android:gravity="center"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_secondary"
                     android:fontFamily="sans-serif-medium" />
 
@@ -95,7 +115,7 @@
                     android:layout_weight="1"
                     android:text="Ср"
                     android:gravity="center"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_secondary"
                     android:fontFamily="sans-serif-medium" />
 
@@ -105,7 +125,7 @@
                     android:layout_weight="1"
                     android:text="Чт"
                     android:gravity="center"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_secondary"
                     android:fontFamily="sans-serif-medium" />
 
@@ -115,7 +135,7 @@
                     android:layout_weight="1"
                     android:text="Пт"
                     android:gravity="center"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_secondary"
                     android:fontFamily="sans-serif-medium" />
 
@@ -125,8 +145,8 @@
                     android:layout_weight="1"
                     android:text="Сб"
                     android:gravity="center"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:textColor="@color/accent"
                     android:fontFamily="sans-serif-medium" />
 
                 <TextView
@@ -135,8 +155,8 @@
                     android:layout_weight="1"
                     android:text="Нд"
                     android:gravity="center"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:textColor="@color/rose"
                     android:fontFamily="sans-serif-medium" />
 
             </LinearLayout>
@@ -155,56 +175,92 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Events List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCalendarEvents"
+    <!-- Content below calendar -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingHorizontal="16dp"
-        android:paddingBottom="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/item_calendar_event" />
+        android:fillViewport="true">
 
-    <!-- Empty State -->
-    <LinearLayout
-        android:id="@+id/layoutEmpty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="48dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:visibility="gone">
-
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/ic_calendar_24"
-            android:alpha="0.3"
-            app:tint="@color/text_secondary"
-            android:contentDescription="@string/empty_calendar" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/no_releases"
-            android:textSize="18sp"
-            android:textColor="@color/text_primary"
-            android:alpha="0.6"
-            android:layout_marginTop="16dp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="24dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/check_back_later"
-            android:textSize="14sp"
-            android:textColor="@color/text_secondary"
-            android:alpha="0.4"
-            android:layout_marginTop="8dp" />
-    </LinearLayout>
+            <!-- Section Header -->
+            <TextView
+                android:id="@+id/tvSectionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/upcoming_releases_title"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:fontFamily="sans-serif-medium" />
+
+            <!-- Events List -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCalendarEvents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_calendar_event" />
+
+            <!-- Empty State -->
+            <LinearLayout
+                android:id="@+id/layoutEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone"
+                tools:visibility="gone">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:cardCornerRadius="40dp"
+                    app:cardBackgroundColor="@color/surface_variant"
+                    app:strokeWidth="0dp"
+                    app:cardElevation="0dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_calendar_24"
+                        app:tint="@color/text_hint"
+                        android:contentDescription="@string/empty_calendar" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_releases"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginTop="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/check_back_later"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <!-- Loading Indicator -->
     <ProgressBar

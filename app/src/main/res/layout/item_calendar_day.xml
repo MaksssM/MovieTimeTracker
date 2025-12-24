@@ -1,55 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="4dp">
+    android:layout_height="50dp">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/border"
-        app:cardBackgroundColor="@android:color/transparent">
+    <!-- Selection/Today Background -->
+    <View
+        android:id="@+id/dayBackground"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_calendar_selected"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_card_surface_gradient">
+    <!-- Day Number -->
+    <TextView
+        android:id="@+id/tvDayNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dayBackground"
+        app:layout_constraintEnd_toEndOf="@+id/dayBackground"
+        app:layout_constraintStart_toStartOf="@+id/dayBackground"
+        app:layout_constraintTop_toTopOf="@+id/dayBackground"
+        tools:text="15" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:paddingVertical="4dp">
+    <!-- Today Ring (Outline) -->
+    <View
+        android:id="@+id/todayHighlight"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_today_highlight_circle"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dayBackground"
+        app:layout_constraintEnd_toEndOf="@+id/dayBackground"
+        app:layout_constraintStart_toStartOf="@+id/dayBackground"
+        app:layout_constraintTop_toTopOf="@+id/dayBackground" />
 
-                <TextView
-                    android:id="@+id/tvDayNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="1"
-                    android:gravity="center"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    tools:text="25" />
+    <!-- Event Indicator Dot -->
+    <View
+        android:id="@+id/eventIndicator"
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/circle_accent"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDayNumber"
+        tools:visibility="visible" />
+        
+    <!-- Event Count Badge (Small, top right) -->
+    <TextView
+        android:id="@+id/tvEventCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_event_count_micro"
+        android:minWidth="14dp"
+        android:paddingHorizontal="2dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="8sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@+id/dayBackground"
+        app:layout_constraintEnd_toEndOf="@+id/dayBackground"
+        android:layout_marginEnd="-4dp"
+        android:layout_marginTop="-4dp"
+        tools:text="2"
+        tools:visibility="visible" />
 
-                <View
-                    android:id="@+id/eventIndicator"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/circle_background"
-                    android:backgroundTint="@color/accent"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-        </FrameLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
