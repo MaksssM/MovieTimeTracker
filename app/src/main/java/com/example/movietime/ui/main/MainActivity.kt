@@ -100,6 +100,15 @@ class MainActivity : AppCompatActivity() {
                     startActivity(android.content.Intent(this, com.example.movietime.ui.watching.WatchingActivity::class.java))
                     true
                 }
+                R.id.enhancedMainFragment -> {
+                    Log.d(TAG, "Navigating to Main Menu (Explicit)")
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    // Clear back stack back to home or navigate if not present
+                    if (!navController.popBackStack(R.id.enhancedMainFragment, false)) {
+                        navController.navigate(R.id.enhancedMainFragment)
+                    }
+                    true
+                }
                 else -> {
                     // Для Fragment навігації
                     Log.d(TAG, "Navigating to fragment: ${menuItem.itemId}")

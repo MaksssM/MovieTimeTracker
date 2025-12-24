@@ -46,7 +46,18 @@ class WatchingActivity : AppCompatActivity() {
         watchingAdapter = ContentAdapter(
             onItemClick = { item ->
                 // Navigate to details
-                // TODO: Implement navigation to details
+                val intent = if (item.mediaType == "tv") {
+                    Intent(this, com.example.movietime.ui.details.TvDetailsActivity::class.java).apply {
+                        putExtra("ITEM_ID", item.id)
+                        putExtra("MEDIA_TYPE", "tv")
+                    }
+                } else {
+                    Intent(this, com.example.movietime.ui.details.DetailsActivity::class.java).apply {
+                        putExtra("ITEM_ID", item.id)
+                        putExtra("MEDIA_TYPE", "movie")
+                    }
+                }
+                startActivity(intent)
             },
             onDeleteClick = { item ->
                 viewModel.removeFromWatching(item)
