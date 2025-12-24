@@ -5,6 +5,14 @@
     <string name="nav_watched">Переглянуті</string>
     <string name="nav_planned">Заплановані</string>
     <string name="nav_watching">Дивлюсь</string>
+    <string name="nav_library">Бібліотека</string>
+    <string name="nav_discover">Відкривайте</string>
+    <string name="nav_calendar">Календар</string>
+    <string name="nav_trending">Популярне</string>
+    <string name="nav_settings">Налаштування</string>
+    <string name="today">Сьогодні</string>
+    <string name="upcoming_releases_title">Прем\'єри цього місяця</string>
+    <string name="releases_count">%d релізів</string>
 
     <!-- Main menu -->
     <string name="main_menu_title">Головне меню</string>
@@ -74,8 +82,6 @@
     <string name="movie_premieres">Майбутні прем\'єри</string>
     <string name="friends">Друзі</string>
     <string name="recent_activity">Недавня активність</string>
-    <string name="nav_library">Бібліотека</string>
-    <string name="nav_discover">Огляд</string>
     <string name="quick_add">Швидке додавання</string>
 
     <string name="watching_count">Дивлюсь: %d</string>
@@ -86,10 +92,6 @@
     <string name="watching_tv_shows_count">Дивлюсь серіали: %d</string>
     <string name="your_watching_content">Контент, який ви зараз дивитесь</string>
 
-    <!-- Navigation menu strings needed for nav_menu.xml -->
-    <string name="nav_trending">Популярні</string>
-    <string name="nav_calendar">Новинки</string>
-    <string name="nav_settings">Налаштування</string>
 
     <!-- Settings -->
     <string name="settings_title">Екран налаштувань</string>

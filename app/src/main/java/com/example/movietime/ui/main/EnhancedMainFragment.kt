@@ -101,7 +101,7 @@ class EnhancedMainFragment : Fragment() {
 
         binding.btnUpcomingReleases.setOnClickListener {
             handleClickWithDebounce {
-                startActivity(Intent(requireActivity(), UpcomingReleasesActivity::class.java))
+                findNavController().navigate(R.id.calendarFragment)
             }
         }
 

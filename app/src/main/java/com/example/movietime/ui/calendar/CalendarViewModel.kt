@@ -56,28 +56,31 @@ class CalendarViewModel @Inject constructor(
     private fun updateCalendarDays() {
         val month = _currentMonth.value ?: return
         val days = mutableListOf<CalendarDay>()
+        val today = LocalDate.now()
 
         val firstDay = month.atDay(1)
         val lastDay = month.atEndOfMonth()
 
-        // Add previous month's days
-        val firstDayOfWeek = firstDay.dayOfWeek.value % 7 // 0 = Sunday, 1 = Monday
+        // Add previous month's days - start from Monday (dayOfWeek 1)
+        val firstDayOfWeek = (firstDay.dayOfWeek.value - 1) // Monday = 0
         for (i in 0 until firstDayOfWeek) {
             val prevDate = firstDay.minusDays((firstDayOfWeek - i).toLong())
-            days.add(CalendarDay(prevDate.dayOfMonth, false, false))
+            days.add(CalendarDay(prevDate.dayOfMonth, false, false, 0, false))
         }
 
         // Add current month's days
         for (day in 1..lastDay.dayOfMonth) {
             val date = month.atDay(day)
-            val hasEvents = releasesCache.containsKey(date)
-            days.add(CalendarDay(day, true, hasEvents))
+            val eventCount = releasesCache[date]?.size ?: 0
+            val hasEvents = eventCount > 0
+            val isToday = date == today
+            days.add(CalendarDay(day, true, hasEvents, eventCount, isToday))
         }
 
         // Add next month's days to fill grid
         val remainingCells = 42 - days.size // 6 rows * 7 days
         for (i in 1..remainingCells) {
-            days.add(CalendarDay(i, false, false))
+            days.add(CalendarDay(i, false, false, 0, false))
         }
 
         _calendarDays.value = days

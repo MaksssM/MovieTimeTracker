@@ -10,6 +10,7 @@ import com.example.movietime.databinding.ItemCalendarEventBinding
 import com.example.movietime.databinding.ItemCalendarReleaseBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 data class CalendarRelease(
     val id: String,
@@ -60,8 +61,12 @@ class CalendarEventAdapter(
             context: Context,
             onReleaseClick: (CalendarRelease) -> Unit
         ) {
-            val formatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+            // Format date with Ukrainian locale
+            val formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale("uk"))
             binding.tvEventDate.text = eventData.date.format(formatter)
+            
+            // Show releases count
+            binding.tvReleasesCount.text = context.getString(R.string.releases_count, eventData.releases.size)
 
             binding.eventsContainer.removeAllViews()
 
@@ -73,14 +78,22 @@ class CalendarEventAdapter(
                 )
 
                 releaseBinding.tvTitle.text = release.title
-                releaseBinding.tvRating.text = String.format("%.1f", release.rating)
-                releaseBinding.chipType.text =
-                    if (release.isMovie) context.getString(R.string.movie)
-                    else context.getString(R.string.tv_show)
+                releaseBinding.tvRating.text = String.format(Locale.US, "%.1f", release.rating)
+                
+                // Set type text and icon
+                releaseBinding.tvType.text = if (release.isMovie) 
+                    context.getString(R.string.movie) 
+                else 
+                    context.getString(R.string.tv_show)
+                    
+                releaseBinding.ivTypeIcon.setImageResource(
+                    if (release.isMovie) R.drawable.ic_movie_24 else R.drawable.ic_tv_24
+                )
 
                 if (release.posterUrl.isNotBlank()) {
                     releaseBinding.ivPoster.load(release.posterUrl) {
                         crossfade(true)
+                        placeholder(R.color.shimmer_base)
                     }
                 }
 

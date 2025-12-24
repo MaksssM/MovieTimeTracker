@@ -51,16 +51,29 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setupAdapters() {
-        calendarAdapter = CalendarAdapter { dayOfMonth ->
-            viewModel.onDayClick(dayOfMonth)
-        }
-        binding.rvCalendarDays.adapter = calendarAdapter
+        try {
+            Log.d(TAG, "setupAdapters starting...")
+            
+            calendarAdapter = CalendarAdapter { dayOfMonth ->
+                viewModel.onDayClick(dayOfMonth)
+            }
+            Log.d(TAG, "CalendarAdapter created")
+            
+            binding.rvCalendarDays.adapter = calendarAdapter
+            Log.d(TAG, "CalendarAdapter set to RecyclerView")
 
-        eventAdapter = CalendarEventAdapter(requireContext()) { release ->
-            // Handle release click if needed
+            eventAdapter = CalendarEventAdapter(requireContext()) { release ->
+                // Handle release click if needed
+                Log.d(TAG, "Release clicked: ${release.title}")
+            }
+            Log.d(TAG, "CalendarEventAdapter created")
+            
+            binding.rvCalendarEvents.adapter = eventAdapter
+            binding.rvCalendarEvents.layoutManager = LinearLayoutManager(requireContext())
+            Log.d(TAG, "setupAdapters completed successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in setupAdapters: ${e.message}", e)
         }
-        binding.rvCalendarEvents.adapter = eventAdapter
-        binding.rvCalendarEvents.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun setupObservers() {
