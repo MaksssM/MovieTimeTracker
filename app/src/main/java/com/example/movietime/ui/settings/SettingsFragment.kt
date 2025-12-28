@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.movietime.BuildConfig
 import com.example.movietime.R
-import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.Locale
@@ -53,9 +53,9 @@ class SettingsFragment : Fragment() {
         val radioThemeGroup = view.findViewById<RadioGroup>(R.id.radioGroupTheme)
         val radioLangGroup = view.findViewById<RadioGroup>(R.id.radioGroupLanguage)
         val radioTmdbLangGroup = view.findViewById<RadioGroup>(R.id.radioGroupTmdbLanguage)
-        val switchShowRatings = view.findViewById<MaterialSwitch>(R.id.switchShowRatings)
-        val switchCompactMode = view.findViewById<MaterialSwitch>(R.id.switchCompactMode)
-        val switchAutoplayTrailers = view.findViewById<MaterialSwitch>(R.id.switchAutoplayTrailers)
+        val switchShowRatings = view.findViewById<SwitchMaterial>(R.id.switchShowRatings)
+        val switchCompactMode = view.findViewById<SwitchMaterial>(R.id.switchCompactMode)
+        val switchAutoplayTrailers = view.findViewById<SwitchMaterial>(R.id.switchAutoplayTrailers)
         val layoutClearCache = view.findViewById<LinearLayout>(R.id.layoutClearCache)
         val layoutExportData = view.findViewById<LinearLayout>(R.id.layoutExportData)
         val layoutClearAllData = view.findViewById<LinearLayout>(R.id.layoutClearAllData)

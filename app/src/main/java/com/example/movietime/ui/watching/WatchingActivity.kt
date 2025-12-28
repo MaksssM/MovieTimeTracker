@@ -111,8 +111,8 @@ class WatchingActivity : AppCompatActivity() {
 
         viewModel.isLoading.observe(this) { isLoading ->
             binding.layoutLoading.isVisible = isLoading
-            binding.cardWatchingList.isVisible = !isLoading
-            binding.layoutEmpty.isVisible = false
+            binding.rvWatching.isVisible = !isLoading && (viewModel.watchingContent.value?.isNotEmpty() == true)
+            binding.layoutEmpty.isVisible = !isLoading && (viewModel.watchingContent.value?.isEmpty() == true)
         }
     }
 
@@ -131,22 +131,28 @@ class WatchingActivity : AppCompatActivity() {
 
         watchingAdapter.updateItems(filteredContent)
 
-        val headerText = when (currentFilter) {
+        if (filteredContent.isEmpty()) {
+            binding.rvWatching.isVisible = false
+            binding.layoutEmpty.isVisible = true
+        } else {
+            binding.rvWatching.isVisible = true
+            binding.layoutEmpty.isVisible = false
+        }
+
+        supportActionBar?.subtitle = when (currentFilter) {
             "movie" -> getString(R.string.watching_movies_count, filteredContent.size)
             "tv" -> getString(R.string.watching_tv_shows_count, filteredContent.size)
             else -> getString(R.string.watching_count, filteredContent.size)
         }
-
-        binding.tvWatchingHeader.text = headerText
     }
 
     private fun showEmptyState() {
-        binding.cardWatchingList.isVisible = false
+        binding.rvWatching.isVisible = false
         binding.layoutEmpty.isVisible = true
     }
 
     private fun showContent(@Suppress("UNUSED_PARAMETER") content: List<Any>) {
-        binding.cardWatchingList.isVisible = true
+        binding.rvWatching.isVisible = true
         binding.layoutEmpty.isVisible = false
     }
 }

@@ -27,17 +27,17 @@
         <activity
             android:name=".ui.search.SearchActivity"
             android:exported="true"
-            android:theme="@style/Theme.MovieTimeTracker.NoActionBar" />
+            android:theme="@style/Theme.MovieTimeTracker" />
 
         <activity
             android:name=".ui.details.DetailsActivity"
             android:exported="false"
-            android:theme="@style/Theme.MovieTimeTracker.NoActionBar" />
+            android:theme="@style/Theme.MovieTimeTracker" />
 
         <activity
             android:name=".ui.details.TvDetailsActivity"
             android:exported="false"
-            android:theme="@style/Theme.MovieTimeTracker.NoActionBar" />
+            android:theme="@style/Theme.MovieTimeTracker" />
 
         <activity
             android:name=".ui.search.EnhancedSearchActivity"

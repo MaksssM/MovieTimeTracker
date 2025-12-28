@@ -1,36 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#60A0FF">
-    <item android:id="@android:id/mask">
+    android:color="#FFFFFF">
+    <item>
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/white" />
+            <gradient
+                android:angle="135"
+                android:startColor="@color/accent"
+                android:endColor="#7c3aed" 
+                android:type="linear" />
             <corners android:radius="16dp" />
         </shape>
-    </item>
-    <item>
-        <layer-list>
-            <item>
-                <shape android:shape="rectangle">
-                    <gradient
-                        android:angle="150"
-                        android:startColor="#3A70B8"
-                        android:centerColor="#4A85D0"
-                        android:endColor="#5A95E0"
-                        android:type="linear" />
-                    <corners android:radius="16dp" />
-                </shape>
-            </item>
-            <item>
-                <shape android:shape="rectangle">
-                    <gradient
-                        android:angle="45"
-                        android:startColor="#00000000"
-                        android:centerColor="#2060A0"
-                        android:endColor="#00000000"
-                        android:type="linear" />
-                    <corners android:radius="16dp" />
-                </shape>
-            </item>
-        </layer-list>
     </item>
 </ripple>

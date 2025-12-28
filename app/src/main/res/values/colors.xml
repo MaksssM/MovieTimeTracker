@@ -1,167 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- PREMIUM MINIMALIST PALETTE -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
     <!-- Base Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- Primary Brand Colors (Deep Noir & Electric Blue) -->
+    <color name="primary">#3B82F6</color>         <!-- Vibrant Blue -->
+    <color name="primary_dark">#2563EB</color>    <!-- Deep Blue -->
+    <color name="primary_light">#60A5FA</color>   <!-- Soft Blue -->
+    <color name="accent">#8B5CF6</color>          <!-- Electric Purple -->
+    <color name="accent_light">#C4B5FD</color>
+    <color name="accent_dark">#6D28D9</color>
+
+    <!-- Semantic Colors - Dark Theme -->
+    <color name="background_primary_dark">#121212</color>  <!-- Matte Dark Grey -->
+    <color name="background_surface_dark">#1E1E1E</color>  <!-- Lighter Surface -->
+    <color name="background_elevated_dark">#2C2C2C</color> <!-- Elevated Card -->
+    <color name="text_primary_dark">#FFFFFF</color>
+    <color name="text_secondary_dark">#B3B3B3</color>
+    <color name="text_tertiary_dark">#757575</color>
+    <color name="divider_dark">#2C2C2C</color>
+
+    <!-- Semantic Colors - Light Theme -->
+    <color name="background_primary_light">#F5F5F7</color> <!-- Soft White/Grey -->
+    <color name="background_surface_light">#FFFFFF</color> <!-- Pure White -->
+    <color name="background_elevated_light">#FFFFFF</color>
+    <color name="text_primary_light">#111827</color>
+    <color name="text_primary">@color/text_primary_light</color>
+    <color name="text_secondary_light">#6B7280</color>
+    <color name="text_secondary">@color/text_secondary_light</color>
+    <color name="text_hint">@color/text_tertiary_light</color>
+    <color name="text_tertiary_light">#9CA3AF</color>
+    <color name="divider_light">#E5E7EB</color>
+    <color name="divider">@color/divider_light</color>
+    <color name="surface_card">@color/background_surface_light</color>
+
+    <!-- Functional Colors -->
+    <color name="success">#10B981</color>
+    <color name="error">#EF4444</color>
+    <color name="warning">#F59E0B</color>
+    <color name="info">#3B82F6</color>
+
+    <!-- Glassmorphism & Soft UI -->
+    <color name="glass_background_dark">#CC1E1E1E</color> <!-- 80% opacity -->
+    <color name="glass_background_light">#CCFFFFFF</color> <!-- 80% opacity -->
+    <color name="glass_stroke_dark">#1FFFFFFF</color>      <!-- Subtle white stroke -->
+    <color name="glass_stroke_light">#1F000000</color>     <!-- Subtle black stroke -->
+    
+    <color name="soft_gradient_start_dark">#121212</color>
+    <color name="soft_gradient_mid_dark">#1A1A2E</color>   <!-- Deep Blue-Black -->
+    <color name="soft_gradient_end_dark">#16213E</color>   <!-- Soft Navy -->
+    
+    <color name="soft_gradient_start_light">#FFFFFF</color>
+    <color name="soft_gradient_mid_light">#E0E7FF</color>  <!-- Very pale blue -->
+    <color name="soft_gradient_end_light">#F3E8FF</color>  <!-- Very pale purple -->
+
+    <!-- Gradient Colors (Premium Effects) -->
+    <color name="gradient_hero_start">#00000000</color>
+    <color name="gradient_hero_end">#121212</color> <!-- Matches bg_dark -->
+    <color name="gradient_hero_end_light">#F5F5F7</color> <!-- Matches bg_light -->
+    
+    <color name="overlay_dark">#99000000</color>
+    <color name="overlay_light">#40000000</color>
+
+    <!-- Badges & Tags -->
+    <color name="badge_movie">#3B82F6</color>
+    <color name="badge_tv">#F59E0B</color>
+    <color name="badge_rating">#FBBF24</color>
 
     <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- PREMIUM CINEMA THEME - Deep Navy + Gold/Amber -->
+    <!-- Material 3 Token Mapping (Defaulting to Dark for preview) -->
     <!-- ═══════════════════════════════════════════════════════════════ -->
-
-    <!-- Background Colors - Light Theme -->
-    <color name="app_bg">#FFFFFF</color>
-    <color name="card_bg">#FFFFFF</color>
-    <color name="card_bg_elevated">#F7FAFD</color>
-
-    <!-- Primary - Deep Navy Blue -->
-    <color name="primary">#2563EB</color>
-    <color name="primary_dark">#1D4ED8</color>
-    <color name="primary_light">#60A5FA</color>
-    <color name="primaryContainer">#E0ECFF</color>
-
-    <!-- Accent - Cool Blue -->
-    <color name="accent">#3B82F6</color>
-    <color name="accent_light">#60A5FA</color>
-    <color name="accent_dark">#1D4ED8</color>
-
-    <!-- Additional Accent Colors -->
-    <color name="highlight">#7C4DFF</color>
-    <color name="highlight_light">#B388FF</color>
-    <color name="gold">#5A9CF5</color>
-    <color name="emerald">#2ECC71</color>
-    <color name="rose">#E74C3C</color>
-    <color name="coral">#FF6B6B</color>
-
-    <!-- Secondary -->
-    <color name="secondary">#7C4DFF</color>
-    <color name="on_secondary">#FFFFFF</color>
-
-    <!-- Text Colors - Light Theme -->
-    <color name="primary_text">#111827</color>
-    <color name="secondary_text">#475569</color>
-    <color name="tertiary_text">#64748B</color>
-    <color name="muted_text">#94A3B8</color>
-
-    <!-- Surface Colors - Light Theme -->
-    <color name="surface">#FFFFFF</color>
-    <color name="surface_variant">#F1F5F9</color>
-    <color name="divider">#E2E8F0</color>
-    <color name="border">#CBD5E1</color>
-
-    <!-- Status Colors -->
-    <color name="success">#2ECC71</color>
-    <color name="error">#E74C3C</color>
-    <color name="warning">#F39C12</color>
-    <color name="info">#3498DB</color>
-
-    <!-- Gradient Colors -->
-    <color name="gradient_primary_start">#1E3A5F</color>
-    <color name="gradient_primary_middle">#2A4A6F</color>
-    <color name="gradient_primary_end">#D4A24C</color>
-
-    <color name="gradient_card_start">#1A2634</color>
-    <color name="gradient_card_end">#2A3644</color>
-
-    <color name="gradient_accent_start">#D4A24C</color>
-    <color name="gradient_accent_end">#FF8C42</color>
-
-    <!-- Glass effect colors -->
-    <color name="glass_overlay">#1A2634</color>
-    <color name="glass_border">#3A4654</color>
-
-    <!-- Shimmer colors -->
-    <color name="shimmer_base">#EEF2F6</color>
-    <color name="shimmer_highlight">#F5F8FA</color>
-
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- Material3 Light Theme Colors -->
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <color name="md_theme_light_primary">#2563EB</color>
+    <color name="md_theme_light_primary">#3B82F6</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
-    <color name="md_theme_light_primaryContainer">#E0ECFF</color>
-    <color name="md_theme_light_onPrimaryContainer">#0B1220</color>
-    <color name="md_theme_light_secondary">#3B82F6</color>
+    <color name="md_theme_light_primaryContainer">#EFF6FF</color>
+    <color name="md_theme_light_onPrimaryContainer">#1E3A8A</color>
+    <color name="md_theme_light_secondary">#64748B</color>
     <color name="md_theme_light_onSecondary">#FFFFFF</color>
-    <color name="md_theme_light_secondaryContainer">#E0ECFF</color>
-    <color name="md_theme_light_onSecondaryContainer">#0B1220</color>
-    <color name="md_theme_light_tertiary">#22C55E</color>
-    <color name="md_theme_light_onTertiary">#FFFFFF</color>
-    <color name="md_theme_light_tertiaryContainer">#D1FADF</color>
-    <color name="md_theme_light_onTertiaryContainer">#064E3B</color>
-    <color name="md_theme_light_error">#E74C3C</color>
-    <color name="md_theme_light_errorContainer">#FFE0DC</color>
-    <color name="md_theme_light_onError">#FFFFFF</color>
-    <color name="md_theme_light_onErrorContainer">#5C1A1A</color>
-    <color name="md_theme_light_background">#FFFFFF</color>
+    <color name="md_theme_light_background">#F5F5F7</color>
     <color name="md_theme_light_onBackground">#111827</color>
     <color name="md_theme_light_surface">#FFFFFF</color>
     <color name="md_theme_light_onSurface">#111827</color>
-    <color name="md_theme_light_surfaceVariant">#F1F5F9</color>
-    <color name="md_theme_light_onSurfaceVariant">#475569</color>
-    <color name="md_theme_light_outline">#94A3B8</color>
-    <color name="md_theme_light_inverseOnSurface">#F1F5F9</color>
-    <color name="md_theme_light_inverseSurface">#0F172A</color>
-    <color name="md_theme_light_inversePrimary">#9CC5FF</color>
 
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- Material3 Dark Theme Colors -->
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <color name="md_theme_dark_primary">#5DA0FF</color>
-    <color name="md_theme_dark_onPrimary">#0B1220</color>
-    <color name="md_theme_dark_primaryContainer">#0D1B32</color>
-    <color name="md_theme_dark_onPrimaryContainer">#D7E6FF</color>
-    <color name="md_theme_dark_secondary">#5DA0FF</color>
-    <color name="md_theme_dark_onSecondary">#0B1220</color>
-    <color name="md_theme_dark_secondaryContainer">#132137</color>
-    <color name="md_theme_dark_onSecondaryContainer">#D7E6FF</color>
-    <color name="md_theme_dark_tertiary">#4FD68F</color>
-    <color name="md_theme_dark_onTertiary">#03130B</color>
-    <color name="md_theme_dark_tertiaryContainer">#0B2A1A</color>
-    <color name="md_theme_dark_onTertiaryContainer">#CFF6E1</color>
-    <color name="md_theme_dark_error">#FF8A80</color>
-    <color name="md_theme_dark_errorContainer">#930000</color>
-    <color name="md_theme_dark_onError">#5C1A1A</color>
-    <color name="md_theme_dark_onErrorContainer">#FFE0DC</color>
-    <color name="md_theme_dark_background">#050607</color>
-    <color name="md_theme_dark_onBackground">#E5E7EB</color>
-    <color name="md_theme_dark_surface">#0D1117</color>
-    <color name="md_theme_dark_onSurface">#E5E7EB</color>
-    <color name="md_theme_dark_surfaceVariant">#121824</color>
-    <color name="md_theme_dark_onSurfaceVariant">#9CA3AF</color>
-    <color name="md_theme_dark_outline">#6B7280</color>
-    <color name="md_theme_dark_inverseOnSurface">#0D1117</color>
-    <color name="md_theme_dark_inverseSurface">#E5E7EB</color>
-    <color name="md_theme_dark_inversePrimary">#2563EB</color>
+    <color name="md_theme_dark_primary">#60A5FA</color>
+    <color name="md_theme_dark_onPrimary">#0F172A</color>
+    <color name="md_theme_dark_primaryContainer">#1E3A8A</color>
+    <color name="md_theme_dark_onPrimaryContainer">#DBEAFE</color>
+    <color name="md_theme_dark_secondary">#94A3B8</color>
+    <color name="md_theme_dark_onSecondary">#0F172A</color>
+    <color name="md_theme_dark_background">#121212</color>
+    <color name="md_theme_dark_onBackground">#FFFFFF</color>
+    <color name="md_theme_dark_surface">#1E1E1E</color>
+    <color name="md_theme_dark_onSurface">#FFFFFF</color>
 
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- Special UI Colors -->
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <color name="rating_star">#FFD700</color>
-    <color name="rating_star_empty">#CBD5E1</color>
-    <color name="movie_badge">#1E3A5F</color>
-    <color name="tv_badge">#D4A24C</color>
-    <color name="planned_badge">#3498DB</color>
-    <color name="watching_badge">#2ECC71</color>
-    <color name="watched_badge">#9B59B6</color>
+    <!-- Deprecated/Compat (Mapping to new) -->
+    <color name="app_bg">#121212</color>
+    <color name="card_bg">#1E1E1E</color>
+    <color name="primary_text">#FFFFFF</color>
+    <color name="secondary_text">#B3B3B3</color>
 
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- New Modern UI Colors -->
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <color name="background">#FFFFFF</color>
-    <color name="surface_card">#FFFFFF</color>
-    <color name="surface_elevated">#F7FAFD</color>
-    <color name="stat_card_bg">#F8FAFC</color>
-    <color name="text_primary">#111827</color>
-    <color name="text_secondary">#475569</color>
-    <color name="text_hint">#94A3B8</color>
+    <color name="primary_alpha_15">#263B82F6</color>
+
+    <!-- Missing Colors Fix -->
+    <color name="primaryContainer">@color/md_theme_dark_primaryContainer</color>
+    <color name="movie_badge">@color/badge_movie</color>
+    <color name="tv_badge">@color/badge_tv</color>
+    <color name="surface_light_alpha_05">#0DFFFFFF</color>
+    <color name="surface">@color/background_surface_dark</color>
+    <color name="surface_variant">@color/background_elevated_dark</color>
+    <color name="surface_elevated">@color/background_primary_light</color>
+    <color name="border">#E5E7EB</color>
+    <color name="rose">#E11D48</color>
+    <color name="error_alpha_15">#26EF4444</color>
+    <color name="success_light">#6EE7B7</color>
+    <color name="gold">#FFD700</color>
+    <color name="rating_star">@color/gold</color>
     <color name="text_on_dark">#FFFFFF</color>
-    <color name="text_on_accent">#0B1220</color>
-    <color name="success_light">#6EE7A0</color>
-    
-    <!-- Semantic Action Colors -->
-    <color name="icon_primary">#2563EB</color>
-    <color name="icon_secondary">#475569</color>
-    <color name="icon_accent">#3B82F6</color>
-    <color name="icon_success">#2ECC71</color>
 
+    <!-- Gradient Colors for bg_app_gradient -->
+    <color name="gradient_start">@color/background_primary_light</color>
+    <color name="gradient_end">@color/background_surface_light</color>
+
+    <!-- Shimmer Colors (Light Theme) -->
+    <color name="shimmer_base">#E5E7EB</color>
+    <color name="shimmer_highlight">#F3F4F6</color>
 </resources>

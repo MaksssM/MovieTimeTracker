@@ -210,4 +210,32 @@
     <string name="yesterday">Yesterday</string>
     <string name="three_days_ago">3 days ago</string>
     <string name="text_on_dark">@android:color/white</string>
+
+    <!-- Time formats -->
+    <string name="time_just_now">Just now</string>
+    <string name="time_min_ago">%d min ago</string>
+    <string name="time_hours_ago">%d hours ago</string>
+    <string name="time_days_ago">%d days ago</string>
+    <string name="time_recently">Recently</string>
+
+    <!-- General UI -->
+    <string name="user_rank_movie_buff">Movie Buff</string>
+    <string name="recommended_for_you">Recommended for you</string>
+    <string name="see_all">See all</string>
+    <string name="add_tv_show_title">Add TV Show</string>
+    <string name="add">Add</string>
+    <string name="about_series">About Series</string>
+    <string name="watched_label">Watched</string>
+    <string name="hint_episodes_count">Number of episodes</string>
+    <string name="hint_episode_runtime">Episode runtime (min)</string>
+    <string name="helper_leave_empty">Leave empty if unknown</string>
+
+    <!-- Calendar Days -->
+    <string name="day_mon">Mon</string>
+    <string name="day_tue">Tue</string>
+    <string name="day_wed">Wed</string>
+    <string name="day_thu">Thu</string>
+    <string name="day_fri">Fri</string>
+    <string name="day_sat">Sat</string>
+    <string name="day_sun">Sun</string>
 </resources>

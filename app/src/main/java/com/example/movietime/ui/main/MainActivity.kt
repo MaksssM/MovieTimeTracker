@@ -3,7 +3,9 @@ package com.example.movietime.ui.main
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Build
 import android.view.MenuItem
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.fragment.NavHostFragment
@@ -63,6 +65,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Увімкнення blur background для Android 12+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+            window.attributes.blurBehindRadius = 40
+        }
+        
+        // Увімкнення shared element transitions
+        window.requestFeature(android.view.Window.FEATURE_ACTIVITY_TRANSITIONS)
+        
         binding = DrawerlayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -122,28 +134,6 @@ class MainActivity : AppCompatActivity() {
 
         // Запускаємо оновлення серіалів у фоновому режимі
         startTvShowUpdates()
-
-        // Додаємо можливість додавати тестові дані через довгий клік на тулбар (для розробки)
-        // Подвійний довгий клік - виправлення runtime серіалів
-        binding.toolbar.setOnLongClickListener {
-            val currentTime = System.currentTimeMillis()
-
-            if (currentTime - lastClickTime < 2000) {
-                // Подвійний клік протягом 2 секунд - виправлення runtime
-                toolbarClickCount++
-                if (toolbarClickCount >= 2) {
-                    toolbarClickCount = 0
-                    fixTvShowRuntimes()
-                }
-            } else {
-                // Перший клік - тестові дані
-                toolbarClickCount = 1
-                addTestData()
-            }
-
-            lastClickTime = currentTime
-            true
-        }
     }
 
     private fun startTvShowUpdates() {
@@ -166,55 +156,13 @@ class MainActivity : AppCompatActivity() {
     /**
      * Додає тестові дані для демонстрації (видалено - більше не доступно)
      */
-    private fun addTestData() {
-        try {
-            Log.d(TAG, "Test data function deprecated - use real app data instead")
-
-            Snackbar.make(
-                binding.root,
-                "Тестові дані більше не доступні. Використовуйте додаток як звичайно.",
-                Snackbar.LENGTH_LONG
-            ).show()
-
-            Log.d(TAG, "Test data function called but disabled")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed: ${e.message}", e)
-        }
-    }
+    /* Function removed */
 
     /**
      * Виправляє runtime для всіх серіалів
      * Викликається через подвійний довгий клік на тулбар
      */
-    private fun fixTvShowRuntimes() {
-        lifecycleScope.launch {
-            try {
-                Log.d(TAG, "Fixing TV show runtimes...")
-                val fixer = TvShowRuntimeFixer(watchedItemDao)
-                val result = fixer.fixAllTvShowRuntimes()
-
-                val message = "Виправлено runtime серіалів:\n" +
-                        "✅ Перевірено: ${result.totalChecked}\n" +
-                        "✅ Виправлено: ${result.fixed}\n" +
-                        "⏭️ Пропущено: ${result.skipped}"
-
-                Snackbar.make(
-                    binding.root,
-                    message,
-                    Snackbar.LENGTH_LONG
-                ).show()
-
-                Log.d(TAG, "TV show runtimes fixed successfully: $result")
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to fix TV show runtimes: ${e.message}", e)
-                Snackbar.make(
-                    binding.root,
-                    "Помилка виправлення: ${e.message}",
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
-        }
-    }
+    /* Function removed */
 
     override fun onSupportNavigateUp(): Boolean {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

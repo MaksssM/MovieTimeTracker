@@ -5,6 +5,9 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Toast
+import android.transition.Slide
+import android.view.Gravity
+import android.view.animation.DecelerateInterpolator
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -49,8 +52,21 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Налаштування shared element transition
+        window.requestFeature(android.view.Window.FEATURE_CONTENT_TRANSITIONS)
+        val slide = Slide(Gravity.BOTTOM).apply {
+            duration = 300
+            interpolator = DecelerateInterpolator()
+        }
+        window.enterTransition = slide
+        window.exitTransition = slide
+        
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        // Підтримка postpone для завантаження зображення
+        supportPostponeEnterTransition()
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -351,6 +367,15 @@ class DetailsActivity : AppCompatActivity() {
                         crossfade(true)
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)
+                        listener(
+                            onSuccess = { _, _ ->
+                                // Дозволити transition після завантаження зображення
+                                supportStartPostponedEnterTransition()
+                            },
+                            onError = { _, _ ->
+                                supportStartPostponedEnterTransition()
+                            }
+                        )
                     }
                 }
                 is com.example.movietime.data.model.TvShowResult -> {

@@ -236,4 +236,32 @@
     <string name="date">Дата</string>
     <string name="movie">Фільм</string>
     <string name="tv_show">Серіал</string>
+
+    <!-- Time formats -->
+    <string name="time_just_now">Щойно</string>
+    <string name="time_min_ago">%d хв тому</string>
+    <string name="time_hours_ago">%d год тому</string>
+    <string name="time_days_ago">%d дн тому</string>
+    <string name="time_recently">Нещодавно</string>
+
+    <!-- General UI -->
+    <string name="user_rank_movie_buff">Кіноман</string>
+    <string name="recommended_for_you">Рекомендовано для вас</string>
+    <string name="see_all">Всі</string>
+    <string name="add_tv_show_title">Додати серіал</string>
+    <string name="add">Додати</string>
+    <string name="about_series">Про серіал</string>
+    <string name="watched_label">Переглянуто</string>
+    <string name="hint_episodes_count">Кількість епізодів</string>
+    <string name="hint_episode_runtime">Тривалість епізоду (хв)</string>
+    <string name="helper_leave_empty">Залиште порожнім, якщо невідомо</string>
+    
+    <!-- Calendar Days -->
+    <string name="day_mon">Пн</string>
+    <string name="day_tue">Вт</string>
+    <string name="day_wed">Ср</string>
+    <string name="day_thu">Чт</string>
+    <string name="day_fri">Пт</string>
+    <string name="day_sat">Сб</string>
+    <string name="day_sun">Нд</string>
 </resources>

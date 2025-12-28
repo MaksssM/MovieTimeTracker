@@ -9,16 +9,16 @@
     tools:context=".ui.main.MainActivity"
     tools:openDrawer="start">
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/bg_app_gradient">
+        android:background="?android:attr/colorBackground">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="0dp"
+            android:stateListAnimator="@null"
             android:background="@android:color/transparent">
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
@@ -37,25 +37,28 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_graph" /> <!-- Ось тут посилання на nav_graph -->
+            app:navGraph="@navigation/nav_graph" />
 
-    </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="280dp"
+        android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@drawable/bg_drawer_modern"
         android:paddingBottom="16dp"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu"
-        app:itemIconTint="@color/primary"
-        app:itemTextColor="@color/secondary_text"
-        app:itemBackground="@drawable/selector_card_ripple"
-        android:elevation="24dp"
-        app:itemTextAppearance="@style/TextAppearance.Material3.LabelMedium"
-        app:itemHorizontalPadding="12dp" />
+        app:itemIconTint="@color/state_nav_item_icon"
+        app:itemTextColor="@color/state_nav_item_text"
+        app:itemBackground="@drawable/selector_nav_item_premium"
+        android:elevation="0dp"
+        app:itemTextAppearance="@style/TextAppearance.App.Body2"
+        app:itemHorizontalPadding="16dp"
+        app:itemIconPadding="16dp"
+        app:itemShapeAppearance="@style/ShapeAppearance.App.SmallComponent" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

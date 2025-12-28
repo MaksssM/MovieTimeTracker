@@ -43,7 +43,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="?attr/colorPrimary"
                     android:textStyle="bold"
                     tools:text="@tools:sample/full_names" />
@@ -52,7 +52,7 @@
                     android:id="@+id/tvTimeAgo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     tools:text="2 години тому" />
 
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="?attr/colorOnSurface"
                 tools:text="подивився фільм" />
 
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:textColor="?attr/colorOnSurface"
                 android:textStyle="bold"
                 tools:text="@tools:sample/lorem" />
@@ -97,7 +97,7 @@
                     android:id="@+id/tvRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:textColor="?attr/colorSecondary"
                     android:textStyle="bold"
                     tools:text="8.5" />
@@ -109,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="?attr/colorOnSurfaceVariant"
                 android:background="@drawable/review_background"
                 android:padding="8dp"

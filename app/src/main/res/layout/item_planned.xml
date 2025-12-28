@@ -1,25 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginVertical="10dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
     app:cardCornerRadius="20dp"
-    app:cardElevation="8dp"
+    app:cardElevation="0dp"
     app:strokeWidth="0dp"
-    app:cardBackgroundColor="@color/surface_elevated"
+    app:cardBackgroundColor="@android:color/transparent"
     android:foreground="?attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="true"
-    android:transitionName="card_transition"
-    android:stateListAnimator="@drawable/anim_card_elevation">
+    android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:background="@drawable/bg_glass_card">
 
         <!-- Poster with rounded corners -->
         <com.google.android.material.card.MaterialCardView
@@ -27,7 +25,7 @@
             android:layout_width="70dp"
             android:layout_height="105dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="6dp"
+            app:cardElevation="4dp"
             app:strokeWidth="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +53,7 @@
                     android:layout_margin="4dp"
                     android:background="@drawable/bg_chip"
                     android:paddingHorizontal="6dp"
-                    android:paddingVertical="2dp"
+                    android:paddingTop="2dp" android:paddingBottom="2dp"
                     android:textSize="9sp"
                     android:textColor="@android:color/white"
                     android:fontFamily="sans-serif-medium"
@@ -71,7 +69,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@id/posterCard"
             app:layout_constraintEnd_toStartOf="@+id/btnDelete"
@@ -83,37 +81,36 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:textColor="@color/text_primary"
-                android:fontFamily="sans-serif-medium"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:lineSpacingMultiplier="1.1"
                 android:minHeight="32dp"
                 android:gravity="center_vertical"
-                tools:text="Road..." />
+                tools:text="Breaking Bad" />
 
             <!-- Release Year -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="4dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
                     android:src="@drawable/ic_calendar"
-                    app:tint="@color/text_hint"
+                    app:tint="@color/text_secondary"
                     android:contentDescription="@string/release_date" />
 
                 <TextView
                     android:id="@+id/tvReleaseDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textSize="12sp"
+                    android:layout_marginStart="6dp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_secondary"
                     tools:text="2025" />
 
@@ -125,15 +122,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:spacing="12dp">
+                android:gravity="center_vertical">
 
                 <!-- Episodes -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_chip_surface"
+                    android:paddingHorizontal="8dp"
+                    android:paddingTop="4dp" android:paddingBottom="4dp">
 
                     <ImageView
                         android:layout_width="12dp"
@@ -150,7 +149,7 @@
                         android:textSize="11sp"
                         android:textColor="@color/accent"
                         android:fontFamily="sans-serif-medium"
-                        tools:text="52" />
+                        tools:text="52 eps" />
 
                 </LinearLayout>
 
@@ -160,7 +159,10 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_chip_surface"
+                    android:paddingHorizontal="8dp"
+                    android:paddingTop="4dp" android:paddingBottom="4dp">
 
                     <ImageView
                         android:layout_width="12dp"
@@ -177,7 +179,7 @@
                         android:textSize="11sp"
                         android:textColor="@color/accent"
                         android:fontFamily="sans-serif-medium"
-                        tools:text="60" />
+                        tools:text="5 seasons" />
 
                 </LinearLayout>
 
@@ -186,19 +188,25 @@
         </LinearLayout>
 
         <!-- Delete Button -->
-        <ImageButton
+        <FrameLayout
             android:id="@+id/btnDelete"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_margin="0dp"
-            android:background="@drawable/bg_chip"
-            android:src="@drawable/ic_close_24"
-            app:tint="@color/error"
-            android:scaleType="centerInside"
-            android:contentDescription="@string/delete"
-            android:padding="6dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_icon_button_glass"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_close_24"
+                app:tint="@color/error"
+                android:contentDescription="@string/delete" />
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

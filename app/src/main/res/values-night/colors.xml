@@ -88,5 +88,9 @@
     <!-- Shimmer colors -->
     <color name="shimmer_base">#0F1419</color>
     <color name="shimmer_highlight">#151B24</color>
+
+    <!-- Gradient Colors for bg_app_gradient -->
+    <color name="gradient_start">@color/background_primary_dark</color>
+    <color name="gradient_end">@color/background_surface_dark</color>
 </resources>
 

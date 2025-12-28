@@ -1,26 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginVertical="10dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
     app:cardCornerRadius="20dp"
-    app:cardElevation="8dp"
+    app:cardElevation="4dp"
     app:strokeWidth="0dp"
-    app:cardBackgroundColor="@color/surface_elevated"
-    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@android:color/transparent"
+    android:foreground="@drawable/ripple_accent"
     android:clickable="true"
     android:focusable="true"
-    android:transitionName="card_transition"
-    android:stateListAnimator="@drawable/anim_card_elevation">
+    android:stateListAnimator="@animator/card_elevation">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="12dp"
-        android:background="@drawable/bg_card_surface_gradient">
+        android:background="@drawable/bg_glass_card">
 
         <!-- Poster with rounded corners -->
         <com.google.android.material.card.MaterialCardView
@@ -28,7 +26,7 @@
             android:layout_width="70dp"
             android:layout_height="105dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="6dp"
+            app:cardElevation="4dp"
             app:strokeWidth="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +43,7 @@
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/poster_description"
                     android:background="@color/shimmer_base"
+                    android:transitionName="poster_transition"
                     tools:src="@tools:sample/backgrounds/scenic" />
 
                 <!-- Media Type Badge -->
@@ -56,7 +55,7 @@
                     android:layout_margin="4dp"
                     android:background="@drawable/bg_chip"
                     android:paddingHorizontal="6dp"
-                    android:paddingVertical="2dp"
+                    android:paddingTop="2dp" android:paddingBottom="2dp"
                     android:textSize="9sp"
                     android:textColor="@android:color/white"
                     android:fontFamily="sans-serif-medium"
@@ -72,7 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@id/posterCard"
             app:layout_constraintEnd_toStartOf="@+id/btnDelete"
@@ -84,12 +83,11 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:textColor="@color/text_primary"
-                android:fontFamily="sans-serif-medium"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:lineSpacingMultiplier="1.1"
                 android:minHeight="32dp"
                 android:gravity="center_vertical"
                 tools:text="Інтерстеллар" />
@@ -98,23 +96,23 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="4dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
                     android:src="@drawable/ic_calendar"
-                    app:tint="@color/text_hint"
+                    app:tint="@color/text_secondary"
                     android:contentDescription="@string/release_date" />
 
                 <TextView
                     android:id="@+id/tvReleaseDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textSize="12sp"
+                    android:layout_marginStart="6dp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_secondary"
                     tools:text="2014" />
 
@@ -124,11 +122,11 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_chip"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_chip_surface"
                 android:orientation="horizontal"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
+                android:paddingHorizontal="8dp"
+                android:paddingTop="4dp" android:paddingBottom="4dp"
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -142,7 +140,7 @@
                     android:id="@+id/tvRuntime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="4dp"
                     android:textSize="11sp"
                     android:textColor="@color/accent"
                     android:fontFamily="sans-serif-medium"
@@ -155,9 +153,9 @@
         <!-- Delete Button -->
         <FrameLayout
             android:id="@+id/btnDelete"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="@drawable/bg_stat_card"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_icon_button_glass"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -165,13 +163,12 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_delete_forever_24"
                 app:tint="@color/error"
                 android:contentDescription="@string/delete" />
-
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -210,4 +210,32 @@
     <string name="yesterday">Вчера</string>
     <string name="three_days_ago">3 дня назад</string>
     <string name="text_on_dark">@android:color/white</string>
+
+    <!-- Time formats -->
+    <string name="time_just_now">Только что</string>
+    <string name="time_min_ago">%d мин назад</string>
+    <string name="time_hours_ago">%d ч назад</string>
+    <string name="time_days_ago">%d дн назад</string>
+    <string name="time_recently">Недавно</string>
+
+    <!-- General UI -->
+    <string name="user_rank_movie_buff">Киноман</string>
+    <string name="recommended_for_you">Рекомендовано для вас</string>
+    <string name="see_all">Все</string>
+    <string name="add_tv_show_title">Добавить сериал</string>
+    <string name="add">Добавить</string>
+    <string name="about_series">О сериале</string>
+    <string name="watched_label">Просмотрено</string>
+    <string name="hint_episodes_count">Количество эпизодов</string>
+    <string name="hint_episode_runtime">Длительность эпизода (мин)</string>
+    <string name="helper_leave_empty">Оставьте пустым, если неизвестно</string>
+
+    <!-- Calendar Days -->
+    <string name="day_mon">Пн</string>
+    <string name="day_tue">Вт</string>
+    <string name="day_wed">Ср</string>
+    <string name="day_thu">Чт</string>
+    <string name="day_fri">Пт</string>
+    <string name="day_sat">Сб</string>
+    <string name="day_sun">Вс</string>
 </resources>
