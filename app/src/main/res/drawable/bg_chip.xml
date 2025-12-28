@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:angle="90"
-        android:startColor="#F2F7FF"
-        android:endColor="#EAF2FF" />
-    <corners android:radius="12dp" />
-    <stroke android:width="1dp" android:color="#E2E8F0" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Subtle shadow -->
+    <item android:bottom="1dp" android:right="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#08000000" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
+    
+    <!-- Main chip background -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="#FAFBFF"
+                android:endColor="#EEF2FF" />
+            <corners android:radius="12dp" />
+            <stroke android:width="1dp" android:color="#E0E7FF" />
+        </shape>
+    </item>
+    
+</layer-list>
 

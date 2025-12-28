@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <gradient
-        android:gradientRadius="50%p"
-        android:startColor="@color/accent"
-        android:endColor="@android:color/transparent"
-        android:type="radial" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Outer soft glow -->
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:gradientRadius="60%p"
+                android:startColor="#60A855F7"
+                android:centerColor="#30A855F7"
+                android:endColor="@android:color/transparent"
+                android:type="radial" />
+        </shape>
+    </item>
+    
+    <!-- Inner bright glow -->
+    <item android:top="15dp" android:bottom="15dp" android:left="15dp" android:right="15dp">
+        <shape android:shape="oval">
+            <gradient
+                android:gradientRadius="50%p"
+                android:startColor="#90C4B5FD"
+                android:centerColor="@color/accent"
+                android:endColor="@android:color/transparent"
+                android:type="radial" />
+        </shape>
+    </item>
+    
+</layer-list>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Base dark gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="160"
+                android:startColor="#0F172A"
+                android:centerColor="#1E293B"
+                android:endColor="#0F172A"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Primary color glow at top -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="180"
+                android:startColor="#401E3A8A"
+                android:centerColor="#202563EB"
+                android:endColor="#00000000"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Accent glow at top-right -->
+    <item 
+        android:top="-100dp"
+        android:right="-50dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="200dp"
+                android:startColor="#308B5CF6"
+                android:endColor="#00000000" />
+            <size android:width="300dp" android:height="300dp" />
+        </shape>
+    </item>
+    
+    <!-- Additional depth layer -->
+    <item android:alpha="0.05">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="45"
+                android:startColor="#10FFFFFF"
+                android:centerColor="#00000000"
+                android:endColor="#10FFFFFF"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+</layer-list>

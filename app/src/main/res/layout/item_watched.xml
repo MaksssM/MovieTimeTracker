@@ -5,11 +5,11 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="4dp"
+    app:cardCornerRadius="22dp"
+    app:cardElevation="6dp"
     app:strokeWidth="0dp"
     app:cardBackgroundColor="@android:color/transparent"
-    android:foreground="@drawable/ripple_accent"
+    android:foreground="@drawable/ripple_card_rounded"
     android:clickable="true"
     android:focusable="true"
     android:stateListAnimator="@animator/card_elevation">
@@ -17,16 +17,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:background="@drawable/bg_glass_card">
+        android:padding="14dp"
+        android:background="@drawable/bg_card_surface_gradient">
 
-        <!-- Poster with rounded corners -->
+        <!-- Poster with rounded corners and shadow -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/posterCard"
-            android:layout_width="70dp"
-            android:layout_height="105dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
+            android:layout_width="75dp"
+            android:layout_height="112dp"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="6dp"
             app:strokeWidth="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,16 +46,23 @@
                     android:transitionName="poster_transition"
                     tools:src="@tools:sample/backgrounds/scenic" />
 
+                <!-- Gradient overlay for badge readability -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/gradient_overlay_dark" />
+
                 <!-- Media Type Badge -->
                 <TextView
                     android:id="@+id/tvMediaType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|start"
-                    android:layout_margin="4dp"
+                    android:layout_margin="6dp"
                     android:background="@drawable/bg_chip"
-                    android:paddingHorizontal="6dp"
-                    android:paddingTop="2dp" android:paddingBottom="2dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingTop="3dp" android:paddingBottom="3dp"
                     android:textSize="9sp"
                     android:textColor="@android:color/white"
                     android:fontFamily="sans-serif-medium"
@@ -83,28 +90,30 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
+                android:fontFamily="sans-serif-medium"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:minHeight="32dp"
                 android:gravity="center_vertical"
+                android:lineSpacingMultiplier="1.1"
                 tools:text="Інтерстеллар" />
 
             <!-- Release Date -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="6dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:src="@drawable/ic_calendar"
-                    app:tint="@color/text_secondary"
+                    app:tint="@color/accent"
                     android:contentDescription="@string/release_date" />
 
                 <TextView
@@ -114,6 +123,7 @@
                     android:layout_marginStart="6dp"
                     android:textSize="13sp"
                     android:textColor="@color/text_secondary"
+                    android:fontFamily="sans-serif-medium"
                     tools:text="2014" />
 
             </LinearLayout>
@@ -122,27 +132,27 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_chip_surface"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_chip"
                 android:orientation="horizontal"
-                android:paddingHorizontal="8dp"
-                android:paddingTop="4dp" android:paddingBottom="4dp"
+                android:paddingHorizontal="10dp"
+                android:paddingTop="5dp" android:paddingBottom="5dp"
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
                     android:src="@drawable/ic_time"
-                    app:tint="@color/accent"
+                    app:tint="@android:color/white"
                     android:contentDescription="@string/runtime" />
 
                 <TextView
                     android:id="@+id/tvRuntime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textSize="11sp"
-                    android:textColor="@color/accent"
+                    android:layout_marginStart="6dp"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
                     android:fontFamily="sans-serif-medium"
                     tools:text="169 хв" />
 
@@ -150,11 +160,11 @@
 
         </LinearLayout>
 
-        <!-- Delete Button -->
+        <!-- Delete Button with modern style -->
         <FrameLayout
             android:id="@+id/btnDelete"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:background="@drawable/bg_icon_button_glass"
             android:clickable="true"
             android:focusable="true"
@@ -163,8 +173,8 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_delete_forever_24"
                 app:tint="@color/error"

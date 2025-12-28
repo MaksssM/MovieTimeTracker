@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -79,6 +80,10 @@ class CalendarFragment : Fragment() {
             
             binding.rvCalendarEvents.adapter = eventAdapter
             binding.rvCalendarEvents.layoutManager = LinearLayoutManager(requireContext())
+            binding.rvCalendarEvents.layoutAnimation = AnimationUtils.loadLayoutAnimation(
+                requireContext(),
+                R.anim.layout_animation_cascade
+            )
             Log.d(TAG, "setupAdapters completed successfully")
         } catch (e: Exception) {
             Log.e(TAG, "Error in setupAdapters: ${e.message}", e)
@@ -102,6 +107,8 @@ class CalendarFragment : Fragment() {
                 binding.layoutEmpty.visibility = View.GONE
                 binding.rvCalendarEvents.visibility = View.VISIBLE
                 eventAdapter.submitEvents(events)
+                // Trigger layout animation when events change
+                binding.rvCalendarEvents.scheduleLayoutAnimation()
             }
         }
 
@@ -117,17 +124,33 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.btnNextMonth.setOnClickListener {
-            viewModel.nextMonth()
+        binding.btnNextMonth.setOnClickListener { view ->
+            animateButton(view) { viewModel.nextMonth() }
         }
 
-        binding.btnPrevMonth.setOnClickListener {
-            viewModel.previousMonth()
+        binding.btnPrevMonth.setOnClickListener { view ->
+            animateButton(view) { viewModel.previousMonth() }
         }
 
-        binding.btnToday.setOnClickListener {
-            viewModel.resetToToday()
+        binding.btnToday.setOnClickListener { view ->
+            animateButton(view) { viewModel.resetToToday() }
         }
+    }
+    
+    private fun animateButton(view: View, action: () -> Unit) {
+        view.animate()
+            .scaleX(0.9f)
+            .scaleY(0.9f)
+            .setDuration(80)
+            .withEndAction {
+                view.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(100)
+                    .start()
+                action()
+            }
+            .start()
     }
 
     private fun updateMonthYear(month: YearMonth) {

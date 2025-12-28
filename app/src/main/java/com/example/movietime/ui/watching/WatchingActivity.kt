@@ -2,6 +2,7 @@ package com.example.movietime.ui.watching
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -26,6 +27,10 @@ class WatchingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityWatchingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        // Activity transition
+        @Suppress("DEPRECATION")
+        overridePendingTransition(R.anim.activity_open_enter, R.anim.smooth_fade_out)
 
         setupToolbar()
         setupRecyclerView()
@@ -33,6 +38,12 @@ class WatchingActivity : AppCompatActivity() {
         setupClickListeners()
         observeViewModel()
         loadWatchingContent()
+    }
+    
+    @Suppress("DEPRECATION")
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.smooth_fade_in, R.anim.activity_close_exit)
     }
 
     private fun setupToolbar() {
@@ -67,6 +78,10 @@ class WatchingActivity : AppCompatActivity() {
         binding.rvWatching.apply {
             adapter = watchingAdapter
             layoutManager = LinearLayoutManager(this@WatchingActivity)
+            layoutAnimation = AnimationUtils.loadLayoutAnimation(
+                context,
+                R.anim.layout_animation_cascade
+            )
         }
     }
 
@@ -137,6 +152,8 @@ class WatchingActivity : AppCompatActivity() {
         } else {
             binding.rvWatching.isVisible = true
             binding.layoutEmpty.isVisible = false
+            // Re-run layout animation when filter changes
+            binding.rvWatching.scheduleLayoutAnimation()
         }
 
         supportActionBar?.subtitle = when (currentFilter) {

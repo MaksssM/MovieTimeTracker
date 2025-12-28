@@ -1,5 +1,7 @@
 package com.example.movietime.ui.details
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
@@ -7,10 +9,14 @@ import android.widget.EditText
 import android.widget.Toast
 import android.transition.Slide
 import android.view.Gravity
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.example.movietime.databinding.ActivityDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,6 +24,8 @@ import com.example.movietime.util.Utils
 import com.example.movietime.R
 import com.example.movietime.data.db.WatchedItem
 import android.util.Log
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -83,23 +91,76 @@ class DetailsActivity : AppCompatActivity() {
 
         observeViewModel()
         setupCategoryButtons()
+        animateEntrance()
+    }
+
+    private fun animateEntrance() {
+        // Hide elements initially
+        val elementsToAnimate = listOf(
+            binding.btnPlanned,
+            binding.btnWatched,
+            binding.btnWatching
+        )
+        
+        elementsToAnimate.forEach { view ->
+            view.alpha = 0f
+            view.translationY = 40f
+            view.scaleX = 0.9f
+            view.scaleY = 0.9f
+        }
+
+        // Staggered animation for action buttons
+        lifecycleScope.launch {
+            delay(200)
+            elementsToAnimate.forEachIndexed { index, view ->
+                delay(80L * index)
+                animateViewEntrance(view)
+            }
+        }
+    }
+
+    private fun animateViewEntrance(view: View) {
+        AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(view, "alpha", 0f, 1f),
+                ObjectAnimator.ofFloat(view, "translationY", 40f, 0f),
+                ObjectAnimator.ofFloat(view, "scaleX", 0.9f, 1f),
+                ObjectAnimator.ofFloat(view, "scaleY", 0.9f, 1f)
+            )
+            duration = 400
+            interpolator = OvershootInterpolator(1.2f)
+            start()
+        }
     }
 
     private fun setupCategoryButtons() {
         // Кнопка "Заплановані"
-        binding.btnPlanned.setOnClickListener {
-            addToCategory("planned")
+        binding.btnPlanned.setOnClickListener { view ->
+            animateButtonPress(view) { addToCategory("planned") }
         }
 
         // Кнопка "Переглянуті"
-        binding.btnWatched.setOnClickListener {
-            addToCategory("watched")
+        binding.btnWatched.setOnClickListener { view ->
+            animateButtonPress(view) { addToCategory("watched") }
         }
 
         // Кнопка "Дивлюсь"
-        binding.btnWatching.setOnClickListener {
-            addToCategory("watching")
+        binding.btnWatching.setOnClickListener { view ->
+            animateButtonPress(view) { addToCategory("watching") }
         }
+    }
+
+    private fun animateButtonPress(view: View, action: () -> Unit) {
+        AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.93f, 1.02f, 1f),
+                ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.93f, 1.02f, 1f)
+            )
+            duration = 250
+            interpolator = AccelerateDecelerateInterpolator()
+            start()
+        }
+        view.postDelayed(action, 150)
     }
 
     private fun addToCategory(category: String) {
@@ -410,10 +471,15 @@ class DetailsActivity : AppCompatActivity() {
             }
         }
     }
+    
+    @Suppress("DEPRECATION")
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.smooth_fade_in, R.anim.activity_close_exit)
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true
     }
 }
-

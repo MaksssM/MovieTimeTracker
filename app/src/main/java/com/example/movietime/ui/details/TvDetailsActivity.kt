@@ -1,8 +1,14 @@
 package com.example.movietime.ui.details
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +21,7 @@ import com.example.movietime.util.Utils
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.service.TvShowEpisodeService
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.withContext
@@ -58,6 +65,11 @@ class TvDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Activity transition
+        @Suppress("DEPRECATION")
+        overridePendingTransition(R.anim.activity_open_enter, R.anim.smooth_fade_out)
+        
         binding = ActivityTvDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -75,40 +87,28 @@ class TvDetailsActivity : AppCompatActivity() {
         }
 
         observeViewModel()
-        
-        // Додаємо плавну анімацію появи FAB
-        binding.fabAdd.apply {
-            alpha = 0f
-            scaleX = 0.8f
-            scaleY = 0.8f
-            animate()
-                .alpha(1f)
-                .scaleX(1f)
-                .scaleY(1f)
-                .setDuration(400)
-                .setInterpolator(android.view.animation.OvershootInterpolator())
-                .setStartDelay(200)
-                .start()
-        }
+        animateEntranceElements()
 
         // Обробник додавання в переглянуті
-        binding.fabAdd.setOnClickListener {
-            Log.d(TAG, "FAB clicked for TV show")
-            val current = viewModel.tvShow.value
-            Log.d(TAG, "Current tvShow value: ${if (current == null) "NULL" else current.name}, episodes: ${current?.numberOfEpisodes}")
+        binding.fabAdd.setOnClickListener { view ->
+            animateButtonPress(view) {
+                Log.d(TAG, "FAB clicked for TV show")
+                val current = viewModel.tvShow.value
+                Log.d(TAG, "Current tvShow value: ${if (current == null) "NULL" else current.name}, episodes: ${current?.numberOfEpisodes}")
             
-            if (current == null) {
-                Log.w(TAG, "Cannot add TV show: data is null")
-                // Дані ще завантажуються, показуємо повідомлення
-                Toast.makeText(this, getString(R.string.data_not_loaded), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+                if (current == null) {
+                    Log.w(TAG, "Cannot add TV show: data is null")
+                    // Дані ще завантажуються, показуємо повідомлення
+                    Toast.makeText(this, getString(R.string.data_not_loaded), Toast.LENGTH_SHORT).show()
+                    return@animateButtonPress
+                }
 
-            viewModel.isItemWatched(current.id, "tv") { _ ->
-                runOnUiThread {
-                    // Show dialog regardless of existence to allow Editing
-                    // If exists, the dialog will be pre-filled with observed data via ViewModel
-                    showAddDialog(current)
+                viewModel.isItemWatched(current.id, "tv") { _ ->
+                    runOnUiThread {
+                        // Show dialog regardless of existence to allow Editing
+                        // If exists, the dialog will be pre-filled with observed data via ViewModel
+                        showAddDialog(current)
+                    }
                 }
             }
         }
@@ -362,10 +362,51 @@ class TvDetailsActivity : AppCompatActivity() {
         // Показуємо лише час без додаткових статусів чи уточнень
         // (залишаємо базове форматування з updateTotalWatchTime)
     }
+    
+    private fun animateEntranceElements() {
+        // Animate FAB entrance with bounce effect
+        binding.fabAdd.apply {
+            alpha = 0f
+            scaleX = 0f
+            scaleY = 0f
+        }
+        
+        lifecycleScope.launch {
+            delay(300)
+            AnimatorSet().apply {
+                playTogether(
+                    ObjectAnimator.ofFloat(binding.fabAdd, "alpha", 0f, 1f),
+                    ObjectAnimator.ofFloat(binding.fabAdd, "scaleX", 0f, 1.1f, 1f),
+                    ObjectAnimator.ofFloat(binding.fabAdd, "scaleY", 0f, 1.1f, 1f)
+                )
+                duration = 450
+                interpolator = OvershootInterpolator(2f)
+                start()
+            }
+        }
+    }
+    
+    private fun animateButtonPress(view: View, action: () -> Unit) {
+        AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.9f, 1.05f, 1f),
+                ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.9f, 1.05f, 1f)
+            )
+            duration = 250
+            interpolator = AccelerateDecelerateInterpolator()
+            start()
+        }
+        view.postDelayed({ action() }, 120)
+    }
+    
+    @Suppress("DEPRECATION")
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.smooth_fade_in, R.anim.activity_close_exit)
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true
     }
 }
-

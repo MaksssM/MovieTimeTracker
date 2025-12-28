@@ -2,6 +2,7 @@ package com.example.movietime.ui.planned
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -26,6 +27,10 @@ class PlannedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPlannedBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        // Activity transition
+        @Suppress("DEPRECATION")
+        overridePendingTransition(R.anim.activity_open_enter, R.anim.smooth_fade_out)
 
         val isMovie = intent.getBooleanExtra("isMovie", true)
         val title = if (isMovie) getString(R.string.planned_movies) else getString(R.string.planned_tv_shows)
@@ -36,6 +41,12 @@ class PlannedActivity : AppCompatActivity() {
         setupClickListeners()
         observeViewModel()
         loadPlannedContent()
+    }
+    
+    @Suppress("DEPRECATION")
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.smooth_fade_in, R.anim.activity_close_exit)
     }
 
     private fun setupToolbar(title: String) {
@@ -70,6 +81,10 @@ class PlannedActivity : AppCompatActivity() {
         binding.rvPlanned.apply {
             adapter = plannedAdapter
             layoutManager = LinearLayoutManager(this@PlannedActivity)
+            layoutAnimation = AnimationUtils.loadLayoutAnimation(
+                context,
+                R.anim.layout_animation_cascade
+            )
         }
     }
 
@@ -140,6 +155,8 @@ class PlannedActivity : AppCompatActivity() {
         } else {
             binding.rvPlanned.isVisible = true
             binding.layoutEmpty.isVisible = false
+            // Re-run layout animation when filter changes
+            binding.rvPlanned.scheduleLayoutAnimation()
         }
         
         // Header text logic removed as it was part of the old card layout header which is now replaced by toolbar/tabs

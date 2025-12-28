@@ -1,7 +1,12 @@
 package com.example.movietime.ui.main
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -15,6 +20,8 @@ class RecentActivityAdapter(
     private val onItemClick: (RecentActivityItem) -> Unit
 ) : ListAdapter<RecentActivityItem, RecentActivityAdapter.ViewHolder>(DiffCallback) {
 
+    private var lastAnimatedPosition = -1
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRecentActivityBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
@@ -24,6 +31,39 @@ class RecentActivityAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
+        
+        // Animate items as they appear
+        if (position > lastAnimatedPosition) {
+            animateItem(holder.itemView, position)
+            lastAnimatedPosition = position
+        }
+    }
+
+    private fun animateItem(view: View, position: Int) {
+        view.alpha = 0f
+        view.translationX = 80f
+        view.scaleX = 0.9f
+        view.scaleY = 0.9f
+        
+        val delay = position * 60L
+        
+        val alpha = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f)
+        val translationX = ObjectAnimator.ofFloat(view, "translationX", 80f, 0f)
+        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.9f, 1f)
+        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.9f, 1f)
+        
+        AnimatorSet().apply {
+            playTogether(alpha, translationX, scaleX, scaleY)
+            duration = 350
+            startDelay = delay
+            interpolator = DecelerateInterpolator(1.5f)
+            start()
+        }
+    }
+
+    // Reset animation when list changes
+    fun resetAnimation() {
+        lastAnimatedPosition = -1
     }
 
     inner class ViewHolder(private val binding: ItemRecentActivityBinding) :
@@ -32,9 +72,29 @@ class RecentActivityAdapter(
         init {
             binding.root.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    onItemClick(getItem(bindingAdapterPosition))
+                    // Add press animation
+                    animateClick(binding.root) {
+                        onItemClick(getItem(bindingAdapterPosition))
+                    }
                 }
             }
+        }
+        
+        private fun animateClick(view: View, onClick: () -> Unit) {
+            val scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f)
+            val scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.95f)
+            val scaleUpX = ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f)
+            val scaleUpY = ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f)
+            
+            AnimatorSet().apply {
+                play(scaleDownX).with(scaleDownY)
+                play(scaleUpX).with(scaleUpY).after(scaleDownX)
+                duration = 100
+                interpolator = OvershootInterpolator(1.5f)
+                start()
+            }
+            
+            view.postDelayed(onClick, 150)
         }
 
         fun bind(item: RecentActivityItem) {

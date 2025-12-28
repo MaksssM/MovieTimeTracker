@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -74,6 +75,10 @@ class WatchedFragment : Fragment() {
             adapter = contentAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(false)
+            layoutAnimation = AnimationUtils.loadLayoutAnimation(
+                context,
+                R.anim.layout_animation_cascade
+            )
         }
     }
 
@@ -122,6 +127,9 @@ class WatchedFragment : Fragment() {
 
         contentAdapter.updateItems(filteredItems)
         binding.layoutEmpty.isVisible = filteredItems.isEmpty()
+        
+        // Re-run layout animation when filter changes
+        binding.rvWatchedItems.scheduleLayoutAnimation()
     }
 
     private fun formatTotalTime(totalMinutes: Int): String {

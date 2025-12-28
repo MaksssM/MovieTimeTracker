@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.movietime.R
 import com.example.movietime.databinding.FragmentTrendingBinding
 import com.example.movietime.ui.search.SearchAdapter
 import com.example.movietime.ui.details.DetailsActivity
@@ -62,6 +64,10 @@ class TrendingFragment : Fragment() {
         binding.trendingRecyclerView.apply {
             adapter = trendingAdapter
             layoutManager = LinearLayoutManager(requireContext())
+            layoutAnimation = AnimationUtils.loadLayoutAnimation(
+                context,
+                R.anim.layout_animation_cascade
+            )
         }
     }
 

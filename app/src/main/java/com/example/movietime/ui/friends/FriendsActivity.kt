@@ -31,6 +31,10 @@ class FriendsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Activity transition
+        @Suppress("DEPRECATION")
+        overridePendingTransition(R.anim.activity_open_enter, R.anim.smooth_fade_out)
 
         setContentView(R.layout.activity_placeholder)
 
@@ -43,6 +47,12 @@ class FriendsActivity : AppCompatActivity() {
         }
 
         // TODO: Implement friends functionality
+    }
+    
+    @Suppress("DEPRECATION")
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.smooth_fade_in, R.anim.activity_close_exit)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- PREMIUM MINIMALIST PALETTE -->
-    <!-- ═══════════════════════════════════════════════════════════════ -->
 
     <!-- Base Colors -->
     <color name="black">#FF000000</color>
@@ -111,6 +108,7 @@
     <color name="movie_badge">@color/badge_movie</color>
     <color name="tv_badge">@color/badge_tv</color>
     <color name="surface_light_alpha_05">#0DFFFFFF</color>
+    <color name="surface_light_alpha_08">#14FFFFFF</color>
     <color name="surface">@color/background_surface_dark</color>
     <color name="surface_variant">@color/background_elevated_dark</color>
     <color name="surface_elevated">@color/background_primary_light</color>
@@ -129,4 +127,19 @@
     <!-- Shimmer Colors (Light Theme) -->
     <color name="shimmer_base">#E5E7EB</color>
     <color name="shimmer_highlight">#F3F4F6</color>
+
+    <!-- Calendar accents (light-friendly, neutral) -->
+    <color name="calendar_selected_start">#E7ECFF</color>
+    <color name="calendar_selected_end">#D9E4FF</color>
+    <color name="calendar_selected_stroke">#C7D2FE</color>
+    <color name="calendar_today_ring">#803B82F6</color>
+    <color name="calendar_dot_start">#3B82F6</color>
+    <color name="calendar_dot_end">#2563EB</color>
+    <color name="calendar_badge_start">#F472B6</color>
+    <color name="calendar_badge_end">#E11D48</color>
+    <color name="calendar_badge_stroke">#FFF1F5</color>
+
+    <!-- Additional UI Colors -->
+    <color name="primary_variant">#1D4ED8</color>
+    <color name="card_background">#FFFFFF</color>
 </resources>
