@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#FFFFFF">
+    android:color="#40FFFFFF">
     <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:angle="135"
-                android:startColor="@color/accent"
-                android:endColor="#7c3aed" 
-                android:type="linear" />
-            <corners android:radius="16dp" />
-        </shape>
+        <layer-list>
+            <!-- Soft shadow -->
+            <item android:bottom="3dp" android:right="3dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="#20000000" />
+                    <corners android:radius="18dp" />
+                </shape>
+            </item>
+            <!-- Main gradient -->
+            <item>
+                <shape android:shape="rectangle">
+                    <gradient
+                        android:angle="135"
+                        android:startColor="#A855F7"
+                        android:centerColor="@color/accent"
+                        android:endColor="#7C3AED" 
+                        android:type="linear" />
+                    <corners android:radius="16dp" />
+                </shape>
+            </item>
+            <!-- Shine overlay -->
+            <item android:top="1dp" android:left="1dp" android:right="1dp">
+                <shape android:shape="rectangle">
+                    <gradient
+                        android:angle="180"
+                        android:startColor="#25FFFFFF"
+                        android:centerColor="#08FFFFFF"
+                        android:endColor="#00FFFFFF"
+                        android:type="linear" />
+                    <corners android:radius="15dp" />
+                </shape>
+            </item>
+        </layer-list>
     </item>
 </ripple>

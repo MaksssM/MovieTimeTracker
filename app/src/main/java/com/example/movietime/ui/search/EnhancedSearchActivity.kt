@@ -60,6 +60,11 @@ class EnhancedSearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Smooth window transitions
+        @Suppress("DEPRECATION")
+        overridePendingTransition(R.anim.activity_open_enter, R.anim.smooth_fade_out)
+        
         binding = ActivityEnhancedSearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -69,6 +74,12 @@ class EnhancedSearchActivity : AppCompatActivity() {
         setupTabs()
         observeViewModel()
         loadPopularContent()
+    }
+    
+    @Suppress("DEPRECATION")
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.smooth_fade_in, R.anim.activity_close_exit)
     }
 
     private fun setupToolbar() {
@@ -91,13 +102,17 @@ class EnhancedSearchActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@EnhancedSearchActivity)
             layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
                 context, 
-                R.anim.layout_animation_fall_down
+                R.anim.layout_animation_cascade
             )
         }
 
         binding.rvPopular.apply {
             adapter = popularAdapter
             layoutManager = LinearLayoutManager(this@EnhancedSearchActivity)
+            layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
+                context, 
+                R.anim.layout_animation_cascade
+            )
             layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
                 context,
                 R.anim.layout_animation_fall_down

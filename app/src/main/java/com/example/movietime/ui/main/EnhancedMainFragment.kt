@@ -58,6 +58,7 @@ class EnhancedMainFragment : Fragment() {
         setupCardPressEffects()
         setupRecentActivity()
         setupRecommendations()
+        setupParallaxEffect()
         observeViewModel()
         loadData()
         animateEntranceElements()
@@ -127,6 +128,43 @@ class EnhancedMainFragment : Fragment() {
         }
     }
 
+    private fun setupParallaxEffect() {
+        // Parallax effect for floating orbs when scrolling
+        binding.nestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            val parallaxFactor = 0.4f
+            val rotationFactor = 0.02f
+            
+            // Move floating orbs in opposite direction for parallax feel
+            binding.floatingOrb1?.let { orb1 ->
+                orb1.translationY = -scrollY * parallaxFactor
+                orb1.translationX = scrollY * parallaxFactor * 0.3f
+                orb1.rotation = scrollY * rotationFactor
+                orb1.alpha = (0.5f - scrollY * 0.0003f).coerceIn(0.1f, 0.5f)
+            }
+            
+            binding.floatingOrb2?.let { orb2 ->
+                orb2.translationY = -scrollY * (parallaxFactor * 0.6f)
+                orb2.translationX = -scrollY * parallaxFactor * 0.2f
+                orb2.rotation = -scrollY * rotationFactor * 0.5f
+                orb2.alpha = (0.35f - scrollY * 0.0002f).coerceIn(0.1f, 0.35f)
+            }
+            
+            binding.floatingOrb3?.let { orb3 ->
+                orb3.translationY = scrollY * (parallaxFactor * 0.3f)
+                orb3.translationX = scrollY * parallaxFactor * 0.15f
+                orb3.rotation = scrollY * rotationFactor * 0.3f
+            }
+            
+            // Subtle scale effect on header
+            binding.headerContainer?.let { header ->
+                val scale = 1f - (scrollY * 0.0002f).coerceIn(0f, 0.1f)
+                header.scaleX = scale
+                header.scaleY = scale
+                header.alpha = 1f - (scrollY * 0.001f).coerceIn(0f, 0.3f)
+            }
+        }
+    }
+
     private fun setupRecommendations() {
         recommendationsAdapter = com.example.movietime.ui.adapters.RecommendationsAdapter { id, mediaType ->
             val intent = if (mediaType == "tv") {
@@ -146,6 +184,7 @@ class EnhancedMainFragment : Fragment() {
         binding.rvRecommendations.apply {
             adapter = recommendationsAdapter
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(), androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+            layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_scale_fade)
         }
     }
 
@@ -406,6 +445,7 @@ class EnhancedMainFragment : Fragment() {
         binding.rvRecentActivity.apply {
             adapter = recentActivityAdapter
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext())
+            layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_cascade)
         }
     }
 

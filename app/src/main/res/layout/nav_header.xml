@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="220dp">
 
     <!-- Gradient Background -->
     <View
@@ -10,38 +10,65 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_premium_gradient" />
 
-    <!-- Glow Effect -->
+    <!-- Decorative Glow Effect - Top Right -->
+    <View
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_glow_accent"
+        android:alpha="0.2" />
+
+    <!-- Decorative Glow Effect - Bottom Left -->
     <View
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_glow_accent"
-        android:alpha="0.25" />
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="60dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/bg_glow_primary"
+        android:alpha="0.15" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="bottom"
-        android:padding="24dp">
+        android:padding="28dp">
 
-        <!-- App Icon - Flat & Modern -->
-        <ImageView
-             android:layout_width="56dp"
-             android:layout_height="56dp"
-             android:layout_marginBottom="16dp"
-             android:src="@mipmap/ic_launcher_round"
-             android:contentDescription="@string/app_name"
-             android:elevation="0dp" />
+        <!-- App Icon with Glass Effect -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="18dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="@android:color/transparent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_glass_card">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_launcher_round"
+                    android:contentDescription="@string/app_name" />
+
+            </FrameLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- App Title -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize="28sp"
+            android:textSize="26sp"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:fontFamily="sans-serif-medium"
@@ -49,17 +76,18 @@
             android:maxLines="1"
             android:ellipsize="end" />
 
-        <!-- App Subtitle -->
+        <!-- App Subtitle with slight spacing -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/app_description_short"
             android:textSize="13sp"
             android:textColor="@color/text_on_dark"
-            android:alpha="0.8"
-            android:layout_marginTop="4dp"
+            android:alpha="0.85"
+            android:layout_marginTop="6dp"
             android:maxLines="2"
-            android:ellipsize="end" />
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.15" />
 
     </LinearLayout>
 

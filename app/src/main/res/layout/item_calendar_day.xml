@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="52dp"
+    android:padding="6dp"
+    android:foreground="?attr/selectableItemBackgroundBorderless">
 
     <!-- Selection/Today Background -->
     <View
         android:id="@+id/dayBackground"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/bg_calendar_selected"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,7 +28,8 @@
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:textColor="@color/text_primary"
-        android:textSize="14sp"
+        android:textSize="15sp"
+        android:letterSpacing="0.02"
         app:layout_constraintBottom_toBottomOf="@+id/dayBackground"
         app:layout_constraintEnd_toEndOf="@+id/dayBackground"
         app:layout_constraintStart_toStartOf="@+id/dayBackground"
@@ -48,9 +51,9 @@
     <!-- Event Indicator Dot -->
     <View
         android:id="@+id/eventIndicator"
-        android:layout_width="4dp"
-        android:layout_height="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_marginTop="6dp"
         android:background="@drawable/circle_accent"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,16 +67,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_event_count_micro"
-        android:minWidth="14dp"
-        android:paddingHorizontal="2dp"
+        android:minWidth="16dp"
+        android:paddingHorizontal="3dp"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="8sp"
+        android:textSize="9sp"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@+id/dayBackground"
         app:layout_constraintEnd_toEndOf="@+id/dayBackground"
-        android:layout_marginEnd="-4dp"
-        android:layout_marginTop="-4dp"
+        android:layout_marginEnd="-3dp"
+        android:layout_marginTop="-3dp"
         tools:text="2"
         tools:visibility="visible" />
 

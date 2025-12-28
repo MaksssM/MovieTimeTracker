@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="#1AFFD700" />
-    <corners android:radius="8dp" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Blurred background effect -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#99000000" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+    
+    <!-- Golden shimmer overlay -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="#20FFD700"
+                android:centerColor="#10FFD700"
+                android:endColor="#05FFD700"
+                android:type="linear" />
+            <corners android:radius="10dp" />
+            <stroke
+                android:width="1dp"
+                android:color="#40FFD700" />
+        </shape>
+    </item>
+    
+</layer-list>

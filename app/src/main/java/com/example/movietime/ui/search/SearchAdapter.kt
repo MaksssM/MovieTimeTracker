@@ -1,7 +1,11 @@
 package com.example.movietime.ui.search
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +21,7 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
     var onItemClick: ((Any) -> Unit)? = null
     var onItemLongClick: ((Any) -> Unit)? = null
     var currentQuery: String = ""
+    private var lastAnimatedPosition = -1
 
     fun updateQueryHighlight(q: String) {
         currentQuery = q.trim()
@@ -33,6 +38,11 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
             submitList(currentList)
         }
     }
+    
+    override fun submitList(list: List<Any>?) {
+        lastAnimatedPosition = -1
+        super.submitList(list)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val binding = ItemSearchResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -42,20 +52,63 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.bind(currentItem)
+        
+        // Animate items only on first appearance
+        if (position > lastAnimatedPosition) {
+            animateItemEntry(holder.itemView, position)
+            lastAnimatedPosition = position
+        }
+    }
+    
+    private fun animateItemEntry(view: android.view.View, position: Int) {
+        view.alpha = 0f
+        view.translationY = 40f
+        view.scaleX = 0.95f
+        view.scaleY = 0.95f
+        
+        val delay = (position * 40).toLong().coerceAtMost(250)
+        
+        AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(view, "alpha", 0f, 1f),
+                ObjectAnimator.ofFloat(view, "translationY", 40f, 0f),
+                ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f),
+                ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f)
+            )
+            duration = 300
+            startDelay = delay
+            interpolator = DecelerateInterpolator()
+            start()
+        }
     }
 
     inner class SearchViewHolder(private val binding: ItemSearchResultBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            itemView.setOnClickListener {
-                val position = adapterPosition
+            itemView.setOnClickListener { view ->
+                // Add press animation
+                view.animate()
+                    .scaleX(0.97f)
+                    .scaleY(0.97f)
+                    .setDuration(80)
+                    .withEndAction {
+                        view.animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .setDuration(80)
+                            .setInterpolator(OvershootInterpolator(2f))
+                            .start()
+                    }
+                    .start()
+                    
+                val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     onItemClick?.invoke(getItem(position))
                 }
             }
 
             itemView.setOnLongClickListener {
-                val position = adapterPosition
+                val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     onItemLongClick?.invoke(getItem(position))
                     // Анімація видалення
@@ -75,7 +128,7 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                     // Постер із завантаженням та кешуванням
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                     binding.ivPoster.load(posterUrl) {
-                        crossfade(true)
+                        crossfade(400)
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)
                     }
@@ -105,7 +158,7 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                     // Постер із завантаженням та кешуванням
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                     binding.ivPoster.load(posterUrl) {
-                        crossfade(true)
+                        crossfade(400)
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)
                     }
@@ -170,11 +223,17 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
         }
 
         private fun animateRemoval(view: android.view.View) {
-            view.animate()
-                .alpha(0f)
-                .translationX(-view.width.toFloat())
-                .setDuration(300)
-                .start()
+            AnimatorSet().apply {
+                playTogether(
+                    ObjectAnimator.ofFloat(view, "alpha", 1f, 0f),
+                    ObjectAnimator.ofFloat(view, "translationX", 0f, -view.width.toFloat()),
+                    ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.8f),
+                    ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.8f)
+                )
+                duration = 350
+                interpolator = DecelerateInterpolator()
+                start()
+            }
         }
     }
 

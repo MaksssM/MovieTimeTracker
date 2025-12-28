@@ -1,9 +1,13 @@
 package com.example.movietime.ui.adapters
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -23,7 +27,10 @@ class ContentAdapter(
     private val onDeleteClick: (WatchedItem) -> Unit = {}
 ) : ListAdapter<WatchedItem, ContentAdapter.ContentViewHolder>(DiffCallback) {
 
+    private var lastAnimatedPosition = -1
+
     fun updateItems(items: List<WatchedItem>) {
+        lastAnimatedPosition = -1
         submitList(items)
     }
 
@@ -38,6 +45,34 @@ class ContentAdapter(
 
     override fun onBindViewHolder(holder: ContentViewHolder, position: Int) {
         holder.bind(getItem(position))
+        
+        // Animate items only on first appearance
+        if (position > lastAnimatedPosition) {
+            animateItem(holder.itemView, position)
+            lastAnimatedPosition = position
+        }
+    }
+    
+    private fun animateItem(view: android.view.View, position: Int) {
+        view.alpha = 0f
+        view.translationX = -60f
+        view.scaleX = 0.95f
+        view.scaleY = 0.95f
+        
+        val delay = (position * 50).toLong().coerceAtMost(300)
+        
+        AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(view, "alpha", 0f, 1f),
+                ObjectAnimator.ofFloat(view, "translationX", -60f, 0f),
+                ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f),
+                ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f)
+            )
+            duration = 350
+            startDelay = delay
+            interpolator = DecelerateInterpolator()
+            start()
+        }
     }
 
     class ContentViewHolder(
@@ -80,6 +115,21 @@ class ContentAdapter(
 
                 // Click listeners з shared element transition
                 root.setOnClickListener {
+                    // Add press animation
+                    it.animate()
+                        .scaleX(0.97f)
+                        .scaleY(0.97f)
+                        .setDuration(80)
+                        .withEndAction {
+                            it.animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(80)
+                                .setInterpolator(OvershootInterpolator(2f))
+                                .start()
+                        }
+                        .start()
+                    
                     val context = root.context
                     if (context is Activity) {
                         val intent = Intent(context, DetailsActivity::class.java).apply {

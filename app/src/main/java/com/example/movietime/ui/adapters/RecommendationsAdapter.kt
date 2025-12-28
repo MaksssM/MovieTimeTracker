@@ -1,7 +1,12 @@
 package com.example.movietime.ui.adapters
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +20,8 @@ class RecommendationsAdapter(
     private val onItemClick: (Int, String) -> Unit // id, mediaType ("movie" or "tv")
 ) : ListAdapter<Any, RecommendationsAdapter.ViewHolder>(DiffCallback) {
 
+    private var lastAnimatedPosition = -1
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemContentPosterBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -26,6 +33,38 @@ class RecommendationsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
+        
+        // Animate horizontal items with stagger effect
+        if (position > lastAnimatedPosition) {
+            animateItem(holder.itemView, position)
+            lastAnimatedPosition = position
+        }
+    }
+
+    private fun animateItem(view: View, position: Int) {
+        view.alpha = 0f
+        view.scaleX = 0.85f
+        view.scaleY = 0.85f
+        view.translationY = 30f
+        
+        val delay = position * 50L
+        
+        AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(view, "alpha", 0f, 1f),
+                ObjectAnimator.ofFloat(view, "scaleX", 0.85f, 1f),
+                ObjectAnimator.ofFloat(view, "scaleY", 0.85f, 1f),
+                ObjectAnimator.ofFloat(view, "translationY", 30f, 0f)
+            )
+            duration = 400
+            startDelay = delay
+            interpolator = OvershootInterpolator(1.2f)
+            start()
+        }
+    }
+
+    fun resetAnimation() {
+        lastAnimatedPosition = -1
     }
 
     class ViewHolder(
@@ -71,12 +110,29 @@ class RecommendationsAdapter(
                 // Poster
                 ivPoster.load(posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }) {
                     crossfade(true)
+                    crossfade(400)
                     placeholder(R.drawable.ic_placeholder)
                     error(R.drawable.ic_placeholder)
                 }
 
-                root.setOnClickListener { onItemClick(id, mediaType) }
+                // Click animation
+                root.setOnClickListener { view ->
+                    animateClick(view) { onItemClick(id, mediaType) }
+                }
             }
+        }
+        
+        private fun animateClick(view: View, action: () -> Unit) {
+            AnimatorSet().apply {
+                playTogether(
+                    ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.92f, 1f),
+                    ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.92f, 1f)
+                )
+                duration = 200
+                interpolator = DecelerateInterpolator()
+                start()
+            }
+            view.postDelayed(action, 150)
         }
     }
 
