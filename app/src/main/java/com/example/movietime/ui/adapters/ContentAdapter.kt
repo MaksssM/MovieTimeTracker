@@ -1,7 +1,10 @@
 package com.example.movietime.ui.adapters
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +12,7 @@ import coil.load
 import com.example.movietime.R
 import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.databinding.ItemWatchedBinding
+import com.example.movietime.ui.details.DetailsActivity
 
 /**
  * Universal adapter for displaying content items (watched, planned, watching)
@@ -74,8 +78,24 @@ class ContentAdapter(
 
                 ivPoster.contentDescription = root.context.getString(R.string.poster_description)
 
-                // Click listeners
-                root.setOnClickListener { onItemClick(item) }
+                // Click listeners з shared element transition
+                root.setOnClickListener {
+                    val context = root.context
+                    if (context is Activity) {
+                        val intent = Intent(context, DetailsActivity::class.java).apply {
+                            putExtra("ITEM_ID", item.id)
+                            putExtra("MEDIA_TYPE", item.mediaType)
+                        }
+                        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            context,
+                            ivPoster,
+                            "poster_transition"
+                        )
+                        context.startActivity(intent, options.toBundle())
+                    } else {
+                        onItemClick(item)
+                    }
+                }
 
                 btnDelete.setOnClickListener { view ->
                     // Animate delete button

@@ -78,7 +78,7 @@
                     android:background="@drawable/bg_type_badge"
                     android:orientation="horizontal"
                     android:paddingHorizontal="10dp"
-                    android:paddingVertical="4dp"
+                    android:paddingTop="4dp" android:paddingBottom="4dp"
                     android:gravity="center_vertical">
 
                     <ImageView
@@ -109,7 +109,7 @@
                     android:background="@drawable/bg_rating_badge"
                     android:orientation="horizontal"
                     android:paddingHorizontal="10dp"
-                    android:paddingVertical="4dp"
+                    android:paddingTop="4dp" android:paddingBottom="4dp"
                     android:gravity="center_vertical"
                     android:layout_marginStart="8dp">
 

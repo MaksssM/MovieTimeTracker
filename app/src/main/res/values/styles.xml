@@ -1,49 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.App.FAB" parent="Widget.Material3.ExtendedFloatingActionButton.Primary">
-        <item name="elevation">16dp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.02</item>
-        <item name="cornerRadius">28dp</item>
-        <item name="android:alpha">0.95</item>
+    <style name="Widget.App.FAB" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+        <item name="collapsedSize">56dp</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.MediumComponent</item>
     </style>
 
-    <style name="Widget.App.Card" parent="Widget.Material3.CardView.Elevated">
+    <style name="Widget.App.Card" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">24dp</item>
         <item name="cardElevation">8dp</item>
         <item name="strokeWidth">0dp</item>
         <item name="android:alpha">0.98</item>
     </style>
 
-    <style name="Widget.App.Toolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">@drawable/gradient_primary_modern</item>
-        <item name="titleTextColor">@color/white</item>
-        <item name="android:elevation">12dp</item>
-    </style>
 
-    <style name="Widget.App.TextView.Title" parent="TextAppearance.Material3.HeadlineSmall">
-        <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.01</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-
-    <style name="Widget.App.TextView.Subtitle" parent="TextAppearance.Material3.BodyMedium">
-        <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:alpha">0.9</item>
-        <item name="android:fontFamily">sans-serif</item>
-    </style>
-
-    <style name="Widget.App.TextView.Caption" parent="TextAppearance.Material3.BodySmall">
-        <item name="android:textColor">@color/tertiary_text</item>
-        <item name="android:alpha">0.8</item>
-        <item name="android:fontFamily">sans-serif</item>
+    <style name="Widget.App.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="titleTextColor">?attr/colorOnSurface</item>
     </style>
 
 
     <!-- Chip Styles for Filters -->
-    <style name="Widget.App.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+    <style name="Widget.App.Chip.Filter" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="android:textColor">@color/primary_text</item>
         <item name="chipBackgroundColor">@color/surface</item>
         <item name="chipStrokeColor">@color/primary</item>
@@ -51,7 +29,7 @@
     </style>
 
     <!-- Search Result Card -->
-    <style name="Widget.App.SearchResultCard" parent="Widget.Material3.CardView.Elevated">
+    <style name="Widget.App.SearchResultCard" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">20dp</item>
         <item name="cardElevation">12dp</item>
         <item name="android:background">@drawable/bg_card_modern</item>
@@ -59,7 +37,7 @@
     </style>
 
     <!-- Premium Button Style -->
-    <style name="Widget.App.Button.Primary" parent="Widget.Material3.Button.UnelevatedButton">
+    <style name="Widget.App.Button.Primary" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">0.03</item>
@@ -69,7 +47,7 @@
     </style>
 
     <!-- Glass Chip Style -->
-    <style name="Widget.App.Chip.Glass" parent="Widget.Material3.Chip.Filter">
+    <style name="Widget.App.Chip.Glass" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="android:textColor">@color/primary_text</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="chipStrokeColor">@color/border</item>
@@ -78,19 +56,26 @@
     </style>
 
     <!-- CollapsingToolbar Text Styles -->
-    <style name="TextAppearance.App.CollapsingToolbar.Expanded" parent="TextAppearance.Material3.HeadlineMedium">
+    <style name="TextAppearance.App.CollapsingToolbar">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.App.CollapsingToolbar.Expanded">
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">0.01</item>
+        <item name="android:textSize">30sp</item>
     </style>
 
-    <style name="TextAppearance.App.CollapsingToolbar.Collapsed" parent="TextAppearance.Material3.TitleLarge">
+    <style name="TextAppearance.App.CollapsingToolbar.Collapsed">
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <!-- Additional unique styles (non-duplicated) -->
-    <style name="Widget.App.SearchBar" parent="Widget.Material3.TextInputLayout.FilledBox">
+    <style name="Widget.App.SearchBar" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="boxBackgroundColor">@color/surface_variant</item>
         <item name="boxCornerRadiusTopStart">28dp</item>
         <item name="boxCornerRadiusTopEnd">28dp</item>
@@ -100,4 +85,18 @@
         <item name="boxStrokeWidth">1dp</item>
         <item name="hintTextColor">@color/secondary_text</item>
     </style>
+
+    <style name="Widget.App.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/primary</item>
+        <item name="strokeColor">@color/primary</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+
+    <style name="TextAppearance.App.Body2">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:alpha">0.7</item>
+    </style>
+
 </resources>

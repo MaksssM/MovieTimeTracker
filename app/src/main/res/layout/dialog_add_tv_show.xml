@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Додати серіал"
+            android:text="@string/add_tv_show_title"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -26,10 +26,10 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputLayoutEpisodes"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Кількість епізодів"
+            android:hint="@string/hint_episodes_count"
             android:layout_marginBottom="16dp"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
@@ -46,16 +46,16 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputLayoutRuntime"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Тривалість епізоду (хв)"
+            android:hint="@string/hint_episode_runtime"
             android:layout_marginBottom="24dp"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusBottomEnd="12dp"
-            app:helperText="Залиште порожнім, якщо невідомо">
+            app:helperText="@string/helper_leave_empty">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRuntime"
@@ -76,14 +76,14 @@
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Скасувати"
+                android:text="@string/cancel"
                 android:layout_marginEnd="8dp"/>
 
             <Button
                 android:id="@+id/btnAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Додати"
+                android:text="@string/add"
                 android:backgroundTint="@color/accent"
                 android:textColor="@color/white"/>
         </LinearLayout>

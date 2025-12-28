@@ -114,8 +114,8 @@ class PlannedActivity : AppCompatActivity() {
 
         viewModel.isLoading.observe(this) { isLoading ->
             binding.layoutLoading.isVisible = isLoading
-            binding.cardPlannedList.isVisible = !isLoading
-            binding.layoutEmpty.isVisible = false
+            binding.rvPlanned.isVisible = !isLoading && (viewModel.plannedContent.value?.isNotEmpty() == true)
+            binding.layoutEmpty.isVisible = !isLoading && (viewModel.plannedContent.value?.isEmpty() == true)
         }
     }
 
@@ -134,22 +134,29 @@ class PlannedActivity : AppCompatActivity() {
 
         plannedAdapter.updateItems(filteredContent)
 
-        val headerText = when (currentFilter) {
+        if (filteredContent.isEmpty()) {
+            binding.rvPlanned.isVisible = false
+            binding.layoutEmpty.isVisible = true
+        } else {
+            binding.rvPlanned.isVisible = true
+            binding.layoutEmpty.isVisible = false
+        }
+        
+        // Header text logic removed as it was part of the old card layout header which is now replaced by toolbar/tabs
+        supportActionBar?.subtitle = when (currentFilter) {
             "movie" -> getString(R.string.planned_movies_count, filteredContent.size)
             "tv" -> getString(R.string.planned_tv_shows_count, filteredContent.size)
             else -> getString(R.string.planned_content_count, filteredContent.size)
         }
-
-        binding.tvPlannedHeader.text = headerText
     }
 
     private fun showEmptyState() {
-        binding.cardPlannedList.isVisible = false
+        binding.rvPlanned.isVisible = false
         binding.layoutEmpty.isVisible = true
     }
 
-    private fun showContent(content: List<Any>) {
-        binding.cardPlannedList.isVisible = true
+    private fun showContent(@Suppress("UNUSED_PARAMETER") content: List<Any>) {
+        binding.rvPlanned.isVisible = true
         binding.layoutEmpty.isVisible = false
     }
 }

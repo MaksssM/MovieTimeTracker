@@ -11,6 +11,8 @@
     app:strokeWidth="0dp"
     android:clickable="true"
     android:focusable="true"
+    android:foreground="@drawable/ripple_accent"
+    android:stateListAnimator="@animator/card_elevation"
     app:cardBackgroundColor="@android:color/transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -83,7 +85,7 @@
                     android:background="@drawable/bg_chip"
                     android:orientation="horizontal"
                     android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp"
+                    android:paddingTop="4dp" android:paddingBottom="4dp"
                     android:gravity="center_vertical">
 
                     <ImageView

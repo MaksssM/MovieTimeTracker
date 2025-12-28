@@ -63,6 +63,7 @@ class RecentActivityAdapter(
         }
 
         private fun getTimeAgo(timestamp: Long): String {
+            val context = binding.root.context
             // Because Watched items might use fake timestamps (ID proxy), handle logic
             // For now, assume timestamps are reasonably close to System.currentTimeMillis
             // If timestamp is surprisingly small (e.g. ID proxy), just show "Recently"
@@ -73,7 +74,7 @@ class RecentActivityAdapter(
                - If it's 0 or small, show "Recently".
             */
              if (timestamp < 1000000000000L) { // Less than milliseconds epoch for year 2001
-                 return "Recently"
+                 return context.getString(R.string.time_recently)
              }
 
             val diff = System.currentTimeMillis() - timestamp
@@ -82,12 +83,12 @@ class RecentActivityAdapter(
             val days = TimeUnit.MILLISECONDS.toDays(diff)
 
             return when {
-                minutes < 1 -> "Just now"
-                minutes < 60 -> "$minutes min ago"
-                hours < 24 -> "$hours hours ago"
-                days == 0L -> "Today"
-                days == 1L -> "Yesterday"
-                else -> "$days days ago"
+                minutes < 1 -> context.getString(R.string.time_just_now)
+                minutes < 60 -> context.getString(R.string.time_min_ago, minutes)
+                hours < 24 -> context.getString(R.string.time_hours_ago, hours)
+                days == 0L -> context.getString(R.string.today)
+                days == 1L -> context.getString(R.string.yesterday)
+                else -> context.getString(R.string.time_days_ago, days)
             }
         }
     }

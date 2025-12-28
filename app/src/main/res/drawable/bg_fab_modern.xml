@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Shadow layer -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@android:color/white">
     <item>
-        <shape android:shape="oval">
-            <solid android:color="#1A2634" />
-            <padding android:left="2dp" android:top="2dp" android:right="2dp" android:bottom="2dp" />
-        </shape>
-    </item>
-    
-    <!-- Main gradient -->
-    <item android:left="2dp" android:top="2dp" android:right="2dp" android:bottom="2dp">
-        <shape android:shape="oval">
+        <shape android:shape="rectangle">
             <gradient
-                android:startColor="#4A82D4"
-                android:centerColor="#6BA3FF"
-                android:endColor="#5A9CF5"
-                android:angle="135" />
+                android:angle="45"
+                android:startColor="@color/primary"
+                android:endColor="@color/accent"
+                android:type="linear" />
+            <corners android:radius="16dp" />
         </shape>
     </item>
-</layer-list>
+</ripple>
