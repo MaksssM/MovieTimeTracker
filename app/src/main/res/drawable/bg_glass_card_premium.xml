@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Premium glass card with glow effect -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Outer glow -->
+    <item
+        android:left="-2dp"
+        android:right="-2dp"
+        android:top="-2dp"
+        android:bottom="-2dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="26dp" />
+            <stroke
+                android:width="1dp"
+                android:color="#20FFFFFF" />
+            <solid android:color="#00000000" />
+        </shape>
+    </item>
+    
+    <!-- Glass background -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <solid android:color="#18FFFFFF" />
+        </shape>
+    </item>
+    
+    <!-- Top highlight -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <gradient
+                android:angle="90"
+                android:startColor="#00FFFFFF"
+                android:centerColor="#08FFFFFF"
+                android:endColor="#15FFFFFF"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Inner border glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <stroke
+                android:width="1dp"
+                android:color="#25FFFFFF" />
+            <solid android:color="#00000000" />
+        </shape>
+    </item>
+    
+</layer-list>

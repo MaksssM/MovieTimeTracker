@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Frosted glass panel - for side panels and modal backgrounds -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Deep frost base -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <solid android:color="#70141B27" />
+        </shape>
+    </item>
+    
+    <!-- Multi-layer frost effect -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <gradient
+                android:angle="135"
+                android:startColor="#35FFFFFF"
+                android:centerColor="#22FFFFFF"
+                android:endColor="#15FFFFFF"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Vertical frost pattern -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <gradient
+                android:angle="90"
+                android:startColor="#15FFFFFF"
+                android:centerColor="#25FFFFFF"
+                android:endColor="#12FFFFFF"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Inner glow -->
+    <item
+        android:left="2dp"
+        android:top="2dp"
+        android:right="2dp"
+        android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="22dp" />
+            <gradient
+                android:angle="180"
+                android:startColor="#20FFFFFF"
+                android:centerColor="#10FFFFFF"
+                android:endColor="#05FFFFFF"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Frost border -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <stroke
+                android:width="1.5dp"
+                android:color="#45FFFFFF" />
+        </shape>
+    </item>
+    
+</layer-list>

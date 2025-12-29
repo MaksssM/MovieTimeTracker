@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Frosted glass effect - stronger blur simulation like frost on glass -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Base frost layer -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="28dp" />
+            <solid android:color="#40FFFFFF" />
+        </shape>
+    </item>
+    
+    <!-- Noise/grain simulation layer 1 -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="28dp" />
+            <gradient
+                android:angle="0"
+                android:startColor="#18FFFFFF"
+                android:centerColor="#25FFFFFF"
+                android:endColor="#15FFFFFF"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Frost edge highlight (top) -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="28dp" />
+            <gradient
+                android:angle="180"
+                android:startColor="#50FFFFFF"
+                android:centerColor="#20FFFFFF"
+                android:endColor="#08FFFFFF"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Inner content area with slight transparency -->
+    <item
+        android:left="1dp"
+        android:top="1dp"
+        android:right="1dp"
+        android:bottom="1dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="27dp" />
+            <gradient
+                android:angle="145"
+                android:startColor="#35FFFFFF"
+                android:centerColor="#28FFFFFF"
+                android:endColor="#20FFFFFF"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Crisp frost border -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="28dp" />
+            <stroke
+                android:width="1.5dp"
+                android:color="#60FFFFFF" />
+        </shape>
+    </item>
+    
+</layer-list>

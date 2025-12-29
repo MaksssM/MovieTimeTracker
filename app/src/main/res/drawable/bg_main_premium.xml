@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Premium gradient background for main screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Deep dark base -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#0A0E1A" />
+        </shape>
+    </item>
+    
+    <!-- Primary gradient sweep -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="800dp"
+                android:centerX="0.8"
+                android:centerY="0.1"
+                android:startColor="#402563EB"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+    
+    <!-- Accent gradient sweep -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="600dp"
+                android:centerX="0.1"
+                android:centerY="0.4"
+                android:startColor="#30A855F7"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+    
+    <!-- Bottom accent glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="500dp"
+                android:centerX="0.5"
+                android:centerY="1.2"
+                android:startColor="#2510B981"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+    
+    <!-- Subtle noise texture simulation via gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="#05FFFFFF"
+                android:centerColor="#02FFFFFF"
+                android:endColor="#05FFFFFF"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+</layer-list>

@@ -106,15 +106,25 @@ class SimpleEnhancedRepository @Inject constructor(
         val watchingTvShows: Int
     )
 
-    // Real recent activities
+    // Real recent activities - polls every 3 seconds for updates
     fun getRecentActivities(): Flow<List<RecentActivityItem>> = flow {
-        // Poll every 5 seconds or just emit once? 
-        // Emitting once is safer to avoid endless loop if DB is slow. 
-        // But the existing stats loop suggests polling is established pattern here.
-        // Let's just emit once for now, and maybe re-fetch on resume in Fragment.
-        val items = appRepository.getRecentActivity(limit = 10)
-        emit(items)
-    }
+        android.util.Log.d("SimpleEnhancedRepository", "getRecentActivities: Starting flow")
+        while (true) {
+            try {
+                android.util.Log.d("SimpleEnhancedRepository", "getRecentActivities: Fetching items...")
+                val items = appRepository.getRecentActivity(limit = 10)
+                android.util.Log.d("SimpleEnhancedRepository", "getRecentActivities: Got ${items.size} items")
+                items.forEach { item ->
+                    android.util.Log.d("SimpleEnhancedRepository", "  - ${item.title} (${item.type})")
+                }
+                emit(items)
+            } catch (e: Exception) {
+                android.util.Log.e("SimpleEnhancedRepository", "getRecentActivities: Error - ${e.message}", e)
+                emit(emptyList())
+            }
+            kotlinx.coroutines.delay(3000)
+        }
+    }.flowOn(kotlinx.coroutines.Dispatchers.IO)
 
     suspend fun getTrendingContent(timeWindow: String = "week"): Result<String?> {
         return try {

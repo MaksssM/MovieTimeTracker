@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Neumorphism raised effect - simulates button raised from surface -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Dark shadow (bottom-right) -->
+    <item
+        android:left="4dp"
+        android:top="4dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="20dp" />
+            <solid android:color="#30000000" />
+        </shape>
+    </item>
+    
+    <!-- Light highlight (top-left) -->
+    <item
+        android:right="4dp"
+        android:bottom="4dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="20dp" />
+            <solid android:color="#15FFFFFF" />
+        </shape>
+    </item>
+    
+    <!-- Main surface -->
+    <item
+        android:left="2dp"
+        android:top="2dp"
+        android:right="2dp"
+        android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="18dp" />
+            <gradient
+                android:angle="135"
+                android:startColor="#1E293B"
+                android:centerColor="#1A2332"
+                android:endColor="#151D2B"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Inner gradient for depth -->
+    <item
+        android:left="2dp"
+        android:top="2dp"
+        android:right="2dp"
+        android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="18dp" />
+            <gradient
+                android:angle="180"
+                android:startColor="#10FFFFFF"
+                android:endColor="#00000000"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+</layer-list>

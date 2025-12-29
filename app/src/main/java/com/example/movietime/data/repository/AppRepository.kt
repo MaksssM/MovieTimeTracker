@@ -486,6 +486,7 @@ class AppRepository @Inject constructor(
     }
 
     suspend fun getRecentActivity(limit: Int = 10): List<com.example.movietime.data.model.RecentActivityItem> = coroutineScope {
+        android.util.Log.d("AppRepository", "getRecentActivity: Starting...")
         val watchedDeferred = async { dao.getAllSync() }
         val plannedDeferred = async { plannedDao.getAllSync() }
         val watchingDeferred = async { watchingDao.getAllSync() }
@@ -493,6 +494,8 @@ class AppRepository @Inject constructor(
         val watched = watchedDeferred.await()
         val planned = plannedDeferred.await()
         val watching = watchingDeferred.await()
+        
+        android.util.Log.d("AppRepository", "getRecentActivity: watched=${watched.size}, planned=${planned.size}, watching=${watching.size}")
 
         val allItems = mutableListOf<com.example.movietime.data.model.RecentActivityItem>()
 
@@ -511,8 +514,12 @@ class AppRepository @Inject constructor(
             com.example.movietime.data.model.RecentActivityItem.Watched(it.id, it.title, it.lastUpdated ?: 0L, it.mediaType)
         })
 
+        android.util.Log.d("AppRepository", "getRecentActivity: total items before sort=${allItems.size}")
+        
         // Sort by timestamp desc to show actual most recent items at the top
-        allItems.sortedByDescending { it.timestamp }.take(limit)
+        val result = allItems.sortedByDescending { it.timestamp }.take(limit)
+        android.util.Log.d("AppRepository", "getRecentActivity: returning ${result.size} items")
+        result
     }
 
     // --- Recommendations & Similar Content ---

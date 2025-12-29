@@ -82,6 +82,7 @@
     <string name="movie_premieres">Майбутні прем\'єри</string>
     <string name="friends">Друзі</string>
     <string name="recent_activity">Недавня активність</string>
+    <string name="no_recent_activity">Ще немає активності</string>
     <string name="quick_add">Швидке додавання</string>
 
     <string name="watching_count">Дивлюсь: %d</string>

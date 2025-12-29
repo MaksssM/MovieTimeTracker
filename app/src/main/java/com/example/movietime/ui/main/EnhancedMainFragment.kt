@@ -112,6 +112,13 @@ class EnhancedMainFragment : Fragment() {
             }
         }
 
+        // See all recent activity - navigates to watched list
+        binding.btnSeeAllActivity.setOnClickListener {
+            handleClickWithDebounce {
+                findNavController().navigate(R.id.watchedFragment)
+            }
+        }
+
         // Floating Action Button
         binding.fabAdd.setOnClickListener {
             handleClickWithDebounce {
@@ -203,11 +210,11 @@ class EnhancedMainFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.recommendations.collect { recs ->
                 if (recs.isNotEmpty()) {
-                    binding.tvRecommendationsTitle.visibility = View.VISIBLE
+                    binding.recommendationsTitleContainer.visibility = View.VISIBLE
                     binding.rvRecommendations.visibility = View.VISIBLE
                     recommendationsAdapter.submitList(recs)
                 } else {
-                    binding.tvRecommendationsTitle.visibility = View.GONE
+                    binding.recommendationsTitleContainer.visibility = View.GONE
                     binding.rvRecommendations.visibility = View.GONE
                 }
             }
@@ -226,8 +233,22 @@ class EnhancedMainFragment : Fragment() {
 
         // Observe recent activities
         viewLifecycleOwner.lifecycleScope.launch {
+            android.util.Log.d("EnhancedMainFragment", "Starting recent activities observer...")
             viewModel.getRecentActivities().collect { activities ->
-                recentActivityAdapter.submitList(activities)
+                android.util.Log.d("EnhancedMainFragment", "Recent activities received: ${activities.size} items")
+                activities.forEach { item ->
+                    android.util.Log.d("EnhancedMainFragment", "  - ${item.title} (${item.type}, ${item.mediaType})")
+                }
+                if (activities.isNotEmpty()) {
+                    android.util.Log.d("EnhancedMainFragment", "Submitting ${activities.size} items to adapter")
+                    binding.rvRecentActivity.visibility = View.VISIBLE
+                    binding.emptyRecentActivity.visibility = View.GONE
+                    recentActivityAdapter.submitList(activities)
+                } else {
+                    android.util.Log.d("EnhancedMainFragment", "No recent activities to display")
+                    binding.rvRecentActivity.visibility = View.GONE
+                    binding.emptyRecentActivity.visibility = View.VISIBLE
+                }
             }
         }
     }

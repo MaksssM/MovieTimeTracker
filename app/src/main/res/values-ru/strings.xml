@@ -6,6 +6,14 @@
     <string name="nav_watched">Просмотрено</string>
     <string name="nav_planned">Запланировано</string>
     <string name="nav_watching">Смотрю</string>
+    <string name="nav_library">Библиотека</string>
+    <string name="nav_discover">Открывайте</string>
+    <string name="nav_calendar">Календарь</string>
+    <string name="nav_trending">Популярные</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="today">Сегодня</string>
+    <string name="upcoming_releases_title">Премьеры этого месяца</string>
+    <string name="releases_count">%d релизов</string>
 
     <!-- Main menu -->
     <string name="main_menu_title">Главное меню</string>
@@ -50,6 +58,9 @@
     <string name="browse_content">Просмотреть контент</string>
     <string name="add_to_planned">Добавить в запланированные</string>
     <string name="loading">Загрузка…</string>
+    <string name="loading_show_data">Получение данных о сериале…</string>
+    <string name="edit_watched_data">Редактировать данные</string>
+    <string name="add_movie">Добавить фильм</string>
 
     <!-- Category buttons -->
     <string name="watched">Просмотрено</string>
@@ -73,6 +84,7 @@
     <string name="movie_premieres">Будущие премьеры</string>
     <string name="friends">Друзья</string>
     <string name="recent_activity">Недавняя активность</string>
+    <string name="no_recent_activity">Нет активности</string>
     <string name="quick_add">Быстрое добавление</string>
 
     <string name="watching_count">Смотрю: %d</string>
@@ -82,10 +94,6 @@
     <string name="watching_movies_count">Смотрю фильмы: %d</string>
     <string name="watching_tv_shows_count">Смотрю сериалы: %d</string>
     <string name="your_watching_content">Контент, который вы сейчас смотрите</string>
-
-    <!-- Navigation menu strings -->
-    <string name="nav_trending">Популярные</string>
-    <string name="nav_settings">Настройки</string>
 
     <!-- Settings -->
     <string name="settings_title">Экран настроек</string>
@@ -238,4 +246,22 @@
     <string name="day_fri">Пт</string>
     <string name="day_sat">Сб</string>
     <string name="day_sun">Вс</string>
+
+    <!-- Status and time precision strings -->
+    <string name="status_ongoing"> • Сериал выходит</string>
+    <string name="status_ended"> • Завершено</string>
+    <string name="status_canceled"> • Отменено</string>
+    <string name="time_with_status">%1$s%2$s</string>
+    <string name="precision_with_api">(из API: %d эпизодов)</string>
+    <string name="precision_calculated">(расчёт)</string>
+    <string name="time_with_precision">%1$s %2$s</string>
+
+    <!-- Calendar navigation -->
+    <string name="previous_month">Предыдущий месяц</string>
+    <string name="next_month">Следующий месяц</string>
+    <string name="empty_calendar">Календарь</string>
+    <string name="no_releases">Нет релизов в этот период</string>
+    <string name="check_back_later">Проверьте позже</string>
+    <string name="date">Дата</string>
+    <string name="movie">Фильм</string>
 </resources>
