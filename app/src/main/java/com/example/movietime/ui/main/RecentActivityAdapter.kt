@@ -105,18 +105,18 @@ class RecentActivityAdapter(
             
             when (item.type) {
                 RecentActivityItem.ActivityType.WATCHED -> {
-                    binding.tvAction.text = context.getString(R.string.activity_watched_movie) // "Watched"
-                    binding.iconContainer.setBackgroundResource(R.drawable.bg_stat_icon_primary)
+                    binding.tvAction.text = context.getString(R.string.activity_watched_movie)
+                    binding.iconContainer.setBackgroundResource(R.drawable.bg_icon_3d_primary)
                     binding.ivIcon.setImageResource(R.drawable.ic_check_24)
                 }
                 RecentActivityItem.ActivityType.PLANNED -> {
-                    binding.tvAction.text = context.getString(R.string.activity_added_planned) // "Added to Planned"
-                    binding.iconContainer.setBackgroundResource(R.drawable.bg_stat_icon_accent)
+                    binding.tvAction.text = context.getString(R.string.activity_added_planned)
+                    binding.iconContainer.setBackgroundResource(R.drawable.bg_icon_3d_accent)
                     binding.ivIcon.setImageResource(R.drawable.ic_bookmark_filled_24)
                 }
                 RecentActivityItem.ActivityType.WATCHING -> {
-                    binding.tvAction.text = context.getString(R.string.activity_started_series) // "Started watching"
-                    binding.iconContainer.setBackgroundResource(R.drawable.bg_stat_icon_success)
+                    binding.tvAction.text = context.getString(R.string.activity_started_series)
+                    binding.iconContainer.setBackgroundResource(R.drawable.bg_icon_3d_success)
                     binding.ivIcon.setImageResource(R.drawable.ic_play_circle_24)
                 }
             }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Clean flat icon background - Accent/Purple -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <gradient
+        android:angle="135"
+        android:startColor="#A78BFA"
+        android:endColor="#7C3AED"
+        android:type="linear" />
+    <size android:width="48dp" android:height="48dp" />
+</shape>
