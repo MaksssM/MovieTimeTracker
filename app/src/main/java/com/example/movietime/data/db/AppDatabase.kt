@@ -6,8 +6,8 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
-    entities = [WatchedItem::class, PlannedItem::class, WatchingItem::class],
-    version = 8,
+    entities = [WatchedItem::class, PlannedItem::class, WatchingItem::class, SearchHistoryItem::class],
+    version = 9,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -15,6 +15,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun watchedItemDao(): WatchedItemDao
     abstract fun plannedItemDao(): PlannedDao
     abstract fun watchingItemDao(): WatchingDao
+    abstract fun searchHistoryDao(): SearchHistoryDao
 
 
     companion object {
@@ -98,6 +99,24 @@ abstract class AppDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `isOngoing` INTEGER NOT NULL DEFAULT 0")
                 database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `status` TEXT DEFAULT NULL")
                 database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `lastUpdated` INTEGER DEFAULT NULL")
+            }
+        }
+
+        val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create search history table
+                database.execSQL(
+                    """CREATE TABLE IF NOT EXISTS `search_history` (
+                        `id` INTEGER NOT NULL, 
+                        `title` TEXT NOT NULL, 
+                        `posterPath` TEXT, 
+                        `mediaType` TEXT NOT NULL, 
+                        `releaseDate` TEXT,
+                        `voteAverage` REAL,
+                        `timestamp` INTEGER NOT NULL DEFAULT ${System.currentTimeMillis()},
+                        PRIMARY KEY(`id`,`mediaType`)
+                    )"""
+                )
             }
         }
     }

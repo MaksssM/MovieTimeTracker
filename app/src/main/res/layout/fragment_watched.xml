@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bg_app_gradient">
+    android:background="@drawable/bg_main_premium">
+
+    <!-- Floating decorative orbs - positioned absolutely -->
+    <View
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="top|end"
+        android:translationX="100dp"
+        android:translationY="-60dp"
+        android:background="@drawable/bg_floating_orb_accent"
+        android:alpha="0.4" />
+
+    <View
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="bottom|start"
+        android:translationX="-60dp"
+        android:translationY="60dp"
+        android:background="@drawable/bg_floating_orb_primary"
+        android:alpha="0.3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -19,115 +42,157 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
+                android:paddingTop="16dp"
                 android:paddingBottom="10dp"
-                android:paddingHorizontal="16dp">
+                android:paddingHorizontal="20dp">
 
-                <!-- Header with stats - Glass Card Style -->
-                <FrameLayout
+                <!-- Header with stats - Premium Glass Card Style -->
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:background="@drawable/bg_glass_card">
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#15FFFFFF"
+                    app:cardBackgroundColor="@android:color/transparent">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="24dp"
-                        android:gravity="center">
+                        android:background="@drawable/bg_stat_card_premium">
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
+                            android:orientation="horizontal"
+                            android:padding="24dp"
                             android:gravity="center">
 
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_time"
-                                app:tint="@color/accent"
-                                android:contentDescription="@string/total_time_spent"
-                                android:layout_marginBottom="8dp" />
-
-                            <TextView
-                                android:id="@+id/tvTotalTime"
-                                android:layout_width="wrap_content"
+                            <!-- Total Time Stat -->
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="@string/total_time_default"
-                                android:textSize="24sp"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/white"
-                                tools:text="42 год 15 хв" />
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:gravity="center">
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                                <FrameLayout
+                                    android:layout_width="52dp"
+                                    android:layout_height="52dp"
+                                    android:background="@drawable/bg_icon_glow_accent"
+                                    android:layout_marginBottom="14dp">
+
+                                    <ImageView
+                                        android:layout_width="26dp"
+                                        android:layout_height="26dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_time"
+                                        app:tint="@android:color/white"
+                                        android:contentDescription="@string/total_time_spent" />
+
+                                </FrameLayout>
+
+                                <TextView
+                                    android:id="@+id/tvTotalTime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/total_time_default"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#C084FC"
+                                    android:fontFamily="sans-serif-medium"
+                                    tools:text="42 год 15 хв" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/total_time_spent"
+                                    android:textSize="12sp"
+                                    android:textColor="#90FFFFFF"
+                                    android:layout_marginTop="6dp" />
+                            </LinearLayout>
+
+                            <!-- Divider with gradient -->
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="80dp"
+                                android:background="@drawable/bg_section_title_underline"
+                                android:layout_marginHorizontal="16dp" />
+
+                            <!-- Watched Count Stat -->
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="@string/total_time_spent"
-                                android:textSize="12sp"
-                                android:textColor="@color/text_secondary"
-                                android:layout_marginTop="4dp" />
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <FrameLayout
+                                    android:layout_width="52dp"
+                                    android:layout_height="52dp"
+                                    android:background="@drawable/bg_icon_glow_primary"
+                                    android:layout_marginBottom="14dp">
+
+                                    <ImageView
+                                        android:layout_width="26dp"
+                                        android:layout_height="26dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_movie"
+                                        app:tint="@android:color/white"
+                                        android:contentDescription="@string/watched_label" />
+
+                                </FrameLayout>
+
+                                <TextView
+                                    android:id="@+id/tvTotalCount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textSize="26sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#60A5FA"
+                                    android:fontFamily="sans-serif-medium"
+                                    tools:text="127" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/watched_label"
+                                    android:textSize="12sp"
+                                    android:textColor="#90FFFFFF"
+                                    android:layout_marginTop="6dp" />
+                            </LinearLayout>
                         </LinearLayout>
+                    </FrameLayout>
 
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/shape_divider_solid"
-                            android:layout_marginHorizontal="20dp" />
+                </com.google.android.material.card.MaterialCardView>
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_movie"
-                                app:tint="@color/accent"
-                                android:contentDescription="@string/watched_label"
-                                android:layout_marginBottom="8dp" />
-
-                            <TextView
-                                android:id="@+id/tvTotalCount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0"
-                                android:textSize="24sp"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/white"
-                                tools:text="127" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/watched_label"
-                                android:textSize="12sp"
-                                android:textColor="@color/text_secondary"
-                                android:layout_marginTop="4dp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </FrameLayout>
-
-                <!-- Tabs for filtering - Pill Style -->
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayout"
+                <!-- Tabs for filtering - Premium Style -->
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    app:tabMode="fixed"
-                    app:tabGravity="fill"
-                    app:tabIndicator="@drawable/bg_tab_indicator_pill"
-                    app:tabIndicatorColor="@null"
-                    app:tabIndicatorGravity="stretch"
-                    app:tabSelectedTextColor="@android:color/white"
-                    app:tabTextColor="@color/text_secondary"
-                    app:tabRippleColor="@android:color/transparent"
-                    app:tabIndicatorFullWidth="true" />
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp"
+                    app:cardBackgroundColor="#15FFFFFF">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        app:tabMode="fixed"
+                        app:tabGravity="fill"
+                        app:tabIndicator="@drawable/bg_tab_indicator_gradient"
+                        app:tabIndicatorHeight="3dp"
+                        app:tabIndicatorGravity="bottom"
+                        app:tabSelectedTextColor="@android:color/white"
+                        app:tabTextColor="#80FFFFFF"
+                        app:tabRippleColor="#2060A5FA"
+                        app:tabIndicatorFullWidth="false" />
+
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -138,7 +203,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="20dp"
             android:paddingBottom="16dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_watched" />
@@ -155,13 +220,20 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:visibility="visible">
 
-            <ImageView
+            <FrameLayout
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/ic_movie"
-                android:alpha="0.2"
-                app:tint="@android:color/white"
-                android:contentDescription="@string/app_name" />
+                android:background="@drawable/bg_icon_glow_primary">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_movie"
+                    app:tint="@android:color/white"
+                    android:contentDescription="@string/app_name" />
+
+            </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -169,7 +241,7 @@
                 android:text="@string/no_watched_content"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:textColor="@android:color/white"
                 android:layout_marginTop="24dp" />
 
             <TextView
@@ -177,19 +249,22 @@
                 android:layout_height="wrap_content"
                 android:text="@string/start_watching_hint"
                 android:textSize="14sp"
-                android:textColor="@color/text_secondary"
+                android:textColor="#80FFFFFF"
                 android:gravity="center"
                 android:paddingHorizontal="32dp"
                 android:layout_marginTop="8dp" />
         </LinearLayout>
 
         <!-- Loading indicator -->
-        <ProgressBar
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            android:indeterminateTint="@color/accent" />
+            app:indicatorColor="#60A5FA"
+            app:trackColor="#2060A5FA" />
 
     </LinearLayout>
+
+</FrameLayout>

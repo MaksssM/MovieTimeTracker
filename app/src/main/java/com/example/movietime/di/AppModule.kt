@@ -58,7 +58,8 @@ object AppModule {
                 AppDatabase.MIGRATION_4_5,
                 AppDatabase.MIGRATION_5_6,
                 AppDatabase.MIGRATION_6_7,
-                AppDatabase.MIGRATION_7_8
+                AppDatabase.MIGRATION_7_8,
+                AppDatabase.MIGRATION_8_9
             )
             .fallbackToDestructiveMigration()
             .build()
@@ -84,12 +85,24 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAppRepository(api: TmdbApi, dao: WatchedItemDao, plannedDao: PlannedDao, watchingDao: WatchingDao): AppRepository {
+    fun provideSearchHistoryDao(database: AppDatabase): SearchHistoryDao {
+        return database.searchHistoryDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppRepository(
+        api: TmdbApi, 
+        dao: WatchedItemDao, 
+        plannedDao: PlannedDao, 
+        watchingDao: WatchingDao,
+        searchHistoryDao: SearchHistoryDao
+    ): AppRepository {
         android.util.Log.d("AppModule", "Creating AppRepository with API key: ${BuildConfig.TMDB_API_KEY.take(10)}...")
         if (BuildConfig.TMDB_API_KEY.isBlank() || BuildConfig.TMDB_API_KEY.contains("YOUR_DEFAULT_KEY")) {
             android.util.Log.e("AppModule", "WARNING: TMDB API key is not configured properly!")
         }
-        return AppRepository(api, dao, plannedDao, watchingDao, BuildConfig.TMDB_API_KEY)
+        return AppRepository(api, dao, plannedDao, watchingDao, searchHistoryDao, BuildConfig.TMDB_API_KEY)
     }
 
     @Provides

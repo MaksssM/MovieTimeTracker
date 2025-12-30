@@ -18,30 +18,20 @@
         android:paddingHorizontal="4dp">
 
         <!-- Calendar Icon -->
-        <com.google.android.material.card.MaterialCardView
+        <FrameLayout
             android:layout_width="44dp"
             android:layout_height="44dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:strokeWidth="0dp">
+            android:background="@drawable/bg_icon_glow_accent">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_stat_icon_accent">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_calendar_24"
+                app:tint="@android:color/white"
+                android:contentDescription="@string/date" />
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_calendar_24"
-                    app:tint="@android:color/white"
-                    android:contentDescription="@string/date" />
-
-            </FrameLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+        </FrameLayout>
 
         <!-- Date Text -->
         <LinearLayout
@@ -57,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="25 грудня 2025"
                 android:textSize="17sp"
-                android:textColor="@color/text_primary"
+                android:textColor="@android:color/white"
                 android:fontFamily="sans-serif-medium"
                 android:textStyle="bold"
                 tools:text="25 грудня 2025" />
@@ -68,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:textSize="13sp"
-                android:textColor="@color/accent"
+                android:textColor="#C084FC"
                 android:fontFamily="sans-serif-medium"
                 tools:text="3 релізи" />
 

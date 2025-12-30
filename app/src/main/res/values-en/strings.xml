@@ -154,6 +154,8 @@
     <string name="activity_rated_tv">rated a TV show</string>
     <string name="activity_added_to_planned">added to planned</string>
     <string name="activity_wrote_review">wrote a review</string>
+    <string name="activity_searched_movie">searched for a movie</string>
+    <string name="activity_searched_tv">searched for a TV show</string>
 
     <!-- Episodes -->
     <string name="enter_episodes_watched">Enter watched episodes count</string>

@@ -153,6 +153,8 @@
     <string name="activity_rated_tv">оценил сериал</string>
     <string name="activity_added_to_planned">добавил в запланированные</string>
     <string name="activity_wrote_review">написал отзыв</string>
+    <string name="activity_searched_movie">искал фильм</string>
+    <string name="activity_searched_tv">искал сериал</string>
 
     <!-- Episodes -->
     <string name="enter_episodes_watched">Введите количество просмотренных эпизодов</string>

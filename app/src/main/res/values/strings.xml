@@ -152,6 +152,8 @@
     <string name="activity_rated_tv">оцінив серіал</string>
     <string name="activity_added_to_planned">додав до запланованих</string>
     <string name="activity_wrote_review">написав відгук</string>
+    <string name="activity_searched_movie">шукав фільм</string>
+    <string name="activity_searched_tv">шукав серіал</string>
 
     <!-- Episodes -->
     <string name="enter_episodes_watched">Введіть кількість переглянутих епізодів</string>

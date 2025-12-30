@@ -250,6 +250,8 @@ class EnhancedSearchActivity : AppCompatActivity() {
         when (item) {
             is MovieResult -> {
                 Log.d("EnhancedSearchActivity", "Opening movie details: id=${item.id}, title=${item.title}")
+                // Save to search history
+                viewModel.addMovieToSearchHistory(item)
                 val intent = Intent(this, DetailsActivity::class.java).apply {
                     putExtra("ITEM_ID", item.id)
                     putExtra("MEDIA_TYPE", "movie")
@@ -258,6 +260,8 @@ class EnhancedSearchActivity : AppCompatActivity() {
             }
             is TvShowResult -> {
                 Log.d("EnhancedSearchActivity", "Opening TV show details: id=${item.id}, name=${item.name}")
+                // Save to search history
+                viewModel.addTvShowToSearchHistory(item)
                 val intent = Intent(this, TvDetailsActivity::class.java).apply {
                     putExtra("ITEM_ID", item.id)
                     putExtra("MEDIA_TYPE", "tv")
