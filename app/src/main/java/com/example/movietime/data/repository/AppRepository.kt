@@ -9,6 +9,8 @@ import com.example.movietime.data.db.PlannedItem
 import com.example.movietime.data.db.PlannedDao
 import com.example.movietime.data.db.WatchingItem
 import com.example.movietime.data.db.WatchingDao
+import com.example.movietime.data.db.SearchHistoryItem
+import com.example.movietime.data.db.SearchHistoryDao
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.MoviesResponse
 import com.example.movietime.data.model.TvShowResult
@@ -27,6 +29,7 @@ class AppRepository @Inject constructor(
     private val dao: WatchedItemDao,
     private val plannedDao: PlannedDao,
     private val watchingDao: WatchingDao,
+    private val searchHistoryDao: SearchHistoryDao,
     private val apiKey: String
 ) {
 
@@ -487,39 +490,70 @@ class AppRepository @Inject constructor(
 
     suspend fun getRecentActivity(limit: Int = 10): List<com.example.movietime.data.model.RecentActivityItem> = coroutineScope {
         android.util.Log.d("AppRepository", "getRecentActivity: Starting...")
-        val watchedDeferred = async { dao.getAllSync() }
-        val plannedDeferred = async { plannedDao.getAllSync() }
-        val watchingDeferred = async { watchingDao.getAllSync() }
-
-        val watched = watchedDeferred.await()
-        val planned = plannedDeferred.await()
-        val watching = watchingDeferred.await()
         
-        android.util.Log.d("AppRepository", "getRecentActivity: watched=${watched.size}, planned=${planned.size}, watching=${watching.size}")
+        // Get search history - items user searched for and clicked on
+        val searchHistory = searchHistoryDao.getRecent(limit)
+        
+        android.util.Log.d("AppRepository", "getRecentActivity: searchHistory=${searchHistory.size}")
 
         val allItems = mutableListOf<com.example.movietime.data.model.RecentActivityItem>()
 
-        // Planned & Watching have timestamps
-        allItems.addAll(planned.map { 
-            com.example.movietime.data.model.RecentActivityItem.Planned(it.id, it.title, it.dateAdded, it.mediaType) 
-        })
-        allItems.addAll(watching.map { 
-            com.example.movietime.data.model.RecentActivityItem.Watching(it.id, it.title, it.dateAdded, it.mediaType) 
-        })
-        
-        // Watched: use lastUpdated timestamp or 0 if missing
-        // We take the LAST items from the list as "recent" (insertion order)
-        val recentWatched = watched.reversed().take(limit)
-        allItems.addAll(recentWatched.map {
-            com.example.movietime.data.model.RecentActivityItem.Watched(it.id, it.title, it.lastUpdated ?: 0L, it.mediaType)
+        // Add search history items as "Searched" type
+        allItems.addAll(searchHistory.map { 
+            com.example.movietime.data.model.RecentActivityItem.Searched(
+                id = it.id, 
+                title = it.title, 
+                timestamp = it.timestamp, 
+                mediaType = it.mediaType,
+                posterPath = it.posterPath,
+                voteAverage = it.voteAverage
+            ) 
         })
 
-        android.util.Log.d("AppRepository", "getRecentActivity: total items before sort=${allItems.size}")
+        android.util.Log.d("AppRepository", "getRecentActivity: total items=${allItems.size}")
         
         // Sort by timestamp desc to show actual most recent items at the top
         val result = allItems.sortedByDescending { it.timestamp }.take(limit)
         android.util.Log.d("AppRepository", "getRecentActivity: returning ${result.size} items")
         result
+    }
+
+    // --- Search History Methods ---
+    
+    suspend fun addToSearchHistory(item: SearchHistoryItem) {
+        searchHistoryDao.insert(item)
+    }
+    
+    suspend fun addMovieToSearchHistory(movie: MovieResult) {
+        val historyItem = SearchHistoryItem(
+            id = movie.id,
+            title = movie.title ?: "Unknown",
+            posterPath = movie.posterPath,
+            mediaType = "movie",
+            releaseDate = movie.releaseDate,
+            voteAverage = movie.voteAverage
+        )
+        searchHistoryDao.insert(historyItem)
+    }
+    
+    suspend fun addTvShowToSearchHistory(tvShow: TvShowResult) {
+        val historyItem = SearchHistoryItem(
+            id = tvShow.id,
+            title = tvShow.name ?: "Unknown",
+            posterPath = tvShow.posterPath,
+            mediaType = "tv",
+            releaseDate = tvShow.firstAirDate,
+            voteAverage = tvShow.voteAverage
+        )
+        searchHistoryDao.insert(historyItem)
+    }
+    
+    suspend fun clearSearchHistory() {
+        searchHistoryDao.deleteAll()
+    }
+    
+    suspend fun removeFromSearchHistory(id: Int, mediaType: String) {
+        searchHistoryDao.delete(id, mediaType)
     }
 
     // --- Recommendations & Similar Content ---

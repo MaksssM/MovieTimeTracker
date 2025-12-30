@@ -2,37 +2,60 @@
 <!-- Glowing icon container - Emerald Success -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <!-- Outer glow -->
+    <!-- Outer soft glow -->
     <item
-        android:left="-4dp"
-        android:right="-4dp"
-        android:top="-4dp"
-        android:bottom="-4dp">
+        android:left="-6dp"
+        android:right="-6dp"
+        android:top="-6dp"
+        android:bottom="-6dp">
         <shape android:shape="oval">
-            <solid android:color="#3010B981" />
+            <gradient
+                android:type="radial"
+                android:gradientRadius="30dp"
+                android:startColor="#5010B981"
+                android:endColor="#0010B981" />
         </shape>
     </item>
     
-    <!-- Main circle -->
+    <!-- Main circle with vibrant gradient -->
     <item>
         <shape android:shape="oval">
             <gradient
                 android:angle="135"
-                android:startColor="#34D399"
+                android:startColor="#6EE7B7"
                 android:centerColor="#10B981"
-                android:endColor="#059669"
+                android:endColor="#047857"
                 android:type="linear" />
         </shape>
     </item>
     
-    <!-- Top shine effect -->
+    <!-- Inner shadow for depth -->
     <item
-        android:left="4dp"
-        android:right="4dp"
-        android:top="3dp"
-        android:bottom="26dp">
+        android:left="2dp"
+        android:right="2dp"
+        android:top="2dp"
+        android:bottom="2dp">
         <shape android:shape="oval">
-            <solid android:color="#20FFFFFF" />
+            <gradient
+                android:angle="135"
+                android:startColor="#00000000"
+                android:endColor="#20000000"
+                android:type="linear" />
+        </shape>
+    </item>
+    
+    <!-- Top shine highlight -->
+    <item
+        android:left="8dp"
+        android:right="8dp"
+        android:top="4dp"
+        android:bottom="22dp">
+        <shape android:shape="oval">
+            <gradient
+                android:angle="90"
+                android:startColor="#00FFFFFF"
+                android:endColor="#30FFFFFF"
+                android:type="linear" />
         </shape>
     </item>
     

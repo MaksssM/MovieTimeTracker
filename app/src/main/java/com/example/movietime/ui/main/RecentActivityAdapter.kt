@@ -119,6 +119,17 @@ class RecentActivityAdapter(
                     binding.iconContainer.setBackgroundResource(R.drawable.bg_icon_3d_success)
                     binding.ivIcon.setImageResource(R.drawable.ic_play_circle_24)
                 }
+                RecentActivityItem.ActivityType.SEARCHED -> {
+                    // Show appropriate action text based on media type
+                    val actionText = if (item.mediaType == "movie") {
+                        context.getString(R.string.activity_searched_movie)
+                    } else {
+                        context.getString(R.string.activity_searched_tv)
+                    }
+                    binding.tvAction.text = actionText
+                    binding.iconContainer.setBackgroundResource(R.drawable.bg_icon_3d_warning)
+                    binding.ivIcon.setImageResource(R.drawable.ic_search_24)
+                }
             }
         }
 

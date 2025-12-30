@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.details.DetailsActivity"
-    android:background="@drawable/bg_app_gradient">
+    android:background="@drawable/bg_main_premium">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
@@ -19,8 +19,8 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="@color/primary"
-            app:statusBarScrim="@color/primary_dark"
+            app:contentScrim="#1A1B2E"
+            app:statusBarScrim="#12131E"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:toolbarId="@+id/toolbar"
             app:expandedTitleMarginStart="20dp"
@@ -107,7 +107,7 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_glass_card"
+                        android:background="@drawable/bg_glass_card_premium"
                         android:padding="12dp">
 
                         <LinearLayout
@@ -119,7 +119,7 @@
                             <FrameLayout
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:background="@drawable/bg_stat_tile_accent">
+                                android:background="@drawable/bg_icon_glow_accent">
 
                                 <ImageView
                                     android:layout_width="20dp"
@@ -159,7 +159,7 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_glass_card"
+                        android:background="@drawable/bg_glass_card_premium"
                         android:padding="12dp">
 
                         <LinearLayout
@@ -171,7 +171,7 @@
                             <FrameLayout
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:background="@drawable/bg_stat_tile_primary">
+                                android:background="@drawable/bg_icon_glow_primary">
 
                                 <ImageView
                                     android:layout_width="20dp"
@@ -211,7 +211,7 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_glass_card"
+                        android:background="@drawable/bg_glass_card_premium"
                         android:padding="12dp">
 
                         <LinearLayout
@@ -223,7 +223,7 @@
                             <FrameLayout
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:background="@drawable/bg_stat_tile_success">
+                                android:background="@drawable/bg_icon_glow_success">
 
                                 <ImageView
                                     android:layout_width="20dp"
@@ -261,7 +261,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_glass_card"
+                    android:background="@drawable/bg_glass_card_premium"
                     android:padding="2dp">
 
                     <LinearLayout
@@ -274,7 +274,7 @@
                         <FrameLayout
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:background="@drawable/bg_stat_tile_accent">
+                            android:background="@drawable/bg_icon_glow_accent">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -295,7 +295,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/runtime"
-                                android:textColor="@color/text_secondary"
+                                android:textColor="#80FFFFFF"
                                 android:textSize="12sp" />
 
                             <TextView
@@ -315,14 +315,27 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Overview Section -->
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Опис"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+                
+                <View
+                    android:layout_width="4dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_section_title_underline" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Опис"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -336,7 +349,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_glass_card"
+                    android:background="@drawable/bg_glass_card_premium"
                     android:padding="2dp">
 
                     <TextView
@@ -344,7 +357,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="20dp"
-                        android:textColor="@color/text_primary"
+                        android:textColor="#E0FFFFFF"
                         android:textSize="15sp"
                         android:lineSpacingMultiplier="1.4"
                         tools:text="A thief who steals corporate secrets through the use of dream-sharing technology..." />

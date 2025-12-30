@@ -468,4 +468,28 @@ class SearchViewModel @Inject constructor(
             }
         }
     }
+
+    // --- Search History Methods ---
+    
+    fun addMovieToSearchHistory(movie: MovieResult) {
+        viewModelScope.launch {
+            try {
+                repository.addMovieToSearchHistory(movie)
+                Log.d("SearchViewModel", "Added movie to search history: ${movie.title}")
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error adding movie to search history", e)
+            }
+        }
+    }
+    
+    fun addTvShowToSearchHistory(tvShow: TvShowResult) {
+        viewModelScope.launch {
+            try {
+                repository.addTvShowToSearchHistory(tvShow)
+                Log.d("SearchViewModel", "Added TV show to search history: ${tvShow.name}")
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error adding TV show to search history", e)
+            }
+        }
+    }
 }
