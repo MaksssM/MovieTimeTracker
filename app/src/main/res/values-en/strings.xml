@@ -15,6 +15,11 @@
     <string name="upcoming_releases_title">Premieres this month</string>
     <string name="releases_count">%d releases</string>
 
+    <!-- Common Actions -->
+    <string name="rate">Rate</string>
+    <string name="share">Share</string>
+    <string name="overview">Overview</string>
+
     <!-- Main menu -->
     <string name="main_menu_title">Main Menu</string>
     <string name="movies_category">Movies</string>
@@ -267,4 +272,79 @@
     <string name="check_back_later">Check back later</string>
     <string name="date">Date</string>
     <string name="movie">Movie</string>
+
+    <!-- Auth & Social -->
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="welcome_to_app">Welcome to MovieTime</string>
+    <string name="auth_subtitle">Sign in to sync data and add friends</string>
+    <string name="email">Email</string>
+    <string name="email_hint">Email</string>
+    <string name="password">Password</string>
+    <string name="password_hint">Password</string>
+    <string name="display_name">Name</string>
+    <string name="or">or</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="skip_for_now">Skip for now</string>
+    <string name="or_continue_with">Or continue with</string>
+    <string name="login_to_use_friends">Sign in to use friends</string>
+    <string name="login_friends_description">Connect with friends, share recommendations and see what they\'re watching</string>
+    
+    <!-- Friends Screen -->
+    <string name="friends_tab">Friends</string>
+    <string name="feed_tab">Feed</string>
+    <string name="requests_tab">Requests</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="no_friends_yet">No friends yet</string>
+    <string name="find_friends_hint">Find friends by their username</string>
+    <string name="no_activity">No activity</string>
+    <string name="activity_hint">Your friends haven\'t shared any activity yet</string>
+    <string name="no_requests">No requests</string>
+    <string name="incoming_requests">Incoming requests</string>
+    <string name="recommendations">Recommendations from friends</string>
+    <string name="more_options">More options</string>
+    <string name="recommend_to_friend">Recommend to friend</string>
+    
+    <!-- User Search -->
+    <string name="find_friends">Find Friends</string>
+    <string name="search_username_hint">Search by name or @username</string>
+    <string name="no_users_found">No users found</string>
+    <string name="add_friend_short">Add</string>
+    <string name="request_sent">Request sent</string>
+    <string name="already_friends">Already friends</string>
+    
+    <!-- Recommendations -->
+    <string name="recommend_movie">Recommend</string>
+    <string name="select_friend">Select a friend</string>
+    <string name="no_friends_to_recommend">Add friends to recommend content to them</string>
+    <string name="add_message_optional">Add a message (optional)</string>
+    <string name="send_recommendation">Send</string>
+    <string name="recommends_you">recommends you</string>
+    <string name="details">Details</string>
+    <string name="mark_read">Mark as read</string>
+    
+    <!-- Activity types -->
+    <string name="activity_watched">watched</string>
+    <string name="activity_watching">is watching</string>
+    <string name="activity_planned_to_watch">added to planned</string>
+    <string name="activity_rated">rated</string>
+    <string name="activity_reviewed">wrote a review</string>
+    <string name="activity_recommended">recommends</string>
+    
+    <!-- Stats -->
+    <string name="watched_count_format">%d watched</string>
+    
+    <!-- Details Screen -->
+    <string name="user_score">User Score</string>
+    <string name="votes">Votes</string>
+    <string name="release">Release</string>
+    <string name="additional_info">Details</string>
+    <string name="director">Director</string>
+    <string name="budget">Budget</string>
+    <string name="revenue">Revenue</string>
+    <string name="language">Language</string>
+    <string name="share_text">Watching \"%1$s\" (%2$s) - MovieTime</string>
+    <string name="share_via">Share via</string>
+    <string name="rated_toast">Rated %d/10</string>
 </resources>

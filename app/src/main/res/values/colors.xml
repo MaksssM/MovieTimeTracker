@@ -142,4 +142,8 @@
     <!-- Additional UI Colors -->
     <color name="primary_variant">#1D4ED8</color>
     <color name="card_background">#FFFFFF</color>
+    
+    <!-- Genre Chip Colors -->
+    <color name="chip_genre_bg">#20FFFFFF</color>
+    <color name="chip_genre_text">#E0E0E0</color>
 </resources>

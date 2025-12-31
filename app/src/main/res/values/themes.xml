@@ -119,6 +119,14 @@
         <item name="cornerSize">24dp</item> <!-- Match cards -->
     </style>
     
+    <!-- Transparent Dialog Style -->
+    <style name="TransparentDialog" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 
 
 </resources>

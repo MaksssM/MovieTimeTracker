@@ -531,7 +531,7 @@ class AppRepository @Inject constructor(
             posterPath = movie.posterPath,
             mediaType = "movie",
             releaseDate = movie.releaseDate,
-            voteAverage = movie.voteAverage
+            voteAverage = movie.voteAverage.toDouble()
         )
         searchHistoryDao.insert(historyItem)
     }
@@ -543,7 +543,7 @@ class AppRepository @Inject constructor(
             posterPath = tvShow.posterPath,
             mediaType = "tv",
             releaseDate = tvShow.firstAirDate,
-            voteAverage = tvShow.voteAverage
+            voteAverage = tvShow.voteAverage.toDouble()
         )
         searchHistoryDao.insert(historyItem)
     }
