@@ -15,6 +15,11 @@
     <string name="upcoming_releases_title">Премьеры этого месяца</string>
     <string name="releases_count">%d релизов</string>
 
+    <!-- Common Actions -->
+    <string name="rate">Оценить</string>
+    <string name="share">Поделиться</string>
+    <string name="overview">Описание</string>
+
     <!-- Main menu -->
     <string name="main_menu_title">Главное меню</string>
     <string name="movies_category">Фильмы</string>
@@ -266,4 +271,79 @@
     <string name="check_back_later">Проверьте позже</string>
     <string name="date">Дата</string>
     <string name="movie">Фильм</string>
+
+    <!-- Auth & Social -->
+    <string name="sign_in">Войти</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="sign_out">Выйти</string>
+    <string name="welcome_to_app">Добро пожаловать в MovieTime</string>
+    <string name="auth_subtitle">Войдите для синхронизации данных и добавления друзей</string>
+    <string name="email">Email</string>
+    <string name="email_hint">Email</string>
+    <string name="password">Пароль</string>
+    <string name="password_hint">Пароль</string>
+    <string name="display_name">Имя</string>
+    <string name="or">или</string>
+    <string name="continue_with_google">Продолжить с Google</string>
+    <string name="skip_for_now">Пропустить</string>
+    <string name="or_continue_with">Или продолжить с</string>
+    <string name="login_to_use_friends">Войдите, чтобы использовать друзей</string>
+    <string name="login_friends_description">Подключитесь к друзьям, делитесь рекомендациями и смотрите, что они смотрят</string>
+    
+    <!-- Friends Screen -->
+    <string name="friends_tab">Друзья</string>
+    <string name="feed_tab">Лента</string>
+    <string name="requests_tab">Запросы</string>
+    <string name="add_friend">Добавить друга</string>
+    <string name="no_friends_yet">Пока нет друзей</string>
+    <string name="find_friends_hint">Найдите друзей по имени пользователя</string>
+    <string name="no_activity">Нет активности</string>
+    <string name="activity_hint">Ваши друзья пока не делились активностью</string>
+    <string name="no_requests">Нет запросов</string>
+    <string name="incoming_requests">Входящие запросы</string>
+    <string name="recommendations">Рекомендации от друзей</string>
+    <string name="more_options">Больше опций</string>
+    <string name="recommend_to_friend">Рекомендовать другу</string>
+    
+    <!-- User Search -->
+    <string name="find_friends">Найти друзей</string>
+    <string name="search_username_hint">Поиск по имени или @username</string>
+    <string name="no_users_found">Пользователи не найдены</string>
+    <string name="add_friend_short">Добавить</string>
+    <string name="request_sent">Запрос отправлен</string>
+    <string name="already_friends">Уже друзья</string>
+    
+    <!-- Recommendations -->
+    <string name="recommend_movie">Рекомендовать</string>
+    <string name="select_friend">Выберите друга</string>
+    <string name="no_friends_to_recommend">Добавьте друзей, чтобы рекомендовать им контент</string>
+    <string name="add_message_optional">Добавить сообщение (опционально)</string>
+    <string name="send_recommendation">Отправить</string>
+    <string name="recommends_you">рекомендует вам</string>
+    <string name="details">Детали</string>
+    <string name="mark_read">Прочитано</string>
+    
+    <!-- Activity types -->
+    <string name="activity_watched">посмотрел</string>
+    <string name="activity_watching">смотрит</string>
+    <string name="activity_planned_to_watch">добавил в запланированные</string>
+    <string name="activity_rated">оценил на</string>
+    <string name="activity_reviewed">написал рецензию</string>
+    <string name="activity_recommended">рекомендует</string>
+    
+    <!-- Stats -->
+    <string name="watched_count_format">%d просмотрено</string>
+    
+    <!-- Details Screen -->
+    <string name="user_score">Оценка</string>
+    <string name="votes">Голосов</string>
+    <string name="release">Релиз</string>
+    <string name="additional_info">Подробнее</string>
+    <string name="director">Режиссёр</string>
+    <string name="budget">Бюджет</string>
+    <string name="revenue">Сборы</string>
+    <string name="language">Язык</string>
+    <string name="share_text">Смотрю \"%1$s\" (%2$s) - MovieTime</string>
+    <string name="share_via">Поделиться через</string>
+    <string name="rated_toast">Оценено на %d/10</string>
 </resources>

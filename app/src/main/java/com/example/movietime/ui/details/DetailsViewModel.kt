@@ -29,7 +29,7 @@ class DetailsViewModel @Inject constructor(
             try {
                 android.util.Log.d("DetailsViewModel", "Loading movie with ID: $movieId")
                 val response = repository.getMovieDetails(movieId)
-                android.util.Log.d("DetailsViewModel", "Movie loaded successfully: ${response.title}, runtime=${response.runtime}")
+                android.util.Log.d("DetailsViewModel", "Movie loaded successfully: ${response.title}, runtime=${response.runtime}, backdrop=${response.backdropPath}, poster=${response.posterPath}")
                 _item.value = response
             } catch (e: Exception) {
                 android.util.Log.e("DetailsViewModel", "Failed to load movie: ${e.message}", e)
@@ -43,7 +43,7 @@ class DetailsViewModel @Inject constructor(
             try {
                 android.util.Log.d("DetailsViewModel", "Loading TV show with ID: $tvId")
                 val response = repository.getTvShowDetails(tvId)
-                android.util.Log.d("DetailsViewModel", "TV show loaded successfully: ${response.name}")
+                android.util.Log.d("DetailsViewModel", "TV show loaded successfully: ${response.name}, backdrop=${response.backdropPath}, poster=${response.posterPath}")
                 _item.value = response
             } catch (e: Exception) {
                 android.util.Log.e("DetailsViewModel", "Failed to load TV show: ${e.message}", e)

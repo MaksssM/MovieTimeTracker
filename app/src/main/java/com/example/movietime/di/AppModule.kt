@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.movietime.BuildConfig
 import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.data.db.*
+import com.example.movietime.data.firebase.FirebaseRepository
 import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.data.repository.SimpleEnhancedRepository
 import dagger.Module
@@ -112,5 +113,11 @@ object AppModule {
         appRepository: AppRepository
     ): SimpleEnhancedRepository {
         return SimpleEnhancedRepository(api, appRepository, BuildConfig.TMDB_API_KEY)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseRepository(): FirebaseRepository {
+        return FirebaseRepository()
     }
 }
