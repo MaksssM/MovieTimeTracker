@@ -3,6 +3,7 @@ package com.example.movietime.ui.details
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
@@ -27,6 +28,9 @@ import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import android.util.Log
+import com.google.android.material.chip.Chip
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
 
@@ -38,6 +42,8 @@ class TvDetailsActivity : AppCompatActivity() {
 
     @Inject
     lateinit var episodeService: TvShowEpisodeService
+    
+    private var currentTvShow: TvShowResult? = null
 
     companion object {
         private const val TAG = "TvDetailsActivity"
@@ -75,6 +81,7 @@ class TvDetailsActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
 
         val tvId = intent.getIntExtra("ITEM_ID", -1)
         Log.d(TAG, "Opening TV show details: id=$tvId")
@@ -87,9 +94,10 @@ class TvDetailsActivity : AppCompatActivity() {
         }
 
         observeViewModel()
+        setupClickListeners()
         animateEntranceElements()
 
-        // Обробник додавання в переглянуті
+        // Обробник додавання в переглянуті - відкриває вибір епізодів
         binding.fabAdd.setOnClickListener { view ->
             animateButtonPress(view) {
                 Log.d(TAG, "FAB clicked for TV show")
@@ -103,15 +111,69 @@ class TvDetailsActivity : AppCompatActivity() {
                     return@animateButtonPress
                 }
 
-                viewModel.isItemWatched(current.id, "tv") { _ ->
-                    runOnUiThread {
-                        // Show dialog regardless of existence to allow Editing
-                        // If exists, the dialog will be pre-filled with observed data via ViewModel
-                        showAddDialog(current)
-                    }
+                // Відкриваємо BottomSheet для вибору епізодів
+                showEpisodeProgressSheet(current)
+            }
+        }
+    }
+    
+    private fun showEpisodeProgressSheet(tvShow: TvShowResult) {
+        val bottomSheet = TvProgressBottomSheet.newInstance(tvShow.id) { watchedRuntime ->
+            // Callback коли прогрес збережено
+            runOnUiThread {
+                if (watchedRuntime > 0) {
+                    binding.fabAdd.text = getString(R.string.edit_progress)
+                    binding.tvTotalWatchTime.text = Utils.formatMinutesToHoursAndMinutes(watchedRuntime)
+                } else {
+                    binding.fabAdd.text = getString(R.string.track_progress)
                 }
             }
         }
+        bottomSheet.show(supportFragmentManager, "TvProgressBottomSheet")
+    }
+    
+    private fun setupClickListeners() {
+        // Planned button
+        binding.btnPlanned.setOnClickListener {
+            val tvShow = currentTvShow ?: return@setOnClickListener
+            Toast.makeText(this, getString(R.string.added_to_planned), Toast.LENGTH_SHORT).show()
+        }
+        
+        // Watched button
+        binding.btnWatched.setOnClickListener {
+            binding.fabAdd.performClick()
+        }
+        
+        // Watching button
+        binding.btnWatching.setOnClickListener {
+            val tvShow = currentTvShow ?: return@setOnClickListener
+            Toast.makeText(this, getString(R.string.added_to_watching), Toast.LENGTH_SHORT).show()
+        }
+        
+        // Rate button
+        binding.btnRate.setOnClickListener {
+            Toast.makeText(this, getString(R.string.rate_coming_soon), Toast.LENGTH_SHORT).show()
+        }
+        
+        // Share button
+        binding.btnShare.setOnClickListener {
+            val tvShow = currentTvShow ?: return@setOnClickListener
+            shareTvShow(tvShow)
+        }
+    }
+    
+    private fun shareTvShow(tvShow: TvShowResult) {
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, tvShow.name ?: "")
+            putExtra(Intent.EXTRA_TEXT, buildString {
+                append("📺 ${tvShow.name}\n")
+                append("⭐ ${String.format(Locale.US, "%.1f", tvShow.voteAverage)}/10\n")
+                tvShow.firstAirDate?.take(4)?.let { append("📅 $it\n") }
+                append("\n${tvShow.overview ?: ""}")
+            })
+        }
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_via)))
     }
 
 
@@ -251,10 +313,17 @@ class TvDetailsActivity : AppCompatActivity() {
         viewModel.tvShow.observe(this) { tvShow ->
             Log.d(TAG, "tvShow observer triggered: ${if (tvShow == null) "NULL" else tvShow.name}")
             if (tvShow != null) {
+                currentTvShow = tvShow
                 Log.d(TAG, "Displaying TV show: ${tvShow.name}, episodes: ${tvShow.numberOfEpisodes}, seasons: ${tvShow.numberOfSeasons}")
-                binding.toolbarLayout.title = tvShow.name ?: getString(R.string.unknown_media)
+                
+                // Title in floating card
+                binding.tvTitle.text = tvShow.name ?: getString(R.string.unknown_media)
+                binding.toolbarLayout.title = ""
+                
+                // Overview
                 binding.tvOverview.text = tvShow.overview ?: getString(R.string.no_description_available)
 
+                // Poster
                 val poster = tvShow.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                 binding.ivPoster.load(poster) {
                     crossfade(true)
@@ -262,35 +331,61 @@ class TvDetailsActivity : AppCompatActivity() {
                     error(R.drawable.ic_placeholder)
                 }
                 
-                // Анімація для контенту
-                binding.tvOverview.apply {
-                    alpha = 0f
-                    translationY = 30f
-                    animate()
-                        .alpha(1f)
-                        .translationY(0f)
-                        .setDuration(400)
-                        .setInterpolator(android.view.animation.DecelerateInterpolator())
-                        .setStartDelay(100)
-                        .start()
+                // Rating in floating card
+                binding.tvRating.text = String.format(Locale.US, "%.1f", tvShow.voteAverage)
+                
+                // Rating percentage in stat card
+                val ratingPercent = (tvShow.voteAverage * 10).toInt()
+                binding.progressRating.progress = ratingPercent
+                binding.tvRatingPercent.text = "$ratingPercent%"
+                
+                // Year range
+                val startYear = tvShow.firstAirDate?.take(4) ?: ""
+                val endYear = if (tvShow.status == "Ended" || tvShow.status == "Canceled") {
+                    tvShow.lastAirDate?.take(4) ?: ""
+                } else {
+                    getString(R.string.present)
                 }
-
-                // Show season and episode counts (hide if null or 0)
+                binding.tvYear.text = if (startYear.isNotEmpty()) "$startYear - $endYear" else ""
+                
+                // Season count
                 val seasonCount = tvShow.numberOfSeasons ?: 0
                 if (seasonCount > 0) {
                     binding.tvSeasonCount.text = seasonCount.toString()
-                    binding.tvSeasonCount.visibility = android.view.View.VISIBLE
+                    binding.tvSeasonCount.visibility = View.VISIBLE
                 } else {
-                    binding.tvSeasonCount.visibility = android.view.View.GONE
+                    binding.tvSeasonCount.visibility = View.GONE
                 }
 
+                // Episode count
                 val totalEpisodes = tvShow.numberOfEpisodes ?: 0
                 if (totalEpisodes > 0) {
                     binding.tvTotalEpisodes.text = totalEpisodes.toString()
-                    binding.tvTotalEpisodes.visibility = android.view.View.VISIBLE
+                    binding.tvTotalEpisodes.visibility = View.VISIBLE
                 } else {
-                    binding.tvTotalEpisodes.visibility = android.view.View.GONE
+                    binding.tvTotalEpisodes.visibility = View.GONE
                 }
+                
+                // Additional info
+                binding.tvFirstAirDate.text = formatDate(tvShow.firstAirDate)
+                binding.tvLastAirDate.text = formatDate(tvShow.lastAirDate)
+                
+                // Episode runtime
+                val episodeRuntime = tvShow.episodeRunTime?.firstOrNull()
+                binding.tvEpisodeRuntime.text = if (episodeRuntime != null) "~$episodeRuntime хв" else "—"
+                
+                // Status with color
+                binding.tvStatus.text = translateStatus(tvShow.status)
+                binding.tvStatus.setTextColor(getStatusColor(tvShow.status))
+                
+                // Vote count
+                binding.tvVoteCount.text = NumberFormat.getNumberInstance(Locale.US).format(tvShow.voteCount)
+                
+                // Genres chips
+                setupGenreChips(tvShow.genres)
+
+                // Animation for content
+                animateContentAppearance()
 
                 // Initial calculation from API (fallback)
                 updateTotalWatchTime(tvShow, viewModel.watchedItem.value)
@@ -304,9 +399,9 @@ class TvDetailsActivity : AppCompatActivity() {
                 updateTotalWatchTime(tvShow, watchedItem)
                 
                 if (watchedItem != null) {
-                    binding.fabAdd.text = getString(R.string.edit_watched_data)
+                    binding.fabAdd.text = getString(R.string.edit_progress)
                 } else {
-                    binding.fabAdd.text = getString(R.string.add_to_watched)
+                    binding.fabAdd.text = getString(R.string.track_progress)
                 }
             }
         }
@@ -319,7 +414,7 @@ class TvDetailsActivity : AppCompatActivity() {
             val formattedTime = Utils.formatMinutesToHoursAndMinutes(watchedItem.runtime)
             
             binding.tvTotalWatchTime.text = formattedTime
-            binding.tvTotalWatchTime.visibility = android.view.View.VISIBLE
+            binding.tvTotalWatchTime.visibility = View.VISIBLE
             
             // Анімація оновлення тексту
             binding.tvTotalWatchTime.apply {
@@ -331,7 +426,7 @@ class TvDetailsActivity : AppCompatActivity() {
                     .scaleX(1f)
                     .scaleY(1f)
                     .setDuration(420)
-                    .setInterpolator(android.view.animation.OvershootInterpolator(0.8f))
+                    .setInterpolator(OvershootInterpolator(0.8f))
                     .start()
             }
             
@@ -343,7 +438,7 @@ class TvDetailsActivity : AppCompatActivity() {
         val fallbackTime = Utils.formatMinutesToHoursAndMinutes(fallbackRuntimeInfo.totalMinutes)
 
         binding.tvTotalWatchTime.text = fallbackTime
-        binding.tvTotalWatchTime.visibility = android.view.View.VISIBLE
+        binding.tvTotalWatchTime.visibility = View.VISIBLE
         
         // Плавна анімація появи
         binding.tvTotalWatchTime.apply {
@@ -355,12 +450,91 @@ class TvDetailsActivity : AppCompatActivity() {
                 .scaleX(1f)
                 .scaleY(1f)
                 .setDuration(420)
-                .setInterpolator(android.view.animation.OvershootInterpolator(0.8f))
+                .setInterpolator(OvershootInterpolator(0.8f))
                 .start()
         }
 
         // Показуємо лише час без додаткових статусів чи уточнень
         // (залишаємо базове форматування з updateTotalWatchTime)
+    }
+    
+    private fun formatDate(dateString: String?): String {
+        if (dateString.isNullOrEmpty()) return "—"
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            val outputFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            val date = inputFormat.parse(dateString)
+            date?.let { outputFormat.format(it) } ?: dateString
+        } catch (e: Exception) {
+            dateString
+        }
+    }
+    
+    private fun translateStatus(status: String?): String {
+        return when (status) {
+            "Returning Series" -> getString(R.string.status_returning)
+            "Ended" -> getString(R.string.status_ended)
+            "Canceled" -> getString(R.string.status_canceled)
+            "In Production" -> getString(R.string.status_in_production)
+            "Planned" -> getString(R.string.status_planned)
+            "Pilot" -> getString(R.string.status_pilot)
+            else -> status ?: "—"
+        }
+    }
+    
+    private fun getStatusColor(status: String?): Int {
+        return when (status) {
+            "Returning Series" -> 0xFF22C55E.toInt() // Green
+            "Ended" -> 0xFF60A5FA.toInt() // Blue
+            "Canceled" -> 0xFFEF4444.toInt() // Red
+            "In Production" -> 0xFFFBBF24.toInt() // Yellow
+            else -> 0xFFFFFFFF.toInt() // White
+        }
+    }
+    
+    private fun setupGenreChips(genres: List<com.example.movietime.data.model.Genre>?) {
+        binding.chipGroupGenres.removeAllViews()
+        genres?.take(4)?.forEach { genre ->
+            val chip = Chip(this).apply {
+                text = genre.name
+                isClickable = false
+                setChipBackgroundColorResource(android.R.color.transparent)
+                setChipStrokeColorResource(R.color.chip_stroke_color)
+                chipStrokeWidth = 1.5f * resources.displayMetrics.density
+                setTextColor(resources.getColor(R.color.chip_text_color, theme))
+                textSize = 12f
+                chipMinHeight = 32f * resources.displayMetrics.density
+            }
+            binding.chipGroupGenres.addView(chip)
+        }
+    }
+    
+    private fun animateContentAppearance() {
+        // Animate floating card
+        binding.cardFloatingInfo.apply {
+            alpha = 0f
+            translationY = 50f
+            animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(500)
+                .setInterpolator(DecelerateInterpolator())
+                .setStartDelay(100)
+                .start()
+        }
+        
+        // Animate overview section
+        binding.tvOverview.apply {
+            alpha = 0f
+            translationY = 30f
+            animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(400)
+                .setInterpolator(DecelerateInterpolator())
+                .setStartDelay(200)
+                .start()
+        }
     }
     
     private fun animateEntranceElements() {

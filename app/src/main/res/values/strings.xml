@@ -98,6 +98,28 @@
     <string name="watching_tv_shows_count">Дивлюсь серіали: %d</string>
     <string name="your_watching_content">Контент, який ви зараз дивитесь</string>
 
+    <!-- Advanced Search / Filters -->
+    <string name="advanced_filters">Розширені фільтри</string>
+    <string name="genres">Жанри</string>
+    <string name="genres_not_selected">Жанри не вибрані</string>
+    <string name="actor_or_director">Актор або режисер</string>
+    <string name="search_person_hint">Введіть ім\'я актора або режисера</string>
+    <string name="role_any">Будь-яка роль</string>
+    <string name="role_actor">Актор</string>
+    <string name="role_director">Режисер</string>
+    <string name="role_writer">Сценарист</string>
+    <string name="role_producer">Продюсер</string>
+    <string name="year">Рік</string>
+    <string name="any_year">Будь-який рік</string>
+    <string name="sort_by">Сортування</string>
+    <string name="apply">Застосувати</string>
+    <string name="reset">Скинути</string>
+    <string name="close">Закрити</string>
+    <string name="clear_selection">Очистити вибір</string>
+    <string name="person_photo">Фото людини</string>
+    <string name="active_filters">Активні фільтри: %d</string>
+    <string name="discover_by_filters">Пошук за фільтрами</string>
+    <string name="no_filters_selected">Фільтри не вибрані</string>
 
     <!-- Settings -->
     <string name="settings_title">Екран налаштувань</string>
@@ -228,12 +250,26 @@
 
     <!-- TV Show Status -->
     <string name="status_ongoing"> • Серіал виходить</string>
-    <string name="status_ended"> • Завершено</string>
-    <string name="status_canceled"> • Скасовано</string>
+    <string name="status_ended">Завершено</string>
+    <string name="status_canceled">Скасовано</string>
+    <string name="status_returning">Серіал виходить</string>
+    <string name="status_in_production">У виробництві</string>
+    <string name="status_planned">Заплановано</string>
+    <string name="status_pilot">Пілот</string>
+    <string name="present">...</string>
+    <string name="rate_coming_soon">Оцінювання скоро</string>
     <string name="time_with_status">%1$s%2$s</string>
     <string name="precision_with_api">(з API: %d епізодів)</string>
     <string name="precision_calculated">(розрахунок)</string>
     <string name="time_with_precision">%1$s %2$s</string>
+
+    <!-- TV Details -->
+    <string name="seasons">Сезонів</string>
+    <string name="episodes">Епізодів</string>
+    <string name="first_air_date">Перша серія</string>
+    <string name="last_air_date">Остання серія</string>
+    <string name="episode_runtime">Тривалість серії</string>
+    <string name="status">Статус</string>
 
     <!-- Calendar -->
     <string name="previous_month">Попередній місяць</string>
@@ -334,6 +370,30 @@
     
     <!-- Stats -->
     <string name="watched_count_format">%d переглянуто</string>
+    
+    <!-- TV Show Progress Tracking -->
+    <string name="select_episodes">Вибір епізодів</string>
+    <string name="select_all">Вибрати все</string>
+    <string name="select_all_episodes">Вибрати всі епізоди</string>
+    <string name="deselect_all">Скасувати вибір</string>
+    <string name="season_format">Сезон %d</string>
+    <string name="specials">Спеціальні випуски</string>
+    <string name="episode_format">Е%d</string>
+    <string name="episode_full_format">Епізод %d</string>
+    <string name="season_progress_format">%d/%d переглянуто • %s</string>
+    <string name="total_episodes_format">%d епізодів</string>
+    <string name="watched_episodes_format">%d/%d переглянуто</string>
+    <string name="episode_runtime_format">%d хв</string>
+    <string name="save">Зберегти</string>
+    <string name="no_seasons_available">Сезони недоступні</string>
+    <string name="loading_seasons">Завантаження сезонів…</string>
+    <string name="error_loading_seasons">Помилка завантаження сезонів</string>
+    <string name="all_episodes_selected">Всі епізоди вибрано</string>
+    <string name="no_episodes_selected">Епізоди не вибрано</string>
+    <string name="progress_saved">Прогрес збережено</string>
+    <string name="unknown_episode">Невідомий епізод</string>
+    <string name="track_progress">Відстежити прогрес</string>
+    <string name="edit_progress">Редагувати прогрес</string>
     
     <!-- Details Screen -->
     <string name="user_score">Оцінка</string>

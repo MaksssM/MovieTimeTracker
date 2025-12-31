@@ -6,8 +6,8 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
-    entities = [WatchedItem::class, PlannedItem::class, WatchingItem::class, SearchHistoryItem::class],
-    version = 9,
+    entities = [WatchedItem::class, PlannedItem::class, WatchingItem::class, SearchHistoryItem::class, TvShowProgress::class],
+    version = 10,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -16,6 +16,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun plannedItemDao(): PlannedDao
     abstract fun watchingItemDao(): WatchingDao
     abstract fun searchHistoryDao(): SearchHistoryDao
+    abstract fun tvShowProgressDao(): TvShowProgressDao
 
 
     companion object {
@@ -115,6 +116,24 @@ abstract class AppDatabase : RoomDatabase() {
                         `voteAverage` REAL,
                         `timestamp` INTEGER NOT NULL DEFAULT ${System.currentTimeMillis()},
                         PRIMARY KEY(`id`,`mediaType`)
+                    )"""
+                )
+            }
+        }
+        
+        val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create TV show progress table for tracking individual episodes
+                database.execSQL(
+                    """CREATE TABLE IF NOT EXISTS `tv_show_progress` (
+                        `tvShowId` INTEGER NOT NULL, 
+                        `seasonNumber` INTEGER NOT NULL, 
+                        `episodeNumber` INTEGER NOT NULL, 
+                        `episodeName` TEXT,
+                        `episodeRuntime` INTEGER,
+                        `watched` INTEGER NOT NULL DEFAULT 0,
+                        `watchedAt` INTEGER,
+                        PRIMARY KEY(`tvShowId`, `seasonNumber`, `episodeNumber`)
                     )"""
                 )
             }

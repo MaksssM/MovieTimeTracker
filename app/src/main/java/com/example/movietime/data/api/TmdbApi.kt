@@ -6,6 +6,12 @@ import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.model.TvSeasonDetails
 import com.example.movietime.data.model.TvEpisodeDetails
+import com.example.movietime.data.model.GenresResponse
+import com.example.movietime.data.model.PersonSearchResponse
+import com.example.movietime.data.model.PersonDetails
+import com.example.movietime.data.model.PersonMovieCredits
+import com.example.movietime.data.model.PersonTvCredits
+import com.example.movietime.data.model.CreditsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -121,4 +127,110 @@ interface TmdbApi {
         @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1
     ): TvShowsResponse
+
+    // ============ GENRES ============
+
+    @GET("genre/movie/list")
+    suspend fun getMovieGenres(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "uk-UA"
+    ): GenresResponse
+
+    @GET("genre/tv/list")
+    suspend fun getTvGenres(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "uk-UA"
+    ): GenresResponse
+
+    // ============ DISCOVER (Advanced Filtering) ============
+
+    @GET("discover/movie")
+    suspend fun discoverMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "uk-UA",
+        @Query("page") page: Int = 1,
+        @Query("sort_by") sortBy: String = "popularity.desc",
+        @Query("with_genres") withGenres: String? = null,
+        @Query("with_cast") withCast: String? = null,
+        @Query("with_crew") withCrew: String? = null,
+        @Query("with_people") withPeople: String? = null,
+        @Query("vote_average.gte") voteAverageGte: Float? = null,
+        @Query("vote_average.lte") voteAverageLte: Float? = null,
+        @Query("primary_release_date.gte") releaseDateGte: String? = null,
+        @Query("primary_release_date.lte") releaseDateLte: String? = null,
+        @Query("with_original_language") withOriginalLanguage: String? = null,
+        @Query("year") year: Int? = null
+    ): MoviesResponse
+
+    @GET("discover/tv")
+    suspend fun discoverTvShows(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "uk-UA",
+        @Query("page") page: Int = 1,
+        @Query("sort_by") sortBy: String = "popularity.desc",
+        @Query("with_genres") withGenres: String? = null,
+        @Query("with_cast") withCast: String? = null,
+        @Query("with_crew") withCrew: String? = null,
+        @Query("vote_average.gte") voteAverageGte: Float? = null,
+        @Query("vote_average.lte") voteAverageLte: Float? = null,
+        @Query("first_air_date.gte") firstAirDateGte: String? = null,
+        @Query("first_air_date.lte") firstAirDateLte: String? = null,
+        @Query("with_original_language") withOriginalLanguage: String? = null
+    ): TvShowsResponse
+
+    // ============ PEOPLE SEARCH ============
+
+    @GET("search/person")
+    suspend fun searchPeople(
+        @Query("api_key") apiKey: String,
+        @Query("query") query: String,
+        @Query("language") language: String = "uk-UA",
+        @Query("page") page: Int = 1
+    ): PersonSearchResponse
+
+    @GET("person/{person_id}")
+    suspend fun getPersonDetails(
+        @Path("person_id") personId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "uk-UA"
+    ): PersonDetails
+
+    @GET("person/{person_id}/movie_credits")
+    suspend fun getPersonMovieCredits(
+        @Path("person_id") personId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "uk-UA"
+    ): PersonMovieCredits
+
+    @GET("person/{person_id}/tv_credits")
+    suspend fun getPersonTvCredits(
+        @Path("person_id") personId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "uk-UA"
+    ): PersonTvCredits
+
+    // ============ MOVIE/TV CREDITS ============
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "uk-UA"
+    ): CreditsResponse
+
+    @GET("tv/{tv_id}/credits")
+    suspend fun getTvCredits(
+        @Path("tv_id") tvId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "uk-UA"
+    ): CreditsResponse
+
+    // ============ POPULAR PEOPLE ============
+
+    @GET("person/popular")
+    suspend fun getPopularPeople(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "uk-UA",
+        @Query("page") page: Int = 1
+    ): PersonSearchResponse
 }

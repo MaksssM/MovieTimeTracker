@@ -604,4 +604,250 @@ class AppRepository @Inject constructor(
             emptyList()
         }
     }
+
+    // ============ ADVANCED SEARCH / DISCOVER ============
+
+    suspend fun getMovieGenres(language: String = "uk-UA"): List<com.example.movietime.data.model.Genre> {
+        return try {
+            val response = api.getMovieGenres(apiKey, language)
+            d("getMovieGenres success: ${response.genres.size} genres")
+            response.genres
+        } catch (e: Exception) {
+            e("getMovieGenres failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun getTvGenres(language: String = "uk-UA"): List<com.example.movietime.data.model.Genre> {
+        return try {
+            val response = api.getTvGenres(apiKey, language)
+            d("getTvGenres success: ${response.genres.size} genres")
+            response.genres
+        } catch (e: Exception) {
+            e("getTvGenres failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun getAllGenres(language: String = "uk-UA"): List<com.example.movietime.data.model.Genre> = coroutineScope {
+        val movieGenres = async { getMovieGenres(language) }
+        val tvGenres = async { getTvGenres(language) }
+        
+        val allGenres = (movieGenres.await() + tvGenres.await())
+            .distinctBy { it.id }
+            .sortedBy { it.name }
+        
+        d("getAllGenres: ${allGenres.size} unique genres")
+        allGenres
+    }
+
+    suspend fun searchPeople(query: String, language: String = "uk-UA"): List<com.example.movietime.data.model.Person> {
+        if (query.isBlank()) return emptyList()
+        return try {
+            val response = api.searchPeople(apiKey, query, language)
+            d("searchPeople success: ${response.results.size} results for '$query'")
+            response.results
+        } catch (e: Exception) {
+            e("searchPeople failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun getPopularPeople(language: String = "uk-UA"): List<com.example.movietime.data.model.Person> {
+        return try {
+            val response = api.getPopularPeople(apiKey, language)
+            d("getPopularPeople success: ${response.results.size} people")
+            response.results
+        } catch (e: Exception) {
+            e("getPopularPeople failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun getPersonDetails(personId: Int, language: String = "uk-UA"): com.example.movietime.data.model.PersonDetails? {
+        return try {
+            val result = api.getPersonDetails(personId, apiKey, language)
+            d("getPersonDetails success: ${result.name}")
+            result
+        } catch (e: Exception) {
+            e("getPersonDetails failed: ${e.message}", e)
+            null
+        }
+    }
+
+    suspend fun getMovieCredits(movieId: Int, language: String = "uk-UA"): com.example.movietime.data.model.CreditsResponse? {
+        return try {
+            val result = api.getMovieCredits(movieId, apiKey, language)
+            d("getMovieCredits success: ${result.cast.size} cast, ${result.crew.size} crew")
+            result
+        } catch (e: Exception) {
+            e("getMovieCredits failed: ${e.message}", e)
+            null
+        }
+    }
+
+    suspend fun getTvCredits(tvId: Int, language: String = "uk-UA"): com.example.movietime.data.model.CreditsResponse? {
+        return try {
+            val result = api.getTvCredits(tvId, apiKey, language)
+            d("getTvCredits success: ${result.cast.size} cast, ${result.crew.size} crew")
+            result
+        } catch (e: Exception) {
+            e("getTvCredits failed: ${e.message}", e)
+            null
+        }
+    }
+
+    suspend fun discoverMovies(
+        genreIds: List<Int>? = null,
+        personId: Int? = null,
+        personRole: com.example.movietime.data.model.PersonRole = com.example.movietime.data.model.PersonRole.ANY,
+        minRating: Float? = null,
+        maxRating: Float? = null,
+        year: Int? = null,
+        sortBy: String = "popularity.desc",
+        language: String = "uk-UA",
+        page: Int = 1
+    ): List<MovieResult> {
+        return try {
+            val genresStr = genreIds?.joinToString(",")
+            
+            // Determine person filter based on role
+            val withCast = when (personRole) {
+                com.example.movietime.data.model.PersonRole.ACTOR -> personId?.toString()
+                com.example.movietime.data.model.PersonRole.ANY -> personId?.toString()
+                else -> null
+            }
+            val withCrew = when (personRole) {
+                com.example.movietime.data.model.PersonRole.DIRECTOR,
+                com.example.movietime.data.model.PersonRole.WRITER,
+                com.example.movietime.data.model.PersonRole.PRODUCER -> personId?.toString()
+                com.example.movietime.data.model.PersonRole.ANY -> personId?.toString()
+                else -> null
+            }
+            
+            val response = api.discoverMovies(
+                apiKey = apiKey,
+                language = language,
+                page = page,
+                sortBy = sortBy,
+                withGenres = genresStr,
+                withCast = withCast,
+                withCrew = withCrew,
+                voteAverageGte = minRating,
+                voteAverageLte = maxRating,
+                year = year
+            )
+            
+            d("discoverMovies success: ${response.results.size} results (genres=$genresStr, person=$personId, role=$personRole)")
+            response.results
+        } catch (e: Exception) {
+            e("discoverMovies failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun discoverTvShows(
+        genreIds: List<Int>? = null,
+        personId: Int? = null,
+        minRating: Float? = null,
+        maxRating: Float? = null,
+        sortBy: String = "popularity.desc",
+        language: String = "uk-UA",
+        page: Int = 1
+    ): List<TvShowResult> {
+        return try {
+            val genresStr = genreIds?.joinToString(",")
+            val withCast = personId?.toString()
+            
+            val response = api.discoverTvShows(
+                apiKey = apiKey,
+                language = language,
+                page = page,
+                sortBy = sortBy,
+                withGenres = genresStr,
+                withCast = withCast,
+                voteAverageGte = minRating,
+                voteAverageLte = maxRating
+            )
+            
+            d("discoverTvShows success: ${response.results.size} results (genres=$genresStr, person=$personId)")
+            response.results
+        } catch (e: Exception) {
+            e("discoverTvShows failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun discoverByFilters(
+        mediaType: String, // "movie", "tv", or "all"
+        genreIds: List<Int>? = null,
+        personId: Int? = null,
+        personRole: com.example.movietime.data.model.PersonRole = com.example.movietime.data.model.PersonRole.ANY,
+        minRating: Float? = null,
+        maxRating: Float? = null,
+        year: Int? = null,
+        sortBy: String = "popularity.desc",
+        language: String = "uk-UA"
+    ): List<Any> = coroutineScope {
+        val results = mutableListOf<Any>()
+        
+        when (mediaType) {
+            "movie" -> {
+                results.addAll(discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, sortBy, language))
+            }
+            "tv" -> {
+                results.addAll(discoverTvShows(genreIds, personId, minRating, maxRating, sortBy, language))
+            }
+            else -> { // "all"
+                val movies = async { discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, sortBy, language) }
+                val tvShows = async { discoverTvShows(genreIds, personId, minRating, maxRating, sortBy, language) }
+                
+                results.addAll(movies.await())
+                results.addAll(tvShows.await())
+                
+                // Sort combined results by the same criteria
+                when {
+                    sortBy.contains("popularity") -> results.sortByDescending {
+                        when (it) {
+                            is MovieResult -> it.popularity
+                            is TvShowResult -> it.popularity
+                            else -> 0f
+                        }
+                    }
+                    sortBy.contains("vote_average") -> results.sortByDescending {
+                        when (it) {
+                            is MovieResult -> it.voteAverage
+                            is TvShowResult -> it.voteAverage
+                            else -> 0f
+                        }
+                    }
+                }
+            }
+        }
+        
+        d("discoverByFilters: ${results.size} total results for mediaType=$mediaType")
+        results
+    }
+
+    suspend fun getPersonMovieCredits(personId: Int, language: String = "uk-UA"): com.example.movietime.data.model.PersonMovieCredits? {
+        return try {
+            val result = api.getPersonMovieCredits(personId, apiKey, language)
+            d("getPersonMovieCredits success: ${result.cast.size} cast, ${result.crew.size} crew")
+            result
+        } catch (e: Exception) {
+            e("getPersonMovieCredits failed: ${e.message}", e)
+            null
+        }
+    }
+
+    suspend fun getPersonTvCredits(personId: Int, language: String = "uk-UA"): com.example.movietime.data.model.PersonTvCredits? {
+        return try {
+            val result = api.getPersonTvCredits(personId, apiKey, language)
+            d("getPersonTvCredits success: ${result.cast.size} cast, ${result.crew.size} crew")
+            result
+        } catch (e: Exception) {
+            e("getPersonTvCredits failed: ${e.message}", e)
+            null
+        }
+    }
 }

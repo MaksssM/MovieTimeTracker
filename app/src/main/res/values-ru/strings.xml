@@ -256,12 +256,26 @@
 
     <!-- Status and time precision strings -->
     <string name="status_ongoing"> • Сериал выходит</string>
-    <string name="status_ended"> • Завершено</string>
-    <string name="status_canceled"> • Отменено</string>
+    <string name="status_ended">Завершено</string>
+    <string name="status_canceled">Отменено</string>
+    <string name="status_returning">Сериал выходит</string>
+    <string name="status_in_production">В производстве</string>
+    <string name="status_planned">Запланировано</string>
+    <string name="status_pilot">Пилот</string>
+    <string name="present">...</string>
+    <string name="rate_coming_soon">Оценка скоро</string>
     <string name="time_with_status">%1$s%2$s</string>
     <string name="precision_with_api">(из API: %d эпизодов)</string>
     <string name="precision_calculated">(расчёт)</string>
     <string name="time_with_precision">%1$s %2$s</string>
+
+    <!-- TV Details -->
+    <string name="seasons">Сезонов</string>
+    <string name="episodes">Эпизодов</string>
+    <string name="first_air_date">Первая серия</string>
+    <string name="last_air_date">Последняя серия</string>
+    <string name="episode_runtime">Длительность серии</string>
+    <string name="status">Статус</string>
 
     <!-- Calendar navigation -->
     <string name="previous_month">Предыдущий месяц</string>
