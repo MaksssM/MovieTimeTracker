@@ -101,6 +101,29 @@
     <string name="watching_tv_shows_count">Watching TV Shows: %d</string>
     <string name="your_watching_content">Currently Watching</string>
 
+    <!-- Advanced Search / Filters -->
+    <string name="advanced_filters">Advanced Filters</string>
+    <string name="genres">Genres</string>
+    <string name="genres_not_selected">No genres selected</string>
+    <string name="actor_or_director">Actor or Director</string>
+    <string name="search_person_hint">Enter actor or director name</string>
+    <string name="role_any">Any role</string>
+    <string name="role_actor">Actor</string>
+    <string name="role_director">Director</string>
+    <string name="role_writer">Writer</string>
+    <string name="role_producer">Producer</string>
+    <string name="year">Year</string>
+    <string name="any_year">Any year</string>
+    <string name="sort_by">Sort by</string>
+    <string name="apply">Apply</string>
+    <string name="reset">Reset</string>
+    <string name="close">Close</string>
+    <string name="clear_selection">Clear selection</string>
+    <string name="person_photo">Person photo</string>
+    <string name="active_filters">Active filters: %d</string>
+    <string name="discover_by_filters">Search by filters</string>
+    <string name="no_filters_selected">No filters selected</string>
+
     <!-- Settings -->
     <string name="settings_title">Settings</string>
     <string name="theme_title">App Theme</string>
@@ -348,6 +371,37 @@
     
     <!-- Stats -->
     <string name="watched_count_format">%d watched</string>
+    
+    <!-- Episode Progress -->
+    <string name="select_episodes">Select Episodes</string>
+    <string name="select_all">Select All</string>
+    <string name="select_all_episodes">Select All Episodes</string>
+    <string name="deselect_all">Deselect All</string>
+    <string name="season_format">Season %d</string>
+    <string name="specials">Specials</string>
+    <string name="episode_format">E%d</string>
+    <string name="episode_full_format">Episode %d</string>
+    <string name="season_progress_format">%d/%d watched • %s</string>
+    <string name="total_episodes_format">%d episodes</string>
+    <string name="watched_episodes_format">%d/%d watched</string>
+    <string name="episode_runtime_format">%d min</string>
+    <string name="save">Save</string>
+    <string name="save_progress">Save Progress</string>
+    <string name="no_seasons_available">Seasons unavailable</string>
+    <string name="loading_seasons">Loading seasons…</string>
+    <string name="error_loading_seasons">Error loading seasons</string>
+    <string name="all_episodes_selected">All episodes selected</string>
+    <string name="no_episodes_selected">No episodes selected</string>
+    <string name="progress_saved">Progress saved</string>
+    <string name="unknown_episode">Unknown episode</string>
+    <string name="track_progress">Track Progress</string>
+    <string name="edit_progress">Edit Progress</string>
+    <string name="remaining">Remaining</string>
+    <string name="time_spent">Time</string>
+    <string name="retry">Retry</string>
+    <string name="selected_episodes_count">Selected %d of %d episodes</string>
+    <string name="total_runtime_format">~%s total</string>
+    <string name="seasons_episodes_format">%d seasons • %d episodes</string>
     
     <!-- Details Screen -->
     <string name="user_score">User Score</string>

@@ -136,7 +136,7 @@ class TvDetailsActivity : AppCompatActivity() {
         // Planned button
         binding.btnPlanned.setOnClickListener {
             val tvShow = currentTvShow ?: return@setOnClickListener
-            Toast.makeText(this, getString(R.string.added_to_planned), Toast.LENGTH_SHORT).show()
+            addToPlanned(tvShow)
         }
         
         // Watched button
@@ -147,7 +147,7 @@ class TvDetailsActivity : AppCompatActivity() {
         // Watching button
         binding.btnWatching.setOnClickListener {
             val tvShow = currentTvShow ?: return@setOnClickListener
-            Toast.makeText(this, getString(R.string.added_to_watching), Toast.LENGTH_SHORT).show()
+            addToWatching(tvShow)
         }
         
         // Rate button
@@ -160,6 +160,84 @@ class TvDetailsActivity : AppCompatActivity() {
             val tvShow = currentTvShow ?: return@setOnClickListener
             shareTvShow(tvShow)
         }
+    }
+    
+    private fun addToPlanned(tvShow: TvShowResult) {
+        viewModel.isItemPlanned(tvShow.id) { exists ->
+            if (exists) {
+                runOnUiThread {
+                    Toast.makeText(this, getString(R.string.already_planned), Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                val runtimeInfo = Utils.autoComputeTvShowRuntime(tvShow)
+                val plannedItem = WatchedItem(
+                    id = tvShow.id,
+                    title = tvShow.name ?: "",
+                    posterPath = tvShow.posterPath,
+                    releaseDate = tvShow.firstAirDate,
+                    runtime = runtimeInfo.totalMinutes,
+                    mediaType = "tv",
+                    overview = tvShow.overview,
+                    voteAverage = tvShow.voteAverage.toDouble(),
+                    episodeRuntime = runtimeInfo.episodeRuntime,
+                    totalEpisodes = runtimeInfo.episodes,
+                    isOngoing = runtimeInfo.isOngoing
+                )
+                
+                viewModel.addToPlanned(plannedItem) { success ->
+                    runOnUiThread {
+                        if (success) {
+                            disableButton(binding.btnPlanned)
+                            Toast.makeText(this, getString(R.string.added_to_planned), Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private fun addToWatching(tvShow: TvShowResult) {
+        viewModel.isItemWatching(tvShow.id) { exists ->
+            if (exists) {
+                runOnUiThread {
+                    Toast.makeText(this, getString(R.string.already_watching), Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                val runtimeInfo = Utils.autoComputeTvShowRuntime(tvShow)
+                val watchingItem = WatchedItem(
+                    id = tvShow.id,
+                    title = tvShow.name ?: "",
+                    posterPath = tvShow.posterPath,
+                    releaseDate = tvShow.firstAirDate,
+                    runtime = runtimeInfo.totalMinutes,
+                    mediaType = "tv",
+                    overview = tvShow.overview,
+                    voteAverage = tvShow.voteAverage.toDouble(),
+                    episodeRuntime = runtimeInfo.episodeRuntime,
+                    totalEpisodes = runtimeInfo.episodes,
+                    isOngoing = runtimeInfo.isOngoing
+                )
+                
+                viewModel.addToWatching(watchingItem) { success ->
+                    runOnUiThread {
+                        if (success) {
+                            disableButton(binding.btnWatching)
+                            Toast.makeText(this, getString(R.string.added_to_watching), Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private fun disableButton(view: View) {
+        view.alpha = 0.5f
+        view.isClickable = false
+        view.isFocusable = false
     }
     
     private fun shareTvShow(tvShow: TvShowResult) {

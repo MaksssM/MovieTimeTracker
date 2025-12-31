@@ -95,4 +95,64 @@ class TvDetailsViewModel @Inject constructor(
             }
         }
     }
+    
+    // Check if item exists in planned list
+    fun isItemPlanned(id: Int, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val found = repository.getPlannedItemById(id, "tv")
+                callback(found != null)
+            } catch (e: Exception) {
+                callback(false)
+            }
+        }
+    }
+    
+    // Add item to planned list
+    fun addToPlanned(item: WatchedItem, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                repository.addToPlanned(item)
+                android.util.Log.d("TvDetailsViewModel", "Successfully added to planned: ${item.id}")
+                callback(true)
+            } catch (e: Exception) {
+                android.util.Log.e("TvDetailsViewModel", "Failed to add to planned: ${e.message}", e)
+                callback(false)
+            }
+        }
+    }
+    
+    // Check if item exists in watching list
+    fun isItemWatching(id: Int, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val found = repository.getWatchingItemById(id, "tv")
+                callback(found != null)
+            } catch (e: Exception) {
+                callback(false)
+            }
+        }
+    }
+    
+    // Add item to watching list and remove from Planned
+    fun addToWatching(item: WatchedItem, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                // Remove from Planned if exists
+                try {
+                    repository.removeFromPlanned(item.id, item.mediaType)
+                    android.util.Log.d("TvDetailsViewModel", "Removed from planned before adding to watching: ${item.id}")
+                } catch (e: Exception) {
+                    // Ignore if not in planned
+                }
+                
+                repository.addToWatching(item)
+                android.util.Log.d("TvDetailsViewModel", "Successfully added to watching: ${item.id}")
+                callback(true)
+            } catch (e: Exception) {
+                android.util.Log.e("TvDetailsViewModel", "Failed to add to watching: ${e.message}", e)
+                callback(false)
+            }
+        }
+    }
 }
