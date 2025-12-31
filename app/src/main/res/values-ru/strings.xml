@@ -100,6 +100,30 @@
     <string name="watching_tv_shows_count">Смотрю сериалы: %d</string>
     <string name="your_watching_content">Контент, который вы сейчас смотрите</string>
 
+    <!-- Advanced Search / Filters -->
+    <string name="advanced_filters">Расширенные фильтры</string>
+    <string name="genres">Жанры</string>
+    <string name="genres_not_selected">Жанры не выбраны</string>
+    <string name="actor_or_director">Актёр или режиссёр</string>
+    <string name="search_person_hint">Введите имя актёра или режиссёра</string>
+    <string name="role_any">Любая роль</string>
+    <string name="role_actor">Актёр</string>
+    <string name="role_director">Режиссёр</string>
+    <string name="role_writer">Сценарист</string>
+    <string name="role_producer">Продюсер</string>
+    <string name="year">Год</string>
+    <string name="any_year">Любой год</string>
+    <string name="sort_by">Сортировка</string>
+    <string name="apply">Применить</string>
+    <string name="reset">Сбросить</string>
+    <string name="close">Закрыть</string>
+    <string name="clear_selection">Очистить выбор</string>
+    <string name="person_photo">Фото человека</string>
+    <string name="active_filters">Активные фильтры: %d</string>
+    <string name="discover_by_filters">Поиск по фильтрам</string>
+    <string name="no_filters_selected">Фильтры не выбраны</string>
+    <string name="tv_show">Сериал</string>
+
     <!-- Settings -->
     <string name="settings_title">Экран настроек</string>
     <string name="theme_title">Тема приложения</string>
@@ -347,6 +371,37 @@
     
     <!-- Stats -->
     <string name="watched_count_format">%d просмотрено</string>
+    
+    <!-- Episode Progress -->
+    <string name="select_episodes">Выбор эпизодов</string>
+    <string name="select_all">Выбрать всё</string>
+    <string name="select_all_episodes">Выбрать все эпизоды</string>
+    <string name="deselect_all">Снять выбор</string>
+    <string name="season_format">Сезон %d</string>
+    <string name="specials">Спецвыпуски</string>
+    <string name="episode_format">Э%d</string>
+    <string name="episode_full_format">Эпизод %d</string>
+    <string name="season_progress_format">%d/%d просмотрено • %s</string>
+    <string name="total_episodes_format">%d эпизодов</string>
+    <string name="watched_episodes_format">%d/%d просмотрено</string>
+    <string name="episode_runtime_format">%d мин</string>
+    <string name="save">Сохранить</string>
+    <string name="save_progress">Сохранить прогресс</string>
+    <string name="no_seasons_available">Сезоны недоступны</string>
+    <string name="loading_seasons">Загрузка сезонов…</string>
+    <string name="error_loading_seasons">Ошибка загрузки сезонов</string>
+    <string name="all_episodes_selected">Все эпизоды выбраны</string>
+    <string name="no_episodes_selected">Эпизоды не выбраны</string>
+    <string name="progress_saved">Прогресс сохранён</string>
+    <string name="unknown_episode">Неизвестный эпизод</string>
+    <string name="track_progress">Отслеживать прогресс</string>
+    <string name="edit_progress">Редактировать прогресс</string>
+    <string name="remaining">Осталось</string>
+    <string name="time_spent">Время</string>
+    <string name="retry">Повторить</string>
+    <string name="selected_episodes_count">Выбрано %d из %d серий</string>
+    <string name="total_runtime_format">~%s всего</string>
+    <string name="seasons_episodes_format">%d сезонов • %d серий</string>
     
     <!-- Details Screen -->
     <string name="user_score">Оценка</string>
