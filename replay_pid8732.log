@@ -1,5 +1,0 @@
-JvmtiExport can_access_local_variables 0
-JvmtiExport can_hotswap_or_post_breakpoint 0
-JvmtiExport can_post_on_exceptions 0
-# 131 ciObject found
-instanceKlass org/gradle/internal/logging/text/AbstractLineChoppingStyledTextOutput
