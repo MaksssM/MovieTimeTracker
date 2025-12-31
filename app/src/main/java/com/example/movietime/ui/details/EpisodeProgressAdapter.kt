@@ -57,32 +57,56 @@ class EpisodeProgressAdapter(
                 cbEpisode.setOnCheckedChangeListener(null)
                 cbEpisode.isChecked = episode.isWatched
                 
-                // Watched indicator
-                ivWatched.visibility = if (episode.isWatched) View.VISIBLE else View.GONE
-                
-                // Text color based on watched state
-                val textColor = if (episode.isWatched) {
-                    root.context.getColor(R.color.success)
-                } else {
-                    root.context.getColor(android.R.color.white)
-                }
-                tvEpisodeName.setTextColor(textColor)
+                // Watched indicator with animation
+                updateWatchedState(episode.isWatched, false)
                 
                 // Click listeners
                 cbEpisode.setOnCheckedChangeListener { _, isChecked ->
                     episode.isWatched = isChecked
                     onEpisodeChecked(episode, isChecked)
-                    // Update UI immediately
-                    ivWatched.visibility = if (isChecked) View.VISIBLE else View.GONE
-                    tvEpisodeName.setTextColor(
-                        if (isChecked) root.context.getColor(R.color.success) 
-                        else root.context.getColor(android.R.color.white)
-                    )
+                    // Update UI with animation
+                    updateWatchedState(isChecked, true)
                 }
                 
                 root.setOnClickListener {
                     cbEpisode.isChecked = !cbEpisode.isChecked
                 }
+            }
+        }
+        
+        private fun updateWatchedState(isWatched: Boolean, animate: Boolean) {
+            binding.apply {
+                // Watched indicator animation
+                if (animate) {
+                    if (isWatched) {
+                        ivWatched.alpha = 0f
+                        ivWatched.scaleX = 0.5f
+                        ivWatched.scaleY = 0.5f
+                        ivWatched.animate()
+                            .alpha(1f)
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .setDuration(200)
+                            .start()
+                    } else {
+                        ivWatched.animate()
+                            .alpha(0f)
+                            .scaleX(0.5f)
+                            .scaleY(0.5f)
+                            .setDuration(150)
+                            .start()
+                    }
+                } else {
+                    ivWatched.alpha = if (isWatched) 1f else 0f
+                }
+                
+                // Text color based on watched state
+                val textColor = if (isWatched) {
+                    root.context.getColor(R.color.success)
+                } else {
+                    root.context.getColor(android.R.color.white)
+                }
+                tvEpisodeName.setTextColor(textColor)
             }
         }
     }

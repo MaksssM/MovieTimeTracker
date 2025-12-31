@@ -1,6 +1,7 @@
 package com.example.movietime.ui.details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.example.movietime.BuildConfig
 import com.example.movietime.R
 import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.data.db.TvShowProgress
@@ -54,7 +56,7 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
     companion object {
         private const val TAG = "TvProgressBottomSheet"
         private const val ARG_TV_SHOW_ID = "tv_show_id"
-        private const val API_KEY = "ed63a6a76ed6bb079c7d41bad3cbc342"
+        private val API_KEY = BuildConfig.TMDB_API_KEY
         
         fun newInstance(tvShowId: Int, onProgressSaved: ((Int) -> Unit)? = null): TvProgressBottomSheet {
             return TvProgressBottomSheet().apply {
@@ -124,8 +126,9 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
     }
     
     private fun setupClickListeners() {
-        // Select All / Deselect All
-        binding.cbSelectAll.setOnCheckedChangeListener { _, isChecked ->
+        // Select All / Deselect All - using Chip instead of CheckBox
+        binding.chipSelectAll.setOnClickListener {
+            val isChecked = binding.chipSelectAll.isChecked
             seasons.forEach { season ->
                 season.episodes.forEach { episode ->
                     episode.isWatched = isChecked
@@ -144,23 +147,34 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
         binding.btnSave.setOnClickListener {
             saveProgress()
         }
+        
+        // Retry button
+        binding.btnRetry.setOnClickListener {
+            loadTvShowData()
+        }
     }
     
     private fun loadTvShowData() {
         if (tvShowId == -1) {
+            Log.e(TAG, "Invalid tvShowId: $tvShowId")
             showError(getString(R.string.error_loading_data))
             return
         }
         
+        Log.d(TAG, "Loading TV show data for ID: $tvShowId")
         showLoading(true)
         
         lifecycleScope.launch {
             try {
                 // Load TV show details
                 val language = getContentLanguage()
+                Log.d(TAG, "Fetching TV show details with language: $language")
+                
                 tvShow = withContext(Dispatchers.IO) {
                     tmdbApi.getTvShowDetails(tvShowId, API_KEY, language)
                 }
+                
+                Log.d(TAG, "TV show loaded: ${tvShow?.name}, seasons: ${tvShow?.seasons?.size}")
                 
                 tvShow?.let { show ->
                     // Update UI with show info
@@ -170,6 +184,8 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                     val existingProgress = withContext(Dispatchers.IO) {
                         tvShowProgressDao.getProgressForShowSync(tvShowId)
                     }
+                    Log.d(TAG, "Existing progress: ${existingProgress.size} episodes")
+                    
                     val progressMap = existingProgress.associateBy { ep -> 
                         "${ep.seasonNumber}_${ep.episodeNumber}" 
                     }
@@ -180,23 +196,30 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                         (it.seasonNumber ?: -1) >= 0 
                     } ?: emptyList()
                     
+                    Log.d(TAG, "Loading ${seasonsList.size} seasons")
+                    
                     // Load all seasons in parallel
                     val seasonDetails = withContext(Dispatchers.IO) {
                         seasonsList.map { season ->
                             async {
                                 try {
+                                    val seasonNum = season.seasonNumber ?: 0
+                                    Log.d(TAG, "Fetching season $seasonNum")
                                     tmdbApi.getSeasonDetails(
                                         tvShowId, 
-                                        season.seasonNumber ?: 0, 
+                                        seasonNum, 
                                         API_KEY, 
                                         language
                                     )
                                 } catch (e: Exception) {
+                                    Log.e(TAG, "Error loading season ${season.seasonNumber}: ${e.message}", e)
                                     null
                                 }
                             }
                         }.awaitAll().filterNotNull()
                     }
+                    
+                    Log.d(TAG, "Successfully loaded ${seasonDetails.size} seasons")
                     
                     // Convert to UI models
                     seasons.clear()
@@ -228,6 +251,8 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                     // Sort: season 0 last if exists, then by number
                     seasons.sortWith(compareBy { if (it.seasonNumber == 0) Int.MAX_VALUE else it.seasonNumber })
                     
+                    Log.d(TAG, "Total episodes across all seasons: ${seasons.sumOf { it.totalCount }}")
+                    
                     // Update UI
                     withContext(Dispatchers.Main) {
                         seasonAdapter.submitList(seasons.toList())
@@ -236,12 +261,14 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                         showLoading(false)
                     }
                 } ?: run {
+                    Log.e(TAG, "TV show data is null")
                     showError(getString(R.string.error_loading_data))
                 }
                 
             } catch (e: Exception) {
+                Log.e(TAG, "Error loading TV show data: ${e.message}", e)
                 withContext(Dispatchers.Main) {
-                    showError(getString(R.string.error_loading_seasons))
+                    showError("${getString(R.string.error_loading_seasons)}\n${e.message}")
                 }
             }
         }
@@ -251,10 +278,16 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
         binding.apply {
             tvShowTitle.text = show.name ?: getString(R.string.no_title)
             
-            val totalEpisodes = seasons.sumOf { it.totalCount }
-            tvShowSubtitle.text = getString(R.string.total_episodes_format, 
-                show.numberOfEpisodes ?: totalEpisodes
-            )
+            // Show seasons and episodes count
+            val seasonsCount = show.seasons?.filter { (it.seasonNumber ?: 0) > 0 }?.size ?: 0
+            val episodesCount = show.numberOfEpisodes ?: 0
+            tvShowSubtitle.text = getString(R.string.seasons_episodes_format, seasonsCount, episodesCount)
+            
+            // Calculate total runtime estimate
+            val avgEpisodeRuntime = show.episodeRunTime?.firstOrNull() ?: 45
+            val totalMinutes = episodesCount * avgEpisodeRuntime
+            tvTotalRuntime.text = getString(R.string.total_runtime_format, 
+                Utils.formatMinutesToHoursAndMinutes(totalMinutes))
             
             val posterUrl = show.posterPath?.let { "https://image.tmdb.org/t/p/w200$it" }
             ivShowPoster.load(posterUrl) {
@@ -269,17 +302,18 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
         val totalEpisodes = seasons.sumOf { it.totalCount }
         val watchedEpisodes = seasons.sumOf { it.watchedCount }
         
-        binding.cbSelectAll.setOnCheckedChangeListener(null)
-        binding.cbSelectAll.isChecked = totalEpisodes > 0 && watchedEpisodes == totalEpisodes
-        binding.cbSelectAll.setOnCheckedChangeListener { _, isChecked ->
-            seasons.forEach { season ->
-                season.episodes.forEach { episode ->
-                    episode.isWatched = isChecked
-                }
-            }
-            seasonAdapter.notifyDataSetChanged()
-            updateTotalProgress()
-        }
+        // Update the chip state
+        binding.chipSelectAll.isChecked = totalEpisodes > 0 && watchedEpisodes == totalEpisodes
+        
+        // Update progress text
+        binding.tvTotalProgress.text = getString(R.string.selected_episodes_count, watchedEpisodes, totalEpisodes)
+        
+        // Update progress bar
+        val progressPercent = if (totalEpisodes > 0) (watchedEpisodes * 100 / totalEpisodes) else 0
+        binding.progressTotal.setProgressCompat(progressPercent, true)
+        
+        // Update stats row
+        updateStatsRow()
     }
     
     private fun updateTotalProgress() {
@@ -290,8 +324,31 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
         binding.tvShowSubtitle.text = if (watchedEpisodes > 0) {
             "${getString(R.string.watched_episodes_format, watchedEpisodes, totalEpisodes)} • ${Utils.formatMinutesToHoursAndMinutes(watchedRuntime)}"
         } else {
-            getString(R.string.total_episodes_format, totalEpisodes)
+            tvShow?.let { show ->
+                val seasonsCount = show.seasons?.size ?: 0
+                val episodesCount = show.numberOfEpisodes ?: totalEpisodes
+                getString(R.string.seasons_episodes_format, seasonsCount, episodesCount)
+            } ?: getString(R.string.total_episodes_format, totalEpisodes)
         }
+        
+        // Update select all state
+        updateSelectAllState()
+    }
+    
+    private fun updateStatsRow() {
+        val totalEpisodes = seasons.sumOf { it.totalCount }
+        val watchedEpisodes = seasons.sumOf { it.watchedCount }
+        val watchedRuntime = seasons.sumOf { it.watchedRuntime }
+        val remainingEpisodes = totalEpisodes - watchedEpisodes
+        
+        binding.statsRow.visibility = if (totalEpisodes > 0) View.VISIBLE else View.GONE
+        
+        binding.tvWatchedCount.text = watchedEpisodes.toString()
+        binding.tvRemainingCount.text = remainingEpisodes.toString()
+        
+        // Format time with hours
+        val hours = watchedRuntime / 60
+        binding.tvWatchedTime.text = if (hours > 0) "${hours}г" else "${watchedRuntime}хв"
     }
     
     private fun saveProgress() {
@@ -390,15 +447,18 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
     }
     
     private fun showLoading(loading: Boolean) {
-        binding.progressLoading.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.loadingContainer.visibility = if (loading) View.VISIBLE else View.GONE
         binding.rvSeasons.visibility = if (loading) View.GONE else View.VISIBLE
+        binding.errorContainer.visibility = View.GONE
         binding.btnSave.isEnabled = !loading
     }
     
     private fun showError(message: String) {
-        showLoading(false)
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-        dismiss()
+        binding.loadingContainer.visibility = View.GONE
+        binding.rvSeasons.visibility = View.GONE
+        binding.errorContainer.visibility = View.VISIBLE
+        binding.tvError.text = message
+        binding.btnSave.isEnabled = false
     }
     
     private fun getContentLanguage(): String {

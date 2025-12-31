@@ -385,6 +385,7 @@
     <string name="watched_episodes_format">%d/%d переглянуто</string>
     <string name="episode_runtime_format">%d хв</string>
     <string name="save">Зберегти</string>
+    <string name="save_progress">Зберегти прогрес</string>
     <string name="no_seasons_available">Сезони недоступні</string>
     <string name="loading_seasons">Завантаження сезонів…</string>
     <string name="error_loading_seasons">Помилка завантаження сезонів</string>
@@ -394,6 +395,12 @@
     <string name="unknown_episode">Невідомий епізод</string>
     <string name="track_progress">Відстежити прогрес</string>
     <string name="edit_progress">Редагувати прогрес</string>
+    <string name="remaining">Залишилось</string>
+    <string name="time_spent">Час</string>
+    <string name="retry">Повторити</string>
+    <string name="selected_episodes_count">Обрано %d з %d серій</string>
+    <string name="total_runtime_format">~%s загалом</string>
+    <string name="seasons_episodes_format">%d сезонів • %d серій</string>
     
     <!-- Details Screen -->
     <string name="user_score">Оцінка</string>

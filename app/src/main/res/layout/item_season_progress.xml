@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="4dp"
     android:layout_marginBottom="12dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
-    app:cardBackgroundColor="#12FFFFFF">
+    app:cardCornerRadius="20dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#1A1A2E">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,23 +22,36 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="16dp"
+            android:paddingVertical="16dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="16dp"
             android:background="?attr/selectableItemBackground">
 
-            <!-- Season Checkbox -->
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/cbSeason"
+            <!-- Season Checkbox with custom styling -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="#60A5FA"
-                app:useMaterialThemeColors="false" />
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#2560A5FA">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbSeason"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:buttonTint="#60A5FA"
+                    app:useMaterialThemeColors="false" />
+            </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginStart="8dp">
+                android:layout_marginStart="14dp">
 
                 <TextView
                     android:id="@+id/tvSeasonTitle"
@@ -46,39 +60,88 @@
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
                     tools:text="Сезон 1" />
 
-                <TextView
-                    android:id="@+id/tvSeasonInfo"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="12sp"
-                    tools:text="7 / 10 серій • 5 год 15 хв" />
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvSeasonInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="13sp"
+                        tools:text="7 / 10 серій" />
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        android:layout_marginHorizontal="8dp"
+                        android:background="@drawable/bg_dot" />
+
+                    <TextView
+                        android:id="@+id/tvSeasonTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#6022C55E"
+                        android:textSize="13sp"
+                        tools:text="5 год 15 хв" />
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- Progress indicator -->
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progressSeason"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                app:indicatorColor="#22C55E"
-                app:trackColor="#30FFFFFF"
-                app:trackThickness="4dp"
-                app:trackCornerRadius="2dp"
-                android:progress="70" />
+            <!-- Progress Ring -->
+            <FrameLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp">
 
-            <!-- Expand/Collapse Arrow -->
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progressSeason"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:indicatorColor="#22C55E"
+                    app:trackColor="#20FFFFFF"
+                    app:trackThickness="4dp"
+                    app:indicatorSize="48dp"
+                    android:progress="70" />
+
+                <TextView
+                    android:id="@+id/tvProgressPercent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="#22C55E"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    tools:text="70%" />
+            </FrameLayout>
+
+            <!-- Expand/Collapse Arrow with animation -->
             <ImageView
                 android:id="@+id/ivExpandArrow"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:padding="4dp"
                 android:src="@drawable/ic_expand_more"
-                app:tint="#80FFFFFF"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="#60FFFFFF"
                 android:contentDescription="@null" />
         </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="#10FFFFFF"
+            android:visibility="gone" />
 
         <!-- Episodes List - expandable -->
         <androidx.recyclerview.widget.RecyclerView
@@ -88,9 +151,11 @@
             android:visibility="gone"
             android:nestedScrollingEnabled="false"
             android:paddingHorizontal="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="12dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_episode_progress" />
+            tools:listitem="@layout/item_episode_progress"
+            tools:itemCount="3" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
