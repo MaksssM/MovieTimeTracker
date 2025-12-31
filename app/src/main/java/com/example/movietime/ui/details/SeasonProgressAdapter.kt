@@ -1,6 +1,5 @@
 package com.example.movietime.ui.details
 
-import android.animation.ValueAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,17 +61,16 @@ class SeasonProgressAdapter(
                     context.getString(R.string.season_format, season.seasonNumber)
                 }
                 
-                // Season info
-                val watchedTime = Utils.formatMinutesToHoursAndMinutes(season.watchedRuntime)
-                tvSeasonInfo.text = context.getString(
-                    R.string.season_progress_format,
-                    season.watchedCount,
-                    season.totalCount,
-                    watchedTime
-                )
+                // Season info - episodes count
+                tvSeasonInfo.text = "${season.watchedCount} / ${season.totalCount} серій"
                 
-                // Progress
-                progressSeason.progress = season.progressPercent
+                // Season time
+                val watchedTime = Utils.formatMinutesToHoursAndMinutes(season.watchedRuntime)
+                tvSeasonTime.text = watchedTime
+                
+                // Circular progress & percent text
+                progressSeason.setProgressCompat(season.progressPercent, false)
+                tvProgressPercent.text = "${season.progressPercent}%"
                 
                 // Checkbox state (without triggering listener)
                 cbSeason.setOnCheckedChangeListener(null)
@@ -80,6 +78,7 @@ class SeasonProgressAdapter(
                 
                 // Expand/collapse state
                 rvEpisodes.visibility = if (season.isExpanded) View.VISIBLE else View.GONE
+                divider.visibility = if (season.isExpanded) View.VISIBLE else View.GONE
                 ivExpandArrow.rotation = if (season.isExpanded) 180f else 0f
                 
                 // Setup episodes adapter
@@ -113,7 +112,9 @@ class SeasonProgressAdapter(
                         .setInterpolator(DecelerateInterpolator())
                         .start()
                     
-                    // Show/hide episodes
+                    // Show/hide divider and episodes
+                    divider.visibility = if (season.isExpanded) View.VISIBLE else View.GONE
+                    
                     if (season.isExpanded) {
                         rvEpisodes.visibility = View.VISIBLE
                         rvEpisodes.alpha = 0f
@@ -145,22 +146,13 @@ class SeasonProgressAdapter(
         }
 
         private fun updateSeasonInfo(season: SeasonUiModel) {
-            val context = binding.root.context
             val watchedTime = Utils.formatMinutesToHoursAndMinutes(season.watchedRuntime)
-            binding.tvSeasonInfo.text = context.getString(
-                R.string.season_progress_format,
-                season.watchedCount,
-                season.totalCount,
-                watchedTime
-            )
+            binding.tvSeasonInfo.text = "${season.watchedCount} / ${season.totalCount} серій"
+            binding.tvSeasonTime.text = watchedTime
+            binding.tvProgressPercent.text = "${season.progressPercent}%"
             
-            // Animate progress change
-            val animator = ValueAnimator.ofInt(binding.progressSeason.progress, season.progressPercent)
-            animator.duration = 300
-            animator.addUpdateListener { animation ->
-                binding.progressSeason.progress = animation.animatedValue as Int
-            }
-            animator.start()
+            // Animate circular progress change
+            binding.progressSeason.setProgressCompat(season.progressPercent, true)
         }
     }
 

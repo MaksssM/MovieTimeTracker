@@ -1,73 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:paddingVertical="10dp"
-    android:paddingHorizontal="8dp"
-    android:background="?attr/selectableItemBackground">
+    android:layout_marginVertical="4dp"
+    android:layout_marginHorizontal="4dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="#0CFFFFFF"
+    app:rippleColor="#20FFFFFF">
 
-    <!-- Episode Checkbox -->
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/cbEpisode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:buttonTint="#60A5FA"
-        app:useMaterialThemeColors="false" />
-
-    <!-- Episode Number Badge -->
-    <TextView
-        android:id="@+id/tvEpisodeNumber"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="4dp"
-        android:gravity="center"
-        android:background="@drawable/bg_episode_number"
-        android:textColor="#B0FFFFFF"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        tools:text="1" />
-
-    <!-- Episode Info -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_marginStart="12dp">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="16dp">
 
-        <TextView
-            android:id="@+id/tvEpisodeName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            tools:text="Pilot" />
+        <!-- Episode Checkbox -->
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbEpisode"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:buttonTint="#60A5FA"
+            app:useMaterialThemeColors="false" />
 
-        <TextView
-            android:id="@+id/tvEpisodeRuntime"
-            android:layout_width="wrap_content"
+        <!-- Episode Number Badge -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#1560A5FA">
+
+            <TextView
+                android:id="@+id/tvEpisodeNumber"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="#60A5FA"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="1" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Episode Info -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:textColor="#60FFFFFF"
-            android:textSize="12sp"
-            tools:text="58 хв" />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:id="@+id/tvEpisodeName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Pilot" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="3dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_time_small"
+                    app:tint="#60FFFFFF"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:id="@+id/tvEpisodeRuntime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textColor="#60FFFFFF"
+                    android:textSize="12sp"
+                    tools:text="58 хв" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Watched indicator with animation -->
+        <FrameLayout
+            android:layout_width="32dp"
+            android:layout_height="32dp">
+
+            <ImageView
+                android:id="@+id/ivWatched"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_check_circle"
+                app:tint="#22C55E"
+                android:alpha="0"
+                android:contentDescription="@null"
+                tools:alpha="1" />
+        </FrameLayout>
+
     </LinearLayout>
-
-    <!-- Watched indicator -->
-    <ImageView
-        android:id="@+id/ivWatched"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/ic_check_circle"
-        app:tint="#22C55E"
-        android:visibility="gone"
-        android:contentDescription="@null"
-        tools:visibility="visible" />
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
