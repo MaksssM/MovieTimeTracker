@@ -146,4 +146,5 @@
     <!-- Genre Chip Colors -->
     <color name="chip_genre_bg">#20FFFFFF</color>
     <color name="chip_genre_text">#E0E0E0</color>
+    <color name="chip_stroke_color">#40FFFFFF</color>
 </resources>

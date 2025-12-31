@@ -491,6 +491,7 @@
                                 android:id="@+id/progressRating"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
+                                android:layout_gravity="center"
                                 app:indicatorSize="48dp"
                                 app:trackThickness="4dp"
                                 app:indicatorColor="#FBBF24"
@@ -500,9 +501,9 @@
 
                             <TextView
                                 android:id="@+id/tvRatingPercent"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
                                 android:textColor="@android:color/white"
                                 android:textSize="12sp"
                                 android:textStyle="bold"

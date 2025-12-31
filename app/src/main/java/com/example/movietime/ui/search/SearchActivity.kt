@@ -34,6 +34,7 @@ class SearchActivity : AppCompatActivity() {
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var searchAdapter: SearchAdapter
     private var searchJob: Job? = null
+    private var advancedFiltersSheet: AdvancedFiltersBottomSheet? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,10 +49,12 @@ class SearchActivity : AppCompatActivity() {
         setupRecyclerView()
         setupSearch()
         setupFilters()
+        setupAdvancedFilters()
         observeViewModel()
 
-        // Завантажити збережені налаштування
+        // Завантажити збережені налаштування та жанри
         viewModel.loadFilterPreferences(this)
+        viewModel.loadGenres()
 
         // End icon (custom) click: clear query
         binding.tilSearch.setEndIconOnClickListener {
@@ -155,10 +158,41 @@ class SearchActivity : AppCompatActivity() {
 
         binding.btnResetFilters.setOnClickListener {
             viewModel.resetFilters()
+            viewModel.resetAdvancedFilters()
             binding.sliderMinRating.value = 0f
             binding.btnSortRating.isSelected = false
             binding.btnSortPopularity.isSelected = false
             Toast.makeText(this, getString(R.string.reset_filters), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setupAdvancedFilters() {
+        // Advanced filters button
+        binding.btnAdvancedFilters.setOnClickListener {
+            showAdvancedFiltersSheet()
+        }
+    }
+
+    private fun showAdvancedFiltersSheet() {
+        advancedFiltersSheet = AdvancedFiltersBottomSheet.newInstance().apply {
+            onApplyFilters = {
+                // Always use discover with filters - it handles both cases
+                viewModel.discoverWithFilters()
+                updateAdvancedFiltersButton()
+            }
+        }
+        advancedFiltersSheet?.show(supportFragmentManager, AdvancedFiltersBottomSheet.TAG)
+    }
+
+    private fun updateAdvancedFiltersButton() {
+        val count = viewModel.activeFiltersCount.value ?: 0
+        if (count > 0) {
+            binding.btnAdvancedFilters.text = getString(R.string.active_filters, count)
+            binding.tvAdvancedFiltersInfo.visibility = View.VISIBLE
+            binding.tvAdvancedFiltersInfo.text = viewModel.getActiveFiltersDescription()
+        } else {
+            binding.btnAdvancedFilters.text = getString(R.string.advanced_filters)
+            binding.tvAdvancedFiltersInfo.visibility = View.GONE
         }
     }
 
@@ -286,6 +320,11 @@ class SearchActivity : AppCompatActivity() {
         }
         viewModel.sortByPopularity.observe(this) { _ ->
             updateActiveFiltersLabel()
+        }
+        
+        // Advanced filters count observer
+        viewModel.activeFiltersCount.observe(this) { _ ->
+            updateAdvancedFiltersButton()
         }
     }
 

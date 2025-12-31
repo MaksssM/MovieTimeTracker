@@ -6,6 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
+import com.example.movietime.data.model.Genre
+import com.example.movietime.data.model.Person
+import com.example.movietime.data.model.PersonRole
+import com.example.movietime.data.model.SortOption
 import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.BuildConfig
@@ -67,6 +71,44 @@ class SearchViewModel @Inject constructor(
     private val _resultsLimit = MutableLiveData<Int>(50)
     @Suppress("unused")
     val resultsLimit: LiveData<Int> = _resultsLimit
+
+    // ============ ADVANCED FILTERS ============
+    
+    // Genres
+    private val _availableGenres = MutableLiveData<List<Genre>>(emptyList())
+    val availableGenres: LiveData<List<Genre>> = _availableGenres
+    
+    private val _selectedGenres = MutableLiveData<List<Genre>>(emptyList())
+    val selectedGenres: LiveData<List<Genre>> = _selectedGenres
+    
+    // People (actors/directors)
+    private val _searchedPeople = MutableLiveData<List<Person>>(emptyList())
+    val searchedPeople: LiveData<List<Person>> = _searchedPeople
+    
+    private val _selectedPerson = MutableLiveData<Person?>(null)
+    val selectedPerson: LiveData<Person?> = _selectedPerson
+    
+    private val _selectedPersonRole = MutableLiveData<PersonRole>(PersonRole.ANY)
+    val selectedPersonRole: LiveData<PersonRole> = _selectedPersonRole
+    
+    private val _popularPeople = MutableLiveData<List<Person>>(emptyList())
+    val popularPeople: LiveData<List<Person>> = _popularPeople
+    
+    // Sort option
+    private val _sortOption = MutableLiveData<SortOption>(SortOption.POPULARITY_DESC)
+    val sortOption: LiveData<SortOption> = _sortOption
+    
+    // Year filter
+    private val _selectedYear = MutableLiveData<Int?>(null)
+    val selectedYear: LiveData<Int?> = _selectedYear
+    
+    // Search mode
+    private val _isAdvancedSearchMode = MutableLiveData<Boolean>(false)
+    val isAdvancedSearchMode: LiveData<Boolean> = _isAdvancedSearchMode
+    
+    // Active filters count
+    private val _activeFiltersCount = MutableLiveData<Int>(0)
+    val activeFiltersCount: LiveData<Int> = _activeFiltersCount
 
     private var lastSearchQuery = ""
     private var lastSearchResults: List<Any> = emptyList()
@@ -491,5 +533,191 @@ class SearchViewModel @Inject constructor(
                 Log.e("SearchViewModel", "Error adding TV show to search history", e)
             }
         }
+    }
+
+    // ============ ADVANCED SEARCH METHODS ============
+    
+    fun loadGenres() {
+        viewModelScope.launch {
+            try {
+                val genres = repository.getAllGenres()
+                _availableGenres.value = genres
+                Log.d("SearchViewModel", "Loaded ${genres.size} genres")
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error loading genres", e)
+            }
+        }
+    }
+    
+    fun toggleGenre(genre: Genre) {
+        val current = _selectedGenres.value?.toMutableList() ?: mutableListOf()
+        if (current.any { it.id == genre.id }) {
+            current.removeAll { it.id == genre.id }
+        } else {
+            current.add(genre)
+        }
+        _selectedGenres.value = current
+        updateActiveFiltersCount()
+    }
+    
+    fun clearSelectedGenres() {
+        _selectedGenres.value = emptyList()
+        updateActiveFiltersCount()
+    }
+    
+    fun isGenreSelected(genre: Genre): Boolean {
+        return _selectedGenres.value?.any { it.id == genre.id } ?: false
+    }
+    
+    fun searchPeople(query: String) {
+        if (query.length < 2) {
+            _searchedPeople.value = emptyList()
+            return
+        }
+        
+        viewModelScope.launch {
+            try {
+                val people = repository.searchPeople(query)
+                _searchedPeople.value = people
+                Log.d("SearchViewModel", "Found ${people.size} people for '$query'")
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error searching people", e)
+                _searchedPeople.value = emptyList()
+            }
+        }
+    }
+    
+    fun loadPopularPeople() {
+        viewModelScope.launch {
+            try {
+                val people = repository.getPopularPeople()
+                _popularPeople.value = people.take(20)
+                Log.d("SearchViewModel", "Loaded ${people.size} popular people")
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error loading popular people", e)
+            }
+        }
+    }
+    
+    fun selectPerson(person: Person?) {
+        _selectedPerson.value = person
+        updateActiveFiltersCount()
+    }
+    
+    fun setPersonRole(role: PersonRole) {
+        _selectedPersonRole.value = role
+    }
+    
+    fun setSortOption(option: SortOption) {
+        _sortOption.value = option
+    }
+    
+    fun setSelectedYear(year: Int?) {
+        _selectedYear.value = year
+        updateActiveFiltersCount()
+    }
+    
+    fun setAdvancedSearchMode(enabled: Boolean) {
+        _isAdvancedSearchMode.value = enabled
+    }
+    
+    private fun updateActiveFiltersCount() {
+        var count = 0
+        if (!_selectedGenres.value.isNullOrEmpty()) count++
+        if (_selectedPerson.value != null) count++
+        if (_selectedYear.value != null) count++
+        if ((_minRating.value ?: 0.0) > 0) count++
+        _activeFiltersCount.value = count
+    }
+    
+    fun discoverWithFilters() {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                
+                val mediaType = when (_filterType.value) {
+                    FilterType.MOVIES -> "movie"
+                    FilterType.TV_SHOWS -> "tv"
+                    else -> "all"
+                }
+                
+                val genreIds = _selectedGenres.value?.map { it.id }?.takeIf { it.isNotEmpty() }
+                val personId = _selectedPerson.value?.id
+                val personRole = _selectedPersonRole.value ?: PersonRole.ANY
+                val minRating = _minRating.value?.toFloat()?.takeIf { it > 0 }
+                val year = _selectedYear.value
+                val sortBy = _sortOption.value?.apiValue ?: "popularity.desc"
+                
+                Log.d("SearchViewModel", "Discover with filters: type=$mediaType, genres=$genreIds, person=$personId, role=$personRole, minRating=$minRating, year=$year, sortBy=$sortBy")
+                
+                val results = repository.discoverByFilters(
+                    mediaType = mediaType,
+                    genreIds = genreIds,
+                    personId = personId,
+                    personRole = personRole,
+                    minRating = minRating,
+                    year = year,
+                    sortBy = sortBy
+                )
+                
+                lastSearchResults = results
+                _searchResult.value = results
+                _errorMessage.value = null
+                
+                Log.d("SearchViewModel", "Discover returned ${results.size} results")
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error discovering content", e)
+                _searchResult.value = emptyList()
+                _errorMessage.value = "Помилка при пошуці: ${e.localizedMessage ?: e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+    
+    fun resetAdvancedFilters() {
+        _selectedGenres.value = emptyList()
+        _selectedPerson.value = null
+        _selectedPersonRole.value = PersonRole.ANY
+        _selectedYear.value = null
+        _sortOption.value = SortOption.POPULARITY_DESC
+        _minRating.value = 0.0
+        updateActiveFiltersCount()
+    }
+    
+    fun hasActiveFilters(): Boolean {
+        return !_selectedGenres.value.isNullOrEmpty() ||
+                _selectedPerson.value != null ||
+                _selectedYear.value != null ||
+                (_minRating.value ?: 0.0) > 0
+    }
+    
+    fun getActiveFiltersDescription(): String {
+        val parts = mutableListOf<String>()
+        
+        _selectedGenres.value?.takeIf { it.isNotEmpty() }?.let { genres ->
+            parts.add("Жанри: ${genres.joinToString(", ") { it.name }}")
+        }
+        
+        _selectedPerson.value?.let { person ->
+            val roleText = when (_selectedPersonRole.value) {
+                PersonRole.ACTOR -> "(актор)"
+                PersonRole.DIRECTOR -> "(режисер)"
+                PersonRole.WRITER -> "(сценарист)"
+                PersonRole.PRODUCER -> "(продюсер)"
+                else -> ""
+            }
+            parts.add("${person.name} $roleText")
+        }
+        
+        _selectedYear.value?.let { year ->
+            parts.add("Рік: $year")
+        }
+        
+        _minRating.value?.takeIf { it > 0 }?.let { rating ->
+            parts.add("Рейтинг ≥ ${"%.1f".format(rating)}")
+        }
+        
+        return if (parts.isEmpty()) "Фільтри не вибрані" else parts.joinToString(" • ")
     }
 }
