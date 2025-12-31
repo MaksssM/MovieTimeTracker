@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <!-- Bottom gradient - lighter for poster visibility -->
+    <!-- Bottom gradient only - very light for poster visibility -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:startColor="#00000000"
-                android:centerColor="#400A0B14"
-                android:endColor="#E00A0B14"
+                android:centerColor="#200A0B14"
+                android:endColor="#CC0A0B14"
                 android:angle="270"
-                android:centerY="0.65" />
+                android:centerY="0.75" />
         </shape>
     </item>
     

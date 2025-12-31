@@ -22,7 +22,9 @@ data class MovieResult(
     @SerializedName("vote_average") val voteAverage: Float = 0f,
     @SerializedName("vote_count") val voteCount: Int = 0,
     val popularity: Float = 0f,
-    @SerializedName("genre_ids") val genreIds: List<Int> = emptyList()
+    @SerializedName("genre_ids") val genreIds: List<Int>? = null,
+    // Details API returns genres array instead of genre_ids
+    val genres: List<Genre>? = null
 )
 
 data class TvShowResult(
@@ -39,7 +41,9 @@ data class TvShowResult(
     @SerializedName("vote_average") val voteAverage: Float = 0f,
     @SerializedName("vote_count") val voteCount: Int = 0,
     val popularity: Float = 0f,
-    @SerializedName("genre_ids") val genreIds: List<Int> = emptyList(),
+    @SerializedName("genre_ids") val genreIds: List<Int>? = null,
+    // Details API returns genres array instead of genre_ids
+    val genres: List<Genre>? = null,
     // Додаткові поля для кращого визначення статусу та часу
     val status: String? = null, // "Returning Series", "Ended", "In Production", "Canceled"
     @SerializedName("in_production") val inProduction: Boolean? = null,

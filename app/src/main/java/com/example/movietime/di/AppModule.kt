@@ -27,7 +27,11 @@ object AppModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         val logging = HttpLoggingInterceptor()
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+        logging.level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.NONE
+        }
         val client = OkHttpClient.Builder()
             .addInterceptor(logging)
             .build()
@@ -99,7 +103,6 @@ object AppModule {
         watchingDao: WatchingDao,
         searchHistoryDao: SearchHistoryDao
     ): AppRepository {
-        android.util.Log.d("AppModule", "Creating AppRepository with API key: ${BuildConfig.TMDB_API_KEY.take(10)}...")
         if (BuildConfig.TMDB_API_KEY.isBlank() || BuildConfig.TMDB_API_KEY.contains("YOUR_DEFAULT_KEY")) {
             android.util.Log.e("AppModule", "WARNING: TMDB API key is not configured properly!")
         }

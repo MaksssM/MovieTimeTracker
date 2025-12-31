@@ -36,11 +36,18 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Додаткова безпека: вимкнути debuggable
+            isDebuggable = false
+        }
+        debug {
+            isMinifyEnabled = false
+            isDebuggable = true
         }
     }
     compileOptions {
@@ -108,6 +115,9 @@ dependencies {
 
     // Preferences
     implementation("androidx.preference:preference-ktx:1.2.1")
+    
+    // Security - Encrypted SharedPreferences
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // Shimmer effect
     implementation("com.facebook.shimmer:shimmer:0.5.0")
