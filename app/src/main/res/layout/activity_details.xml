@@ -50,11 +50,7 @@
             app:statusBarScrim="#0A0B14"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:toolbarId="@+id/toolbar"
-            app:expandedTitleMarginStart="20dp"
-            app:expandedTitleMarginEnd="56dp"
-            app:expandedTitleMarginBottom="24dp"
-            app:expandedTitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Expanded"
-            app:collapsedTitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Collapsed">
+            app:titleEnabled="false">
 
             <!-- Background Image with parallax -->
             <ImageView
@@ -64,6 +60,7 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/poster_description"
                 android:transitionName="poster_transition"
+                android:background="#1a1b2e"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7"
                 tools:src="@tools:sample/backgrounds/scenic" />
@@ -108,10 +105,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/white"
-                        android:textSize="24sp"
+                        android:textSize="22sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium"
-                        android:lineSpacingMultiplier="1.1"
+                        android:letterSpacing="0.01"
+                        android:lineSpacingMultiplier="1.15"
                         android:maxLines="2"
                         android:ellipsize="end"
                         tools:text="Inception" />
@@ -121,7 +119,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="12dp"
                         android:gravity="center_vertical">
 
                         <!-- Rating Badge -->
@@ -465,12 +463,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingHorizontal="16dp"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="24dp"
+                android:baselineAligned="false">
 
                 <!-- Vote Average Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     app:cardCornerRadius="20dp"
@@ -479,20 +478,20 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="16dp">
 
                         <FrameLayout
-                            android:layout_width="50dp"
-                            android:layout_height="50dp">
+                            android:layout_width="48dp"
+                            android:layout_height="48dp">
 
                             <com.google.android.material.progressindicator.CircularProgressIndicator
                                 android:id="@+id/progressRating"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                app:indicatorSize="50dp"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                app:indicatorSize="48dp"
                                 app:trackThickness="4dp"
                                 app:indicatorColor="#FBBF24"
                                 app:trackColor="#30FBBF24"
@@ -505,7 +504,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:textColor="@android:color/white"
-                                android:textSize="13sp"
+                                android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:fontFamily="sans-serif-medium"
                                 tools:text="85%" />
@@ -517,14 +516,14 @@
                             android:layout_marginTop="8dp"
                             android:text="@string/user_score"
                             android:textColor="#80FFFFFF"
-                            android:textSize="12sp" />
+                            android:textSize="11sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <!-- Vote Count Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_marginHorizontal="8dp"
                     app:cardCornerRadius="20dp"
@@ -533,25 +532,32 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="16dp">
 
-                        <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:src="@drawable/ic_groups_24"
-                            app:tint="#60A5FA"
-                            android:contentDescription="@null" />
+                        <FrameLayout
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_groups_24"
+                                app:tint="#60A5FA"
+                                android:contentDescription="@null" />
+                        </FrameLayout>
 
                         <TextView
                             android:id="@+id/tvVoteCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="6dp"
                             android:textColor="@android:color/white"
-                            android:textSize="16sp"
+                            android:textSize="15sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-medium"
                             tools:text="25.4K" />
@@ -559,17 +565,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginTop="4dp"
                             android:text="@string/votes"
                             android:textColor="#80FFFFFF"
-                            android:textSize="12sp" />
+                            android:textSize="11sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <!-- Release Date Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     app:cardCornerRadius="20dp"
@@ -578,25 +584,32 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="16dp">
 
-                        <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:src="@drawable/ic_calendar"
-                            app:tint="#A78BFA"
-                            android:contentDescription="@null" />
+                        <FrameLayout
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_calendar"
+                                app:tint="#A78BFA"
+                                android:contentDescription="@null" />
+                        </FrameLayout>
 
                         <TextView
                             android:id="@+id/tvReleaseDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="6dp"
                             android:textColor="@android:color/white"
-                            android:textSize="16sp"
+                            android:textSize="15sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-medium"
                             tools:text="Jul 16" />
@@ -604,10 +617,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginTop="4dp"
                             android:text="@string/release"
                             android:textColor="#80FFFFFF"
-                            android:textSize="12sp" />
+                            android:textSize="11sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>

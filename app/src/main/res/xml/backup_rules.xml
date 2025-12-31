@@ -1,13 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-   Sample backup rules file; uncomment and customize as necessary.
-   See https://developer.android.com/guide/topics/data/autobackup
-   for details.
-   Note: This file is ignored for devices older than API 31
-   See https://developer.android.com/about/versions/12/backup-restore
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Backup rules for Android < 12 (API < 31)
+   Excludes sensitive data from auto-backup.
 -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
+    <!-- Include only non-sensitive user preferences -->
+    <include domain="sharedpref" path="app_prefs.xml"/>
+    
+    <!-- Exclude encrypted/sensitive preferences -->
+    <exclude domain="sharedpref" path="secure_prefs.xml"/>
+    <exclude domain="sharedpref" path="search_prefs.xml"/>
+    
+    <!-- Exclude Room database (contains watch history) -->
+    <exclude domain="database" path="movie_tracker_database"/>
+    <exclude domain="database" path="movie_tracker_database-shm"/>
+    <exclude domain="database" path="movie_tracker_database-wal"/>
+    
+    <!-- Exclude Firebase local data -->
+    <exclude domain="file" path="com.google.firebase"/>
+    
+    <!-- Exclude cache -->
+    <exclude domain="external" path="."/>
+    <exclude domain="root" path="cache"/>
 </full-backup-content>

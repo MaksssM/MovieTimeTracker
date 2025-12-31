@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import coil.request.CachePolicy
 import com.example.movietime.databinding.ActivityDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.movietime.util.Utils
@@ -441,7 +442,7 @@ class DetailsActivity : AppCompatActivity() {
             when (item) {
                 is com.example.movietime.data.model.MovieResult -> {
                     Log.d(TAG, "Displaying movie: ${item.title}, runtime=${item.runtime}")
-                    binding.toolbarLayout.title = item.title ?: getString(R.string.unknown_media)
+                    // Title only in the floating card, not in toolbar
                     binding.tvTitle.text = item.title ?: getString(R.string.unknown_media)
                     binding.tvOverview.text = item.overview ?: getString(R.string.no_description_available)
 
@@ -478,42 +479,54 @@ class DetailsActivity : AppCompatActivity() {
                         "N/A"
                     }
 
-                    // Genres chips
-                    setupGenreChips(getGenreNames(item.genreIds, isMovie = true))
+                    // Genres chips - use genres from details API, fallback to genre_ids from list API
+                    val genreNames = if (!item.genres.isNullOrEmpty()) {
+                        item.genres.mapNotNull { it.name }
+                    } else {
+                        getGenreNames(item.genreIds ?: emptyList(), isMovie = true)
+                    }
+                    setupGenreChips(genreNames)
 
                     // Use backdrop for header, fallback to poster
-                    Log.d(TAG, "Movie backdrop: ${item.backdropPath}, poster: ${item.posterPath}")
+                    Log.d(TAG, "Movie backdrop: '${item.backdropPath}', poster: '${item.posterPath}'")
+                    // First try poster for movie, then backdrop as fallback
                     val imageUrl = when {
-                        !item.backdropPath.isNullOrEmpty() -> "https://image.tmdb.org/t/p/w1280${item.backdropPath}"
                         !item.posterPath.isNullOrEmpty() -> "https://image.tmdb.org/t/p/w780${item.posterPath}"
+                        !item.backdropPath.isNullOrEmpty() -> "https://image.tmdb.org/t/p/w780${item.backdropPath}"
                         else -> null
                     }
-                    Log.d(TAG, "Loading image URL: $imageUrl")
+                    Log.d(TAG, "Loading movie image URL: $imageUrl")
                     
                     if (imageUrl != null) {
                         binding.ivPoster.load(imageUrl) {
                             crossfade(true)
+                            allowHardware(false)
+                            memoryCachePolicy(CachePolicy.DISABLED)
+                            diskCachePolicy(CachePolicy.DISABLED)
                             placeholder(R.drawable.ic_placeholder)
                             error(R.drawable.ic_placeholder)
                             listener(
-                                onSuccess = { _, _ ->
-                                    Log.d(TAG, "Image loaded successfully")
+                                onStart = { request ->
+                                    Log.d(TAG, "Started loading image: ${request.data}")
+                                },
+                                onSuccess = { _, result ->
+                                    Log.d(TAG, "Image loaded successfully from: ${result.dataSource}")
                                     supportStartPostponedEnterTransition()
                                 },
-                                onError = { _, throwable ->
-                                    Log.e(TAG, "Image load failed: ${throwable.throwable?.message}")
+                                onError = { request, throwable ->
+                                    Log.e(TAG, "Image load failed for ${request.data}: ${throwable.throwable?.message}", throwable.throwable)
                                     supportStartPostponedEnterTransition()
                                 }
                             )
                         }
                     } else {
-                        Log.w(TAG, "No image URL available")
+                        Log.w(TAG, "No image URL available for movie")
                         binding.ivPoster.setImageResource(R.drawable.ic_placeholder)
                         supportStartPostponedEnterTransition()
                     }
                 }
                 is com.example.movietime.data.model.TvShowResult -> {
-                    binding.toolbarLayout.title = item.name ?: getString(R.string.unknown_media)
+                    // Title only in the floating card
                     binding.tvTitle.text = item.name ?: getString(R.string.unknown_media)
                     binding.tvOverview.text = item.overview ?: getString(R.string.no_description_available)
 
@@ -542,8 +555,13 @@ class DetailsActivity : AppCompatActivity() {
                         "N/A"
                     }
 
-                    // Genres chips
-                    setupGenreChips(getGenreNames(item.genreIds, isMovie = false))
+                    // Genres chips - use genres from details API, fallback to genre_ids from list API
+                    val tvGenreNames = if (!item.genres.isNullOrEmpty()) {
+                        item.genres.mapNotNull { it.name }
+                    } else {
+                        getGenreNames(item.genreIds ?: emptyList(), isMovie = false)
+                    }
+                    setupGenreChips(tvGenreNames)
 
                     // Use backdrop for header, fallback to poster
                     Log.d(TAG, "TV backdrop: ${item.backdropPath}, poster: ${item.posterPath}")
@@ -557,15 +575,19 @@ class DetailsActivity : AppCompatActivity() {
                     if (imageUrl != null) {
                         binding.ivPoster.load(imageUrl) {
                             crossfade(true)
+                            allowHardware(false)
                             placeholder(R.drawable.ic_placeholder)
                             error(R.drawable.ic_placeholder)
                             listener(
-                                onSuccess = { _, _ ->
-                                    Log.d(TAG, "TV Image loaded successfully")
+                                onStart = { request ->
+                                    Log.d(TAG, "Started loading TV image: ${request.data}")
+                                },
+                                onSuccess = { _, result ->
+                                    Log.d(TAG, "TV Image loaded successfully from: ${result.dataSource}")
                                     supportStartPostponedEnterTransition()
                                 },
-                                onError = { _, throwable ->
-                                    Log.e(TAG, "TV Image load failed: ${throwable.throwable?.message}")
+                                onError = { request, throwable ->
+                                    Log.e(TAG, "TV Image load failed for ${request.data}: ${throwable.throwable?.message}", throwable.throwable)
                                     supportStartPostponedEnterTransition()
                                 }
                             )

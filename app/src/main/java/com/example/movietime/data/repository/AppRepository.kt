@@ -2,6 +2,7 @@ package com.example.movietime.data.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.movietime.BuildConfig
 import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.data.db.WatchedItemDao
@@ -32,6 +33,14 @@ class AppRepository @Inject constructor(
     private val searchHistoryDao: SearchHistoryDao,
     private val apiKey: String
 ) {
+
+    private inline fun d(message: String) {
+        if (BuildConfig.DEBUG) Log.d("AppRepo", message)
+    }
+
+    private inline fun e(message: String, throwable: Throwable? = null) {
+        if (throwable != null) Log.e("AppRepo", message, throwable) else Log.e("AppRepo", message)
+    }
 
     // --- API Methods ---
     suspend fun searchMultiLanguage(query: String): List<Any> = coroutineScope {
@@ -76,7 +85,7 @@ class AppRepository @Inject constructor(
             queryVariants.add(qTrans)
         }
 
-        Log.d("AppRepo", "searchMultiLanguage() query='$query' qNorm='$qNorm' qTrans='$qTrans' langs=${languages.joinToString()} variants=${queryVariants.joinToString()}")
+        d("searchMultiLanguage() query='$query' qNorm='$qNorm' qTrans='$qTrans' langs=${languages.joinToString()} variants=${queryVariants.joinToString()}")
 
         val movieDeferred = mutableListOf<kotlinx.coroutines.Deferred<MoviesResponse>>()
         val tvDeferred = mutableListOf<kotlinx.coroutines.Deferred<TvShowsResponse>>()
@@ -88,10 +97,10 @@ class AppRepository @Inject constructor(
                 movieDeferred.add(async {
                     try {
                         val resp = api.searchMovies(apiKey, q, language)
-                        Log.d("AppRepo", "Movie response: lang=$language q=$q size=${resp.results.size}")
+                        d("Movie response: lang=$language q=$q size=${resp.results.size}")
                         resp
                     } catch (e: Exception) {
-                        Log.d("AppRepo", "Movie request failed: lang=$language q=$q error=${e.message}")
+                        d("Movie request failed: lang=$language q=$q error=${e.message}")
                         MoviesResponse(emptyList())
                     }
                 })
@@ -100,10 +109,10 @@ class AppRepository @Inject constructor(
                 tvDeferred.add(async {
                     try {
                         val resp = api.searchTvShows(apiKey, q, language)
-                        Log.d("AppRepo", "TV response: lang=$language q=$q size=${resp.results.size}")
+                        d("TV response: lang=$language q=$q size=${resp.results.size}")
                         resp
                     } catch (e: Exception) {
-                        Log.d("AppRepo", "TV request failed: lang=$language q=$q error=${e.message}")
+                        d("TV request failed: lang=$language q=$q error=${e.message}")
                         TvShowsResponse(emptyList())
                     }
                 })
@@ -116,7 +125,7 @@ class AppRepository @Inject constructor(
         val movieItems = movieResponses.flatMap { it.results }
         val tvItems = tvResponses.flatMap { it.results }
 
-        Log.d("AppRepo", "Total items fetched: movies=${movieItems.size} tv=${tvItems.size}")
+        d("Total items fetched: movies=${movieItems.size} tv=${tvItems.size}")
 
         // Combine items and deduplicate by (id, mediaType)
         val allItems = (movieItems + tvItems)
@@ -200,49 +209,49 @@ class AppRepository @Inject constructor(
 
         // Return top 100 items as List<Any>
         val result = sorted.map { it.item }.take(100)
-        Log.d("AppRepo", "Returning results count=${result.size}")
+        d("Returning results count=${result.size}")
         result
     }
 
     // Details endpoints return single objects
     suspend fun getMovieDetails(movieId: Int, language: String = "en-US"): MovieResult {
-        Log.d("AppRepo", "getMovieDetails: movieId=$movieId, apiKey=${apiKey.take(10)}..., language=$language")
+        d("getMovieDetails: movieId=$movieId, language=$language")
         try {
             val result = api.getMovieDetails(movieId, apiKey, language)
-            Log.d("AppRepo", "getMovieDetails success: title=${result.title}, runtime=${result.runtime}")
+            d("getMovieDetails success: title=${result.title}, runtime=${result.runtime}, backdrop=${result.backdropPath}, poster=${result.posterPath}")
             return result
         } catch (e: retrofit2.HttpException) {
-            Log.e("AppRepo", "HTTP Error ${e.code()}: ${e.message()}", e)
+            e("HTTP Error ${e.code()}: ${e.message()}", e)
             throw e
         } catch (e: java.net.UnknownHostException) {
-            Log.e("AppRepo", "Network Error: Cannot resolve host api.themoviedb.org - check internet connection", e)
+            e("Network Error: Cannot resolve host api.themoviedb.org - check internet connection", e)
             throw e
         } catch (e: java.net.SocketTimeoutException) {
-            Log.e("AppRepo", "Network Error: Connection timeout - check internet connection", e)
+            e("Network Error: Connection timeout - check internet connection", e)
             throw e
         } catch (e: Exception) {
-            Log.e("AppRepo", "getMovieDetails failed: ${e.javaClass.simpleName} - ${e.message}", e)
+            e("getMovieDetails failed: ${e.javaClass.simpleName} - ${e.message}", e)
             throw e
         }
     }
 
     suspend fun getTvShowDetails(tvId: Int, language: String = "en-US"): TvShowResult {
-        Log.d("AppRepo", "getTvShowDetails: tvId=$tvId, apiKey=${apiKey.take(10)}..., language=$language")
+        d("getTvShowDetails: tvId=$tvId, language=$language")
         try {
             val result = api.getTvShowDetails(tvId, apiKey, language)
-            Log.d("AppRepo", "getTvShowDetails success: name=${result.name}")
+            d("getTvShowDetails success: name=${result.name}")
             return result
         } catch (e: retrofit2.HttpException) {
-            Log.e("AppRepo", "HTTP Error ${e.code()}: ${e.message()}", e)
+            e("HTTP Error ${e.code()}: ${e.message()}", e)
             throw e
         } catch (e: java.net.UnknownHostException) {
-            Log.e("AppRepo", "Network Error: Cannot resolve host api.themoviedb.org - check internet connection", e)
+            e("Network Error: Cannot resolve host api.themoviedb.org - check internet connection", e)
             throw e
         } catch (e: java.net.SocketTimeoutException) {
-            Log.e("AppRepo", "Network Error: Connection timeout - check internet connection", e)
+            e("Network Error: Connection timeout - check internet connection", e)
             throw e
         } catch (e: Exception) {
-            Log.e("AppRepo", "getTvShowDetails failed: ${e.javaClass.simpleName} - ${e.message}", e)
+            e("getTvShowDetails failed: ${e.javaClass.simpleName} - ${e.message}", e)
             throw e
         }
     }
@@ -297,7 +306,7 @@ class AppRepository @Inject constructor(
             Log.e("AppRepo", "HTTP Error ${e.code()}: ${e.message()}")
             Log.e("AppRepo", "Response: ${e.response()?.errorBody()?.string()}")
 
-            // Fallback to English if Ukrainian fails and it's a 404
+
             if (language != "en-US" && e.code() == 404) {
                 Log.d("AppRepo", "Retrying with English due to 404...")
                 try {
