@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="Movie Title"
                 android:textSize="16sp"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_primary"
                 android:fontFamily="sans-serif-medium"
                 android:textStyle="bold"
                 android:maxLines="2"
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:textSize="11sp"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:fontFamily="sans-serif-medium"
                         tools:text="Фільм" />
 
@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:textSize="12sp"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:fontFamily="sans-serif-medium"
                         tools:text="8.5" />
 

@@ -85,7 +85,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Грудень 2025"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="22sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-medium" />
@@ -135,7 +135,7 @@
                     android:text="@string/day_mon"
                     android:gravity="center"
                     android:textSize="13sp"
-                    android:textColor="#80FFFFFF"
+                    android:textColor="@color/text_hint"
                     android:fontFamily="sans-serif-medium" />
 
                 <TextView
@@ -145,7 +145,7 @@
                     android:text="@string/day_tue"
                     android:gravity="center"
                     android:textSize="13sp"
-                    android:textColor="#80FFFFFF"
+                    android:textColor="@color/text_hint"
                     android:fontFamily="sans-serif-medium" />
 
                 <TextView
@@ -155,7 +155,7 @@
                     android:text="@string/day_wed"
                     android:gravity="center"
                     android:textSize="13sp"
-                    android:textColor="#80FFFFFF"
+                    android:textColor="@color/text_hint"
                     android:fontFamily="sans-serif-medium" />
 
                 <TextView
@@ -165,7 +165,7 @@
                     android:text="@string/day_thu"
                     android:gravity="center"
                     android:textSize="13sp"
-                    android:textColor="#80FFFFFF"
+                    android:textColor="@color/text_hint"
                     android:fontFamily="sans-serif-medium" />
 
                 <TextView
@@ -175,7 +175,7 @@
                     android:text="@string/day_fri"
                     android:gravity="center"
                     android:textSize="13sp"
-                    android:textColor="#80FFFFFF"
+                    android:textColor="@color/text_hint"
                     android:fontFamily="sans-serif-medium" />
 
                 <TextView
@@ -250,7 +250,7 @@
                     android:text="@string/upcoming_releases_title"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/text_primary"
                     android:fontFamily="sans-serif-medium" />
 
             </LinearLayout>
@@ -294,7 +294,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/no_releases"
                     android:textSize="16sp"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/text_primary"
                     android:layout_marginTop="20dp"
                     android:textStyle="bold" />
 
@@ -303,7 +303,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/check_back_later"
                     android:textSize="14sp"
-                    android:textColor="#80FFFFFF"
+                    android:textColor="@color/text_hint"
                     android:layout_marginTop="8dp" />
 
             </LinearLayout>

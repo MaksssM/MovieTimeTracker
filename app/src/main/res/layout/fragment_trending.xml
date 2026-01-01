@@ -43,7 +43,7 @@
         android:layout_margin="20dp"
         android:contentDescription="@string/search_content_desc"
         android:text="@string/search"
-        android:textColor="@android:color/white"
+        android:textColor="@color/text_primary"
         app:icon="@drawable/ic_search_premium"
         app:backgroundTint="#60A5FA"
         app:iconTint="@android:color/white"

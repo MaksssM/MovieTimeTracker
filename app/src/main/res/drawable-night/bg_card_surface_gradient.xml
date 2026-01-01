@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:angle="180"
-        android:startColor="#0E131B"
-        android:centerColor="#0F1722"
-        android:endColor="#121824" />
-    <corners android:radius="18dp" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Main gradient background - Deep dark -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="#0D1117"
+                android:centerColor="#0F141A"
+                android:endColor="#151B24"
+                android:type="linear" />
+            <corners android:radius="18dp" />
+        </shape>
+    </item>
+    
+    <!-- Subtle top shine for glass effect -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="180"
+                android:startColor="#0CFFFFFF"
+                android:centerColor="#00FFFFFF"
+                android:endColor="#00FFFFFF"
+                android:type="linear" />
+            <corners android:radius="18dp" />
+        </shape>
+    </item>
+    
+</layer-list>

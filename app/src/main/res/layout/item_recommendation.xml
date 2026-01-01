@@ -56,7 +56,7 @@
                     android:id="@+id/txtFromUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     tools:text="Maksym Shevchenko" />
@@ -121,7 +121,7 @@
                         android:id="@+id/txtMovieTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:maxLines="2"

@@ -109,7 +109,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/total_time_spent"
                                     android:textSize="12sp"
-                                    android:textColor="#90FFFFFF"
+                                    android:textColor="@color/text_secondary"
                                     android:layout_marginTop="6dp" />
                             </LinearLayout>
 
@@ -160,7 +160,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/watched_label"
                                     android:textSize="12sp"
-                                    android:textColor="#90FFFFFF"
+                                    android:textColor="@color/text_secondary"
                                     android:layout_marginTop="6dp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -241,7 +241,7 @@
                 android:text="@string/no_watched_content"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_primary"
                 android:layout_marginTop="24dp" />
 
             <TextView
@@ -249,7 +249,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/start_watching_hint"
                 android:textSize="14sp"
-                android:textColor="#80FFFFFF"
+                android:textColor="@color/text_hint"
                 android:gravity="center"
                 android:paddingHorizontal="32dp"
                 android:layout_marginTop="8dp" />

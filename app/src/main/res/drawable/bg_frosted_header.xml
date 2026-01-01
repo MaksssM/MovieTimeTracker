@@ -1,50 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Frosted glass header - for app bars and navigation headers -->
+<!-- Header - LIGHT THEME -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <!-- Base semi-transparent dark with frost effect -->
+    <!-- Solid white base -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#80141B27" />
+            <solid android:color="#FFFFFF" />
         </shape>
     </item>
     
-    <!-- Frost overlay -->
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:angle="180"
-                android:startColor="#30FFFFFF"
-                android:centerColor="#18FFFFFF"
-                android:endColor="#10FFFFFF"
-                android:type="linear" />
-        </shape>
-    </item>
-    
-    <!-- Horizontal frost streaks simulation -->
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:angle="0"
-                android:startColor="#12FFFFFF"
-                android:centerColor="#20FFFFFF"
-                android:endColor="#10FFFFFF"
-                android:type="linear" />
-        </shape>
-    </item>
-    
-    <!-- Bottom edge highlight -->
+    <!-- Bottom border -->
     <item
-        android:top="0dp"
-        android:bottom="0dp">
+        android:top="-1dp"
+        android:left="-1dp"
+        android:right="-1dp">
         <shape android:shape="rectangle">
-            <gradient
-                android:angle="90"
-                android:startColor="#00FFFFFF"
-                android:endColor="#00FFFFFF" />
             <stroke
                 android:width="1dp"
-                android:color="#25FFFFFF" />
+                android:color="#E2E8F0" />
+            <solid android:color="#00000000" />
         </shape>
     </item>
     

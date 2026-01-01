@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginHorizontal="12dp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/text_primary"
             android:textSize="14sp"
             tools:text="Олена Коваленко" />
 

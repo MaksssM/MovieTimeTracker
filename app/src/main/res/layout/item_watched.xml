@@ -67,7 +67,7 @@
                         android:paddingHorizontal="8dp"
                         android:paddingTop="3dp" android:paddingBottom="3dp"
                         android:textSize="9sp"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:fontFamily="sans-serif-medium"
                         android:textAllCaps="true"
                         tools:text="TV" />
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/text_primary"
                     android:fontFamily="sans-serif-medium"
                     android:maxLines="2"
                     android:ellipsize="end"
@@ -125,7 +125,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:textSize="13sp"
-                        android:textColor="#90FFFFFF"
+                        android:textColor="@color/text_secondary"
                         android:fontFamily="sans-serif-medium"
                         tools:text="2014" />
 
@@ -155,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:textSize="12sp"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/text_primary"
                     android:fontFamily="sans-serif-medium"
                     tools:text="169 хв" />
 

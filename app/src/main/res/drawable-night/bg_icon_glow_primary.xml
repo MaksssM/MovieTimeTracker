@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Icon container - Primary Blue - LIGHT THEME -->
+<!-- Glowing icon container - Primary Blue - DARK THEME -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <!-- Subtle shadow for light theme -->
+    <!-- Outer soft glow -->
     <item
-        android:left="2dp"
-        android:right="2dp"
-        android:top="4dp"
-        android:bottom="0dp">
+        android:left="-6dp"
+        android:right="-6dp"
+        android:top="-6dp"
+        android:bottom="-6dp">
         <shape android:shape="oval">
-            <solid android:color="#153B82F6" />
+            <gradient
+                android:type="radial"
+                android:gradientRadius="30dp"
+                android:startColor="#503B82F6"
+                android:endColor="#003B82F6" />
         </shape>
     </item>
     
@@ -18,9 +22,9 @@
         <shape android:shape="oval">
             <gradient
                 android:angle="135"
-                android:startColor="#60A5FA"
+                android:startColor="#93C5FD"
                 android:centerColor="#3B82F6"
-                android:endColor="#2563EB"
+                android:endColor="#1D4ED8"
                 android:type="linear" />
         </shape>
     </item>
@@ -35,22 +39,22 @@
             <gradient
                 android:angle="135"
                 android:startColor="#00000000"
-                android:endColor="#15000000"
+                android:endColor="#20000000"
                 android:type="linear" />
         </shape>
     </item>
     
-    <!-- Top shine highlight (subtle) -->
+    <!-- Top shine highlight -->
     <item
-        android:left="10dp"
-        android:right="10dp"
-        android:top="6dp"
-        android:bottom="26dp">
+        android:left="8dp"
+        android:right="8dp"
+        android:top="4dp"
+        android:bottom="22dp">
         <shape android:shape="oval">
             <gradient
                 android:angle="90"
                 android:startColor="#00FFFFFF"
-                android:endColor="#20FFFFFF"
+                android:endColor="#30FFFFFF"
                 android:type="linear" />
         </shape>
     </item>

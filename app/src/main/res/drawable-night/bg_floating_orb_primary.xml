@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Floating orb - Primary Blue - LIGHT THEME (more subtle) -->
+<!-- Floating orb - Primary Blue - DARK THEME -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
     <gradient
         android:type="radial"
         android:gradientRadius="150dp"
-        android:startColor="#203B82F6"
-        android:centerColor="#103B82F6"
+        android:startColor="#503B82F6"
+        android:centerColor="#208B5CF6"
         android:endColor="#00000000" />
     <size android:width="300dp" android:height="300dp" />
 </shape>
