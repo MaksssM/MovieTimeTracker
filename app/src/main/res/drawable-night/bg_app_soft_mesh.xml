@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Premium gradient background for main screen - LIGHT THEME -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <!-- Clean light base with subtle warmth -->
+    <!-- Deep dark base - не чисто чорний, а глибокий темно-синій -->
     <item>
         <shape android:shape="rectangle">
             <gradient
+                android:type="linear"
                 android:angle="160"
-                android:startColor="#FFF8FAFC"
-                android:centerColor="#FFFFFFFF"
-                android:endColor="#FFF1F5F9"
-                android:type="linear" />
+                android:startColor="#FF0A0E14"
+                android:centerColor="#FF0D1117"
+                android:endColor="#FF0F141A" />
         </shape>
     </item>
     
-    <!-- Soft blue ambient glow - top left -->
+    <!-- Subtle blue ambient glow - top left -->
     <item>
         <shape android:shape="rectangle">
             <gradient
@@ -23,11 +22,11 @@
                 android:centerX="0.05"
                 android:centerY="0.1"
                 android:startColor="#183B82F6"
-                android:endColor="#00000000" />
+                android:endColor="@android:color/transparent" />
         </shape>
     </item>
     
-    <!-- Soft purple/violet glow - bottom right -->
+    <!-- Accent purple glow - bottom right -->
     <item>
         <shape android:shape="rectangle">
             <gradient
@@ -35,12 +34,12 @@
                 android:gradientRadius="700dp"
                 android:centerX="0.95"
                 android:centerY="0.85"
-                android:startColor="#148B5CF6"
-                android:endColor="#00000000" />
+                android:startColor="#128B5CF6"
+                android:endColor="@android:color/transparent" />
         </shape>
     </item>
     
-    <!-- Soft cyan accent - center right -->
+    <!-- Cyan accent glow - center right for depth -->
     <item>
         <shape android:shape="rectangle">
             <gradient
@@ -49,11 +48,11 @@
                 android:centerX="0.85"
                 android:centerY="0.4"
                 android:startColor="#0A06B6D4"
-                android:endColor="#00000000" />
+                android:endColor="@android:color/transparent" />
         </shape>
     </item>
     
-    <!-- Very subtle warm accent - bottom left for balance -->
+    <!-- Very subtle warm accent - bottom left -->
     <item>
         <shape android:shape="rectangle">
             <gradient
@@ -62,7 +61,19 @@
                 android:centerX="0.1"
                 android:centerY="0.9"
                 android:startColor="#08F59E0B"
-                android:endColor="#00000000" />
+                android:endColor="@android:color/transparent" />
+        </shape>
+    </item>
+    
+    <!-- Noise/grain effect overlay for premium feel -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="45"
+                android:startColor="#02FFFFFF"
+                android:centerColor="#00000000"
+                android:endColor="#02FFFFFF" />
         </shape>
     </item>
     

@@ -1,66 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- LIGHT THEME - Clean, Elegant & Modern -->
+    <!-- Base: White #FFFFFF / Surface: #F8FAFC -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
     <!-- Base Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
 
-    <!-- Primary Brand Colors (Deep Noir & Electric Blue) -->
-    <color name="primary">#3B82F6</color>         <!-- Vibrant Blue -->
-    <color name="primary_dark">#2563EB</color>    <!-- Deep Blue -->
-    <color name="primary_light">#60A5FA</color>   <!-- Soft Blue -->
-    <color name="accent">#8B5CF6</color>          <!-- Electric Purple -->
-    <color name="accent_light">#C4B5FD</color>
-    <color name="accent_dark">#6D28D9</color>
+    <!-- Primary Brand Colors -->
+    <color name="primary">#3B82F6</color>
+    <color name="primary_dark">#2563EB</color>
+    <color name="primary_light">#60A5FA</color>
+    <color name="accent">#8B5CF6</color>
+    <color name="accent_light">#A78BFA</color>
+    <color name="accent_dark">#7C3AED</color>
 
-    <!-- Semantic Colors - Dark Theme -->
-    <color name="background_primary_dark">#121212</color>  <!-- Matte Dark Grey -->
-    <color name="background_surface_dark">#1E1E1E</color>  <!-- Lighter Surface -->
-    <color name="background_elevated_dark">#2C2C2C</color> <!-- Elevated Card -->
-    <color name="text_primary_dark">#FFFFFF</color>
-    <color name="text_secondary_dark">#B3B3B3</color>
-    <color name="text_tertiary_dark">#757575</color>
-    <color name="divider_dark">#2C2C2C</color>
-
-    <!-- Semantic Colors - Light Theme -->
-    <color name="background_primary_light">#F5F5F7</color> <!-- Soft White/Grey -->
-    <color name="background_surface_light">#FFFFFF</color> <!-- Pure White -->
+    <!-- App Core Background Colors - Light Theme -->
+    <color name="app_bg">#FFFFFF</color>
+    <color name="background">#FFFFFF</color>
+    <color name="background_primary_light">#F8FAFC</color>
+    <color name="background_surface_light">#FFFFFF</color>
     <color name="background_elevated_light">#FFFFFF</color>
-    <color name="text_primary_light">#111827</color>
-    <color name="text_primary">@color/text_primary_light</color>
-    <color name="text_secondary_light">#6B7280</color>
-    <color name="text_secondary">@color/text_secondary_light</color>
-    <color name="text_hint">@color/text_tertiary_light</color>
-    <color name="text_tertiary_light">#9CA3AF</color>
-    <color name="divider_light">#E5E7EB</color>
-    <color name="divider">@color/divider_light</color>
-    <color name="surface_card">@color/background_surface_light</color>
+    
+    <!-- Dark Theme Background Colors (for reference) -->
+    <color name="background_primary_dark">#0A0E14</color>
+    <color name="background_surface_dark">#0D1117</color>
+    <color name="background_elevated_dark">#151B24</color>
 
-    <!-- Functional Colors -->
+    <!-- Card & Surface Colors - Light Theme -->
+    <color name="card_bg">#FFFFFF</color>
+    <color name="card_bg_elevated">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#F1F5F9</color>
+    <color name="surface_elevated">#FFFFFF</color>
+    <color name="surface_card">#FFFFFF</color>
+    <color name="stat_card_bg">#FFFFFF</color>
+    <color name="glass_background_light">#E6FFFFFF</color>
+    <color name="glass_background_dark">#CC0D1117</color>
+
+    <!-- Text Colors - Light Theme -->
+    <color name="text_primary_light">#0F172A</color>
+    <color name="text_secondary_light">#64748B</color>
+    <color name="text_tertiary_light">#94A3B8</color>
+    <color name="primary_text">#0F172A</color>
+    <color name="secondary_text">#64748B</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_hint">#94A3B8</color>
+    <color name="text_on_dark">#FFFFFF</color>
+    <color name="text_on_accent">#FFFFFF</color>
+    
+    <!-- Dark Theme Text Colors (for reference) -->
+    <color name="text_primary_dark">#F1F5F9</color>
+    <color name="text_secondary_dark">#94A3B8</color>
+    <color name="text_tertiary_dark">#64748B</color>
+
+    <!-- Dividers & Borders - Light Theme -->
+    <color name="divider_light">#E2E8F0</color>
+    <color name="divider_dark">#1E293B</color>
+    <color name="divider">#E2E8F0</color>
+    <color name="border">#E2E8F0</color>
+
+    <!-- Functional / Status Colors -->
     <color name="success">#10B981</color>
+    <color name="success_light">#6EE7B7</color>
     <color name="error">#EF4444</color>
     <color name="warning">#F59E0B</color>
     <color name="info">#3B82F6</color>
 
-    <!-- Glassmorphism & Soft UI -->
-    <color name="glass_background_dark">#CC1E1E1E</color> <!-- 80% opacity -->
-    <color name="glass_background_light">#CCFFFFFF</color> <!-- 80% opacity -->
-    <color name="glass_stroke_dark">#1FFFFFFF</color>      <!-- Subtle white stroke -->
-    <color name="glass_stroke_light">#1F000000</color>     <!-- Subtle black stroke -->
-    
-    <color name="soft_gradient_start_dark">#121212</color>
-    <color name="soft_gradient_mid_dark">#1A1A2E</color>   <!-- Deep Blue-Black -->
-    <color name="soft_gradient_end_dark">#16213E</color>   <!-- Soft Navy -->
-    
-    <color name="soft_gradient_start_light">#FFFFFF</color>
-    <color name="soft_gradient_mid_light">#E0E7FF</color>  <!-- Very pale blue -->
-    <color name="soft_gradient_end_light">#F3E8FF</color>  <!-- Very pale purple -->
+    <!-- Icon Colors - Light Theme -->
+    <color name="icon_primary">#3B82F6</color>
+    <color name="icon_secondary">#64748B</color>
+    <color name="icon_accent">#8B5CF6</color>
+    <color name="icon_success">#10B981</color>
 
-    <!-- Gradient Colors (Premium Effects) -->
+    <!-- Glassmorphism - Light Theme -->
+    <color name="glass_stroke_dark">#1FFFFFFF</color>
+    <color name="glass_stroke_light">#1F000000</color>
+    <color name="glass_overlay">#F8FAFC</color>
+    <color name="glass_border">#E2E8F0</color>
+    
+    <!-- Soft Gradient Colors -->
+    <color name="soft_gradient_start_dark">#0A0E14</color>
+    <color name="soft_gradient_mid_dark">#0D1117</color>
+    <color name="soft_gradient_end_dark">#0F141A</color>
+    <color name="soft_gradient_start_light">#FFFFFF</color>
+    <color name="soft_gradient_mid_light">#F1F5F9</color>
+    <color name="soft_gradient_end_light">#F8FAFC</color>
+
+    <!-- Gradient Colors for Premium Effects -->
+    <color name="gradient_start">#F8FAFC</color>
+    <color name="gradient_end">#FFFFFF</color>
     <color name="gradient_hero_start">#00000000</color>
-    <color name="gradient_hero_end">#121212</color> <!-- Matches bg_dark -->
-    <color name="gradient_hero_end_light">#F5F5F7</color> <!-- Matches bg_light -->
+    <color name="gradient_hero_end">#0A0E14</color>
+    <color name="gradient_hero_end_light">#F8FAFC</color>
+    <color name="gradient_primary_start">#EFF6FF</color>
+    <color name="gradient_primary_middle">#DBEAFE</color>
+    <color name="gradient_primary_end">#3B82F6</color>
+    <color name="gradient_card_start">#FFFFFF</color>
+    <color name="gradient_card_end">#F8FAFC</color>
+    <color name="gradient_accent_start">#F5F3FF</color>
+    <color name="gradient_accent_end">#8B5CF6</color>
     
     <color name="overlay_dark">#99000000</color>
     <color name="overlay_light">#40000000</color>
@@ -69,69 +113,57 @@
     <color name="badge_movie">#3B82F6</color>
     <color name="badge_tv">#F59E0B</color>
     <color name="badge_rating">#FBBF24</color>
+    <color name="movie_badge">@color/badge_movie</color>
+    <color name="tv_badge">@color/badge_tv</color>
 
     <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- Material 3 Token Mapping (Defaulting to Dark for preview) -->
+    <!-- Material 3 Token Mapping - Light Theme -->
     <!-- ═══════════════════════════════════════════════════════════════ -->
     <color name="md_theme_light_primary">#3B82F6</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
-    <color name="md_theme_light_primaryContainer">#EFF6FF</color>
+    <color name="md_theme_light_primaryContainer">#DBEAFE</color>
     <color name="md_theme_light_onPrimaryContainer">#1E3A8A</color>
-    <color name="md_theme_light_secondary">#64748B</color>
+    <color name="md_theme_light_secondary">#8B5CF6</color>
     <color name="md_theme_light_onSecondary">#FFFFFF</color>
-    <color name="md_theme_light_background">#F5F5F7</color>
-    <color name="md_theme_light_onBackground">#111827</color>
+    <color name="md_theme_light_secondaryContainer">#EDE9FE</color>
+    <color name="md_theme_light_onSecondaryContainer">#4C1D95</color>
+    <color name="md_theme_light_background">#FFFFFF</color>
+    <color name="md_theme_light_onBackground">#0F172A</color>
     <color name="md_theme_light_surface">#FFFFFF</color>
-    <color name="md_theme_light_onSurface">#111827</color>
+    <color name="md_theme_light_onSurface">#0F172A</color>
 
-    <color name="md_theme_dark_primary">#60A5FA</color>
-    <color name="md_theme_dark_onPrimary">#0F172A</color>
-    <color name="md_theme_dark_primaryContainer">#1E3A8A</color>
-    <color name="md_theme_dark_onPrimaryContainer">#DBEAFE</color>
-    <color name="md_theme_dark_secondary">#94A3B8</color>
-    <color name="md_theme_dark_onSecondary">#0F172A</color>
-    <color name="md_theme_dark_background">#121212</color>
-    <color name="md_theme_dark_onBackground">#FFFFFF</color>
-    <color name="md_theme_dark_surface">#1E1E1E</color>
-    <color name="md_theme_dark_onSurface">#FFFFFF</color>
+    <!-- Material 3 Token Mapping - Dark Theme (for reference) -->
+    <color name="md_theme_dark_primary">#5DA0FF</color>
+    <color name="md_theme_dark_onPrimary">#0B1220</color>
+    <color name="md_theme_dark_primaryContainer">#0D1B32</color>
+    <color name="md_theme_dark_onPrimaryContainer">#D7E6FF</color>
+    <color name="md_theme_dark_secondary">#A78BFA</color>
+    <color name="md_theme_dark_onSecondary">#0B1220</color>
+    <color name="md_theme_dark_background">#0A0E14</color>
+    <color name="md_theme_dark_onBackground">#F1F5F9</color>
+    <color name="md_theme_dark_surface">#0D1117</color>
+    <color name="md_theme_dark_onSurface">#F1F5F9</color>
 
-    <!-- Deprecated/Compat (Mapping to new) -->
-    <color name="app_bg">#121212</color>
-    <color name="card_bg">#1E1E1E</color>
-    <color name="primary_text">#FFFFFF</color>
-    <color name="secondary_text">#B3B3B3</color>
-
+    <!-- Additional UI Colors -->
     <color name="primary_alpha_15">#263B82F6</color>
-
-    <!-- Missing Colors Fix -->
-    <color name="primaryContainer">@color/md_theme_dark_primaryContainer</color>
-    <color name="movie_badge">@color/badge_movie</color>
-    <color name="tv_badge">@color/badge_tv</color>
+    <color name="primaryContainer">@color/md_theme_light_primaryContainer</color>
     <color name="surface_light_alpha_05">#0DFFFFFF</color>
     <color name="surface_light_alpha_08">#14FFFFFF</color>
-    <color name="surface">@color/background_surface_dark</color>
-    <color name="surface_variant">@color/background_elevated_dark</color>
-    <color name="surface_elevated">@color/background_primary_light</color>
-    <color name="border">#E5E7EB</color>
     <color name="rose">#E11D48</color>
     <color name="error_alpha_15">#26EF4444</color>
-    <color name="success_light">#6EE7B7</color>
     <color name="gold">#FFD700</color>
     <color name="rating_star">@color/gold</color>
-    <color name="text_on_dark">#FFFFFF</color>
+    <color name="primary_variant">#1D4ED8</color>
+    <color name="card_background">#FFFFFF</color>
 
-    <!-- Gradient Colors for bg_app_gradient -->
-    <color name="gradient_start">@color/background_primary_light</color>
-    <color name="gradient_end">@color/background_surface_light</color>
+    <!-- Shimmer Colors - Light Theme -->
+    <color name="shimmer_base">#E2E8F0</color>
+    <color name="shimmer_highlight">#F1F5F9</color>
 
-    <!-- Shimmer Colors (Light Theme) -->
-    <color name="shimmer_base">#E5E7EB</color>
-    <color name="shimmer_highlight">#F3F4F6</color>
-
-    <!-- Calendar accents (light-friendly, neutral) -->
-    <color name="calendar_selected_start">#E7ECFF</color>
-    <color name="calendar_selected_end">#D9E4FF</color>
-    <color name="calendar_selected_stroke">#C7D2FE</color>
+    <!-- Calendar accents -->
+    <color name="calendar_selected_start">#DBEAFE</color>
+    <color name="calendar_selected_end">#BFDBFE</color>
+    <color name="calendar_selected_stroke">#93C5FD</color>
     <color name="calendar_today_ring">#803B82F6</color>
     <color name="calendar_dot_start">#3B82F6</color>
     <color name="calendar_dot_end">#2563EB</color>
@@ -139,12 +171,22 @@
     <color name="calendar_badge_end">#E11D48</color>
     <color name="calendar_badge_stroke">#FFF1F5</color>
 
-    <!-- Additional UI Colors -->
-    <color name="primary_variant">#1D4ED8</color>
-    <color name="card_background">#FFFFFF</color>
-    
     <!-- Genre Chip Colors -->
-    <color name="chip_genre_bg">#20FFFFFF</color>
-    <color name="chip_genre_text">#E0E0E0</color>
-    <color name="chip_stroke_color">#40FFFFFF</color>
+    <color name="chip_genre_bg">#F1F5F9</color>
+    <color name="chip_genre_text">#64748B</color>
+    <color name="chip_stroke_color">#E2E8F0</color>
+    
+    <!-- Theme-aware UI Element Colors - LIGHT THEME -->
+    <color name="card_background_alpha">#FFFFFF</color>
+    <color name="card_background_glass">#F8FAFC</color>
+    <color name="input_background">#FFFFFF</color>
+    <color name="input_stroke">#CBD5E1</color>
+    <color name="input_hint">#94A3B8</color>
+    <color name="tab_text_inactive">#64748B</color>
+    <color name="icon_tint_inactive">#94A3B8</color>
+    <color name="separator">#E2E8F0</color>
+    <color name="tab_indicator">#3B82F6</color>
+    <color name="ripple_color">#1F3B82F6</color>
+    <color name="track_inactive">#E2E8F0</color>
+    <color name="button_stroke">#E2E8F0</color>
 </resources>

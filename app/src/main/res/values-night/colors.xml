@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Ultra-Dark Modern Theme - Sleek Deep Navy/Black -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- DARK THEME - Premium Deep Dark Design -->
+    <!-- Base: Deep navy-black #0A0E14 / Surface: #0D1117 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    
+    <!-- Material 3 Theme Colors -->
     <color name="md_theme_dark_primary">#5DA0FF</color>
     <color name="md_theme_dark_onPrimary">#0B1220</color>
     <color name="md_theme_dark_primaryContainer">#0D1B32</color>
     <color name="md_theme_dark_onPrimaryContainer">#D7E6FF</color>
-    <color name="md_theme_dark_secondary">#5DA0FF</color>
+    <color name="md_theme_dark_secondary">#A78BFA</color>
     <color name="md_theme_dark_onSecondary">#0B1220</color>
-    <color name="md_theme_dark_secondaryContainer">#132137</color>
-    <color name="md_theme_dark_onSecondaryContainer">#D7E6FF</color>
+    <color name="md_theme_dark_secondaryContainer">#1E1338</color>
+    <color name="md_theme_dark_onSecondaryContainer">#E0D7FF</color>
     <color name="md_theme_dark_tertiary">#4FD68F</color>
     <color name="md_theme_dark_onTertiary">#03130B</color>
     <color name="md_theme_dark_tertiaryContainer">#0B2A1A</color>
@@ -17,80 +22,106 @@
     <color name="md_theme_dark_errorContainer">#5C0A0A</color>
     <color name="md_theme_dark_onError">#FFFFFF</color>
     <color name="md_theme_dark_onErrorContainer">#FFD8D0</color>
-    <color name="md_theme_dark_background">#050607</color>
+    <color name="md_theme_dark_background">#0A0E14</color>
     <color name="md_theme_dark_onBackground">#E5E7EB</color>
     <color name="md_theme_dark_surface">#0D1117</color>
     <color name="md_theme_dark_onSurface">#E5E7EB</color>
 
-    <!-- App specific ultra-dark colors -->
-    <color name="app_bg">#050607</color>
-    <color name="card_bg">#0F1419</color>
-    <color name="card_bg_elevated">#151B24</color>
+    <!-- App Core Background Colors -->
+    <color name="app_bg">#0A0E14</color>
+    <color name="background">#0A0E14</color>
+    <color name="background_primary_dark">#0A0E14</color>
+    <color name="background_surface_dark">#0D1117</color>
+    <color name="background_elevated_dark">#151B24</color>
     
-    <!-- Primary colors -->
+    <!-- Card & Surface Colors -->
+    <color name="card_bg">#0D1117</color>
+    <color name="card_bg_elevated">#151B24</color>
+    <color name="surface">#0D1117</color>
+    <color name="surface_variant">#151B24</color>
+    <color name="surface_elevated">#1A212B</color>
+    <color name="surface_card">#0D1117</color>
+    <color name="stat_card_bg">#0D1117</color>
+    <color name="glass_background_dark">#CC0D1117</color>
+    
+    <!-- Primary Brand Colors -->
     <color name="primary">#5DA0FF</color>
     <color name="primary_dark">#3C7AD9</color>
     <color name="primary_light">#8CC0FF</color>
     
-    <!-- Accent colors -->
-    <color name="accent">#5DA0FF</color>
-    <color name="accent_light">#8CC0FF</color>
-    <color name="accent_dark">#3C7AD9</color>
+    <!-- Accent Colors -->
+    <color name="accent">#A78BFA</color>
+    <color name="accent_light">#C4B5FD</color>
+    <color name="accent_dark">#7C3AED</color>
 
-    <!-- Light theme color overrides for dark mode -->
-    <color name="primary_text">#E5E7EB</color>
-    <color name="secondary_text">#9CA3AF</color>
-    <color name="tertiary_text">#6B7280</color>
-    <color name="muted_text">#4B5563</color>
-    <color name="surface">#0D1117</color>
-    <color name="surface_variant">#121824</color>
-    <color name="surface_elevated">#121824</color>
-    <color name="divider">#1F2734</color>
-    <color name="border">#1F2734</color>
-    
-    <!-- New Modern UI Colors for Dark Theme -->
-    <color name="background">#050607</color>
-    <color name="surface_card">#0D1117</color>
-    <color name="stat_card_bg">#0D1117</color>
-    <color name="text_primary">#E5E7EB</color>
-    <color name="text_secondary">#9CA3AF</color>
-    <color name="text_hint">#6B7280</color>
+    <!-- Text Colors -->
+    <color name="text_primary_dark">#F1F5F9</color>
+    <color name="text_secondary_dark">#94A3B8</color>
+    <color name="text_tertiary_dark">#64748B</color>
+    <color name="primary_text">#F1F5F9</color>
+    <color name="secondary_text">#94A3B8</color>
+    <color name="tertiary_text">#64748B</color>
+    <color name="muted_text">#475569</color>
+    <color name="text_primary">#F1F5F9</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_hint">#64748B</color>
     <color name="text_on_dark">#FFFFFF</color>
-    <color name="text_on_accent">#050607</color>
+    <color name="text_on_accent">#0A0E14</color>
     
-    <!-- Semantic Action Colors -->
+    <!-- Dividers & Borders -->
+    <color name="divider_dark">#1E293B</color>
+    <color name="divider">#1E293B</color>
+    <color name="border">#1E293B</color>
+    
+    <!-- Icon Colors -->
     <color name="icon_primary">#5DA0FF</color>
-    <color name="icon_secondary">#9CA3AF</color>
-    <color name="icon_accent">#5DA0FF</color>
+    <color name="icon_secondary">#94A3B8</color>
+    <color name="icon_accent">#A78BFA</color>
     <color name="icon_success">#4FD68F</color>
     
     <!-- Status Colors -->
     <color name="success">#4FD68F</color>
     <color name="error">#FF6B5B</color>
     <color name="warning">#FFB84D</color>
-    <color name="info">#6BA3FF</color>
+    <color name="info">#5DA0FF</color>
 
-    <!-- Gradient Colors -->
+    <!-- Gradient Colors - Premium Effects -->
+    <color name="gradient_start">#0A0E14</color>
+    <color name="gradient_end">#0D1117</color>
     <color name="gradient_primary_start">#0A1529</color>
     <color name="gradient_primary_middle">#152B4A</color>
-    <color name="gradient_primary_end">#6BA3FF</color>
-
-    <color name="gradient_card_start">#0F1419</color>
+    <color name="gradient_primary_end">#5DA0FF</color>
+    <color name="gradient_card_start">#0D1117</color>
     <color name="gradient_card_end">#151B24</color>
+    <color name="gradient_accent_start">#1A1338</color>
+    <color name="gradient_accent_end">#A78BFA</color>
 
-    <color name="gradient_accent_start">#1A2F4F</color>
-    <color name="gradient_accent_end">#6BA3FF</color>
-
-    <!-- Glass effect colors -->
-    <color name="glass_overlay">#050607</color>
+    <!-- Glass Effect Colors -->
+    <color name="glass_overlay">#0A0E14</color>
     <color name="glass_border">#2A333F</color>
+    <color name="glass_stroke_dark">#1AFFFFFF</color>
 
-    <!-- Shimmer colors -->
-    <color name="shimmer_base">#0F1419</color>
-    <color name="shimmer_highlight">#151B24</color>
+    <!-- Shimmer Effect -->
+    <color name="shimmer_base">#0D1117</color>
+    <color name="shimmer_highlight">#1A212B</color>
 
-    <!-- Gradient Colors for bg_app_gradient -->
-    <color name="gradient_start">@color/background_primary_dark</color>
-    <color name="gradient_end">@color/background_surface_dark</color>
+    <!-- Soft Gradient Colors for backgrounds -->
+    <color name="soft_gradient_start_dark">#0A0E14</color>
+    <color name="soft_gradient_mid_dark">#0D1117</color>
+    <color name="soft_gradient_end_dark">#0F141A</color>
+    
+    <!-- Theme-aware UI Element Colors - DARK THEME -->
+    <color name="card_background_alpha">#15FFFFFF</color>
+    <color name="card_background_glass">#0D1117</color>
+    <color name="input_background">#18FFFFFF</color>
+    <color name="input_stroke">#20FFFFFF</color>
+    <color name="input_hint">#60FFFFFF</color>
+    <color name="tab_text_inactive">#80FFFFFF</color>
+    <color name="icon_tint_inactive">#60FFFFFF</color>
+    <color name="separator">#30FFFFFF</color>
+    <color name="tab_indicator">#FFFFFF</color>
+    <color name="ripple_color">#20FFFFFF</color>
+    <color name="track_inactive">#20FFFFFF</color>
+    <color name="button_stroke">#40FFFFFF</color>
 </resources>
 

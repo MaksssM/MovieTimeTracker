@@ -1,47 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Premium search result card background -->
+<!-- Search result card - LIGHT THEME -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <!-- Soft outer glow with color -->
+    <!-- Subtle shadow -->
     <item
-        android:left="-1dp"
-        android:right="-1dp"
-        android:top="-1dp"
-        android:bottom="-1dp">
+        android:left="2dp"
+        android:right="2dp"
+        android:top="2dp"
+        android:bottom="0dp">
         <shape android:shape="rectangle">
             <corners android:radius="22dp" />
-            <gradient
-                android:angle="135"
-                android:startColor="#0C60A5FA"
-                android:centerColor="#08C084FC"
-                android:endColor="#0C60A5FA"
-                android:type="linear" />
+            <solid android:color="#08000000" />
         </shape>
     </item>
     
-    <!-- Glass background with improved gradient -->
+    <!-- Solid white background -->
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="20dp" />
-            <gradient
-                android:angle="145"
-                android:startColor="#25FFFFFF"
-                android:centerColor="#15FFFFFF"
-                android:endColor="#0AFFFFFF"
-                android:type="linear" />
-        </shape>
-    </item>
-    
-    <!-- Top shine effect -->
-    <item>
-        <shape android:shape="rectangle">
-            <corners android:radius="20dp" />
-            <gradient
-                android:angle="90"
-                android:startColor="#00FFFFFF"
-                android:centerColor="#08FFFFFF"
-                android:endColor="#00FFFFFF"
-                android:type="linear" />
+            <solid android:color="#FFFFFF" />
         </shape>
     </item>
     
@@ -51,7 +28,7 @@
             <corners android:radius="20dp" />
             <stroke
                 android:width="1dp"
-                android:color="#18FFFFFF" />
+                android:color="#E2E8F0" />
             <solid android:color="#00000000" />
         </shape>
     </item>

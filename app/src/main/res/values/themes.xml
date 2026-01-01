@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base Application Theme теперь светлая -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- BASE APPLICATION THEME - Light Mode Default -->
+    <!-- Uses DayNight for automatic light/dark switching -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    
     <style name="Theme.MovieTimeTracker" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+        <!-- Brand Colors -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/accent</item>
@@ -11,44 +16,50 @@
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/white</item>
 
-        <!-- Светлые поверхности и тексты -->
-        <item name="colorSurface">@color/background_surface_light</item>
-        <item name="colorOnSurface">@color/text_primary_light</item>
-        <item name="colorSurfaceVariant">@color/background_elevated_light</item>
+        <!-- Surface & Background Colors - Light -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorOnBackground">@color/text_primary</item>
 
-        <!-- Status Bar -->
-        <item name="android:statusBarColor">?attr/colorSurface</item>
-        <item name="android:windowLightStatusBar">true</item> <!-- Will track DayNight automatically -->
+        <!-- Status Bar - Light -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        
+        <!-- App Background with Premium Effects -->
         <item name="android:windowBackground">@drawable/bg_app_soft_mesh</item>
         
         <!-- Typography -->
-         <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">sans-serif</item>
         
-        <!-- Material3 compatibility attributes -->
-        <item name="colorOutlineVariant">@color/divider_light</item>
-        <item name="colorOnSurfaceVariant">@color/text_secondary_light</item>
+        <!-- Outline & Dividers -->
+        <item name="colorOutline">@color/divider</item>
+        <item name="colorOutlineVariant">@color/divider</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
     </style>
 
-    <!-- Light Theme Overrides оставлены для совместимости -->
+    <!-- Light Theme Explicit Override -->
     <style name="Theme.MovieTimeTracker.Light" parent="Theme.MovieTimeTracker">
-        <item name="android:colorBackground">@color/soft_gradient_start_light</item>
-        <item name="colorSurface">@color/background_surface_light</item>
-        <item name="colorOnSurface">@color/text_primary_light</item>
-        <item name="colorOnBackground">@color/text_primary_light</item>
-        <item name="colorOutline">@color/divider_light</item>
-        <item name="colorOutlineVariant">@color/divider_light</item>
-        <item name="colorOnSurfaceVariant">@color/text_secondary_light</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorOutline">@color/divider</item>
+        <item name="colorOutlineVariant">@color/divider</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <!-- Dark Theme Overrides в values-night -->
+    <!-- Dark Theme Explicit Override -->
     <style name="Theme.MovieTimeTracker.Dark" parent="Theme.MovieTimeTracker">
-        <item name="android:colorBackground">@color/soft_gradient_start_dark</item>
-        <item name="colorSurface">@color/glass_background_dark</item> <!-- Glassy surface -->
-        <item name="colorOnSurface">@color/text_primary_dark</item>
-        <item name="colorOnBackground">@color/text_primary_dark</item>
-        <item name="colorOutline">@color/divider_dark</item>
-        <item name="colorOutlineVariant">@color/divider_dark</item>
-        <item name="colorOnSurfaceVariant">@color/text_secondary_dark</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorOutline">@color/divider</item>
+        <item name="colorOutlineVariant">@color/divider</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
 

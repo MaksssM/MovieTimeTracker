@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <!-- Base gradient -->
+    <!-- Clean light base -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:type="linear"
-                android:startColor="@color/gradient_start"
-                android:centerColor="@color/gradient_end"
-                android:endColor="@color/gradient_start"
-                android:angle="315" />
+                android:startColor="#FFF8FAFC"
+                android:centerColor="#FFFFFFFF"
+                android:endColor="#FFF1F5F9"
+                android:angle="160" />
         </shape>
     </item>
     
-    <!-- Soft mesh overlay for depth -->
+    <!-- Soft blue glow overlay -->
     <item>
         <shape android:shape="rectangle">
             <gradient
@@ -21,12 +21,12 @@
                 android:gradientRadius="70%p"
                 android:centerX="85%"
                 android:centerY="15%"
-                android:startColor="#10A855F7"
+                android:startColor="#103B82F6"
                 android:endColor="#00000000" />
         </shape>
     </item>
     
-    <!-- Secondary accent glow -->
+    <!-- Secondary purple accent glow -->
     <item>
         <shape android:shape="rectangle">
             <gradient
@@ -34,7 +34,7 @@
                 android:gradientRadius="60%p"
                 android:centerX="15%"
                 android:centerY="85%"
-                android:startColor="#083B82F6"
+                android:startColor="#108B5CF6"
                 android:endColor="#00000000" />
         </shape>
     </item>
