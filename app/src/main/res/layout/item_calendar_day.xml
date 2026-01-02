@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
-        android:textColor="#B0FFFFFF"
+        android:textColor="@color/text_on_dark_secondary"
         android:textSize="15sp"
         android:letterSpacing="0.02"
         app:layout_constraintBottom_toBottomOf="@+id/dayBackground"

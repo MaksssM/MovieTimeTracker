@@ -3,10 +3,16 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     
     <!-- Background -->
+    <!-- Glass background with gradient -->
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="20dp" />
-            <solid android:color="#20FFFFFF" />
+            <gradient
+                android:angle="135"
+                android:startColor="#08FFFFFF"
+                android:centerColor="#05FFFFFF"
+                android:endColor="#00FFFFFF"
+                android:type="linear" />
         </shape>
     </item>
     

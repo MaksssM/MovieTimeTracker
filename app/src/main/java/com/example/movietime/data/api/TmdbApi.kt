@@ -64,14 +64,16 @@ interface TmdbApi {
     suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String,
-        @Query("language") language: String = "en-US"
+        @Query("language") language: String = "en-US",
+        @Query("append_to_response") appendToResponse: String? = null
     ): MovieResult
 
     @GET("tv/{tv_id}")
     suspend fun getTvShowDetails(
         @Path("tv_id") tvId: Int,
         @Query("api_key") apiKey: String,
-        @Query("language") language: String = "en-US"
+        @Query("language") language: String = "en-US",
+        @Query("append_to_response") appendToResponse: String? = null
     ): TvShowResult
 
     // Отримати детальну інформацію про конкретний сезон

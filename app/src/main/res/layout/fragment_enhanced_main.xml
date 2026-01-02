@@ -91,7 +91,7 @@
                         android:maxLines="1"
                         android:ellipsize="end" />
 
-                    <!-- Total Time Card - Premium Glass Style -->
+                    <!-- Total Time Card - Premium Widget -->
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -104,79 +104,211 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_stat_card_premium">
+                            android:background="@drawable/bg_stats_widget_premium">
+
+                            <!-- Decorative elements -->
+                            <View
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:layout_gravity="top|end"
+                                android:layout_marginTop="-30dp"
+                                android:layout_marginEnd="-30dp"
+                                android:background="@drawable/bg_floating_orb_primary"
+                                android:alpha="0.15" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:padding="24dp"
-                                android:gravity="center_vertical">
+                                android:orientation="vertical"
+                                android:padding="24dp">
 
-                                <!-- Total Time -->
+                                <!-- Header with icon -->
                                 <LinearLayout
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:layout_marginBottom="20dp">
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/total_watch_time"
-                                        android:textColor="@color/text_secondary"
-                                        android:textSize="13sp"
-                                        android:fontFamily="sans-serif-medium"
-                                        android:letterSpacing="0.08"
-                                        android:textAllCaps="true" />
+                                    <FrameLayout
+                                        android:layout_width="44dp"
+                                        android:layout_height="44dp"
+                                        android:background="@drawable/bg_icon_glow_primary">
 
-                                    <TextView
-                                        android:id="@+id/tvTotalTime"
-                                        android:layout_width="wrap_content"
+                                        <ImageView
+                                            android:layout_width="22dp"
+                                            android:layout_height="22dp"
+                                            android:layout_gravity="center"
+                                            android:src="@drawable/ic_play_circle_24"
+                                            app:tint="@android:color/white" />
+
+                                    </FrameLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginTop="10dp"
-                                        android:textColor="#60A5FA"
-                                        android:textSize="32sp"
-                                        android:textStyle="bold"
-                                        android:fontFamily="sans-serif-medium"
-                                        tools:text="125 год" />
+                                        android:layout_weight="1"
+                                        android:layout_marginStart="16dp"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/total_watch_time"
+                                            android:textColor="@color/text_secondary"
+                                            android:textSize="12sp"
+                                            android:fontFamily="sans-serif-medium"
+                                            android:textAllCaps="true"
+                                            android:letterSpacing="0.05" />
+
+                                        <TextView
+                                            android:id="@+id/tvTotalTime"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="4dp"
+                                            android:textColor="@color/text_primary"
+                                            android:textSize="32sp"
+                                            android:textStyle="bold"
+                                            android:fontFamily="sans-serif-medium"
+                                            tools:text="125 год" />
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
 
+                                <!-- Divider -->
                                 <View
-                                    android:layout_width="1dp"
-                                    android:layout_height="60dp"
-                                    android:layout_marginHorizontal="20dp"
-                                    android:background="@color/separator" />
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/divider"
+                                    android:alpha="0.5" />
 
-                                <!-- This Month -->
+                                <!-- Stats row -->
                                 <LinearLayout
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical"
-                                    android:gravity="center">
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="20dp"
+                                    android:baselineAligned="false">
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
+                                    <!-- This Month -->
+                                    <LinearLayout
+                                        android:layout_width="0dp"
                                         android:layout_height="wrap_content"
-                                        android:text="@string/this_month"
-                                        android:textColor="@color/text_secondary"
-                                        android:textSize="13sp"
-                                        android:fontFamily="sans-serif-medium"
-                                        android:letterSpacing="0.08"
-                                        android:textAllCaps="true" />
+                                        android:layout_weight="1"
+                                        android:orientation="vertical"
+                                        android:gravity="center">
 
-                                    <TextView
-                                        android:id="@+id/tvThisMonthCount"
-                                        android:layout_width="wrap_content"
+                                        <ImageView
+                                            android:layout_width="20dp"
+                                            android:layout_height="20dp"
+                                            android:src="@drawable/ic_calendar_24"
+                                            app:tint="@color/accent_purple_light" />
+
+                                        <TextView
+                                            android:id="@+id/tvThisMonthCount"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="8dp"
+                                            android:textColor="@color/text_primary"
+                                            android:textSize="22sp"
+                                            android:textStyle="bold"
+                                            android:fontFamily="sans-serif-medium"
+                                            tools:text="8" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="4dp"
+                                            android:text="@string/this_month"
+                                            android:textColor="@color/text_secondary"
+                                            android:textSize="11sp" />
+
+                                    </LinearLayout>
+
+                                    <!-- Vertical divider -->
+                                    <View
+                                        android:layout_width="1dp"
+                                        android:layout_height="50dp"
+                                        android:background="@color/divider"
+                                        android:alpha="0.5" />
+
+                                    <!-- Movies count -->
+                                    <LinearLayout
+                                        android:layout_width="0dp"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginTop="10dp"
-                                        android:textColor="#C084FC"
-                                        android:textSize="32sp"
-                                        android:textStyle="bold"
-                                        android:fontFamily="sans-serif-medium"
-                                        tools:text="8" />
+                                        android:layout_weight="1"
+                                        android:orientation="vertical"
+                                        android:gravity="center">
+
+                                        <ImageView
+                                            android:layout_width="20dp"
+                                            android:layout_height="20dp"
+                                            android:src="@drawable/ic_movie_24"
+                                            app:tint="@color/primary_light" />
+
+                                        <TextView
+                                            android:id="@+id/tvMoviesCountWidget"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="8dp"
+                                            android:textColor="@color/text_primary"
+                                            android:textSize="22sp"
+                                            android:textStyle="bold"
+                                            android:fontFamily="sans-serif-medium"
+                                            tools:text="45" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="4dp"
+                                            android:text="@string/movies"
+                                            android:textColor="@color/text_secondary"
+                                            android:textSize="11sp" />
+
+                                    </LinearLayout>
+
+                                    <!-- Vertical divider -->
+                                    <View
+                                        android:layout_width="1dp"
+                                        android:layout_height="50dp"
+                                        android:background="@color/divider"
+                                        android:alpha="0.5" />
+
+                                    <!-- TV Shows count -->
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical"
+                                        android:gravity="center">
+
+                                        <ImageView
+                                            android:layout_width="20dp"
+                                            android:layout_height="20dp"
+                                            android:src="@drawable/ic_tv_24"
+                                            app:tint="@color/success_green_light" />
+
+                                        <TextView
+                                            android:id="@+id/tvTvShowsCountWidget"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="8dp"
+                                            android:textColor="@color/text_primary"
+                                            android:textSize="22sp"
+                                            android:textStyle="bold"
+                                            android:fontFamily="sans-serif-medium"
+                                            tools:text="12" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="4dp"
+                                            android:text="@string/tv_shows"
+                                            android:textColor="@color/text_secondary"
+                                            android:textSize="11sp" />
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
 
@@ -521,7 +653,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
-                                    android:textColor="#60A5FA"
+                                    android:textColor="@color/primary_light"
                                     android:textSize="28sp"
                                     android:textStyle="bold"
                                     android:fontFamily="sans-serif-medium"
@@ -589,7 +721,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
-                                    android:textColor="#C084FC"
+                                    android:textColor="@color/accent_purple_light"
                                     android:textSize="28sp"
                                     android:textStyle="bold"
                                     android:fontFamily="sans-serif-medium"
@@ -675,7 +807,7 @@
                                 android:id="@+id/tvWatchingCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="#34D399"
+                                android:textColor="@color/success_green_light"
                                 android:textSize="36sp"
                                 android:textStyle="bold"
                                 android:fontFamily="sans-serif-medium"
@@ -712,11 +844,11 @@
                         
                 </LinearLayout>
 
-                <!-- Quick Actions Grid - 2x2 -->
+                <!-- Quick Actions Grid - 3x2 -->
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:columnCount="4"
+                    android:columnCount="3"
                     android:layout_marginBottom="16dp"
                     android:useDefaultMargins="false">
 
@@ -731,7 +863,7 @@
                         app:strokeWidth="0dp"
                         android:clickable="true"
                         android:focusable="true"
-                        app:rippleColor="#6060A5FA"
+                        android:foreground="@drawable/ripple_rounded_20dp"
                         app:cardBackgroundColor="@android:color/transparent">
 
                         <LinearLayout
@@ -747,7 +879,7 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_search_24"
-                                app:tint="#60A5FA"
+                                app:tint="@color/primary_light"
                                 android:contentDescription="@string/search" />
 
                             <TextView
@@ -776,7 +908,7 @@
                         app:strokeWidth="0dp"
                         android:clickable="true"
                         android:focusable="true"
-                        app:rippleColor="#6034D399"
+                        android:foreground="@drawable/ripple_rounded_20dp"
                         app:cardBackgroundColor="@android:color/transparent">
 
                         <LinearLayout
@@ -792,7 +924,7 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_trending_up_24"
-                                app:tint="#34D399"
+                                app:tint="@color/success_green_light"
                                 android:contentDescription="@string/trending" />
 
                             <TextView
@@ -821,7 +953,7 @@
                         app:strokeWidth="0dp"
                         android:clickable="true"
                         android:focusable="true"
-                        app:rippleColor="#60C084FC"
+                        android:foreground="@drawable/ripple_rounded_20dp"
                         app:cardBackgroundColor="@android:color/transparent">
 
                         <LinearLayout
@@ -837,7 +969,7 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_calendar_24"
-                                app:tint="#C084FC"
+                                app:tint="@color/accent_purple_light"
                                 android:contentDescription="@string/movie_premieres" />
 
                             <TextView
@@ -845,6 +977,96 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="@string/new_releases"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:ellipsize="none" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnCollections"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="@drawable/ripple_rounded_20dp"
+                        app:cardBackgroundColor="@android:color/transparent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingTop="18dp" android:paddingBottom="18dp"
+                            android:paddingHorizontal="8dp"
+                            android:gravity="center"
+                            android:background="@drawable/bg_quick_action_glass">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_folder"
+                                app:tint="#3B82F6"
+                                android:contentDescription="Колекції" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Колекції"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:ellipsize="none" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnYearInReview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="@drawable/ripple_rounded_20dp"
+                        app:cardBackgroundColor="@android:color/transparent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingTop="18dp" android:paddingBottom="18dp"
+                            android:paddingHorizontal="8dp"
+                            android:gravity="center"
+                            android:background="@drawable/bg_quick_action_glass">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_history"
+                                app:tint="#E11D48"
+                                android:contentDescription="Кінорік" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Кінорік"
                                 android:textColor="@color/text_primary"
                                 android:textSize="12sp"
                                 android:gravity="center"
@@ -866,7 +1088,7 @@
                         app:strokeWidth="0dp"
                         android:clickable="true"
                         android:focusable="true"
-                        app:rippleColor="#60FBBF24"
+                        android:foreground="@drawable/ripple_rounded_20dp"
                         app:cardBackgroundColor="@android:color/transparent">
 
                         <LinearLayout
@@ -982,7 +1204,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/see_all"
-                            android:textColor="#60A5FA"
+                            android:textColor="@color/primary_light"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:clickable="true"

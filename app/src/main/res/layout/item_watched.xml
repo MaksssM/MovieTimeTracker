@@ -45,7 +45,7 @@
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
                         android:contentDescription="@string/poster_description"
-                        android:background="#20FFFFFF"
+                        android:background="@color/card_background_alpha"
                         android:transitionName="poster_transition"
                         tools:src="@tools:sample/backgrounds/scenic" />
 
@@ -116,7 +116,7 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:src="@drawable/ic_calendar"
-                        app:tint="#60A5FA"
+                        app:tint="@color/primary_light"
                         android:contentDescription="@string/release_date" />
 
                     <TextView
@@ -161,7 +161,70 @@
 
             </LinearLayout>
 
+            <!-- Rewatch Count Badge -->
+            <LinearLayout
+                android:id="@+id/layoutRewatchCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_chip"
+                android:backgroundTint="#1510B981"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_replay_24"
+                    app:tint="#10B981"
+                    android:contentDescription="@string/rewatches" />
+
+                <TextView
+                    android:id="@+id/tvRewatchCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:textSize="13sp"
+                    android:textColor="#10B981"
+                    android:fontFamily="sans-serif-black"
+                    android:letterSpacing="0.02"
+                    tools:text="×3 разів" />
+
+            </LinearLayout>
+
         </LinearLayout>
+
+            <!-- Action Buttons Container -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <!-- Add Rewatch Button -->
+                <FrameLayout
+                    android:id="@+id/btnAddRewatch"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_quick_action_glass"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginBottom="8dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_replay_24"
+                        app:tint="#34D399"
+                        android:contentDescription="@string/add_rewatch" />
+                </FrameLayout>
 
             <!-- Delete Button with premium style -->
             <FrameLayout
@@ -170,19 +233,18 @@
                 android:layout_height="40dp"
                 android:background="@drawable/bg_quick_action_glass"
                 android:clickable="true"
-                android:focusable="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                android:focusable="true">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_delete_forever_24"
-                    app:tint="#F87171"
+                    app:tint="@color/error_light"
                     android:contentDescription="@string/delete" />
             </FrameLayout>
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

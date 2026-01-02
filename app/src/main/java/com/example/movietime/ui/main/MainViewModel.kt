@@ -29,18 +29,19 @@ class MainViewModel @Inject constructor(
     val listIsEmpty: LiveData<Boolean> = watchedList.map { it.isEmpty() }
 
     // New: total minutes across all watched items (treat null runtime as 0)
+    // Multiply runtime by watchCount to account for rewatches
     val totalMinutes: LiveData<Int> = watchedList.map { list ->
-        val sum = list.sumOf { it.runtime ?: 0 }
+        val sum = list.sumOf { (it.runtime ?: 0) * it.watchCount }
         // Log details for debugging
         val details = list.map { item ->
             val runtimeStr = if (item.runtime == null) "null" else item.runtime.toString()
-            "${item.title}(id:${item.id},type:${item.mediaType},runtime:$runtimeStr)"
+            "${item.title}(id:${item.id},type:${item.mediaType},runtime:$runtimeStr,count:${item.watchCount})"
         }
 
         val movieCount = list.count { it.mediaType == "movie" }
         val tvCount = list.count { it.mediaType == "tv" }
-        val movieRuntime = list.filter { it.mediaType == "movie" }.sumOf { it.runtime ?: 0 }
-        val tvRuntime = list.filter { it.mediaType == "tv" }.sumOf { it.runtime ?: 0 }
+        val movieRuntime = list.filter { it.mediaType == "movie" }.sumOf { (it.runtime ?: 0) * it.watchCount }
+        val tvRuntime = list.filter { it.mediaType == "tv" }.sumOf { (it.runtime ?: 0) * it.watchCount }
 
         Log.d("MainViewModel", "watchedList updated: total count=${list.size}, movies=$movieCount, tv=$tvCount")
         Log.d("MainViewModel", "Runtime breakdown: movies=$movieRuntime min, tv=$tvRuntime min, total=$sum min")
@@ -77,6 +78,17 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    // Increment watch count for rewatch
+    fun incrementWatchCount(item: WatchedItem) {
+        viewModelScope.launch {
+            try {
+                repository.incrementWatchCount(item.id, item.mediaType)
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Failed to increment watch count: ${e.message}")
+            }
+        }
+    }
+
     private val _statistics = MutableStateFlow(WatchedStatistics())
 
     fun getWatchedStatistics(): StateFlow<WatchedStatistics> = _statistics
@@ -86,7 +98,7 @@ class MainViewModel @Inject constructor(
             try {
                 // Load data from watched items only
                 repository.getWatchedItems().asFlow().collect { watchedItems ->
-                    val totalMinutes = watchedItems.sumOf { it.runtime ?: 0 }
+                    val totalMinutes = watchedItems.sumOf { (it.runtime ?: 0) * it.watchCount }
                     val movieCount = watchedItems.count { it.mediaType == "movie" }
                     val tvShowCount = watchedItems.count { it.mediaType == "tv" }
 

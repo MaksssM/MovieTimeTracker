@@ -21,6 +21,9 @@ class DetailsViewModel @Inject constructor(
     private val _item = MutableLiveData<Any?>()
     val item: LiveData<Any?> = _item
 
+    private val _watchedItem = MutableLiveData<WatchedItem?>()
+    val watchedItem: LiveData<WatchedItem?> = _watchedItem
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -28,26 +31,34 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 android.util.Log.d("DetailsViewModel", "Loading movie with ID: $movieId")
-                val response = repository.getMovieDetails(movieId)
-                android.util.Log.d("DetailsViewModel", "Movie loaded successfully: ${response.title}, runtime=${response.runtime}, backdrop=${response.backdropPath}, poster=${response.posterPath}")
-                _item.value = response
+                _isLoading.value = true
+                val movie = repository.getMovieDetails(movieId)
+                _item.value = movie
+                // Load watched status
+                _watchedItem.value = repository.getWatchedItemById(movieId, "movie")
             } catch (e: Exception) {
-                android.util.Log.e("DetailsViewModel", "Failed to load movie: ${e.message}", e)
+                android.util.Log.e("DetailsViewModel", "Error loading movie: ${e.message}")
                 _item.value = null
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
-    fun loadTvShow(tvId: Int) {
+    fun loadTvShow(tvShowId: Int) {
         viewModelScope.launch {
             try {
-                android.util.Log.d("DetailsViewModel", "Loading TV show with ID: $tvId")
-                val response = repository.getTvShowDetails(tvId)
-                android.util.Log.d("DetailsViewModel", "TV show loaded successfully: ${response.name}, backdrop=${response.backdropPath}, poster=${response.posterPath}")
-                _item.value = response
+                android.util.Log.d("DetailsViewModel", "Loading TV show with ID: $tvShowId")
+                _isLoading.value = true
+                val tvShow = repository.getTvShowDetails(tvShowId)
+                _item.value = tvShow
+                // Load watched status
+                _watchedItem.value = repository.getWatchedItemById(tvShowId, "tv")
             } catch (e: Exception) {
-                android.util.Log.e("DetailsViewModel", "Failed to load TV show: ${e.message}", e)
+                android.util.Log.e("DetailsViewModel", "Error loading TV show: ${e.message}")
                 _item.value = null
+            } finally {
+                _isLoading.value = false
             }
         }
     }

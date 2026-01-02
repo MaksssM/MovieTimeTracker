@@ -6,8 +6,19 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
-    entities = [WatchedItem::class, PlannedItem::class, WatchingItem::class, SearchHistoryItem::class, TvShowProgress::class],
-    version = 10,
+    entities = [
+        WatchedItem::class, 
+        PlannedItem::class, 
+        WatchingItem::class, 
+        SearchHistoryItem::class, 
+        TvShowProgress::class,
+        UserCollection::class,
+        CollectionItem::class,
+        RewatchEntry::class,
+        FollowedPerson::class,
+        YearlyStats::class
+    ],
+    version = 13,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -17,6 +28,13 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun watchingItemDao(): WatchingDao
     abstract fun searchHistoryDao(): SearchHistoryDao
     abstract fun tvShowProgressDao(): TvShowProgressDao
+    
+    // New DAOs for extended features
+    abstract fun userCollectionDao(): UserCollectionDao
+    abstract fun collectionItemDao(): CollectionItemDao
+    abstract fun rewatchDao(): RewatchDao
+    abstract fun followedPersonDao(): FollowedPersonDao
+    abstract fun yearlyStatsDao(): YearlyStatsDao
 
 
     companion object {
@@ -136,6 +154,114 @@ abstract class AppDatabase : RoomDatabase() {
                         PRIMARY KEY(`tvShowId`, `seasonNumber`, `episodeNumber`)
                     )"""
                 )
+            }
+        }
+        
+        val MIGRATION_10_11 = object : Migration(10, 11) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // User Collections table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `user_collections` (
+                        `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `name` TEXT NOT NULL,
+                        `description` TEXT,
+                        `coverImagePath` TEXT,
+                        `emoji` TEXT,
+                        `color` INTEGER,
+                        `createdAt` INTEGER NOT NULL,
+                        `updatedAt` INTEGER NOT NULL
+                    )
+                """)
+                
+                // Collection Items junction table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `collection_items` (
+                        `collectionId` INTEGER NOT NULL,
+                        `itemId` INTEGER NOT NULL,
+                        `mediaType` TEXT NOT NULL,
+                        `title` TEXT,
+                        `posterPath` TEXT,
+                        `addedAt` INTEGER NOT NULL,
+                        PRIMARY KEY(`collectionId`, `itemId`, `mediaType`),
+                        FOREIGN KEY(`collectionId`) REFERENCES `user_collections`(`id`) ON DELETE CASCADE
+                    )
+                """)
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_collection_items_collectionId` ON `collection_items` (`collectionId`)")
+                
+                // Rewatch Entries table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `rewatch_entries` (
+                        `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `itemId` INTEGER NOT NULL,
+                        `mediaType` TEXT NOT NULL,
+                        `title` TEXT,
+                        `posterPath` TEXT,
+                        `watchedAt` INTEGER NOT NULL,
+                        `userRating` REAL,
+                        `notes` TEXT,
+                        `watchTimeMinutes` INTEGER
+                    )
+                """)
+                
+                // Followed People table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `followed_people` (
+                        `personId` INTEGER PRIMARY KEY NOT NULL,
+                        `name` TEXT NOT NULL,
+                        `profilePath` TEXT,
+                        `knownForDepartment` TEXT,
+                        `followedAt` INTEGER NOT NULL,
+                        `notificationsEnabled` INTEGER NOT NULL DEFAULT 1
+                    )
+                """)
+                
+                // Yearly Stats table for Year in Review
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `yearly_stats` (
+                        `year` INTEGER PRIMARY KEY NOT NULL,
+                        `totalMovies` INTEGER NOT NULL DEFAULT 0,
+                        `totalTvEpisodes` INTEGER NOT NULL DEFAULT 0,
+                        `totalWatchTimeMinutes` INTEGER NOT NULL DEFAULT 0,
+                        `favoriteGenreId` INTEGER,
+                        `favoriteGenreName` TEXT,
+                        `favoriteActorId` INTEGER,
+                        `favoriteActorName` TEXT,
+                        `favoriteDirectorId` INTEGER,
+                        `favoriteDirectorName` TEXT,
+                        `topRatedItemId` INTEGER,
+                        `topRatedItemTitle` TEXT,
+                        `topRatedItemRating` REAL,
+                        `mostRewatchedItemId` INTEGER,
+                        `mostRewatchedItemTitle` TEXT,
+                        `mostRewatchedCount` INTEGER NOT NULL DEFAULT 0,
+                        `longestMovieId` INTEGER,
+                        `longestMovieTitle` TEXT,
+                        `longestMovieRuntime` INTEGER,
+                        `bingeWatchedSeriesId` INTEGER,
+                        `bingeWatchedSeriesTitle` TEXT,
+                        `uniqueGenresCount` INTEGER NOT NULL DEFAULT 0,
+                        `uniqueActorsCount` INTEGER NOT NULL DEFAULT 0,
+                        `uniqueDirectorsCount` INTEGER NOT NULL DEFAULT 0,
+                        `monthlyBreakdown` TEXT,
+                        `calculatedAt` INTEGER NOT NULL
+                    )
+                """)
+            }
+        }
+        
+        val MIGRATION_11_12 = object : Migration(11, 12) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add genreIds column to watched_items table
+                database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `genreIds` TEXT DEFAULT NULL")
+            }
+        }
+        
+        val MIGRATION_12_13 = object : Migration(12, 13) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add watchCount column to watched_items table if not exists
+                database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `watchCount` INTEGER NOT NULL DEFAULT 1")
+                // Add watchDate column to track last watch date
+                database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `watchDate` INTEGER DEFAULT NULL")
             }
         }
     }

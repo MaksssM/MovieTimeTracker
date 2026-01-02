@@ -68,6 +68,9 @@ class WatchedFragment : Fragment() {
             },
             onDeleteClick = { item ->
                 viewModel.deleteWatchedItem(item)
+            },
+            onRewatchClick = { item ->
+                viewModel.incrementWatchCount(item)
             }
         )
 

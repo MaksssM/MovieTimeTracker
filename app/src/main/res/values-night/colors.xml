@@ -111,6 +111,7 @@
     <color name="soft_gradient_end_dark">#0F141A</color>
     
     <!-- Theme-aware UI Element Colors - DARK THEME -->
+    <color name="bg_recent_activity_card">#30FFFFFF</color>
     <color name="card_background_alpha">#15FFFFFF</color>
     <color name="card_background_glass">#0D1117</color>
     <color name="input_background">#18FFFFFF</color>

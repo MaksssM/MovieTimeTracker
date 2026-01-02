@@ -110,7 +110,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:src="@drawable/ic_calendar"
-                    app:tint="#C084FC"
+                    app:tint="@color/accent_purple_light"
                     android:contentDescription="@string/release_date" />
 
                 <TextView
@@ -213,7 +213,7 @@
                 android:layout_height="18dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_close_24"
-                app:tint="#F87171"
+                app:tint="@color/error_light"
                 android:contentDescription="@string/delete" />
         </FrameLayout>
 

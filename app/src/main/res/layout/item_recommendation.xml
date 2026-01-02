@@ -8,8 +8,8 @@
     app:cardCornerRadius="18dp"
     app:cardElevation="0dp"
     app:strokeWidth="1dp"
-    app:strokeColor="#30A855F7"
-    app:cardBackgroundColor="#18A855F7">
+    app:strokeColor="@color/social_accent_alpha_stroke"
+    app:cardBackgroundColor="@color/social_accent_alpha_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                 app:cardCornerRadius="20dp"
                 app:cardElevation="2dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="#30A855F7">
+                app:strokeColor="@color/social_accent_alpha_stroke">
 
                 <ImageView
                     android:id="@+id/imgAvatar"
@@ -39,9 +39,9 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_person_24"
-                    android:background="#20A855F7"
+                    android:background="@color/social_accent_alpha_icon"
                     android:padding="9dp"
-                    app:tint="#A855F7"
+                    app:tint="@color/social_accent"
                     android:contentDescription="@null" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -65,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/recommends_you"
-                    android:textColor="#80FFFFFF"
+                    android:textColor="@color/text_on_dark_tertiary"
                     android:textSize="11sp" />
             </LinearLayout>
 
@@ -73,7 +73,7 @@
                 android:id="@+id/txtTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#60FFFFFF"
+                android:textColor="@color/text_on_dark_tertiary"
                 android:textSize="10sp"
                 tools:text="1h ago" />
         </LinearLayout>
@@ -85,7 +85,7 @@
             android:layout_marginTop="10dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#10FFFFFF">
+            app:cardBackgroundColor="@color/glass_surface_low">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -105,7 +105,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:background="#20FFFFFF"
+                        android:background="@color/glass_surface_high"
                         android:contentDescription="@null" />
                 </com.google.android.material.card.MaterialCardView>
 
@@ -132,7 +132,7 @@
                         android:id="@+id/txtMovieYear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#80FFFFFF"
+                        android:textColor="@color/text_on_dark_tertiary"
                         android:textSize="11sp"
                         android:layout_marginTop="2dp"
                         tools:text="2024 - Movie" />
@@ -146,7 +146,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textColor="#C0FFFFFF"
+            android:textColor="@color/text_on_dark_secondary"
             android:textSize="13sp"
             android:fontFamily="sans-serif-light"
             android:lineSpacingMultiplier="1.2"
@@ -179,7 +179,7 @@
                 android:text="@string/mark_read"
                 android:textAllCaps="false"
                 android:textSize="12sp"
-                app:backgroundTint="#A855F7"
+                app:backgroundTint="@color/social_accent"
                 app:cornerRadius="8dp" />
         </LinearLayout>
 

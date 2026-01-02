@@ -294,7 +294,8 @@ object Utils {
         mediaType: String,
         overview: String? = null,
         voteAverage: Double? = null,
-        userRating: Float? = null
+        userRating: Float? = null,
+        genreIds: List<Int>? = null
     ): WatchedItem {
         return WatchedItem(
             id = id,
@@ -305,7 +306,8 @@ object Utils {
             mediaType = mediaType,
             overview = overview,
             voteAverage = voteAverage,
-            userRating = userRating
+            userRating = userRating,
+            genreIds = genreIds?.joinToString(",")
         )
     }
 
@@ -348,7 +350,8 @@ object Utils {
             totalEpisodes = runtimeInfo.episodes,
             isOngoing = runtimeInfo.isOngoing,
             status = tvShow.status,
-            lastUpdated = System.currentTimeMillis()
+            lastUpdated = System.currentTimeMillis(),
+            genreIds = tvShow.genreIds?.joinToString(",")
         )
     }
 }

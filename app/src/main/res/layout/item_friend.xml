@@ -8,7 +8,7 @@
     app:cardCornerRadius="18dp"
     app:cardElevation="0dp"
     app:strokeWidth="0dp"
-    app:cardBackgroundColor="#15FFFFFF">
+    app:cardBackgroundColor="@color/glass_surface_high">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             app:cardCornerRadius="27dp"
             app:cardElevation="4dp"
             app:strokeWidth="2dp"
-            app:strokeColor="#3060A5FA">
+            app:strokeColor="@color/primary_light_alpha_stroke">
 
             <ImageView
                 android:id="@+id/imgAvatar"
@@ -32,9 +32,9 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_person_24"
-                android:background="#2060A5FA"
+                android:background="@color/primary_light_alpha_bg"
                 android:padding="12dp"
-                app:tint="#60A5FA"
+                app:tint="@color/primary_light"
                 android:contentDescription="@null" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -59,7 +59,7 @@
                 android:id="@+id/txtUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#80FFFFFF"
+                android:textColor="@color/text_on_dark_tertiary"
                 android:textSize="13sp"
                 tools:text="@ivanpetrenko" />
 
@@ -74,7 +74,7 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:src="@drawable/ic_movie_24"
-                    app:tint="#60FFFFFF"
+                    app:tint="@color/text_on_dark_tertiary"
                     android:contentDescription="@null" />
 
                 <TextView
@@ -82,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:textColor="#60FFFFFF"
+                    android:textColor="@color/text_on_dark_tertiary"
                     android:textSize="12sp"
                     tools:text="156 переглянуто" />
             </LinearLayout>
@@ -95,7 +95,7 @@
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_more_vert_24"
-            app:tint="#80FFFFFF"
+            app:tint="@color/text_on_dark_tertiary"
             android:contentDescription="@string/more_options" />
 
     </LinearLayout>

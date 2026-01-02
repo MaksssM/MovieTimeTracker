@@ -92,4 +92,31 @@
             app:popExitAnim="@anim/fragment_exit_backwards" />
     </fragment>
 
+    <fragment
+        android:id="@+id/collectionsFragment"
+        android:name="com.example.movietime.ui.collections.CollectionsFragment"
+        tools:layout="@layout/fragment_collections">
+        <action
+            android:id="@+id/action_collections_to_detail"
+            app:destination="@id/collectionDetailFragment"
+            app:enterAnim="@anim/fragment_enter"
+            app:exitAnim="@anim/fragment_exit"
+            app:popEnterAnim="@anim/fragment_enter_backwards"
+            app:popExitAnim="@anim/fragment_exit_backwards" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/collectionDetailFragment"
+        android:name="com.example.movietime.ui.collections.CollectionDetailFragment"
+        tools:layout="@layout/fragment_collection_detail">
+        <argument
+            android:name="collection_id"
+            app:argType="long" />
+    </fragment>
+    
+    <fragment
+        android:id="@+id/yearInReviewFragment"
+        android:name="com.example.movietime.ui.statistics.YearInReviewFragment"
+        tools:layout="@layout/fragment_year_in_review" />
+
 </navigation>

@@ -9,7 +9,7 @@
     app:cardCornerRadius="18dp"
     app:cardElevation="0dp"
     app:strokeWidth="0dp"
-    app:cardBackgroundColor="#30FFFFFF"
+    app:cardBackgroundColor="@color/bg_recent_activity_card"
     android:clickable="true"
     android:focusable="true">
 
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Inception"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="15sp"
                 android:fontFamily="sans-serif-medium"
                 android:textStyle="bold"
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     tools:text="2 hours ago"
-                    android:textColor="#B0FFFFFF"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -95,7 +95,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_right"
-            app:tint="#80FFFFFF"
+            app:tint="@color/text_secondary"
             android:contentDescription="@null" />
 
     </LinearLayout>
