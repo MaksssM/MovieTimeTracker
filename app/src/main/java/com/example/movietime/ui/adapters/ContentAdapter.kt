@@ -24,7 +24,8 @@ import com.example.movietime.ui.details.DetailsActivity
  */
 class ContentAdapter(
     private val onItemClick: (WatchedItem) -> Unit = {},
-    private val onDeleteClick: (WatchedItem) -> Unit = {}
+    private val onDeleteClick: (WatchedItem) -> Unit = {},
+    private val onRewatchClick: (WatchedItem) -> Unit = {}
 ) : ListAdapter<WatchedItem, ContentAdapter.ContentViewHolder>(DiffCallback) {
 
     private var lastAnimatedPosition = -1
@@ -40,7 +41,7 @@ class ContentAdapter(
             parent,
             false
         )
-        return ContentViewHolder(binding, onItemClick, onDeleteClick)
+        return ContentViewHolder(binding, onItemClick, onDeleteClick, onRewatchClick)
     }
 
     override fun onBindViewHolder(holder: ContentViewHolder, position: Int) {
@@ -78,7 +79,8 @@ class ContentAdapter(
     class ContentViewHolder(
         private val binding: ItemWatchedBinding,
         private val onItemClick: (WatchedItem) -> Unit,
-        private val onDeleteClick: (WatchedItem) -> Unit
+        private val onDeleteClick: (WatchedItem) -> Unit,
+        private val onRewatchClick: (WatchedItem) -> Unit = {}
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: WatchedItem) {
@@ -112,6 +114,21 @@ class ContentAdapter(
                 }
 
                 ivPoster.contentDescription = root.context.getString(R.string.poster_description)
+
+                // Display rewatch count if > 1
+                layoutRewatchCount?.visibility = if (item.watchCount > 1) {
+                    android.view.View.VISIBLE
+                } else {
+                    android.view.View.GONE
+                }
+                
+                if (item.watchCount > 1) {
+                    tvRewatchCount?.text = if (item.mediaType == "tv") {
+                        "×${item.watchCount} разів"
+                    } else {
+                        "×${item.watchCount}"
+                    }
+                }
 
                 // Click listeners з shared element transition
                 root.setOnClickListener {
@@ -160,6 +177,25 @@ class ContentAdapter(
                                 .setDuration(100)
                                 .start()
                             onDeleteClick(item)
+                        }
+                        .start()
+                }
+
+                // Add rewatch button click listener if view exists
+                btnAddRewatch?.setOnClickListener { view ->
+                    // Animate rewatch button with bounce effect
+                    view.animate()
+                        .scaleX(0.8f)
+                        .scaleY(0.8f)
+                        .setDuration(100)
+                        .withEndAction {
+                            view.animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(150)
+                                .setInterpolator(OvershootInterpolator(2f))
+                                .start()
+                            onRewatchClick(item)
                         }
                         .start()
                 }

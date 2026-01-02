@@ -106,6 +106,18 @@ class EnhancedMainFragment : Fragment() {
             }
         }
 
+        binding.btnCollections.setOnClickListener {
+            handleClickWithDebounce {
+                findNavController().navigate(R.id.collectionsFragment)
+            }
+        }
+
+        binding.btnYearInReview.setOnClickListener {
+            handleClickWithDebounce {
+                findNavController().navigate(R.id.yearInReviewFragment)
+            }
+        }
+
         binding.btnFriends.setOnClickListener {
             handleClickWithDebounce {
                 startActivity(Intent(requireActivity(), FriendsActivity::class.java))
@@ -261,6 +273,10 @@ class EnhancedMainFragment : Fragment() {
             android.util.Log.d("EnhancedMainFragment", "Formatted time: $formattedTime for ${stats.totalWatchTimeMinutes} minutes")
             tvTotalTime.text = formattedTime
             tvThisMonthCount.text = stats.thisMonthWatched.toString()
+            
+            // Update widget stats
+            tvMoviesCountWidget.text = stats.totalWatchedMovies.toString()
+            tvTvShowsCountWidget.text = stats.totalWatchedTvShows.toString()
 
             // Update quick stats
             tvWatchedMoviesCount.text = stats.totalWatchedMovies.toString()
@@ -309,6 +325,8 @@ class EnhancedMainFragment : Fragment() {
             binding.btnSearchMovies,
             binding.btnTrending,
             binding.btnUpcomingReleases,
+            binding.btnCollections,
+            binding.btnYearInReview,
             binding.btnFriends
         )
 
@@ -327,7 +345,7 @@ class EnhancedMainFragment : Fragment() {
         // Staggered animation for cards
         elementsToAnimate.forEachIndexed { index, view ->
             viewLifecycleOwner.lifecycleScope.launch {
-                delay(100L + index * 80L)
+                delay(100L + index * 60L) // Slightly faster stagger since more items
                 
                 val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.8f, 1f)
                 val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.8f, 1f)
@@ -345,7 +363,7 @@ class EnhancedMainFragment : Fragment() {
 
         // FAB bounce animation
         viewLifecycleOwner.lifecycleScope.launch {
-            delay(600L)
+            delay(800L) // Delayed a bit more
             
             val scaleX = ObjectAnimator.ofFloat(binding.fabAdd, "scaleX", 0f, 1.2f, 1f)
             val scaleY = ObjectAnimator.ofFloat(binding.fabAdd, "scaleY", 0f, 1.2f, 1f)
@@ -368,6 +386,8 @@ class EnhancedMainFragment : Fragment() {
             binding.btnSearchMovies,
             binding.btnTrending,
             binding.btnUpcomingReleases,
+            binding.btnCollections,
+            binding.btnYearInReview,
             binding.btnFriends
         )
 

@@ -363,6 +363,23 @@ class AppRepository @Inject constructor(
         }
     }
 
+    suspend fun incrementWatchCount(id: Int, mediaType: String) {
+        Log.d("AppRepository", "Incrementing watch count for: id=$id, mediaType=$mediaType")
+        try {
+            val currentItem = dao.getWatchedItem(id, mediaType)
+            if (currentItem != null) {
+                val updatedItem = currentItem.copy(watchCount = currentItem.watchCount + 1)
+                dao.update(updatedItem)
+                Log.d("AppRepository", "Successfully incremented watch count to: ${updatedItem.watchCount}")
+            } else {
+                Log.e("AppRepository", "Item not found for rewatch: id=$id, mediaType=$mediaType")
+            }
+        } catch (e: Exception) {
+            Log.e("AppRepository", "Failed to increment watch count: ${e.message}", e)
+            throw e
+        }
+    }
+
     suspend fun deleteWatchedItem(item: WatchedItem) {
         dao.deleteById(item.id, item.mediaType)
     }
@@ -749,6 +766,7 @@ class AppRepository @Inject constructor(
     suspend fun discoverTvShows(
         genreIds: List<Int>? = null,
         personId: Int? = null,
+        personRole: com.example.movietime.data.model.PersonRole = com.example.movietime.data.model.PersonRole.ANY,
         minRating: Float? = null,
         maxRating: Float? = null,
         sortBy: String = "popularity.desc",
@@ -757,7 +775,20 @@ class AppRepository @Inject constructor(
     ): List<TvShowResult> {
         return try {
             val genresStr = genreIds?.joinToString(",")
-            val withCast = personId?.toString()
+            
+            // Determine person filter based on role (same logic as discoverMovies)
+            val withCast = when (personRole) {
+                com.example.movietime.data.model.PersonRole.ACTOR -> personId?.toString()
+                com.example.movietime.data.model.PersonRole.ANY -> personId?.toString()
+                else -> null
+            }
+            val withCrew = when (personRole) {
+                com.example.movietime.data.model.PersonRole.DIRECTOR,
+                com.example.movietime.data.model.PersonRole.WRITER,
+                com.example.movietime.data.model.PersonRole.PRODUCER -> personId?.toString()
+                com.example.movietime.data.model.PersonRole.ANY -> personId?.toString()
+                else -> null
+            }
             
             val response = api.discoverTvShows(
                 apiKey = apiKey,
@@ -766,11 +797,12 @@ class AppRepository @Inject constructor(
                 sortBy = sortBy,
                 withGenres = genresStr,
                 withCast = withCast,
+                withCrew = withCrew,
                 voteAverageGte = minRating,
                 voteAverageLte = maxRating
             )
             
-            d("discoverTvShows success: ${response.results.size} results (genres=$genresStr, person=$personId)")
+            d("discoverTvShows success: ${response.results.size} results (genres=$genresStr, person=$personId, role=$personRole)")
             response.results
         } catch (e: Exception) {
             e("discoverTvShows failed: ${e.message}", e)
@@ -796,11 +828,11 @@ class AppRepository @Inject constructor(
                 results.addAll(discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, sortBy, language))
             }
             "tv" -> {
-                results.addAll(discoverTvShows(genreIds, personId, minRating, maxRating, sortBy, language))
+                results.addAll(discoverTvShows(genreIds, personId, personRole, minRating, maxRating, sortBy, language))
             }
             else -> { // "all"
                 val movies = async { discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, sortBy, language) }
-                val tvShows = async { discoverTvShows(genreIds, personId, minRating, maxRating, sortBy, language) }
+                val tvShows = async { discoverTvShows(genreIds, personId, personRole, minRating, maxRating, sortBy, language) }
                 
                 results.addAll(movies.await())
                 results.addAll(tvShows.await())

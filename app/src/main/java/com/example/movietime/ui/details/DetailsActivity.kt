@@ -27,6 +27,7 @@ import com.example.movietime.data.db.WatchedItem
 import android.util.Log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import android.widget.TextView
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -94,6 +95,18 @@ class DetailsActivity : AppCompatActivity() {
         setupCategoryButtons()
         setupActionButtons()
         animateEntrance()
+        observeWatchedStatus()
+    }
+
+    private fun observeWatchedStatus() {
+        viewModel.watchedItem.observe(this) { watchedItem ->
+            if (watchedItem != null && watchedItem.watchCount > 1) {
+                binding.layoutWatchCount.visibility = android.view.View.VISIBLE
+                binding.tvWatchCount.text = getString(R.string.watched_times, watchedItem.watchCount)
+            } else {
+                binding.layoutWatchCount.visibility = android.view.View.GONE
+            }
+        }
     }
 
     private fun setupActionButtons() {
@@ -109,6 +122,28 @@ class DetailsActivity : AppCompatActivity() {
                     Toast.makeText(this, getString(R.string.rated_toast, rating.toInt()), Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+
+        // Add to Collection button
+        binding.btnAddToCollection.setOnClickListener {
+            val item = viewModel.item.value ?: return@setOnClickListener
+            val (id, title, posterPath) = when (item) {
+                is com.example.movietime.data.model.MovieResult -> {
+                    Triple(item.id, item.title, item.posterPath)
+                }
+                is com.example.movietime.data.model.TvShowResult -> {
+                    Triple(item.id, item.name, item.posterPath)
+                }
+                else -> return@setOnClickListener
+            }
+
+            val bottomSheet = com.example.movietime.ui.collections.AddToCollectionBottomSheet.newInstance(
+                itemId = id,
+                mediaType = if (item is com.example.movietime.data.model.TvShowResult) "tv" else "movie",
+                title = title,
+                posterPath = posterPath
+            )
+            bottomSheet.show(supportFragmentManager, "AddToCollectionBottomSheet")
         }
     }
 
@@ -137,7 +172,10 @@ class DetailsActivity : AppCompatActivity() {
         val elementsToAnimate = listOf(
             binding.btnPlanned,
             binding.btnWatched,
-            binding.btnWatching
+            binding.btnPlanned,
+            binding.btnWatched,
+            binding.btnWatching,
+            binding.btnAddToCollection
         )
         
         elementsToAnimate.forEach { view ->
@@ -265,7 +303,8 @@ class DetailsActivity : AppCompatActivity() {
                             mediaType = mType,
                             overview = current.overview,
                             voteAverage = current.voteAverage?.toDouble(),
-                            userRating = null
+                            userRating = null,
+                            genreIds = current.genreIds
                         )
 
                         viewModel.addWatchedItem(watched) { success ->
@@ -294,7 +333,9 @@ class DetailsActivity : AppCompatActivity() {
                             episodeRuntime = runtimeInfo.episodeRuntime,
                             totalEpisodes = runtimeInfo.episodes,
                             isOngoing = runtimeInfo.isOngoing,
-                            status = current.status
+                            status = current.status,
+                            lastUpdated = System.currentTimeMillis(),
+                            genreIds = current.genreIds?.joinToString(",")
                         )
 
                         viewModel.addWatchedItem(watched) { success ->
@@ -333,9 +374,10 @@ class DetailsActivity : AppCompatActivity() {
                         voteAverage = null,
                         episodeRuntime = runtimeInfo.episodeRuntime,
                         totalEpisodes = runtimeInfo.episodes,
-                        isOngoing = runtimeInfo.isOngoing
+                        isOngoing = runtimeInfo.isOngoing,
+                        genreIds = current.genreIds?.joinToString(",")
                     )
-                } else {
+                } else if (current is com.example.movietime.data.model.MovieResult) {
                     Utils.createWatchedItemFromMovie(
                         id = id,
                         title = title,
@@ -346,8 +388,12 @@ class DetailsActivity : AppCompatActivity() {
                         mediaType = mType,
                         overview = null,
                         voteAverage = null,
-                        userRating = null
+                        userRating = null,
+                        genreIds = current.genreIds
                     )
+                } else {
+                     // Fallback should not be reached due to types
+                     Utils.createWatchedItemFromMovie(id, title, null, posterPath, releaseDate, runtimeFromApi, mType)
                 }
 
                 viewModel.addToPlanned(planned) { success ->
@@ -384,9 +430,10 @@ class DetailsActivity : AppCompatActivity() {
                         voteAverage = null,
                         episodeRuntime = runtimeInfo.episodeRuntime,
                         totalEpisodes = runtimeInfo.episodes,
-                        isOngoing = runtimeInfo.isOngoing
+                        isOngoing = runtimeInfo.isOngoing,
+                        genreIds = current.genreIds?.joinToString(",")
                     )
-                } else {
+                } else if (current is com.example.movietime.data.model.MovieResult) {
                     Utils.createWatchedItemFromMovie(
                         id = id,
                         title = title,
@@ -397,8 +444,12 @@ class DetailsActivity : AppCompatActivity() {
                         mediaType = mType,
                         overview = null,
                         voteAverage = null,
-                        userRating = null
+                        userRating = null,
+                        genreIds = current.genreIds
                     )
+                } else {
+                    // Fallback
+                    Utils.createWatchedItemFromMovie(id, title, null, posterPath, releaseDate, runtimeFromApi, mType)
                 }
 
                 viewModel.addToWatching(watching) { success ->
@@ -487,6 +538,7 @@ class DetailsActivity : AppCompatActivity() {
                     }
                     setupGenreChips(genreNames)
 
+
                     // Use backdrop for header, fallback to poster
                     Log.d(TAG, "Movie backdrop: '${item.backdropPath}', poster: '${item.posterPath}'")
                     // First try poster for movie, then backdrop as fallback
@@ -555,13 +607,14 @@ class DetailsActivity : AppCompatActivity() {
                         "N/A"
                     }
 
-                    // Genres chips - use genres from details API, fallback to genre_ids from list API
+                    // Genres chips
                     val tvGenreNames = if (!item.genres.isNullOrEmpty()) {
                         item.genres.mapNotNull { it.name }
                     } else {
                         getGenreNames(item.genreIds ?: emptyList(), isMovie = false)
                     }
                     setupGenreChips(tvGenreNames)
+
 
                     // Use backdrop for header, fallback to poster
                     Log.d(TAG, "TV backdrop: ${item.backdropPath}, poster: ${item.posterPath}")
@@ -610,6 +663,7 @@ class DetailsActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun getGenreNames(genreIds: List<Int>, isMovie: Boolean): List<String> {
         // TMDB genre mappings

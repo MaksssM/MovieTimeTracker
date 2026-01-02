@@ -136,4 +136,11 @@ dependencies {
     implementation("androidx.credentials:credentials:1.3.0")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
+    // Statistics & Charts
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+
+    // WorkManager (Background Tasks)
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 }

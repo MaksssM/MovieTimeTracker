@@ -1,6 +1,7 @@
 package com.example.movietime.ui.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,6 +14,7 @@ class WatchedAdapter : ListAdapter<WatchedItem, WatchedAdapter.WatchedViewHolder
 
     var onItemClick: ((WatchedItem) -> Unit)? = null
     var onDeleteClick: ((WatchedItem) -> Unit)? = null
+    var onRewatchClick: ((WatchedItem) -> Unit)? = null
 
     fun updateItems(items: List<WatchedItem>) {
         submitList(items)
@@ -49,6 +51,17 @@ class WatchedAdapter : ListAdapter<WatchedItem, WatchedAdapter.WatchedViewHolder
                 "N/A"
             }
 
+            // Rewatch count badge
+            if (item.watchCount > 1) {
+                binding.layoutRewatchCount.visibility = View.VISIBLE
+                binding.tvRewatchCount.text = binding.root.context.getString(
+                    com.example.movietime.R.string.watch_count, 
+                    item.watchCount
+                )
+            } else {
+                binding.layoutRewatchCount.visibility = View.GONE
+            }
+
             // Poster with Coil
             binding.ivPoster.load(item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }) {
                 crossfade(true)
@@ -60,6 +73,19 @@ class WatchedAdapter : ListAdapter<WatchedItem, WatchedAdapter.WatchedViewHolder
 
             // Item click
             binding.root.setOnClickListener { onItemClick?.invoke(item) }
+
+            // Rewatch button click with animation
+            binding.btnAddRewatch.setOnClickListener {
+                it.animate()
+                    .scaleX(0.8f)
+                    .scaleY(0.8f)
+                    .setDuration(100)
+                    .withEndAction {
+                        it.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                        onRewatchClick?.invoke(item)
+                    }
+                    .start()
+            }
 
             // Delete click with animation
             binding.btnDelete.setOnClickListener {

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -18,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.movietime.BuildConfig
 import com.example.movietime.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -27,6 +27,13 @@ import java.util.Locale
 class SettingsFragment : Fragment() {
 
     private val viewModel: SettingsViewModel by viewModels()
+    private lateinit var prefs: SharedPreferences
+
+    // Views
+    private lateinit var tvCurrentLanguage: TextView
+    private lateinit var tvCurrentContentLanguage: TextView
+    private lateinit var tvCurrentTheme: TextView
+    private lateinit var tvCacheSize: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,149 +46,182 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val prefs: SharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        
-        // Load preferences
-        val themePref = prefs.getString("pref_theme", "system") ?: "system"
-        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
-        val tmdbLangPref = prefs.getString("pref_tmdb_lang", "uk") ?: "uk"
-        val showRatings = prefs.getBoolean("pref_show_ratings", true)
-        val compactMode = prefs.getBoolean("pref_compact_mode", false)
-        val autoplayTrailers = prefs.getBoolean("pref_autoplay_trailers", false)
+        prefs = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
-        // Find views
-        val radioThemeGroup = view.findViewById<RadioGroup>(R.id.radioGroupTheme)
-        val radioLangGroup = view.findViewById<RadioGroup>(R.id.radioGroupLanguage)
-        val radioTmdbLangGroup = view.findViewById<RadioGroup>(R.id.radioGroupTmdbLanguage)
-        val switchShowRatings = view.findViewById<SwitchMaterial>(R.id.switchShowRatings)
-        val switchCompactMode = view.findViewById<SwitchMaterial>(R.id.switchCompactMode)
-        val switchAutoplayTrailers = view.findViewById<SwitchMaterial>(R.id.switchAutoplayTrailers)
-        val layoutClearCache = view.findViewById<LinearLayout>(R.id.layoutClearCache)
-        val layoutExportData = view.findViewById<LinearLayout>(R.id.layoutExportData)
-        val layoutClearAllData = view.findViewById<LinearLayout>(R.id.layoutClearAllData)
+        // Initialize Views
+        tvCurrentLanguage = view.findViewById(R.id.tvCurrentLanguage)
+        tvCurrentContentLanguage = view.findViewById(R.id.tvCurrentContentLanguage)
+        tvCurrentTheme = view.findViewById(R.id.tvCurrentTheme)
+        tvCacheSize = view.findViewById(R.id.tvCacheSize)
         val tvAppVersion = view.findViewById<TextView>(R.id.tvAppVersion)
-        val tvCacheSize = view.findViewById<TextView>(R.id.tvCacheSize)
 
-        // Show app version
+        val optLanguage = view.findViewById<LinearLayout>(R.id.optLanguage)
+        val optContentLanguage = view.findViewById<LinearLayout>(R.id.optContentLanguage)
+        val optTheme = view.findViewById<LinearLayout>(R.id.optTheme)
+        val optClearCache = view.findViewById<LinearLayout>(R.id.optClearCache)
+
+        val switchCompactMode = view.findViewById<SwitchMaterial>(R.id.switchCompactMode)
+        val switchShowRatings = view.findViewById<SwitchMaterial>(R.id.switchShowRatings)
+        val switchNotifyEpisodes = view.findViewById<SwitchMaterial>(R.id.switchNotifyEpisodes)
+        val switchNotifyDigest = view.findViewById<SwitchMaterial>(R.id.switchNotifyDigest)
+
+        // Load and Display Current Values
+        updateLanguageText()
+        updateContentLanguageText()
+        updateThemeText()
+        updateCacheSize()
+        
+        // Show App Version
         try {
-            val versionName = BuildConfig.VERSION_NAME
-            tvAppVersion.text = getString(R.string.app_version, versionName)
+            tvAppVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
         } catch (e: Exception) {
             tvAppVersion.text = getString(R.string.app_version, "1.0.0")
         }
 
-        // Calculate and show cache size
-        updateCacheSize(tvCacheSize)
+        // Initialize Switches
+        switchCompactMode.isChecked = prefs.getBoolean("pref_compact_mode", false)
+        switchShowRatings.isChecked = prefs.getBoolean("pref_show_ratings", true)
+        switchNotifyEpisodes.isChecked = prefs.getBoolean("pref_notify_episodes", true)
+        switchNotifyDigest.isChecked = prefs.getBoolean("pref_notify_digest", false)
 
-        // Set initial checked state for theme
-        when (themePref) {
-            "system" -> radioThemeGroup.check(R.id.radioThemeSystem)
-            "light" -> radioThemeGroup.check(R.id.radioThemeLight)
-            "dark" -> radioThemeGroup.check(R.id.radioThemeDark)
-            else -> radioThemeGroup.check(R.id.radioThemeSystem)
+        // Set Listeners
+        
+        // Dialogs
+        optLanguage.setOnClickListener { showLanguageDialog() }
+        optContentLanguage.setOnClickListener { showContentLanguageDialog() }
+        optTheme.setOnClickListener { showThemeDialog() }
+        optClearCache.setOnClickListener { clearCache() }
+
+        // Switches
+
+        switchCompactMode.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit { putBoolean("pref_compact_mode", isChecked) }
+            // Notify user that restart might be needed or just let it update on next bind
         }
 
-        // Set initial checked state for app language
-        when (langPref) {
-            "uk" -> radioLangGroup.check(R.id.radioLangUk)
-            "ru" -> radioLangGroup.check(R.id.radioLangRu)
-            "en" -> radioLangGroup.check(R.id.radioLangEn)
-            else -> radioLangGroup.check(R.id.radioLangUk)
-        }
-
-        // Set initial checked state for TMDB content language
-        when (tmdbLangPref) {
-            "uk" -> radioTmdbLangGroup.check(R.id.radioTmdbLangUk)
-            "ru" -> radioTmdbLangGroup.check(R.id.radioTmdbLangRu)
-            "en" -> radioTmdbLangGroup.check(R.id.radioTmdbLangEn)
-            else -> radioTmdbLangGroup.check(R.id.radioTmdbLangUk)
-        }
-
-        // Set initial switch states
-        switchShowRatings.isChecked = showRatings
-        switchCompactMode.isChecked = compactMode
-        switchAutoplayTrailers.isChecked = autoplayTrailers
-
-        // Theme change listener
-        radioThemeGroup.setOnCheckedChangeListener { _, checkedId ->
-            val value = when (checkedId) {
-                R.id.radioThemeSystem -> "system"
-                R.id.radioThemeLight -> "light"
-                R.id.radioThemeDark -> "dark"
-                else -> "system"
-            }
-            prefs.edit { putString("pref_theme", value) }
-            applyTheme(value)
-            Toast.makeText(requireContext(), getString(R.string.theme_changed), Toast.LENGTH_SHORT).show()
-        }
-
-        // App language change listener
-        radioLangGroup.setOnCheckedChangeListener { _, checkedId ->
-            val value = when (checkedId) {
-                R.id.radioLangUk -> "uk"
-                R.id.radioLangRu -> "ru"
-                R.id.radioLangEn -> "en"
-                else -> "uk"
-            }
-            prefs.edit { putString("pref_lang", value) }
-            applyLocale(value)
-            Toast.makeText(requireContext(), getString(R.string.language_changed), Toast.LENGTH_SHORT).show()
-            requireActivity().recreate()
-        }
-
-        // TMDB content language change listener
-        radioTmdbLangGroup.setOnCheckedChangeListener { _, checkedId ->
-            val value = when (checkedId) {
-                R.id.radioTmdbLangUk -> "uk"
-                R.id.radioTmdbLangRu -> "ru"
-                R.id.radioTmdbLangEn -> "en"
-                else -> "uk"
-            }
-            prefs.edit { putString("pref_tmdb_lang", value) }
-            Toast.makeText(requireContext(), getString(R.string.language_changed), Toast.LENGTH_SHORT).show()
-        }
-
-        // Switch listeners
         switchShowRatings.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit { putBoolean("pref_show_ratings", isChecked) }
         }
 
-        switchCompactMode.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit { putBoolean("pref_compact_mode", isChecked) }
+
+        switchNotifyEpisodes.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit { putBoolean("pref_notify_episodes", isChecked) }
         }
 
-        switchAutoplayTrailers.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit { putBoolean("pref_autoplay_trailers", isChecked) }
-        }
-
-        // Clear cache
-        layoutClearCache.setOnClickListener {
-            viewModel.clearCache()
-            updateCacheSize(tvCacheSize)
-            Toast.makeText(requireContext(), getString(R.string.clear_cache_success), Toast.LENGTH_SHORT).show()
-        }
-
-        // Export data
-        layoutExportData.setOnClickListener {
-            Toast.makeText(requireContext(), getString(R.string.export_data), Toast.LENGTH_SHORT).show()
-            // TODO: Implement export functionality
-        }
-
-        // Clear all data
-        layoutClearAllData.setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.clear_all_data))
-                .setMessage(getString(R.string.clear_all_data_confirm))
-                .setPositiveButton(getString(R.string.confirm)) { _, _ ->
-                    viewModel.clearAllData()
-                    Toast.makeText(requireContext(), getString(R.string.clear_cache_success), Toast.LENGTH_SHORT).show()
-                }
-                .setNegativeButton(getString(R.string.cancel), null)
-                .show()
+        switchNotifyDigest.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit { putBoolean("pref_notify_digest", isChecked) }
         }
     }
 
-    private fun updateCacheSize(tvCacheSize: TextView) {
+    private fun updateLanguageText() {
+        val langCode = prefs.getString("pref_lang", "uk") ?: "uk"
+        tvCurrentLanguage.text = when (langCode) {
+            "uk" -> getString(R.string.lang_uk)
+            "ru" -> getString(R.string.lang_ru)
+            "en" -> getString(R.string.lang_en)
+            else -> getString(R.string.lang_uk)
+        }
+    }
+
+    private fun showLanguageDialog() {
+        val languages = arrayOf(getString(R.string.lang_uk), getString(R.string.lang_ru), getString(R.string.lang_en))
+        val codes = arrayOf("uk", "ru", "en")
+        
+        val currentCode = prefs.getString("pref_lang", "uk")
+        val checkedItem = codes.indexOf(currentCode).takeIf { it != -1 } ?: 0
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.language_title))
+            .setSingleChoiceItems(languages, checkedItem) { dialog, which ->
+                val selectedCode = codes[which]
+                if (selectedCode != currentCode) {
+                    prefs.edit { putString("pref_lang", selectedCode) }
+                    updateLanguageText()
+                    applyLocale(selectedCode)
+                    requireActivity().recreate()
+                }
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun updateContentLanguageText() {
+        val langCode = prefs.getString("pref_tmdb_lang", "uk") ?: "uk"
+        tvCurrentContentLanguage.text = when (langCode) {
+            "uk" -> getString(R.string.lang_uk)
+            "ru" -> getString(R.string.lang_ru)
+            "en" -> getString(R.string.lang_en)
+            else -> getString(R.string.lang_uk)
+        }
+    }
+
+    private fun showContentLanguageDialog() {
+        val languages = arrayOf(getString(R.string.lang_uk), getString(R.string.lang_ru), getString(R.string.lang_en))
+        val codes = arrayOf("uk", "ru", "en")
+        
+        val currentCode = prefs.getString("pref_tmdb_lang", "uk")
+        val checkedItem = codes.indexOf(currentCode).takeIf { it != -1 } ?: 0
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.content_region))
+            .setSingleChoiceItems(languages, checkedItem) { dialog, which ->
+                val selectedCode = codes[which]
+                if (selectedCode != currentCode) {
+                    prefs.edit { putString("pref_tmdb_lang", selectedCode) }
+                    updateContentLanguageText()
+                    Toast.makeText(requireContext(), getString(R.string.language_changed), Toast.LENGTH_SHORT).show()
+                }
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun updateThemeText() {
+        val themeCode = prefs.getString("pref_theme", "system") ?: "system"
+        tvCurrentTheme.text = when (themeCode) {
+            "system" -> getString(R.string.theme_system)
+            "light" -> getString(R.string.theme_light)
+            "dark" -> getString(R.string.theme_dark)
+            else -> getString(R.string.theme_system)
+        }
+    }
+
+    private fun showThemeDialog() {
+        val themes = arrayOf(getString(R.string.theme_system), getString(R.string.theme_light), getString(R.string.theme_dark))
+        val codes = arrayOf("system", "light", "dark")
+        
+        val currentCode = prefs.getString("pref_theme", "system")
+        val checkedItem = codes.indexOf(currentCode).takeIf { it != -1 } ?: 0
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.theme_title))
+            .setSingleChoiceItems(themes, checkedItem) { dialog, which ->
+                val selectedCode = codes[which]
+                if (selectedCode != currentCode) {
+                    prefs.edit { putString("pref_theme", selectedCode) }
+                    updateThemeText()
+                    applyTheme(selectedCode)
+                }
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun clearCache() {
+        // Simple confirmation
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.clear_cache))
+            .setMessage(getString(R.string.clear_cache) + "?")
+            .setPositiveButton(getString(R.string.confirm)) { _, _ ->
+                viewModel.clearCache()
+                updateCacheSize()
+                Toast.makeText(requireContext(), getString(R.string.clear_cache_success), Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
+    }
+
+    private fun updateCacheSize() {
         try {
             val cacheDir = requireContext().cacheDir
             val size = getFolderSize(cacheDir)

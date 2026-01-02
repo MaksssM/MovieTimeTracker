@@ -62,6 +62,8 @@
     <dimen name="dialog_margin">24dp</dimen>
     <dimen name="dialog_corner_radius">28dp</dimen>
     <dimen name="dialog_elevation">16dp</dimen>
+    
+    <dimen name="chart_bar_height">100dp</dimen>
 
     <!-- Grid/List Configuration -->
     <integer name="grid_span_count">2</integer>

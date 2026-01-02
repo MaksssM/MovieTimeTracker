@@ -18,5 +18,7 @@ data class WatchedItem(
     val totalEpisodes: Int? = null,  // Кількість епізодів
     val isOngoing: Boolean = false,  // Чи серіал ще виходить
     val status: String? = null,      // Статус серіалу
-    val lastUpdated: Long? = null    // Час останнього оновлення
+    val lastUpdated: Long? = null,   // Час останнього оновлення
+    val genreIds: String? = null,    // Comma-separated genre IDs
+    val watchCount: Int = 1          // Кількість переглядів (дефолт 1)
 )

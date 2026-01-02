@@ -160,6 +160,18 @@ class TvDetailsActivity : AppCompatActivity() {
             val tvShow = currentTvShow ?: return@setOnClickListener
             shareTvShow(tvShow)
         }
+
+        // Add to Collection button
+        binding.btnAddToCollection.setOnClickListener {
+            val tvShow = currentTvShow ?: return@setOnClickListener
+            val bottomSheet = com.example.movietime.ui.collections.AddToCollectionBottomSheet.newInstance(
+                itemId = tvShow.id,
+                mediaType = "tv",
+                title = tvShow.name,
+                posterPath = tvShow.posterPath
+            )
+            bottomSheet.show(supportFragmentManager, "AddToCollectionBottomSheet")
+        }
     }
     
     private fun addToPlanned(tvShow: TvShowResult) {
@@ -181,7 +193,8 @@ class TvDetailsActivity : AppCompatActivity() {
                     voteAverage = tvShow.voteAverage.toDouble(),
                     episodeRuntime = runtimeInfo.episodeRuntime,
                     totalEpisodes = runtimeInfo.episodes,
-                    isOngoing = runtimeInfo.isOngoing
+                    isOngoing = runtimeInfo.isOngoing,
+                    genreIds = tvShow.genreIds?.joinToString(",") ?: tvShow.genres?.map { it.id }?.joinToString(",")
                 )
                 
                 viewModel.addToPlanned(plannedItem) { success ->
@@ -217,7 +230,8 @@ class TvDetailsActivity : AppCompatActivity() {
                     voteAverage = tvShow.voteAverage.toDouble(),
                     episodeRuntime = runtimeInfo.episodeRuntime,
                     totalEpisodes = runtimeInfo.episodes,
-                    isOngoing = runtimeInfo.isOngoing
+                    isOngoing = runtimeInfo.isOngoing,
+                    genreIds = tvShow.genreIds?.joinToString(",") ?: tvShow.genres?.map { it.id }?.joinToString(",")
                 )
                 
                 viewModel.addToWatching(watchingItem) { success ->
@@ -343,7 +357,8 @@ class TvDetailsActivity : AppCompatActivity() {
                     totalEpisodes = runtimeInfo.episodes,
                     isOngoing = runtimeInfo.isOngoing,
                     status = tvShow.status,
-                    lastUpdated = System.currentTimeMillis()
+                    lastUpdated = System.currentTimeMillis(),
+                    genreIds = tvShow.genreIds?.joinToString(",") ?: tvShow.genres?.map { it.id }?.joinToString(",")
                 )
 
                 Log.d(TAG, "Створено WatchedItem: ${item.title}, totalMinutes=${item.runtime}, ongoing=${item.isOngoing}")

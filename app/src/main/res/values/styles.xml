@@ -99,6 +99,18 @@
         <item name="android:alpha">0.7</item>
     </style>
 
+    <style name="Widget.App.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/primary</item>
+        <item name="rippleColor">@color/primary</item>
+    </style>
+
+    <style name="TextAppearance.App.Headline2">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
     <!-- Tab Text Style -->
     <style name="TabTextStyle" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">13sp</item>

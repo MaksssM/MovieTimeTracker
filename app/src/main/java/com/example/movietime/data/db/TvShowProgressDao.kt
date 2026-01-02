@@ -94,4 +94,7 @@ interface TvShowProgressDao {
         ORDER BY seasonNumber
     """)
     suspend fun getSeasonStats(tvShowId: Int): List<SeasonProgress>
+
+    @Query("SELECT COUNT(*) FROM tv_show_progress WHERE watched = 1")
+    suspend fun getWatchedEpisodesCount(): Int
 }

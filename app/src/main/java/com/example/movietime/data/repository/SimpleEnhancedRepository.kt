@@ -23,11 +23,11 @@ class SimpleEnhancedRepository @Inject constructor(
                 val totalWatchedMovies = watchedItems.count { it.mediaType == "movie" }
                 val totalWatchedTvShows = watchedItems.count { it.mediaType == "tv" }
 
-                // Calculate watch time from runtime
-                val totalWatchTimeMinutes = watchedItems.sumOf { it.runtime ?: 0 }
+                // Calculate watch time from runtime, multiplying by watchCount for rewatches
+                val totalWatchTimeMinutes = watchedItems.sumOf { (it.runtime ?: 0) * it.watchCount }
                 android.util.Log.d("SimpleEnhancedRepository", "Calculated totalWatchTimeMinutes: $totalWatchTimeMinutes from ${watchedItems.size} items")
                 watchedItems.forEach { item ->
-                    android.util.Log.d("SimpleEnhancedRepository", "  - ${item.title}: runtime=${item.runtime}, mediaType=${item.mediaType}, episodes=${item.totalEpisodes}, episodeRuntime=${item.episodeRuntime}")
+                    android.util.Log.d("SimpleEnhancedRepository", "  - ${item.title}: runtime=${item.runtime}, watchCount=${item.watchCount}, total=${(item.runtime ?: 0) * item.watchCount}, mediaType=${item.mediaType}, episodes=${item.totalEpisodes}, episodeRuntime=${item.episodeRuntime}")
 
                     // Перевірка: якщо runtime null або 0 для серіалу, спробуємо перерахувати
                     if (item.mediaType == "tv" && (item.runtime == null || item.runtime == 0)) {

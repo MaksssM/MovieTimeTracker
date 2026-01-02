@@ -85,3 +85,4 @@ data class TvEpisodeDetails(
     @SerializedName("vote_count") val voteCount: Int?
 )
 
+
