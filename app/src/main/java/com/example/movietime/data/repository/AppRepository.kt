@@ -18,6 +18,7 @@ import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.model.TvShowsResponse
 import com.example.movietime.data.model.TvSeasonDetails
 import com.example.movietime.data.model.TvEpisodeDetails
+import com.example.movietime.data.model.CompanyResult
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.awaitAll
@@ -670,6 +671,18 @@ class AppRepository @Inject constructor(
         }
     }
 
+    suspend fun searchCompanies(query: String): List<CompanyResult> {
+        if (query.isBlank()) return emptyList()
+        return try {
+            val response = api.searchCompanies(apiKey, query)
+            d("searchCompanies success: ${response.results.size} results for '$query'")
+            response.results
+        } catch (e: Exception) {
+            e("searchCompanies failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
     suspend fun getPopularPeople(language: String = "uk-UA"): List<com.example.movietime.data.model.Person> {
         return try {
             val response = api.getPopularPeople(apiKey, language)
@@ -721,6 +734,7 @@ class AppRepository @Inject constructor(
         minRating: Float? = null,
         maxRating: Float? = null,
         year: Int? = null,
+        companyId: Int? = null,
         sortBy: String = "popularity.desc",
         language: String = "uk-UA",
         page: Int = 1
@@ -750,12 +764,13 @@ class AppRepository @Inject constructor(
                 withGenres = genresStr,
                 withCast = withCast,
                 withCrew = withCrew,
+                withCompanies = companyId?.toString(),
                 voteAverageGte = minRating,
                 voteAverageLte = maxRating,
                 year = year
             )
             
-            d("discoverMovies success: ${response.results.size} results (genres=$genresStr, person=$personId, role=$personRole)")
+            d("discoverMovies success: ${response.results.size} results (genres=$genresStr, person=$personId, role=$personRole, company=$companyId)")
             response.results
         } catch (e: Exception) {
             e("discoverMovies failed: ${e.message}", e)
@@ -769,6 +784,7 @@ class AppRepository @Inject constructor(
         personRole: com.example.movietime.data.model.PersonRole = com.example.movietime.data.model.PersonRole.ANY,
         minRating: Float? = null,
         maxRating: Float? = null,
+        companyId: Int? = null,
         sortBy: String = "popularity.desc",
         language: String = "uk-UA",
         page: Int = 1
@@ -798,11 +814,12 @@ class AppRepository @Inject constructor(
                 withGenres = genresStr,
                 withCast = withCast,
                 withCrew = withCrew,
+                withCompanies = companyId?.toString(),
                 voteAverageGte = minRating,
                 voteAverageLte = maxRating
             )
             
-            d("discoverTvShows success: ${response.results.size} results (genres=$genresStr, person=$personId, role=$personRole)")
+            d("discoverTvShows success: ${response.results.size} results (genres=$genresStr, person=$personId, role=$personRole, company=$companyId)")
             response.results
         } catch (e: Exception) {
             e("discoverTvShows failed: ${e.message}", e)
@@ -817,6 +834,7 @@ class AppRepository @Inject constructor(
         personRole: com.example.movietime.data.model.PersonRole = com.example.movietime.data.model.PersonRole.ANY,
         minRating: Float? = null,
         maxRating: Float? = null,
+        companyId: Int? = null,
         year: Int? = null,
         sortBy: String = "popularity.desc",
         language: String = "uk-UA"
@@ -825,14 +843,14 @@ class AppRepository @Inject constructor(
         
         when (mediaType) {
             "movie" -> {
-                results.addAll(discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, sortBy, language))
+                results.addAll(discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, companyId, sortBy, language))
             }
             "tv" -> {
-                results.addAll(discoverTvShows(genreIds, personId, personRole, minRating, maxRating, sortBy, language))
+                results.addAll(discoverTvShows(genreIds, personId, personRole, minRating, maxRating, companyId, sortBy, language))
             }
             else -> { // "all"
-                val movies = async { discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, sortBy, language) }
-                val tvShows = async { discoverTvShows(genreIds, personId, personRole, minRating, maxRating, sortBy, language) }
+                val movies = async { discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, companyId, sortBy, language) }
+                val tvShows = async { discoverTvShows(genreIds, personId, personRole, minRating, maxRating, companyId, sortBy, language) }
                 
                 results.addAll(movies.await())
                 results.addAll(tvShows.await())
@@ -880,6 +898,79 @@ class AppRepository @Inject constructor(
         } catch (e: Exception) {
             e("getPersonTvCredits failed: ${e.message}", e)
             null
+        }
+    }
+
+    // --- Backup Methods ---
+    suspend fun deleteAllWatched() {
+        try {
+            dao.deleteAll()
+            d("All watched items deleted")
+        } catch (e: Exception) {
+            e("deleteAllWatched failed: ${e.message}", e)
+        }
+    }
+
+    suspend fun deleteAllPlanned() {
+        try {
+            plannedDao.deleteAll()
+            d("All planned items deleted")
+        } catch (e: Exception) {
+            e("deleteAllPlanned failed: ${e.message}", e)
+        }
+    }
+
+    suspend fun deleteAllWatching() {
+        try {
+            watchingDao.deleteAll()
+            d("All watching items deleted")
+        } catch (e: Exception) {
+            e("deleteAllWatching failed: ${e.message}", e)
+        }
+    }
+
+    suspend fun getWatchedItemsForBackup(): List<WatchedItem> {
+        return try {
+            dao.getAllSync()
+        } catch (e: Exception) {
+            e("getWatchedItemsForBackup failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun getPlannedItemsForBackup(): List<PlannedItem> {
+        return try {
+            plannedDao.getAllSync()
+        } catch (e: Exception) {
+            e("getPlannedItemsForBackup failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun getWatchingItemsForBackup(): List<WatchingItem> {
+        return try {
+            watchingDao.getAllSync()
+        } catch (e: Exception) {
+            e("getWatchingItemsForBackup failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun insertPlannedDirect(item: PlannedItem) {
+        try {
+            plannedDao.insert(item)
+            d("Planned item inserted directly: ${item.title}")
+        } catch (e: Exception) {
+            e("insertPlannedDirect failed: ${e.message}", e)
+        }
+    }
+
+    suspend fun insertWatchingDirect(item: WatchingItem) {
+        try {
+            watchingDao.insert(item)
+            d("Watching item inserted directly: ${item.title}")
+        } catch (e: Exception) {
+            e("insertWatchingDirect failed: ${e.message}", e)
         }
     }
 }

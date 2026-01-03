@@ -218,6 +218,24 @@
     <string name="notification_new_releases">Новые релизы</string>
     <string name="notification_reminders">Напоминания</string>
 
+    <string name="backup_management">Управление резервными копиями</string>
+    <string name="backup_description">Локальное хранение ваших данных без облачных сервисов</string>
+    <string name="create_backup">Создать резервную копию</string>
+    <string name="manage_backups">Мои резервные копии</string>
+    <string name="view_restore_backups">Просмотреть и восстановить резервные копии</string>
+    <string name="creating_backup">Создание резервной копии...</string>
+    <string name="backup_list">Мои резервные копии</string>
+    <string name="restore_backup">Восстановить</string>
+    <string name="delete_backup">Удалить</string>
+    <string name="backup_created_success">Резервная копия создана</string>
+    <string name="backup_restored_success">Резервная копия успешно восстановлена</string>
+    <string name="backup_deleted">Резервная копия удалена</string>
+    <string name="backup_size_format">%d КБ</string>
+    <string name="no_backups">Нет резервных копий</string>
+    <string name="all_data_local">Все ваши данные хранятся локально на устройстве</string>
+    <string name="backup_location_info">Сохранено в:\n%s</string>
+    <string name="restore_backup_confirm">Все текущие данные будут заменены данными из резервной копии. Продолжить?</string>
+
     <!-- New Settings Strings -->
     <string name="settings_appearance">Внешний вид</string>
     <string name="settings_content">Контент</string>

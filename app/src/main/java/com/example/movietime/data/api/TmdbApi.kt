@@ -12,6 +12,7 @@ import com.example.movietime.data.model.PersonDetails
 import com.example.movietime.data.model.PersonMovieCredits
 import com.example.movietime.data.model.PersonTvCredits
 import com.example.movietime.data.model.CreditsResponse
+import com.example.movietime.data.model.CompanySearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -156,6 +157,7 @@ interface TmdbApi {
         @Query("with_cast") withCast: String? = null,
         @Query("with_crew") withCrew: String? = null,
         @Query("with_people") withPeople: String? = null,
+        @Query("with_companies") withCompanies: String? = null,
         @Query("vote_average.gte") voteAverageGte: Float? = null,
         @Query("vote_average.lte") voteAverageLte: Float? = null,
         @Query("primary_release_date.gte") releaseDateGte: String? = null,
@@ -173,6 +175,7 @@ interface TmdbApi {
         @Query("with_genres") withGenres: String? = null,
         @Query("with_cast") withCast: String? = null,
         @Query("with_crew") withCrew: String? = null,
+        @Query("with_companies") withCompanies: String? = null,
         @Query("vote_average.gte") voteAverageGte: Float? = null,
         @Query("vote_average.lte") voteAverageLte: Float? = null,
         @Query("first_air_date.gte") firstAirDateGte: String? = null,
@@ -189,6 +192,13 @@ interface TmdbApi {
         @Query("language") language: String = "uk-UA",
         @Query("page") page: Int = 1
     ): PersonSearchResponse
+
+    @GET("search/company")
+    suspend fun searchCompanies(
+        @Query("api_key") apiKey: String,
+        @Query("query") query: String,
+        @Query("page") page: Int = 1
+    ): CompanySearchResponse
 
     @GET("person/{person_id}")
     suspend fun getPersonDetails(

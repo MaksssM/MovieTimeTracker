@@ -1,6 +1,7 @@
 package com.example.movietime.ui.settings
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
@@ -21,12 +23,19 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import com.example.movietime.data.backup.BackupFile
+import com.example.movietime.utils.NotificationScheduler
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
 
     private val viewModel: SettingsViewModel by viewModels()
+    private val backupViewModel: BackupViewModel by viewModels()
     private lateinit var prefs: SharedPreferences
 
     // Views
@@ -34,6 +43,31 @@ class SettingsFragment : Fragment() {
     private lateinit var tvCurrentContentLanguage: TextView
     private lateinit var tvCurrentTheme: TextView
     private lateinit var tvCacheSize: TextView
+    
+    // Launcher for creating backup file
+    private val createBackupLauncher = registerForActivityResult(
+        ActivityResultContracts.CreateDocument("application/json")
+    ) { uri ->
+        uri?.let {
+            lifecycleScope.launch {
+                val result = backupViewModel.createBackupToUri(it)
+                result.onSuccess {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.backup_created_success),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                result.onFailure { error ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Помилка: ${error.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,6 +127,13 @@ class SettingsFragment : Fragment() {
         optClearCache.setOnClickListener { clearCache() }
 
         // Switches
+    // Backup options
+    val optCreateBackup = view.findViewById<LinearLayout>(R.id.optCreateBackup)
+    val optManageBackups = view.findViewById<LinearLayout>(R.id.optManageBackups)
+        
+    optCreateBackup.setOnClickListener { createBackup() }
+    optManageBackups.setOnClickListener { showBackupManagerDialog() }
+
 
         switchCompactMode.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit { putBoolean("pref_compact_mode", isChecked) }
@@ -106,11 +147,146 @@ class SettingsFragment : Fragment() {
 
         switchNotifyEpisodes.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit { putBoolean("pref_notify_episodes", isChecked) }
+            NotificationScheduler.scheduleEpisodeNotifications(requireContext(), isChecked)
+            Toast.makeText(
+                requireContext(),
+                if (isChecked) "Сповіщення про нові епізоди увімкнені" else "Сповіщення про нові епізоди вимкнені",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         switchNotifyDigest.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit { putBoolean("pref_notify_digest", isChecked) }
+            NotificationScheduler.scheduleReleaseNotifications(requireContext(), isChecked)
+            Toast.makeText(
+                requireContext(),
+                if (isChecked) "Сповіщення про нові релізи увімкнені" else "Сповіщення про нові релізи вимкнені",
+                Toast.LENGTH_SHORT
+            ).show()
         }
+    }
+
+    private fun createBackup() {
+        // Generate default filename with timestamp
+        val timestamp = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(Date())
+        val fileName = "backup_$timestamp.json"
+        
+        // Launch file picker to choose save location
+        createBackupLauncher.launch(fileName)
+    }
+
+    private fun showBackupManagerDialog() {
+        // Load backup list
+        backupViewModel.loadBackups()
+
+        backupViewModel.backupList.observe(viewLifecycleOwner) { backups ->
+            if (backups.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.no_backups),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@observe
+            }
+    
+            showBackupListDialog(backups)
+        }
+    }
+
+    private fun showBackupListDialog(backups: List<BackupFile>) {
+        val backupNames = backups.map { backup ->
+            "${backup.name} (${backup.sizeKb} КБ)"
+        }.toTypedArray()
+
+        val backupPath = backupViewModel.getBackupsDirPath()
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.backup_list))
+            .setMessage(getString(R.string.backup_location_info, backupPath))
+            .setItems(backupNames) { _, which ->
+                val selectedBackup = backups[which]
+                showBackupActionDialog(selectedBackup)
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showBackupActionDialog(backup: BackupFile) {
+        val actions = arrayOf(
+            getString(R.string.restore_backup),
+            getString(R.string.delete_backup)
+        )
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(backup.name)
+            .setItems(actions) { _, which ->
+                when (which) {
+                    0 -> restoreBackup(backup)
+                    1 -> deleteBackup(backup)
+                }
+            }
+            .show()
+    }
+
+    private fun restoreBackup(backup: BackupFile) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.restore_backup))
+            .setMessage(getString(R.string.restore_backup_confirm))
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                lifecycleScope.launch {
+                    val result = backupViewModel.restoreBackup(backup.path)
+                    result.onSuccess {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.backup_restored_success),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    result.onFailure { error ->
+                        Toast.makeText(
+                            requireContext(),
+                            "Помилка: ${error.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun deleteBackup(backup: BackupFile) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.delete_backup))
+            .setMessage("Видалити резервну копію?")
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                lifecycleScope.launch {
+                    val result = backupViewModel.deleteBackup(backup.path)
+                    result.onSuccess {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.backup_deleted),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // Reload backup list
+                        showBackupManagerDialog()
+                    }
+                    result.onFailure { error ->
+                        Toast.makeText(
+                            requireContext(),
+                            "Помилка: ${error.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun updateLanguageText() {
