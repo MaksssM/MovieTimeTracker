@@ -58,7 +58,7 @@ class TvShowEpisodeService @Inject constructor(
 
         try {
             Log.d(TAG, "Requesting season 1 details for TV show $tvId")
-            val firstSeasonDetails = repository.getSeasonDetails(tvId, 1)
+            val firstSeasonDetails = repository.getTvSeasonDetails(tvId, 1)
             Log.d(TAG, "Season details received: ${firstSeasonDetails.name}")
 
             val episodes = firstSeasonDetails.episodes ?: emptyList()

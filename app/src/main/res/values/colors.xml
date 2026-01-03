@@ -245,4 +245,5 @@
     <color name="background_primary">@color/background_primary_dark</color>
     <color name="accent_primary">@color/primary</color>
     <color name="glass_stroke">@color/glass_stroke_dark</color>
+    <color name="accent_primary_transparent">#333B82F6</color>
 </resources>

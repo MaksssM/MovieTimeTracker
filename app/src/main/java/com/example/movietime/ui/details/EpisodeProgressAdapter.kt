@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.movietime.R
 import com.example.movietime.databinding.ItemEpisodeProgressBinding
 import com.example.movietime.util.Utils
+import com.example.movietime.utils.HapticFeedbackHelper
+
 
 /**
  * Дані епізоду для відображення в UI
@@ -62,6 +64,7 @@ class EpisodeProgressAdapter(
                 
                 // Click listeners
                 cbEpisode.setOnCheckedChangeListener { _, isChecked ->
+                    com.example.movietime.utils.HapticFeedbackHelper.impactLow(cbEpisode)
                     episode.isWatched = isChecked
                     onEpisodeChecked(episode, isChecked)
                     // Update UI with animation
@@ -69,6 +72,7 @@ class EpisodeProgressAdapter(
                 }
                 
                 root.setOnClickListener {
+                    com.example.movietime.utils.HapticFeedbackHelper.impactLow(it)
                     cbEpisode.isChecked = !cbEpisode.isChecked
                 }
             }

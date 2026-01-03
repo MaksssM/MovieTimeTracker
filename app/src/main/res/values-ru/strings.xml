@@ -218,6 +218,24 @@
     <string name="notification_new_releases">Новые релизы</string>
     <string name="notification_reminders">Напоминания</string>
 
+    <string name="backup_management">Управление резервными копиями</string>
+    <string name="backup_description">Локальное хранение ваших данных без облачных сервисов</string>
+    <string name="create_backup">Создать резервную копию</string>
+    <string name="manage_backups">Мои резервные копии</string>
+    <string name="view_restore_backups">Просмотреть и восстановить резервные копии</string>
+    <string name="creating_backup">Создание резервной копии...</string>
+    <string name="backup_list">Мои резервные копии</string>
+    <string name="restore_backup">Восстановить</string>
+    <string name="delete_backup">Удалить</string>
+    <string name="backup_created_success">Резервная копия создана</string>
+    <string name="backup_restored_success">Резервная копия успешно восстановлена</string>
+    <string name="backup_deleted">Резервная копия удалена</string>
+    <string name="backup_size_format">%d КБ</string>
+    <string name="no_backups">Нет резервных копий</string>
+    <string name="all_data_local">Все ваши данные хранятся локально на устройстве</string>
+    <string name="backup_location_info">Сохранено в:\n%s</string>
+    <string name="restore_backup_confirm">Все текущие данные будут заменены данными из резервной копии. Продолжить?</string>
+
     <!-- New Settings Strings -->
     <string name="settings_appearance">Внешний вид</string>
     <string name="settings_content">Контент</string>
@@ -381,9 +399,9 @@
     <string name="specials">Спецвыпуски</string>
     <string name="episode_format">Э%d</string>
     <string name="episode_full_format">Эпизод %d</string>
-    <string name="season_progress_format">%d/%d просмотрено • %s</string>
+    <string name="season_progress_format">%1$d/%2$d просмотрено • %3$s</string>
     <string name="total_episodes_format">%d эпизодов</string>
-    <string name="watched_episodes_format">%d/%d просмотрено</string>
+    <string name="watched_episodes_format">%1$d/%2$d просмотрено</string>
     <string name="episode_runtime_format">%d мин</string>
     <string name="save">Сохранить</string>
     <string name="save_progress">Сохранить прогресс</string>
@@ -399,9 +417,9 @@
     <string name="remaining">Осталось</string>
     <string name="time_spent">Время</string>
     <string name="retry">Повторить</string>
-    <string name="selected_episodes_count">Выбрано %d из %d серий</string>
+    <string name="selected_episodes_count">Выбрано %1$d из %2$d серий</string>
     <string name="total_runtime_format">~%s всего</string>
-    <string name="seasons_episodes_format">%d сезонов • %d серий</string>
+    <string name="seasons_episodes_format">%1$d сезонов • %2$d серий</string>
     
     <!-- Details Screen -->
     <string name="user_score">Оценка</string>

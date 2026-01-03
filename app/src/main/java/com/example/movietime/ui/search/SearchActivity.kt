@@ -203,6 +203,7 @@ class SearchActivity : AppCompatActivity() {
         val sort = viewModel.sortByRating.value ?: false
         val sortPop = viewModel.sortByPopularity.value ?: false
         val minR = viewModel.minRating.value ?: 0.0
+        val companyName = viewModel.selectedCompany.value?.name
         val parts = mutableListOf<String>()
         if (type != null && type != SearchViewModel.FilterType.ALL) {
             parts.add(
@@ -216,6 +217,7 @@ class SearchActivity : AppCompatActivity() {
         if (sort) parts.add("Сортовано за рейтингом")
         if (sortPop) parts.add("Сортовано за популярністю")
         if (minR > 0.0) parts.add("Рейтинг ≥ ${String.format(Locale.US, "%.1f", minR)}")
+        if (!companyName.isNullOrBlank()) parts.add("Студія: $companyName")
         binding.tvActiveFilters.text = if (parts.isEmpty()) {
             "Фільтри: немає"
         } else {

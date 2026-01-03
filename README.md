@@ -23,12 +23,35 @@ An elegant Android app to manage what you watch, plan to watch, and have watched
 
 ## ✨ Features
 
+### 🎯 Content Tracking
+
 - **Track Your Content** — Organize movies/series into watched, watching, and planned lists
-- **Detailed Statistics** — View total watch time, content count, and average ratings
-- **Smart Search** — Find any movie or TV show with advanced filtering
 - **Personal Ratings** — Rate content and see TMDB ratings
+- **Progress Tracking** — Track episodes for TV series with detailed progress
+
+### 🔍 Search & Discovery
+
+- **Smart Search** — Find any movie or TV show with advanced filtering
+- **Studio/Company Filter** — Search by production companies and studios
+- **Advanced Filters** — Filter by genre, rating, year, runtime, and more
 - **Trending Content** — Discover popular movies and series
 - **Upcoming Releases** — Stay informed about new premieres
+
+### 📊 Statistics & Analytics
+
+- **Detailed Statistics** — View total watch time, content count, and average ratings
+- **Yearly Trends** — Visual graphs showing your viewing patterns over time
+- **Genre Analytics** — Track your favorite genres and patterns
+
+### 👥 Social Features
+
+- **Activity Feed** — Share and view friends' watch activities
+- **Reviews & Comments** — Write reviews and discuss with the community
+- **Spoiler Protection** — Tap-to-reveal spoiler-safe reviews
+- **Friend Lists** — Follow friends and see what they're watching
+
+### 🎨 Customization
+
 - **Dark Theme** — Comfortable viewing at any time
 - **Multi-language** — Support for Ukrainian, Russian, and English
 - **Modern Design** — Material Design 3 with smooth animations
@@ -63,6 +86,12 @@ An elegant Android app to manage what you watch, plan to watch, and have watched
 - **Coil** — Image loading and caching
 - **Lottie** — Vector animations
 - **RecyclerView** — Efficient list rendering
+- **MPAndroidChart** — Interactive charts and graphs
+
+### Backend & Social
+
+- **Firebase** — Real-time database, authentication, and cloud storage
+- **Firebase Firestore** — Social features and user data sync
 
 ---
 
@@ -165,6 +194,16 @@ Or open in Android Studio and click Run ▶️
 - Currently watching series
 - Fields: id, title, currentEpisode, totalEpisodes, lastWatchedDate
 
+**social_activities**
+
+- User activities and reviews
+- Fields: userId, contentId, activityType, rating, review, hasSpoilers, timestamp
+
+**user_profiles**
+
+- User profile data
+- Fields: userId, displayName, avatarUrl, bio, followersCount
+
 ---
 
 ## 🌐 API Integration
@@ -174,6 +213,9 @@ This app uses [TMDB API](https://www.themoviedb.org/documentation/api) for fetch
 **Main endpoints:**
 
 - `/search/multi` — Universal search
+- `/search/company` — Search production companies
+- `/discover/movie` — Discover movies with advanced filters (including company filter)
+- `/discover/tv` — Discover TV shows with advanced filters
 - `/movie/{id}` — Movie details
 - `/tv/{id}` — TV show details
 - `/trending/{type}/{window}` — Trending content

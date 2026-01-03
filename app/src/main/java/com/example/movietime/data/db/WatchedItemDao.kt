@@ -25,6 +25,9 @@ interface WatchedItemDao {
     @Query("DELETE FROM watched_items WHERE id = :id AND mediaType = :mediaType")
     suspend fun deleteById(id: Int, mediaType: String)
 
+    @Query("DELETE FROM watched_items")
+    suspend fun deleteAll()
+
     @Query("SELECT * FROM watched_items WHERE id = :id AND mediaType = :mediaType")
     suspend fun getById(id: Int, mediaType: String): WatchedItem?
 

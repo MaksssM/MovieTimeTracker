@@ -18,11 +18,14 @@ import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.model.TvShowsResponse
 import com.example.movietime.data.model.TvSeasonDetails
 import com.example.movietime.data.model.TvEpisodeDetails
+import com.example.movietime.data.model.CompanyResult
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.awaitAll
 import javax.inject.Inject
 import javax.inject.Singleton
+
+import com.example.movietime.util.LanguageManager
 
 @Singleton
 class AppRepository @Inject constructor(
@@ -31,6 +34,7 @@ class AppRepository @Inject constructor(
     private val plannedDao: PlannedDao,
     private val watchingDao: WatchingDao,
     private val searchHistoryDao: SearchHistoryDao,
+    private val languageManager: LanguageManager,
     private val apiKey: String
 ) {
 
@@ -214,54 +218,20 @@ class AppRepository @Inject constructor(
     }
 
     // Details endpoints return single objects
-    suspend fun getMovieDetails(movieId: Int, language: String = "en-US"): MovieResult {
-        d("getMovieDetails: movieId=$movieId, language=$language")
-        try {
-            val result = api.getMovieDetails(movieId, apiKey, language)
-            d("getMovieDetails success: title=${result.title}, runtime=${result.runtime}, backdrop=${result.backdropPath}, poster=${result.posterPath}")
-            return result
-        } catch (e: retrofit2.HttpException) {
-            e("HTTP Error ${e.code()}: ${e.message()}", e)
-            throw e
-        } catch (e: java.net.UnknownHostException) {
-            e("Network Error: Cannot resolve host api.themoviedb.org - check internet connection", e)
-            throw e
-        } catch (e: java.net.SocketTimeoutException) {
-            e("Network Error: Connection timeout - check internet connection", e)
-            throw e
-        } catch (e: Exception) {
-            e("getMovieDetails failed: ${e.javaClass.simpleName} - ${e.message}", e)
-            throw e
-        }
+    suspend fun getMovieDetails(movieId: Int): MovieResult {
+        return api.getMovieDetails(movieId, apiKey, languageManager.getApiLanguage())
     }
 
-    suspend fun getTvShowDetails(tvId: Int, language: String = "en-US"): TvShowResult {
-        d("getTvShowDetails: tvId=$tvId, language=$language")
-        try {
-            val result = api.getTvShowDetails(tvId, apiKey, language)
-            d("getTvShowDetails success: name=${result.name}")
-            return result
-        } catch (e: retrofit2.HttpException) {
-            e("HTTP Error ${e.code()}: ${e.message()}", e)
-            throw e
-        } catch (e: java.net.UnknownHostException) {
-            e("Network Error: Cannot resolve host api.themoviedb.org - check internet connection", e)
-            throw e
-        } catch (e: java.net.SocketTimeoutException) {
-            e("Network Error: Connection timeout - check internet connection", e)
-            throw e
-        } catch (e: Exception) {
-            e("getTvShowDetails failed: ${e.javaClass.simpleName} - ${e.message}", e)
-            throw e
-        }
+    suspend fun getTvShowDetails(tvId: Int): TvShowResult {
+        return api.getTvShowDetails(tvId, apiKey, languageManager.getApiLanguage())
     }
 
-    suspend fun getPopularMovies(language: String = "en-US"): MoviesResponse {
-        return api.getPopularMovies(apiKey, language)
+    suspend fun getPopularMovies(): MoviesResponse {
+        return api.getPopularMovies(apiKey, languageManager.getApiLanguage())
     }
 
-    suspend fun getPopularTvShows(language: String = "en-US"): TvShowsResponse {
-        return api.getPopularTvShows(apiKey, language)
+    suspend fun getPopularTvShows(): TvShowsResponse {
+        return api.getPopularTvShows(apiKey, languageManager.getApiLanguage())
     }
 
     fun getWatchedItems(): LiveData<List<WatchedItem>> {
@@ -283,63 +253,27 @@ class AppRepository @Inject constructor(
     /**
      * Отримує детальну інформацію про сезон з усіма епізодами та їх тривалістю
      */
-    suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int, language: String = "uk-UA"): TvSeasonDetails {
-        Log.d("AppRepo", "getSeasonDetails: tvId=$tvId, seasonNumber=$seasonNumber, language=$language")
-        Log.d("AppRepo", "API Key length: ${apiKey.length} (${apiKey.take(8)}...)")
+    suspend fun getTvSeasonDetails(tvId: Int, seasonNumber: Int): TvSeasonDetails {
+        return api.getSeasonDetails(tvId, seasonNumber, apiKey, languageManager.getApiLanguage())
+    }
 
-        return try {
-            Log.d("AppRepo", "Making API request to TMDB...")
-            val result = api.getSeasonDetails(tvId, seasonNumber, apiKey, language)
-            Log.d("AppRepo", "getSeasonDetails success:")
-            Log.d("AppRepo", "- Season name: ${result.name}")
-            Log.d("AppRepo", "- Episodes count: ${result.episodes?.size}")
-            Log.d("AppRepo", "- Season number: ${result.seasonNumber}")
-
-            result.episodes?.forEachIndexed { index, episode ->
-                if (index < 3) { // Log only first 3 episodes to avoid spam
-                    Log.d("AppRepo", "  Episode ${episode.episodeNumber}: ${episode.name}, runtime=${episode.runtime}")
-                }
-            }
-
-            result
-        } catch (e: retrofit2.HttpException) {
-            Log.e("AppRepo", "HTTP Error ${e.code()}: ${e.message()}")
-            Log.e("AppRepo", "Response: ${e.response()?.errorBody()?.string()}")
-
-
-            if (language != "en-US" && e.code() == 404) {
-                Log.d("AppRepo", "Retrying with English due to 404...")
-                try {
-                    api.getSeasonDetails(tvId, seasonNumber, apiKey, "en-US")
-                } catch (enE: Exception) {
-                    Log.e("AppRepo", "English fallback also failed: ${enE.message}")
-                    throw enE
-                }
-            } else {
-                throw e
-            }
-        } catch (e: java.net.SocketTimeoutException) {
-            Log.e("AppRepo", "Timeout getting season details", e)
-            throw Exception("Таймаут API: перевірте інтернет з'єднання")
-        } catch (e: java.net.UnknownHostException) {
-            Log.e("AppRepo", "Network error getting season details", e)
-            throw Exception("Немає інтернет з'єднання")
-        } catch (e: Exception) {
-            Log.e("AppRepo", "getSeasonDetails failed: ${e.javaClass.simpleName}: ${e.message}", e)
-            throw e
-        }
+    /**
+     * Отримує детальну інформацію про епізод
+     */
+    suspend fun getTvEpisodeDetails(tvId: Int, seasonNumber: Int, episodeNumber: Int): TvEpisodeDetails {
+        return api.getEpisodeDetails(tvId, seasonNumber, episodeNumber, apiKey, languageManager.getApiLanguage())
     }
 
     /**
      * Отримує детальну інформацію про всі сезони серіалу з епізодами
      */
-    suspend fun getAllSeasonsDetails(tvId: Int, totalSeasons: Int, language: String = "uk-UA"): List<TvSeasonDetails> {
+    suspend fun getAllSeasonsDetails(tvId: Int, totalSeasons: Int): List<TvSeasonDetails> {
         Log.d("AppRepo", "getAllSeasonsDetails: tvId=$tvId, totalSeasons=$totalSeasons")
         val seasons = mutableListOf<TvSeasonDetails>()
 
         for (seasonNumber in 1..totalSeasons) {
             try {
-                val seasonDetails = getSeasonDetails(tvId, seasonNumber, language)
+                val seasonDetails = getTvSeasonDetails(tvId, seasonNumber) // Call the updated function
                 seasons.add(seasonDetails)
                 Log.d("AppRepo", "Loaded season $seasonNumber with ${seasonDetails.episodes?.size} episodes")
             } catch (e: Exception) {
@@ -670,6 +604,18 @@ class AppRepository @Inject constructor(
         }
     }
 
+    suspend fun searchCompanies(query: String): List<CompanyResult> {
+        if (query.isBlank()) return emptyList()
+        return try {
+            val response = api.searchCompanies(apiKey, query)
+            d("searchCompanies success: ${response.results.size} results for '$query'")
+            response.results
+        } catch (e: Exception) {
+            e("searchCompanies failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
     suspend fun getPopularPeople(language: String = "uk-UA"): List<com.example.movietime.data.model.Person> {
         return try {
             val response = api.getPopularPeople(apiKey, language)
@@ -714,6 +660,17 @@ class AppRepository @Inject constructor(
         }
     }
 
+    suspend fun getCollectionDetails(collectionId: Int, language: String = "uk-UA"): com.example.movietime.data.model.CollectionDetails? {
+        return try {
+            val result = api.getCollectionDetails(collectionId, apiKey, language)
+            d("getCollectionDetails success: ${result.name} with ${result.parts.size} parts")
+            result
+        } catch (e: Exception) {
+            e("getCollectionDetails failed: ${e.message}", e)
+            null
+        }
+    }
+
     suspend fun discoverMovies(
         genreIds: List<Int>? = null,
         personId: Int? = null,
@@ -721,8 +678,8 @@ class AppRepository @Inject constructor(
         minRating: Float? = null,
         maxRating: Float? = null,
         year: Int? = null,
+        companyId: Int? = null,
         sortBy: String = "popularity.desc",
-        language: String = "uk-UA",
         page: Int = 1
     ): List<MovieResult> {
         return try {
@@ -744,18 +701,19 @@ class AppRepository @Inject constructor(
             
             val response = api.discoverMovies(
                 apiKey = apiKey,
-                language = language,
+                language = languageManager.getApiLanguage(),
                 page = page,
                 sortBy = sortBy,
                 withGenres = genresStr,
                 withCast = withCast,
                 withCrew = withCrew,
+                withCompanies = companyId?.toString(),
                 voteAverageGte = minRating,
                 voteAverageLte = maxRating,
                 year = year
             )
             
-            d("discoverMovies success: ${response.results.size} results (genres=$genresStr, person=$personId, role=$personRole)")
+            d("discoverMovies success: ${response.results.size} results (genres=$genresStr, person=$personId, role=$personRole, company=$companyId)")
             response.results
         } catch (e: Exception) {
             e("discoverMovies failed: ${e.message}", e)
@@ -769,8 +727,8 @@ class AppRepository @Inject constructor(
         personRole: com.example.movietime.data.model.PersonRole = com.example.movietime.data.model.PersonRole.ANY,
         minRating: Float? = null,
         maxRating: Float? = null,
+        companyId: Int? = null,
         sortBy: String = "popularity.desc",
-        language: String = "uk-UA",
         page: Int = 1
     ): List<TvShowResult> {
         return try {
@@ -792,17 +750,18 @@ class AppRepository @Inject constructor(
             
             val response = api.discoverTvShows(
                 apiKey = apiKey,
-                language = language,
+                language = languageManager.getApiLanguage(),
                 page = page,
                 sortBy = sortBy,
                 withGenres = genresStr,
                 withCast = withCast,
                 withCrew = withCrew,
+                withCompanies = companyId?.toString(),
                 voteAverageGte = minRating,
                 voteAverageLte = maxRating
             )
             
-            d("discoverTvShows success: ${response.results.size} results (genres=$genresStr, person=$personId, role=$personRole)")
+            d("discoverTvShows success: ${response.results.size} results (genres=$genresStr, person=$personId, role=$personRole, company=$companyId)")
             response.results
         } catch (e: Exception) {
             e("discoverTvShows failed: ${e.message}", e)
@@ -817,22 +776,22 @@ class AppRepository @Inject constructor(
         personRole: com.example.movietime.data.model.PersonRole = com.example.movietime.data.model.PersonRole.ANY,
         minRating: Float? = null,
         maxRating: Float? = null,
+        companyId: Int? = null,
         year: Int? = null,
-        sortBy: String = "popularity.desc",
-        language: String = "uk-UA"
+        sortBy: String = "popularity.desc"
     ): List<Any> = coroutineScope {
         val results = mutableListOf<Any>()
         
         when (mediaType) {
             "movie" -> {
-                results.addAll(discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, sortBy, language))
+                results.addAll(discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, companyId, sortBy))
             }
             "tv" -> {
-                results.addAll(discoverTvShows(genreIds, personId, personRole, minRating, maxRating, sortBy, language))
+                results.addAll(discoverTvShows(genreIds, personId, personRole, minRating, maxRating, companyId, sortBy))
             }
             else -> { // "all"
-                val movies = async { discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, sortBy, language) }
-                val tvShows = async { discoverTvShows(genreIds, personId, personRole, minRating, maxRating, sortBy, language) }
+                val movies = async { discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, companyId, sortBy) }
+                val tvShows = async { discoverTvShows(genreIds, personId, personRole, minRating, maxRating, companyId, sortBy) }
                 
                 results.addAll(movies.await())
                 results.addAll(tvShows.await())
@@ -880,6 +839,79 @@ class AppRepository @Inject constructor(
         } catch (e: Exception) {
             e("getPersonTvCredits failed: ${e.message}", e)
             null
+        }
+    }
+
+    // --- Backup Methods ---
+    suspend fun deleteAllWatched() {
+        try {
+            dao.deleteAll()
+            d("All watched items deleted")
+        } catch (e: Exception) {
+            e("deleteAllWatched failed: ${e.message}", e)
+        }
+    }
+
+    suspend fun deleteAllPlanned() {
+        try {
+            plannedDao.deleteAll()
+            d("All planned items deleted")
+        } catch (e: Exception) {
+            e("deleteAllPlanned failed: ${e.message}", e)
+        }
+    }
+
+    suspend fun deleteAllWatching() {
+        try {
+            watchingDao.deleteAll()
+            d("All watching items deleted")
+        } catch (e: Exception) {
+            e("deleteAllWatching failed: ${e.message}", e)
+        }
+    }
+
+    suspend fun getWatchedItemsForBackup(): List<WatchedItem> {
+        return try {
+            dao.getAllSync()
+        } catch (e: Exception) {
+            e("getWatchedItemsForBackup failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun getPlannedItemsForBackup(): List<PlannedItem> {
+        return try {
+            plannedDao.getAllSync()
+        } catch (e: Exception) {
+            e("getPlannedItemsForBackup failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun getWatchingItemsForBackup(): List<WatchingItem> {
+        return try {
+            watchingDao.getAllSync()
+        } catch (e: Exception) {
+            e("getWatchingItemsForBackup failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun insertPlannedDirect(item: PlannedItem) {
+        try {
+            plannedDao.insert(item)
+            d("Planned item inserted directly: ${item.title}")
+        } catch (e: Exception) {
+            e("insertPlannedDirect failed: ${e.message}", e)
+        }
+    }
+
+    suspend fun insertWatchingDirect(item: WatchingItem) {
+        try {
+            watchingDao.insert(item)
+            d("Watching item inserted directly: ${item.title}")
+        } catch (e: Exception) {
+            e("insertWatchingDirect failed: ${e.message}", e)
         }
     }
 }

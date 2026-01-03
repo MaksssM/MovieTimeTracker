@@ -23,6 +23,9 @@ class YearInReviewViewModel @Inject constructor(
     private val _availableYears = MutableLiveData<List<Int>>()
     val availableYears: LiveData<List<Int>> = _availableYears
 
+    private val _yearlyTrend = MutableLiveData<List<YearlyStats>>(emptyList())
+    val yearlyTrend: LiveData<List<YearlyStats>> = _yearlyTrend
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -36,6 +39,7 @@ class YearInReviewViewModel @Inject constructor(
         loadStatsForYear(currentYear)
         loadAvailableYears()
         loadLifetimeStats()
+        loadYearlyTrend()
     }
 
     fun loadStatsForYear(year: Int) {
@@ -80,6 +84,16 @@ class YearInReviewViewModel @Inject constructor(
         viewModelScope.launch {
             val stats = statisticsRepository.getLifetimeStats()
             _lifetimeStats.value = stats
+        }
+    }
+
+    private fun loadYearlyTrend() {
+        viewModelScope.launch {
+            try {
+                _yearlyTrend.value = statisticsRepository.getAllYearlyStats().sortedBy { it.year }
+            } catch (_: Exception) {
+                _yearlyTrend.value = emptyList()
+            }
         }
     }
 

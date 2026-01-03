@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.movietime.R
 import com.example.movietime.databinding.ItemSeasonProgressBinding
 import com.example.movietime.util.Utils
+import com.example.movietime.utils.HapticFeedbackHelper
+
 
 /**
  * Дані сезону для відображення в UI
@@ -93,6 +95,7 @@ class SeasonProgressAdapter(
                 
                 // Click listeners
                 cbSeason.setOnCheckedChangeListener { _, isChecked ->
+                    com.example.movietime.utils.HapticFeedbackHelper.impactMedium(cbSeason)
                     // Mark all episodes as watched/unwatched
                     season.episodes.forEach { it.isWatched = isChecked }
                     episodeAdapter?.notifyDataSetChanged()
@@ -101,6 +104,7 @@ class SeasonProgressAdapter(
                 }
                 
                 seasonHeader.setOnClickListener {
+                    com.example.movietime.utils.HapticFeedbackHelper.impactLow(it)
                     // Toggle expand/collapse
                     season.isExpanded = !season.isExpanded
                     
@@ -109,7 +113,7 @@ class SeasonProgressAdapter(
                     ivExpandArrow.animate()
                         .rotation(targetRotation)
                         .setDuration(200)
-                        .setInterpolator(DecelerateInterpolator())
+                        .setInterpolator(android.view.animation.DecelerateInterpolator())
                         .start()
                     
                     // Show/hide divider and episodes

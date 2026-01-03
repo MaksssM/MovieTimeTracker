@@ -1,6 +1,7 @@
 package com.example.movietime.ui.settings
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
@@ -21,15 +23,48 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import com.example.movietime.data.backup.BackupFile
+import com.example.movietime.worker.NotificationHelper
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
-
-    private val viewModel: SettingsViewModel by viewModels()
     private lateinit var prefs: SharedPreferences
+    private val viewModel: SettingsViewModel by viewModels()
+    private val backupViewModel: BackupViewModel by viewModels()
 
-    // Views
+    private val createBackupLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+        uri?.let {
+            lifecycleScope.launch {
+                val result = backupViewModel.createBackupToUri(it)
+                if (result.isSuccess) {
+                    Toast.makeText(requireContext(), getString(R.string.backup_created_success), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "Error: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private val importBackupLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        uri?.let {
+            lifecycleScope.launch {
+                val result = backupViewModel.restoreBackupFromUri(it)
+                if (result.isSuccess) {
+                    Toast.makeText(requireContext(), getString(R.string.backup_restored_success), Toast.LENGTH_SHORT).show()
+                    // Recreate activity to apply restored settings
+                    requireActivity().recreate()
+                } else {
+                    Toast.makeText(requireContext(), "Error: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
     private lateinit var tvCurrentLanguage: TextView
     private lateinit var tvCurrentContentLanguage: TextView
     private lateinit var tvCurrentTheme: TextView
@@ -53,64 +88,192 @@ class SettingsFragment : Fragment() {
         tvCurrentContentLanguage = view.findViewById(R.id.tvCurrentContentLanguage)
         tvCurrentTheme = view.findViewById(R.id.tvCurrentTheme)
         tvCacheSize = view.findViewById(R.id.tvCacheSize)
-        val tvAppVersion = view.findViewById<TextView>(R.id.tvAppVersion)
-
-        val optLanguage = view.findViewById<LinearLayout>(R.id.optLanguage)
-        val optContentLanguage = view.findViewById<LinearLayout>(R.id.optContentLanguage)
-        val optTheme = view.findViewById<LinearLayout>(R.id.optTheme)
-        val optClearCache = view.findViewById<LinearLayout>(R.id.optClearCache)
-
-        val switchCompactMode = view.findViewById<SwitchMaterial>(R.id.switchCompactMode)
-        val switchShowRatings = view.findViewById<SwitchMaterial>(R.id.switchShowRatings)
-        val switchNotifyEpisodes = view.findViewById<SwitchMaterial>(R.id.switchNotifyEpisodes)
-        val switchNotifyDigest = view.findViewById<SwitchMaterial>(R.id.switchNotifyDigest)
-
-        // Load and Display Current Values
+        
+        // Update Labels
         updateLanguageText()
         updateContentLanguageText()
         updateThemeText()
         updateCacheSize()
         
-        // Show App Version
-        try {
-            tvAppVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
-        } catch (e: Exception) {
-            tvAppVersion.text = getString(R.string.app_version, "1.0.0")
-        }
+        val optLanguage = view.findViewById<LinearLayout>(R.id.optLanguage)
+        val optContentLanguage = view.findViewById<LinearLayout>(R.id.optContentLanguage)
+        val optTheme = view.findViewById<LinearLayout>(R.id.optTheme)
+        val btnClearCache = view.findViewById<LinearLayout>(R.id.optClearCache)
+        val btnCreateBackup = view.findViewById<LinearLayout>(R.id.optCreateBackup)
+        val btnManageBackups = view.findViewById<LinearLayout>(R.id.optManageBackups)
+        val btnImportBackup = view.findViewById<LinearLayout>(R.id.optImportBackup)
+        
+        optLanguage.setOnClickListener { showLanguageDialog() }
+        optContentLanguage.setOnClickListener { showContentLanguageDialog() }
+        optTheme.setOnClickListener { showThemeDialog() }
+        btnClearCache.setOnClickListener { clearCache() }
+        btnCreateBackup.setOnClickListener { createBackup() }
+        btnManageBackups.setOnClickListener { showBackupManagerDialog() }
+        btnImportBackup.setOnClickListener { importBackup() }
+
+        
+        val switchCompactMode = view.findViewById<SwitchMaterial>(R.id.switchCompactMode)
+        val switchShowRatings = view.findViewById<SwitchMaterial>(R.id.switchShowRatings)
+        val switchNewEpisodes = view.findViewById<SwitchMaterial>(R.id.switchNewEpisodes)
+        val switchNotifyDigest = view.findViewById<SwitchMaterial>(R.id.switchNotifyDigest)
 
         // Initialize Switches
         switchCompactMode.isChecked = prefs.getBoolean("pref_compact_mode", false)
         switchShowRatings.isChecked = prefs.getBoolean("pref_show_ratings", true)
-        switchNotifyEpisodes.isChecked = prefs.getBoolean("pref_notify_episodes", true)
-        switchNotifyDigest.isChecked = prefs.getBoolean("pref_notify_digest", false)
+        switchNewEpisodes?.isChecked = prefs.getBoolean("pref_notify_episodes", true)
+        switchNotifyDigest?.isChecked = prefs.getBoolean("pref_notify_digest", false)
 
         // Set Listeners
-        
-        // Dialogs
-        optLanguage.setOnClickListener { showLanguageDialog() }
-        optContentLanguage.setOnClickListener { showContentLanguageDialog() }
-        optTheme.setOnClickListener { showThemeDialog() }
-        optClearCache.setOnClickListener { clearCache() }
-
-        // Switches
-
         switchCompactMode.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit { putBoolean("pref_compact_mode", isChecked) }
-            // Notify user that restart might be needed or just let it update on next bind
+            Toast.makeText(requireContext(), getString(R.string.theme_changed), Toast.LENGTH_SHORT).show()
         }
 
         switchShowRatings.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit { putBoolean("pref_show_ratings", isChecked) }
         }
-
-
-        switchNotifyEpisodes.setOnCheckedChangeListener { _, isChecked ->
+        
+        switchNewEpisodes?.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit { putBoolean("pref_notify_episodes", isChecked) }
+            NotificationHelper.scheduleEpisodeNotifications(requireContext(), isChecked)
+            Toast.makeText(
+                requireContext(),
+                if (isChecked) getString(R.string.notify_new_episodes) + ": " + getString(R.string.on) else getString(R.string.notify_new_episodes) + ": " + getString(R.string.off),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
-        switchNotifyDigest.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit { putBoolean("pref_notify_digest", isChecked) }
+        switchNotifyDigest?.setOnCheckedChangeListener { _, isChecked ->
+             prefs.edit { putBoolean("pref_notify_digest", isChecked) }
         }
+    }
+
+    private fun createBackup() {
+        // Generate default filename with timestamp
+        val timestamp = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(Date())
+        val fileName = "backup_$timestamp.json"
+        
+        // Launch file picker to choose save location
+        createBackupLauncher.launch(fileName)
+    }
+
+    private fun importBackup() {
+        // Launch file picker to choose backup file
+        importBackupLauncher.launch(arrayOf("application/json", "*/*"))
+    }
+
+    private fun showBackupManagerDialog() {
+        // Load backup list
+        backupViewModel.loadBackups()
+
+        backupViewModel.backupList.observe(viewLifecycleOwner) { backups ->
+            if (backups.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.no_backups),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@observe
+            }
+    
+            showBackupListDialog(backups)
+        }
+    }
+
+    private fun showBackupListDialog(backups: List<BackupFile>) {
+        val backupNames = backups.map { backup ->
+            "${backup.name} (${backup.sizeKb} КБ)"
+        }.toTypedArray()
+
+        val backupPath = backupViewModel.getBackupsDirPath()
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.backup_list))
+            .setMessage(getString(R.string.backup_location_info, backupPath))
+            .setItems(backupNames) { _, which ->
+                val selectedBackup = backups[which]
+                showBackupActionDialog(selectedBackup)
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showBackupActionDialog(backup: BackupFile) {
+        val actions = arrayOf(
+            getString(R.string.restore_backup),
+            getString(R.string.delete_backup)
+        )
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(backup.name)
+            .setItems(actions) { _, which ->
+                when (which) {
+                    0 -> restoreBackup(backup)
+                    1 -> deleteBackup(backup)
+                }
+            }
+            .show()
+    }
+
+    private fun restoreBackup(backup: BackupFile) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.restore_backup))
+            .setMessage(getString(R.string.restore_backup_confirm))
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                lifecycleScope.launch {
+                    val result = backupViewModel.restoreBackup(backup.path)
+                    result.onSuccess {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.backup_restored_success),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    result.onFailure { error ->
+                        Toast.makeText(
+                            requireContext(),
+                            "Помилка: ${error.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun deleteBackup(backup: BackupFile) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.delete_backup))
+            .setMessage("Видалити резервну копію?")
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                lifecycleScope.launch {
+                    val result = backupViewModel.deleteBackup(backup.path)
+                    result.onSuccess {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.backup_deleted),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // Reload backup list
+                        showBackupManagerDialog()
+                    }
+                    result.onFailure { error ->
+                        Toast.makeText(
+                            requireContext(),
+                            "Помилка: ${error.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun updateLanguageText() {

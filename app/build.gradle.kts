@@ -12,6 +12,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
 android {
@@ -96,6 +97,14 @@ dependencies {
     // Hilt
     implementation("com.google.dagger:hilt-android:2.48.1")
     ksp("com.google.dagger:hilt-compiler:2.48.1")
+    
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.hilt:hilt-work:1.2.0")
+    ksp("androidx.hilt:hilt-compiler:1.2.0")
+
+    // Palette (Dynamic Colors)
+    implementation("androidx.palette:palette-ktx:1.0.0")
 
     // Network
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -124,6 +133,9 @@ dependencies {
 
     // Paging
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+
+    // Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))

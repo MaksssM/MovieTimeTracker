@@ -187,5 +187,7 @@
         <item name="cornerRadius">16dp</item>
     </style>
 
-
+    <style name="TransparentText" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
 </resources>

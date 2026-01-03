@@ -33,6 +33,8 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
+import com.example.movietime.utils.HapticFeedbackHelper
+
 
 @AndroidEntryPoint
 class TvDetailsActivity : AppCompatActivity() {
@@ -99,6 +101,7 @@ class TvDetailsActivity : AppCompatActivity() {
 
         // Обробник додавання в переглянуті - відкриває вибір епізодів
         binding.fabAdd.setOnClickListener { view ->
+            HapticFeedbackHelper.impactLow(view)
             animateButtonPress(view) {
                 Log.d(TAG, "FAB clicked for TV show")
                 val current = viewModel.tvShow.value
@@ -134,36 +137,47 @@ class TvDetailsActivity : AppCompatActivity() {
     
     private fun setupClickListeners() {
         // Planned button
-        binding.btnPlanned.setOnClickListener {
-            val tvShow = currentTvShow ?: return@setOnClickListener
+    binding.btnPlanned.setOnClickListener { view ->
+        animateButtonPress(view) {
+            val tvShow = currentTvShow ?: return@animateButtonPress
             addToPlanned(tvShow)
         }
-        
-        // Watched button
-        binding.btnWatched.setOnClickListener {
+    }
+    
+    // Watched button
+    binding.btnWatched.setOnClickListener { view ->
+        animateButtonPress(view) {
             binding.fabAdd.performClick()
         }
-        
-        // Watching button
-        binding.btnWatching.setOnClickListener {
-            val tvShow = currentTvShow ?: return@setOnClickListener
+    }
+    
+    // Watching button
+    binding.btnWatching.setOnClickListener { view ->
+        animateButtonPress(view) {
+            val tvShow = currentTvShow ?: return@animateButtonPress
             addToWatching(tvShow)
         }
-        
-        // Rate button
-        binding.btnRate.setOnClickListener {
+    }
+    
+    // Rate button
+    binding.btnRate.setOnClickListener { view ->
+        animateButtonPress(view) {
             Toast.makeText(this, getString(R.string.rate_coming_soon), Toast.LENGTH_SHORT).show()
         }
-        
-        // Share button
-        binding.btnShare.setOnClickListener {
-            val tvShow = currentTvShow ?: return@setOnClickListener
+    }
+    
+    // Share button
+    binding.btnShare.setOnClickListener { view ->
+        animateButtonPress(view) {
+            val tvShow = currentTvShow ?: return@animateButtonPress
             shareTvShow(tvShow)
         }
+    }
 
-        // Add to Collection button
-        binding.btnAddToCollection.setOnClickListener {
-            val tvShow = currentTvShow ?: return@setOnClickListener
+    // Add to Collection button
+    binding.btnAddToCollection.setOnClickListener { view ->
+        animateButtonPress(view) {
+            val tvShow = currentTvShow ?: return@animateButtonPress
             val bottomSheet = com.example.movietime.ui.collections.AddToCollectionBottomSheet.newInstance(
                 itemId = tvShow.id,
                 mediaType = "tv",
@@ -172,6 +186,7 @@ class TvDetailsActivity : AppCompatActivity() {
             )
             bottomSheet.show(supportFragmentManager, "AddToCollectionBottomSheet")
         }
+    }
     }
     
     private fun addToPlanned(tvShow: TvShowResult) {
@@ -420,8 +435,17 @@ class TvDetailsActivity : AppCompatActivity() {
                 val poster = tvShow.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                 binding.ivPoster.load(poster) {
                     crossfade(true)
+                    allowHardware(false)
                     placeholder(R.drawable.ic_placeholder)
                     error(R.drawable.ic_placeholder)
+                    listener(
+                        onSuccess = { _, result ->
+                            val bitmap = (result.drawable as? android.graphics.drawable.BitmapDrawable)?.bitmap
+                            if (bitmap != null) {
+                                applyDynamicColors(bitmap)
+                            }
+                        }
+                    )
                 }
                 
                 // Rating in floating card
@@ -654,13 +678,14 @@ class TvDetailsActivity : AppCompatActivity() {
     }
     
     private fun animateButtonPress(view: View, action: () -> Unit) {
+        com.example.movietime.utils.HapticFeedbackHelper.impactLow(view)
         AnimatorSet().apply {
             playTogether(
                 ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.9f, 1.05f, 1f),
                 ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.9f, 1.05f, 1f)
             )
             duration = 250
-            interpolator = AccelerateDecelerateInterpolator()
+            interpolator = android.view.animation.AccelerateDecelerateInterpolator()
             start()
         }
         view.postDelayed({ action() }, 120)
@@ -675,5 +700,25 @@ class TvDetailsActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true
+    }
+
+    private fun applyDynamicColors(bitmap: android.graphics.Bitmap) {
+        androidx.palette.graphics.Palette.from(bitmap).generate { palette ->
+            palette?.let {
+                val dominantColor = it.getDominantColor(androidx.core.content.ContextCompat.getColor(this, R.color.primary))
+                val vibrantColor = it.getVibrantColor(androidx.core.content.ContextCompat.getColor(this, R.color.accent_primary))
+                
+                // Apply to CollapsingToolbar
+                binding.toolbarLayout.setContentScrimColor(dominantColor)
+                binding.toolbarLayout.setStatusBarScrimColor(dominantColor)
+                
+                // Apply to status bar
+                window.statusBarColor = dominantColor
+
+                // Apply to buttons
+                binding.fabAdd.backgroundTintList = android.content.res.ColorStateList.valueOf(vibrantColor)
+                binding.btnAddToCollection.backgroundTintList = android.content.res.ColorStateList.valueOf(vibrantColor)
+            }
+        }
     }
 }

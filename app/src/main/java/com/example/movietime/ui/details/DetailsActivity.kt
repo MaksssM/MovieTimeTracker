@@ -116,13 +116,15 @@ class DetailsActivity : AppCompatActivity() {
         }
         
         // Rate button
-        binding.btnRate.setOnClickListener {
-            showRatingDialog { rating ->
-                if (rating != null) {
-                    Toast.makeText(this, getString(R.string.rated_toast, rating.toInt()), Toast.LENGTH_SHORT).show()
-                }
+    binding.btnRate.setOnClickListener {
+        com.example.movietime.utils.HapticFeedbackHelper.impactLow(it)
+        showRatingDialog { rating ->
+            if (rating != null) {
+                com.example.movietime.utils.HapticFeedbackHelper.impactMedium(it)
+                Toast.makeText(this, getString(R.string.rated_toast, rating.toInt()), Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
         // Add to Collection button
         binding.btnAddToCollection.setOnClickListener {
@@ -226,17 +228,21 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun animateButtonPress(view: View, action: () -> Unit) {
-        AnimatorSet().apply {
-            playTogether(
-                ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.93f, 1.02f, 1f),
-                ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.93f, 1.02f, 1f)
-            )
-            duration = 250
-            interpolator = AccelerateDecelerateInterpolator()
-            start()
-        }
-        view.postDelayed(action, 150)
+   private fun animateButtonPress(view: View, action: () -> Unit) {
+        com.example.movietime.utils.HapticFeedbackHelper.impactLow(view)
+        view.animate()
+            .scaleX(0.9f)
+            .scaleY(0.9f)
+            .setDuration(80)
+            .withEndAction {
+                view.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(100)
+                    .start()
+                action()
+            }
+            .start()
     }
 
     private fun addToCategory(category: String) {
@@ -564,6 +570,10 @@ class DetailsActivity : AppCompatActivity() {
                                 onSuccess = { _, result ->
                                     Log.d(TAG, "Image loaded successfully from: ${result.dataSource}")
                                     supportStartPostponedEnterTransition()
+                                    val bitmap = (result.drawable as? android.graphics.drawable.BitmapDrawable)?.bitmap
+                                    if (bitmap != null) {
+                                        applyDynamicColors(bitmap)
+                                    }
                                 },
                                 onError = { request, throwable ->
                                     Log.e(TAG, "Image load failed for ${request.data}: ${throwable.throwable?.message}", throwable.throwable)
@@ -575,6 +585,30 @@ class DetailsActivity : AppCompatActivity() {
                         Log.w(TAG, "No image URL available for movie")
                         binding.ivPoster.setImageResource(R.drawable.ic_placeholder)
                         supportStartPostponedEnterTransition()
+                    }
+
+                    // Collection Info
+                    if (item.belongsToCollection != null) {
+                        binding.layoutCollection.visibility = View.VISIBLE
+                        binding.tvCollectionName.text = item.belongsToCollection.name
+                        
+                        // Load collection poster if available
+                        val collectionPoster = item.belongsToCollection.posterPath
+                        if (!collectionPoster.isNullOrEmpty()) {
+                            binding.ivCollectionPoster.load("https://image.tmdb.org/t/p/w342$collectionPoster") {
+                                crossfade(true)
+                                placeholder(R.color.poster_placeholder_dark)
+                            }
+                        }
+
+                        binding.btnCollection.setOnClickListener {
+                            val intent = android.content.Intent(this, com.example.movietime.ui.collection.CollectionDetailsActivity::class.java).apply {
+                                putExtra("COLLECTION_ID", item.belongsToCollection.id)
+                            }
+                            startActivity(intent)
+                        }
+                    } else {
+                        binding.layoutCollection.visibility = View.GONE
                     }
                 }
                 is com.example.movietime.data.model.TvShowResult -> {
@@ -638,6 +672,10 @@ class DetailsActivity : AppCompatActivity() {
                                 onSuccess = { _, result ->
                                     Log.d(TAG, "TV Image loaded successfully from: ${result.dataSource}")
                                     supportStartPostponedEnterTransition()
+                                    val bitmap = (result.drawable as? android.graphics.drawable.BitmapDrawable)?.bitmap
+                                    if (bitmap != null) {
+                                        applyDynamicColors(bitmap)
+                                    }
                                 },
                                 onError = { request, throwable ->
                                     Log.e(TAG, "TV Image load failed for ${request.data}: ${throwable.throwable?.message}", throwable.throwable)
@@ -734,5 +772,28 @@ class DetailsActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true
+    }
+
+    private fun applyDynamicColors(bitmap: android.graphics.Bitmap) {
+        androidx.palette.graphics.Palette.from(bitmap).generate { palette ->
+            palette?.let {
+                val dominantColor = it.getDominantColor(androidx.core.content.ContextCompat.getColor(this, R.color.primary))
+                val vibrantColor = it.getVibrantColor(androidx.core.content.ContextCompat.getColor(this, R.color.accent_primary))
+                val mutedColor = it.getMutedColor(androidx.core.content.ContextCompat.getColor(this, R.color.text_secondary))
+
+                // Apply to CollapsingToolbar
+                binding.toolbarLayout.setContentScrimColor(dominantColor)
+                binding.toolbarLayout.setStatusBarScrimColor(dominantColor)
+                
+                // Apply to status bar
+                window.statusBarColor = dominantColor
+
+                // Apply to Action Buttons
+                binding.btnAddToCollection.backgroundTintList = android.content.res.ColorStateList.valueOf(vibrantColor)
+                
+                // Category buttons (Optional: tint them too if needed, or keep themed)
+                // binding.btnWatched.backgroundTintList = android.content.res.ColorStateList.valueOf(mutedColor) 
+            }
+        }
     }
 }
