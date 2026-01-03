@@ -85,4 +85,16 @@ data class TvEpisodeDetails(
     @SerializedName("vote_count") val voteCount: Int?
 )
 
+// Company search
+data class CompanyResult(
+    val id: Int,
+    val name: String?,
+    @SerializedName("origin_country") val originCountry: String? = null,
+    @SerializedName("logo_path") val logoPath: String? = null
+)
+
+data class CompanySearchResponse(
+    val results: List<CompanyResult>
+)
+
 

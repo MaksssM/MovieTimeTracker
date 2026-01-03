@@ -51,6 +51,10 @@ class YearInReviewFragment : Fragment() {
             }
         }
 
+        viewModel.yearlyTrend.observe(viewLifecycleOwner) { trend ->
+            updateYearlyChart(trend)
+        }
+
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             // Could show loading indicator here
         }
@@ -98,6 +102,71 @@ class YearInReviewFragment : Fragment() {
                 updateMonthlyChart(breakdown)
             }
         }
+    }
+
+    private fun updateYearlyChart(trend: List<com.example.movietime.data.db.YearlyStats>) {
+        val chart = binding.yearlyChart
+        if (trend.isEmpty()) {
+            binding.yearlyChartContainer.isVisible = false
+            return
+        }
+
+        val sorted = trend.sortedBy { it.year }
+        val labels = sorted.map { it.year.toString() }
+        val entries = sorted.mapIndexed { index, stat ->
+            com.github.mikephil.charting.data.Entry(index.toFloat(), (stat.totalWatchTimeMinutes / 60f))
+        }
+
+        val dataSet = com.github.mikephil.charting.data.LineDataSet(entries, "Годин перегляду")
+        val primaryColor = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.primary)
+        val onSurface = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.white)
+
+        dataSet.color = primaryColor
+        dataSet.lineWidth = 2.5f
+        dataSet.setDrawCircles(true)
+        dataSet.circleRadius = 4f
+        dataSet.setCircleColor(primaryColor)
+        dataSet.setDrawFilled(true)
+        dataSet.fillColor = primaryColor
+        dataSet.fillAlpha = 60
+        dataSet.mode = com.github.mikephil.charting.data.LineDataSet.Mode.CUBIC_BEZIER
+        dataSet.valueTextColor = onSurface
+        dataSet.valueTextSize = 9f
+        dataSet.setDrawValues(false)
+
+        val lineData = com.github.mikephil.charting.data.LineData(dataSet)
+
+        chart.data = lineData
+        chart.description.isEnabled = false
+        chart.legend.isEnabled = false
+        chart.setDrawGridBackground(false)
+        chart.axisRight.isEnabled = false
+        chart.setTouchEnabled(true)
+        chart.setScaleEnabled(false)
+
+        val xAxis = chart.xAxis
+        xAxis.position = com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
+        xAxis.textColor = onSurface
+        xAxis.valueFormatter = com.github.mikephil.charting.formatter.IndexAxisValueFormatter(labels)
+        xAxis.granularity = 1f
+
+        val leftAxis = chart.axisLeft
+        leftAxis.textColor = onSurface
+        leftAxis.setDrawGridLines(true)
+        leftAxis.gridColor = onSurface
+        leftAxis.axisLineColor = onSurface
+        leftAxis.axisMinimum = 0f
+        leftAxis.granularity = 1f
+        leftAxis.valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
+            override fun getFormattedValue(value: Float): String = "${value.toInt()} год"
+        }
+
+        chart.animateY(900)
+        chart.invalidate()
+
+        binding.yearlyChartContainer.isVisible = true
+        binding.yearlyChartCard.isVisible = true
     }
 
     private fun updateMonthlyChart(breakdownJson: String) {

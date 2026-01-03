@@ -119,6 +119,8 @@
     <string name="role_writer">Сценарист</string>
     <string name="role_producer">Продюсер</string>
     <string name="year">Рік</string>
+        <string name="studio_or_company">Студія/Компанія</string>
+        <string name="search_company_hint">Введіть назву студії або компанії</string>
     <string name="any_year">Будь-який рік</string>
     <string name="sort_by">Сортування</string>
     <string name="apply">Застосувати</string>
@@ -171,6 +173,7 @@
     <string name="clear_history">Очистити історію</string>
     <string name="min_rating">Мінімальний рейтинг</string>
     <string name="reset_filters">Скинути фільтри</string>
+    <string name="spoiler_hidden_tap">Спойлер приховано — торкніться, щоб показати</string>
 
     <!-- Language settings -->
     <string name="language_title">Мова додатку</string>
@@ -231,6 +234,24 @@
     <string name="settings_notifications">Сповіщення</string>
     <string name="settings_storage">Дані та пам\'ять</string>
     
+    <string name="backup_management">Управління резервними копіями</string>
+    <string name="backup_description">Локальне зберігання ваших даних без хмарних сервісів</string>
+    <string name="create_backup">Створити резервну копію</string>
+        <string name="manage_backups">Мої резервні копії</string>
+        <string name="view_restore_backups">Переглянути та відновити резервні копії</string>
+        <string name="creating_backup">Створення резервної копії...</string>
+    <string name="backup_list">Мої резервні копії</string>
+    <string name="restore_backup">Відновити</string>
+    <string name="delete_backup">Видалити</string>
+    <string name="backup_created_success">Резервна копія створена</string>
+    <string name="backup_restored_success">Резервна копія успішно відновлена</string>
+    <string name="backup_deleted">Резервна копія видалена</string>
+    <string name="backup_size_format">%d КБ</string>
+    <string name="no_backups">Немає резервних копій</string>
+    <string name="all_data_local">Усі ваші дані зберігаються локально на пристрої</string>
+    <string name="backup_location_info">Збережено в:\n%s</string>
+    <string name="restore_backup_confirm">Усі поточні дані будуть замінені даними з резервної копії. Продовжити?</string>
+    
     <string name="tmdb_content_language">Мова контенту (TMDB)</string>
     <string name="tmdb_content_language_desc">Мова опису та назв для фільмів</string>
     <string name="content_region">Регіон контенту</string>
@@ -241,6 +262,8 @@
     
     <string name="show_ratings">Показувати рейтинги</string>
     <string name="show_ratings_desc">Відображати рейтинг на картках</string>
+    <string name="autoplay_trailers">Автовідтворення трейлерів</string>
+    <string name="autoplay_trailers_desc">Автоматично відтворювати трейлери</string>
     <string name="compact_mode">Компактний режим</string>
     <string name="compact_mode_desc">Більше контенту на екрані</string>
     <string name="calculating">Обчислення…</string>

@@ -36,6 +36,9 @@ class SocialActivityAdapter(
     private val onActivityClick: (SharedActivity) -> Unit
 ) : ListAdapter<SocialActivityItem, SocialActivityAdapter.ActivityViewHolder>(ActivityDiffCallback()) {
 
+    // Track revealed spoiler reviews per activity id
+    private val revealedReviewIds = mutableSetOf<String>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_social_activity, parent, false)
@@ -115,9 +118,24 @@ class SocialActivityAdapter(
             val review = activity.review
             if (!review.isNullOrEmpty()) {
                 txtComment.isVisible = true
-                txtComment.text = "\"$review\""
+                val isRevealed = revealedReviewIds.contains(activity.id)
+                if (isRevealed) {
+                    txtComment.text = "\"$review\""
+                    txtComment.alpha = 1f
+                } else {
+                    txtComment.text = context.getString(R.string.spoiler_hidden_tap)
+                    txtComment.alpha = 0.85f
+                }
+                txtComment.setOnClickListener {
+                    if (!revealedReviewIds.contains(activity.id)) {
+                        revealedReviewIds.add(activity.id)
+                        txtComment.text = "\"$review\""
+                        txtComment.alpha = 1f
+                    }
+                }
             } else {
                 txtComment.isVisible = false
+                txtComment.setOnClickListener(null)
             }
 
             // Likes

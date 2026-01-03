@@ -15,6 +15,7 @@ import com.example.movietime.data.model.SortOption
 import com.example.movietime.databinding.BottomSheetAdvancedFiltersBinding
 import com.example.movietime.ui.search.adapters.GenreAdapter
 import com.example.movietime.ui.search.adapters.PersonAdapter
+import com.example.movietime.ui.search.adapters.CompanyAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,8 +35,10 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
     
     private lateinit var genreAdapter: GenreAdapter
     private lateinit var personAdapter: PersonAdapter
+    private lateinit var companyAdapter: CompanyAdapter
     
     private var searchJob: Job? = null
+    private var companySearchJob: Job? = null
     private val scope = MainScope()
 
     var onApplyFilters: (() -> Unit)? = null
@@ -54,6 +57,7 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
         
         setupGenresRecyclerView()
         setupPeopleRecyclerView()
+        setupCompaniesRecyclerView()
         setupYearSpinner()
         setupSortSpinner()
         setupRoleChips()
@@ -117,6 +121,35 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
             searchJob = scope.launch {
                 delay(400)
                 viewModel.searchPeople(query)
+            }
+        }
+    }
+
+    private fun setupCompaniesRecyclerView() {
+        companyAdapter = CompanyAdapter { company ->
+            viewModel.selectCompany(company)
+            updateSelectedCompanyUI()
+        }
+
+        binding.rvCompanies.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = companyAdapter
+            setHasFixedSize(true)
+        }
+
+        binding.etSearchCompany.addTextChangedListener { editable ->
+            val query = editable?.toString() ?: ""
+            companySearchJob?.cancel()
+
+            if (query.length < 2) {
+                viewModel.searchCompanies("")
+                _binding?.rvCompanies?.visibility = View.GONE
+                return@addTextChangedListener
+            }
+
+            companySearchJob = scope.launch {
+                delay(300)
+                viewModel.searchCompanies(query)
             }
         }
     }
@@ -195,16 +228,24 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
         binding.btnResetFilters.setOnClickListener {
             viewModel.resetAdvancedFilters()
             binding.etSearchPerson.text?.clear()
+            binding.etSearchCompany.text?.clear()
             binding.spinnerYear.setSelection(0)
             binding.spinnerSort.setSelection(0)
             genreAdapter.notifyDataSetChanged()
             updateSelectedPersonUI()
+            updateSelectedCompanyUI()
         }
         
         binding.btnClearSelectedPerson.setOnClickListener {
             viewModel.selectPerson(null)
             binding.etSearchPerson.text?.clear()
             updateSelectedPersonUI()
+        }
+
+        binding.btnClearSelectedCompany.setOnClickListener {
+            viewModel.selectCompany(null)
+            binding.etSearchCompany.text?.clear()
+            updateSelectedCompanyUI()
         }
         
         binding.ivClose.setOnClickListener {
@@ -231,6 +272,15 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
         
         viewModel.selectedPerson.observe(viewLifecycleOwner) {
             updateSelectedPersonUI()
+        }
+
+        viewModel.searchedCompanies.observe(viewLifecycleOwner) { companies ->
+            companyAdapter.submitList(companies)
+            binding.rvCompanies.visibility = if (companies.isNotEmpty()) View.VISIBLE else View.GONE
+        }
+
+        viewModel.selectedCompany.observe(viewLifecycleOwner) {
+            updateSelectedCompanyUI()
         }
         
         viewModel.selectedGenres.observe(viewLifecycleOwner) { genres ->
@@ -263,9 +313,21 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
+    private fun updateSelectedCompanyUI() {
+        val company = viewModel.selectedCompany.value
+        if (company != null) {
+            binding.layoutSelectedCompany.visibility = View.VISIBLE
+            binding.tvSelectedCompanyName.text = company.name ?: getString(R.string.no_title)
+            binding.tvSelectedCompanyCountry.text = company.originCountry ?: ""
+        } else {
+            binding.layoutSelectedCompany.visibility = View.GONE
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         searchJob?.cancel()
+        companySearchJob?.cancel()
         _binding = null
     }
 
