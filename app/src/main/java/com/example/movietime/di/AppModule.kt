@@ -17,6 +17,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.example.movietime.util.LanguageManager
 import javax.inject.Singleton
 
 @Module
@@ -46,6 +47,12 @@ object AppModule {
     @Provides
     @Singleton
     fun provideTmdbApi(retrofit: Retrofit): TmdbApi = retrofit.create(TmdbApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideLanguageManager(@ApplicationContext context: Context): LanguageManager {
+        return LanguageManager(context)
+    }
 
 
     @Provides
@@ -110,12 +117,13 @@ object AppModule {
         dao: WatchedItemDao, 
         plannedDao: PlannedDao, 
         watchingDao: WatchingDao,
-        searchHistoryDao: SearchHistoryDao
+        searchHistoryDao: SearchHistoryDao,
+        languageManager: LanguageManager
     ): AppRepository {
         if (BuildConfig.TMDB_API_KEY.isBlank() || BuildConfig.TMDB_API_KEY.contains("YOUR_DEFAULT_KEY")) {
             android.util.Log.e("AppModule", "WARNING: TMDB API key is not configured properly!")
         }
-        return AppRepository(api, dao, plannedDao, watchingDao, searchHistoryDao, BuildConfig.TMDB_API_KEY)
+        return AppRepository(api, dao, plannedDao, watchingDao, searchHistoryDao, languageManager, BuildConfig.TMDB_API_KEY)
     }
 
     @Provides

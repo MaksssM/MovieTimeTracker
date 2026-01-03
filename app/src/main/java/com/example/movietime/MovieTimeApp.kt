@@ -9,8 +9,19 @@ import com.example.movietime.util.SecurityUtils
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
 
+import androidx.hilt.work.HiltWorkerFactory
+// removed conflicting import
+
 @HiltAndroidApp
-class MovieTimeApp : Application() {
+class MovieTimeApp : Application(), androidx.work.Configuration.Provider {
+    
+    @javax.inject.Inject
+    lateinit var workerFactory: HiltWorkerFactory
+
+    override val workManagerConfiguration: androidx.work.Configuration
+        get() = androidx.work.Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
     
     companion object {
         private const val TAG = "MovieTimeApp"

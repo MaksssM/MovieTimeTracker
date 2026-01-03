@@ -138,6 +138,7 @@ class CalendarFragment : Fragment() {
     }
     
     private fun animateButton(view: View, action: () -> Unit) {
+        com.example.movietime.utils.HapticFeedbackHelper.impactLow(view)
         view.animate()
             .scaleX(0.9f)
             .scaleY(0.9f)

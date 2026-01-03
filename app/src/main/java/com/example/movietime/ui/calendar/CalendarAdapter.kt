@@ -97,6 +97,7 @@ class CalendarAdapter(
 
             binding.root.setOnClickListener {
                 if (day.isCurrentMonth) {
+                    com.example.movietime.utils.HapticFeedbackHelper.impactLow(it)
                     onDayClick(day.dayOfMonth)
                 }
             }

@@ -128,6 +128,7 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
     private fun setupClickListeners() {
         // Select All / Deselect All - using Chip instead of CheckBox
         binding.chipSelectAll.setOnClickListener {
+            com.example.movietime.utils.HapticFeedbackHelper.impactMedium(it)
             val isChecked = binding.chipSelectAll.isChecked
             seasons.forEach { season ->
                 season.episodes.forEach { episode ->
@@ -140,16 +141,19 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
         
         // Cancel button
         binding.btnCancel.setOnClickListener {
+            com.example.movietime.utils.HapticFeedbackHelper.impactLow(it)
             dismiss()
         }
         
         // Save button
         binding.btnSave.setOnClickListener {
+            com.example.movietime.utils.HapticFeedbackHelper.impactMedium(it)
             saveProgress()
         }
         
         // Retry button
         binding.btnRetry.setOnClickListener {
+            com.example.movietime.utils.HapticFeedbackHelper.impactLow(it)
             loadTvShowData()
         }
     }

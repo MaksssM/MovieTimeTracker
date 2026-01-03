@@ -10,6 +10,7 @@ import com.example.movietime.data.model.Genre
 import com.example.movietime.data.model.Person
 import com.example.movietime.data.model.PersonRole
 import com.example.movietime.data.model.SortOption
+import com.example.movietime.data.model.CompanyResult
 import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.BuildConfig
@@ -18,10 +19,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import android.util.Log
 
+import com.example.movietime.util.LanguageManager
+
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val repository: AppRepository,
-    private val api: TmdbApi
+    private val api: TmdbApi,
+    private val languageManager: LanguageManager
 ) : ViewModel() {
 
     private val apiKey = BuildConfig.TMDB_API_KEY
@@ -93,6 +97,13 @@ class SearchViewModel @Inject constructor(
     
     private val _popularPeople = MutableLiveData<List<Person>>(emptyList())
     val popularPeople: LiveData<List<Person>> = _popularPeople
+
+    // Companies (studios)
+    private val _searchedCompanies = MutableLiveData<List<CompanyResult>>(emptyList())
+    val searchedCompanies: LiveData<List<CompanyResult>> = _searchedCompanies
+
+    private val _selectedCompany = MutableLiveData<CompanyResult?>(null)
+    val selectedCompany: LiveData<CompanyResult?> = _selectedCompany
     
     // Sort option
     private val _sortOption = MutableLiveData<SortOption>(SortOption.POPULARITY_DESC)
@@ -101,6 +112,14 @@ class SearchViewModel @Inject constructor(
     // Year filter
     private val _selectedYear = MutableLiveData<Int?>(null)
     val selectedYear: LiveData<Int?> = _selectedYear
+
+    
+    // Duration filter (in minutes)
+    private val _minDuration = MutableLiveData<Int?>(null)
+    val minDuration: LiveData<Int?> = _minDuration
+    
+    private val _maxDuration = MutableLiveData<Int?>(null)
+    val maxDuration: LiveData<Int?> = _maxDuration
     
     // Search mode
     private val _isAdvancedSearchMode = MutableLiveData<Boolean>(false)
@@ -210,7 +229,34 @@ class SearchViewModel @Inject constructor(
                 }
             }.toMutableList()
         }
+        
+        // Apply duration filter (for movies)
+        val minDur = _minDuration.value
+        val maxDur = _maxDuration.value
+        if (minDur != null || maxDur != null) {
+            filtered = filtered.filter { any ->
+                when (any) {
+                    is MovieResult -> {
+                        val runtime = any.runtime ?: 0
+                        val passesMin = minDur == null || runtime >= minDur
+                        val passesMax = maxDur == null || runtime <= maxDur
+                        passesMin && passesMax
+                    }
+                    is TvShowResult -> {
+                        // For TV shows, use episode runtime if available
+                        val episodeRuntime = any.episodeRunTime?.firstOrNull() ?: 0
+                        val passesMin = minDur == null || episodeRuntime >= minDur
+                        val passesMax = maxDur == null || episodeRuntime <= maxDur
+                        passesMin && passesMax
+                    }
+                    else -> true
+                }
+            }.toMutableList()
+        }
 
+        
+        // Apply person filter (actor, director, writer, producer)
+        
         // Apply sorting by rating
         if (_sortByRating.value == true) {
             filtered.sortByDescending { item ->
@@ -280,6 +326,15 @@ class SearchViewModel @Inject constructor(
         _sortByRating.value = false
         _sortByPopularity.value = false
         _minRating.value = 0.0
+        _selectedYear.value = null
+        _minDuration.value = null
+        _maxDuration.value = null
+        applyFiltersAndSort()
+    }
+    
+    fun setDurationFilter(minMinutes: Int?, maxMinutes: Int?) {
+        _minDuration.value = minMinutes
+        _maxDuration.value = maxMinutes
         applyFiltersAndSort()
     }
 
@@ -493,19 +548,34 @@ class SearchViewModel @Inject constructor(
     fun loadPopularContent() {
         viewModelScope.launch {
             try {
-                val popularMoviesResponse = api.getPopularMovies(apiKey, "uk-UA")
-                val popularTvShowsResponse = api.getPopularTvShows(apiKey, "uk-UA")
+                // Generate random page (1-20) for more variety
+                val randomPage = (1..20).random()
+                
+                // Use discover API instead of popular for random content
+                val discoverMoviesResponse = api.discoverMovies(
+                    apiKey = apiKey,
+                    language = languageManager.getApiLanguage(),
+                    page = randomPage,
+                    sortBy = "vote_count.desc"
+                )
+                val discoverTvShowsResponse = api.discoverTvShows(
+                    apiKey = apiKey,
+                    language = languageManager.getApiLanguage(),
+                    page = randomPage,
+                    sortBy = "vote_count.desc"
+                )
 
-                val popularMovies = popularMoviesResponse.results.take(10)
-                val popularTvShows = popularTvShowsResponse.results.take(10)
+                val randomMovies = discoverMoviesResponse.results.shuffled().take(10)
+                val randomTvShows = discoverTvShowsResponse.results.shuffled().take(10)
 
                 val combined = mutableListOf<Any>()
-                combined.addAll(popularMovies)
-                combined.addAll(popularTvShows)
-
-                _popularContent.value = combined
+                combined.addAll(randomMovies)
+                combined.addAll(randomTvShows)
+                
+                // Shuffle the combined list for extra randomness
+                _popularContent.value = combined.shuffled()
             } catch (e: Exception) {
-                Log.e("SearchViewModel", "Error loading popular content", e)
+                Log.e("SearchViewModel", "Error loading random content", e)
                 _popularContent.value = emptyList()
             }
         }
@@ -598,6 +668,29 @@ class SearchViewModel @Inject constructor(
             }
         }
     }
+
+    fun searchCompanies(query: String) {
+        if (query.length < 2) {
+            _searchedCompanies.value = emptyList()
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                val companies = repository.searchCompanies(query)
+                _searchedCompanies.value = companies.take(30)
+                Log.d("SearchViewModel", "Found ${companies.size} companies for '$query'")
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error searching companies", e)
+                _searchedCompanies.value = emptyList()
+            }
+        }
+    }
+
+    fun selectCompany(company: CompanyResult?) {
+        _selectedCompany.value = company
+        updateActiveFiltersCount()
+    }
     
     fun selectPerson(person: Person?) {
         _selectedPerson.value = person
@@ -625,6 +718,7 @@ class SearchViewModel @Inject constructor(
         var count = 0
         if (!_selectedGenres.value.isNullOrEmpty()) count++
         if (_selectedPerson.value != null) count++
+        if (_selectedCompany.value != null) count++
         if (_selectedYear.value != null) count++
         if ((_minRating.value ?: 0.0) > 0) count++
         _activeFiltersCount.value = count
@@ -646,9 +740,10 @@ class SearchViewModel @Inject constructor(
                 val personRole = _selectedPersonRole.value ?: PersonRole.ANY
                 val minRating = _minRating.value?.toFloat()?.takeIf { it > 0 }
                 val year = _selectedYear.value
+                val companyId = _selectedCompany.value?.id
                 val sortBy = _sortOption.value?.apiValue ?: "popularity.desc"
                 
-                Log.d("SearchViewModel", "Discover with filters: type=$mediaType, genres=$genreIds, person=$personId, role=$personRole, minRating=$minRating, year=$year, sortBy=$sortBy")
+                Log.d("SearchViewModel", "Discover with filters: type=$mediaType, genres=$genreIds, person=$personId, role=$personRole, company=$companyId, minRating=$minRating, year=$year, sortBy=$sortBy")
                 
                 val results = repository.discoverByFilters(
                     mediaType = mediaType,
@@ -656,6 +751,7 @@ class SearchViewModel @Inject constructor(
                     personId = personId,
                     personRole = personRole,
                     minRating = minRating,
+                    companyId = companyId,
                     year = year,
                     sortBy = sortBy
                 )
@@ -678,6 +774,7 @@ class SearchViewModel @Inject constructor(
     fun resetAdvancedFilters() {
         _selectedGenres.value = emptyList()
         _selectedPerson.value = null
+        _selectedCompany.value = null
         _selectedPersonRole.value = PersonRole.ANY
         _selectedYear.value = null
         _sortOption.value = SortOption.POPULARITY_DESC
@@ -688,6 +785,7 @@ class SearchViewModel @Inject constructor(
     fun hasActiveFilters(): Boolean {
         return !_selectedGenres.value.isNullOrEmpty() ||
                 _selectedPerson.value != null ||
+                _selectedCompany.value != null ||
                 _selectedYear.value != null ||
                 (_minRating.value ?: 0.0) > 0
     }
@@ -708,6 +806,10 @@ class SearchViewModel @Inject constructor(
                 else -> ""
             }
             parts.add("${person.name} $roleText")
+        }
+
+        _selectedCompany.value?.let { company ->
+            parts.add("Студія: ${company.name ?: "—"}")
         }
         
         _selectedYear.value?.let { year ->

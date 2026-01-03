@@ -175,6 +175,13 @@ class StatisticsRepository @Inject constructor(
     suspend fun getAvailableYears(): List<Int> {
         return yearlyStatsDao.getAvailableYears()
     }
+
+    /**
+     * Get all yearly stats for trend charts (sorted desc by DAO default).
+     */
+    suspend fun getAllYearlyStats(): List<YearlyStats> {
+        return yearlyStatsDao.getAllStatsSync()
+    }
     
     /**
      * Get watch time for a specific month.

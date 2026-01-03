@@ -17,6 +17,9 @@ class ActivityAdapter(
     private val onItemClick: (Activity) -> Unit
 ) : ListAdapter<Activity, ActivityAdapter.ActivityViewHolder>(ActivityDiffCallback()) {
 
+    // Track which reviews were revealed to keep spoiler-hidden by default
+    private val revealedReviewIds = mutableSetOf<String>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
         val binding = ItemActivityBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -64,11 +67,26 @@ class ActivityAdapter(
                 }
 
                 // Show review if available
-                activity.review?.let { review ->
+                activity.review?.takeIf { it.isNotBlank() }?.let { review ->
                     tvReview.isVisible = true
-                    tvReview.text = review
+                    val isRevealed = revealedReviewIds.contains(activity.id)
+                    if (isRevealed) {
+                        tvReview.text = review
+                        tvReview.alpha = 1f
+                    } else {
+                        tvReview.text = binding.root.context.getString(R.string.spoiler_hidden_tap)
+                        tvReview.alpha = 0.85f
+                    }
+                    tvReview.setOnClickListener {
+                        if (!revealedReviewIds.contains(activity.id)) {
+                            revealedReviewIds.add(activity.id)
+                            tvReview.text = review
+                            tvReview.alpha = 1f
+                        }
+                    }
                 } ?: run {
                     tvReview.isVisible = false
+                    tvReview.setOnClickListener(null)
                 }
 
                 // Set click listener

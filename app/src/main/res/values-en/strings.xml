@@ -218,6 +218,24 @@
     <string name="notification_new_releases">New Releases</string>
     <string name="notification_reminders">Reminders</string>
 
+    <string name="backup_management">Backup Management</string>
+    <string name="backup_description">Local storage of your data without cloud services</string>
+    <string name="create_backup">Create Backup</string>
+    <string name="manage_backups">My Backups</string>
+    <string name="view_restore_backups">View and restore backups</string>
+    <string name="creating_backup">Creating backup...</string>
+    <string name="backup_list">My Backups</string>
+    <string name="restore_backup">Restore</string>
+    <string name="delete_backup">Delete</string>
+    <string name="backup_created_success">Backup created</string>
+    <string name="backup_restored_success">Backup successfully restored</string>
+    <string name="backup_deleted">Backup deleted</string>
+    <string name="backup_size_format">%d KB</string>
+    <string name="no_backups">No backups</string>
+    <string name="all_data_local">All your data is stored locally on device</string>
+    <string name="backup_location_info">Saved to:\n%s</string>
+    <string name="restore_backup_confirm">All current data will be replaced with data from the backup. Continue?</string>
+
     <!-- New Settings Strings -->
     <string name="settings_appearance">Appearance</string>
     <string name="settings_content">Content</string>
@@ -381,9 +399,9 @@
     <string name="specials">Specials</string>
     <string name="episode_format">E%d</string>
     <string name="episode_full_format">Episode %d</string>
-    <string name="season_progress_format">%d/%d watched • %s</string>
+    <string name="season_progress_format">%1$d/%2$d watched • %3$s</string>
     <string name="total_episodes_format">%d episodes</string>
-    <string name="watched_episodes_format">%d/%d watched</string>
+    <string name="watched_episodes_format">%1$d/%2$d watched</string>
     <string name="episode_runtime_format">%d min</string>
     <string name="save">Save</string>
     <string name="save_progress">Save Progress</string>
@@ -399,9 +417,9 @@
     <string name="remaining">Remaining</string>
     <string name="time_spent">Time</string>
     <string name="retry">Retry</string>
-    <string name="selected_episodes_count">Selected %d of %d episodes</string>
+    <string name="selected_episodes_count">Selected %1$d of %2$d episodes</string>
     <string name="total_runtime_format">~%s total</string>
-    <string name="seasons_episodes_format">%d seasons • %d episodes</string>
+    <string name="seasons_episodes_format">%1$d seasons • %2$d episodes</string>
     
     <!-- Details Screen -->
     <string name="user_score">User Score</string>

@@ -24,7 +24,8 @@ data class MovieResult(
     val popularity: Float = 0f,
     @SerializedName("genre_ids") val genreIds: List<Int>? = null,
     // Details API returns genres array instead of genre_ids
-    val genres: List<Genre>? = null
+    val genres: List<Genre>? = null,
+    @SerializedName("belongs_to_collection") val belongsToCollection: BelongsToCollection? = null
 )
 
 data class TvShowResult(
@@ -47,7 +48,9 @@ data class TvShowResult(
     // Додаткові поля для кращого визначення статусу та часу
     val status: String? = null, // "Returning Series", "Ended", "In Production", "Canceled"
     @SerializedName("in_production") val inProduction: Boolean? = null,
-    val seasons: List<TvSeason>? = null
+    val seasons: List<TvSeason>? = null,
+    @SerializedName("next_episode_to_air") val nextEpisodeToAir: TvEpisodeDetails? = null,
+    @SerializedName("last_episode_to_air") val lastEpisodeToAir: TvEpisodeDetails? = null
 )
 
 data class TvSeason(
@@ -83,6 +86,18 @@ data class TvEpisodeDetails(
     @SerializedName("still_path") val stillPath: String?,
     @SerializedName("vote_average") val voteAverage: Float?,
     @SerializedName("vote_count") val voteCount: Int?
+)
+
+// Company search
+data class CompanyResult(
+    val id: Int,
+    val name: String?,
+    @SerializedName("origin_country") val originCountry: String? = null,
+    @SerializedName("logo_path") val logoPath: String? = null
+)
+
+data class CompanySearchResponse(
+    val results: List<CompanyResult>
 )
 
 
