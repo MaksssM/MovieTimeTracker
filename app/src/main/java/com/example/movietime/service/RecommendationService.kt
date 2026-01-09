@@ -61,17 +61,19 @@ class RecommendationService @Inject constructor(
             }
         }
 
-        // Видаляємо дублікати і те, що вже бачили
-        val watchedIds = watchedItems.map { it.id }.toSet()
+        // Видаляємо дублікати і те, що вже бачили (Watched, Planned, Watching, Search History)
+        val seenMediaIds = repository.getAllSeenItemIds()
+        val seenMovieIds = seenMediaIds.filter { it.mediaType == "movie" }.map { it.id }.toSet()
+        val seenTvShowIds = seenMediaIds.filter { it.mediaType == "tv" }.map { it.id }.toSet()
         
         val uniqueMovies = recommendedMovies
-            .filter { !watchedIds.contains(it.id) }
+            .filter { !seenMovieIds.contains(it.id) }
             .distinctBy { it.id }
             .sortedByDescending { it.voteAverage }
             .take(20)
 
         val uniqueTvShows = recommendedTvShows
-            .filter { !watchedIds.contains(it.id) }
+            .filter { !seenTvShowIds.contains(it.id) }
             .distinctBy { it.id }
             .sortedByDescending { it.voteAverage }
             .take(20)

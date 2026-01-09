@@ -42,4 +42,7 @@ interface WatchedItemDao {
 
     @Query("SELECT watchCount FROM watched_items WHERE id = :id AND mediaType = :mediaType")
     suspend fun getWatchCount(id: Int, mediaType: String): Int
+
+    @Query("SELECT id, mediaType FROM watched_items")
+    suspend fun getAllIds(): List<MediaId>
 }

@@ -29,4 +29,7 @@ interface SearchHistoryDao {
     
     @Query("SELECT COUNT(*) FROM search_history")
     suspend fun getCount(): Int
+
+    @Query("SELECT id, mediaType FROM search_history")
+    suspend fun getAllIds(): List<MediaId>
 }

@@ -448,6 +448,23 @@ class AppRepository @Inject constructor(
         return watchingDao.getCount()
     }
 
+    /**
+     * Consolidates all "seen" or "interacted with" item IDs across all local lists.
+     * Used for discovery optimization (deprioritizing seen items in search/dash recommendations).
+     */
+    suspend fun getAllSeenItemIds(): List<com.example.movietime.data.db.MediaId> {
+        val seenIds = mutableListOf<com.example.movietime.data.db.MediaId>()
+        try {
+            seenIds.addAll(dao.getAllIds())
+            seenIds.addAll(plannedDao.getAllIds())
+            seenIds.addAll(watchingDao.getAllIds())
+            seenIds.addAll(searchHistoryDao.getAllIds())
+        } catch (e: Exception) {
+            Log.e("AppRepository", "Error collecting seen item IDs", e)
+        }
+        return seenIds.distinct()
+    }
+
     suspend fun getRecentActivity(limit: Int = 10): List<com.example.movietime.data.model.RecentActivityItem> = coroutineScope {
         android.util.Log.d("AppRepository", "getRecentActivity: Starting...")
         

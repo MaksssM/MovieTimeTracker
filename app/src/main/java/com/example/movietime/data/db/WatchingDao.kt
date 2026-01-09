@@ -34,4 +34,7 @@ interface WatchingDao {
 
     @Query("SELECT COUNT(*) FROM watching_items WHERE mediaType = :mediaType")
     suspend fun getCountByMediaType(mediaType: String): Int
+
+    @Query("SELECT id, mediaType FROM watching_items")
+    suspend fun getAllIds(): List<MediaId>
 }
