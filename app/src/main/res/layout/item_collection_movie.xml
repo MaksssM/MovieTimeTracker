@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardBackgroundColor="@color/glass_surface_low"
+    app:cardElevation="0dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/ivPoster"
+            android:layout_width="50dp"
+            android:layout_height="75dp"
+            android:scaleType="centerCrop"
+            android:background="@color/poster_placeholder_dark"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent" 
+            tools:src="@color/poster_placeholder_dark"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="The Avengers" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_on_dark_secondary"
+                    android:textSize="13sp"
+                    tools:text="2012" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" • "
+                    android:textColor="@color/text_on_dark_tertiary" />
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_star_filled"
+                    app:tint="@color/badge_rating" />
+
+                <TextView
+                    android:id="@+id/tvRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/badge_rating"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:text="8.1" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivWatchedStatus"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_check_circle"
+            app:tint="@color/action_watched"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
