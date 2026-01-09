@@ -20,8 +20,36 @@ class TrendingViewModel @Inject constructor(
     private val _trendingMovies = MutableLiveData<List<Any>>()
     val trendingMovies: LiveData<List<Any>> = _trendingMovies
 
+    // Discovery Optimization
+    private var seenItemIds = setOf<String>()
+    
     init {
+        refreshSeenItems()
         loadTrendingContent()
+    }
+
+    private fun refreshSeenItems() {
+        viewModelScope.launch {
+            try {
+                val ids = repository.getAllSeenItemIds()
+                seenItemIds = ids.map { "${it.mediaType}:${it.id}" }.toSet()
+            } catch (e: Exception) {
+                Log.e("TrendingViewModel", "Error refreshing seen items", e)
+            }
+        }
+    }
+
+    private fun calculateDiscoveryScore(item: Any): Double {
+        val (id, mediaType, popularity) = when (item) {
+            is MovieResult -> Triple(item.id, "movie", item.popularity?.toDouble() ?: 0.0)
+            is TvShowResult -> Triple(item.id, "tv", item.popularity?.toDouble() ?: 0.0)
+            else -> Triple(0, "unknown", 0.0)
+        }
+
+        val isSeen = seenItemIds.contains("$mediaType:$id")
+        val penaltyFactor = if (isSeen) 0.3 else 1.0 // 70% penalty for seen items
+        
+        return popularity * penaltyFactor
     }
 
     private fun loadTrendingContent() {
@@ -39,7 +67,13 @@ class TrendingViewModel @Inject constructor(
                     "TrendingViewModel",
                     "Loaded ${moviesResponse.results.size} movies and ${tvResponse.results.size} TV shows"
                 )
-                _trendingMovies.value = allContent
+                
+                // Discovery Optimization: Sort by popularity with a penalty for seen items
+                val sortedContent = allContent.sortedByDescending { item ->
+                    calculateDiscoveryScore(item)
+                }
+                
+                _trendingMovies.value = sortedContent
             } catch (e: Exception) {
                 Log.e("TrendingViewModel", "Error loading trending content", e)
                 _trendingMovies.value = emptyList()

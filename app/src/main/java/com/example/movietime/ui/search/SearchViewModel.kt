@@ -132,6 +132,26 @@ class SearchViewModel @Inject constructor(
     private var lastSearchQuery = ""
     private var lastSearchResults: List<Any> = emptyList()
 
+    // Discovery Optimization
+    private var seenItemIds = setOf<String>() // Set of "mediaType:id" strings
+    
+    init {
+        refreshSeenItems()
+        loadGenres()
+    }
+
+    private fun refreshSeenItems() {
+        viewModelScope.launch {
+            try {
+                val ids = repository.getAllSeenItemIds()
+                seenItemIds = ids.map { "${it.mediaType}:${it.id}" }.toSet()
+                Log.d("SearchViewModel", "Refreshed seen items: ${seenItemIds.size}")
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error refreshing seen items", e)
+            }
+        }
+    }
+
     // Cache для результатів пошуку
     private val searchCache = mutableMapOf<String, List<Any>>()
 
@@ -257,27 +277,16 @@ class SearchViewModel @Inject constructor(
         
         // Apply person filter (actor, director, writer, producer)
         
-        // Apply sorting by rating
-        if (_sortByRating.value == true) {
-            filtered.sortByDescending { item ->
-                when (item) {
-                    is MovieResult -> item.voteAverage?.toDouble() ?: 0.0
-                    is TvShowResult -> item.voteAverage?.toDouble() ?: 0.0
-                    else -> 0.0
-                }
-            }
-        }
-
-        // Apply sorting by popularity (if rating sort is not active)
-        if (_sortByPopularity.value == true && _sortByRating.value != true) {
-            filtered.sortByDescending { item ->
-                when (item) {
-                    is MovieResult -> item.popularity?.toDouble() ?: 0.0
-                    is TvShowResult -> item.popularity?.toDouble() ?: 0.0
-                    else -> 0.0
-                }
-            }
-        }
+        // Discovery Optimization: Penalize items user has already seen/clicked/planned
+        // Use a composite score for sorting: (original_rank_value * penalty_factor)
+        
+        val sortOption = _sortOption.value ?: SortOption.POPULARITY_DESC
+        
+        filtered.sortWith(Comparator { a, b ->
+            val scoreA = calculateDiscoveryScore(a, sortOption)
+            val scoreB = calculateDiscoveryScore(b, sortOption)
+            scoreB.compareTo(scoreA) // Descending
+        })
 
         // Apply results limit
         val limit = _resultsLimit.value ?: 50
@@ -286,6 +295,27 @@ class SearchViewModel @Inject constructor(
         }
 
         _searchResult.value = filtered
+    }
+
+    private fun calculateDiscoveryScore(item: Any, option: SortOption): Double {
+        val (id, mediaType, rawScore) = when (item) {
+            is MovieResult -> Triple(item.id, "movie", when(option) {
+                SortOption.VOTE_AVERAGE_DESC, SortOption.VOTE_AVERAGE_ASC -> item.voteAverage?.toDouble() ?: 0.0
+                SortOption.RELEASE_DATE_DESC, SortOption.RELEASE_DATE_ASC -> (item.releaseDate?.substringBefore("-")?.toDoubleOrNull() ?: 0.0) / 2025.0
+                else -> item.popularity?.toDouble() ?: 0.0
+            })
+            is TvShowResult -> Triple(item.id, "tv", when(option) {
+                SortOption.VOTE_AVERAGE_DESC, SortOption.VOTE_AVERAGE_ASC -> item.voteAverage?.toDouble() ?: 0.0
+                SortOption.RELEASE_DATE_DESC, SortOption.RELEASE_DATE_ASC -> (item.firstAirDate?.substringBefore("-")?.toDoubleOrNull() ?: 0.0) / 2025.0
+                else -> item.popularity?.toDouble() ?: 0.0
+            })
+            else -> Triple(0, "unknown", 0.0)
+        }
+
+        val isSeen = seenItemIds.contains("$mediaType:$id")
+        val penaltyFactor = if (isSeen) 0.3 else 1.0 // 70% penalty for seen items to ensure discovery
+        
+        return rawScore * penaltyFactor
     }
 
     private fun addToSearchHistory(query: String) {
@@ -565,15 +595,20 @@ class SearchViewModel @Inject constructor(
                     sortBy = "vote_count.desc"
                 )
 
-                val randomMovies = discoverMoviesResponse.results.shuffled().take(10)
-                val randomTvShows = discoverTvShowsResponse.results.shuffled().take(10)
+                val randomMovies = discoverMoviesResponse.results.shuffled()
+                val randomTvShows = discoverTvShowsResponse.results.shuffled()
 
                 val combined = mutableListOf<Any>()
                 combined.addAll(randomMovies)
                 combined.addAll(randomTvShows)
                 
-                // Shuffle the combined list for extra randomness
-                _popularContent.value = combined.shuffled()
+                // Sort combined list by discovery score to prioritize new items
+                val sortedCombined = combined.sortedByDescending { item ->
+                    calculateDiscoveryScore(item, SortOption.POPULARITY_DESC)
+                }.take(20)
+                
+                // Shuffle the final selection a bit for extra variety
+                _popularContent.value = sortedCombined.shuffled()
             } catch (e: Exception) {
                 Log.e("SearchViewModel", "Error loading random content", e)
                 _popularContent.value = emptyList()
@@ -604,6 +639,7 @@ class SearchViewModel @Inject constructor(
             }
         }
     }
+
 
     // ============ ADVANCED SEARCH METHODS ============
     
