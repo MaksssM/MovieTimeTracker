@@ -3,6 +3,7 @@ package com.example.movietime.ui.search
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
@@ -12,11 +13,44 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.movietime.R
 import com.example.movietime.data.model.MovieResult
+import com.example.movietime.data.model.Person
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.databinding.ItemSearchResultBinding
+import com.example.movietime.databinding.ItemPersonResultBinding
 import java.util.Locale
 
-class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallback) {
+class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
+
+    companion object {
+        private const val VIEW_TYPE_MEDIA = 0
+        private const val VIEW_TYPE_PERSON = 1
+        
+        private val DiffCallback = object : DiffUtil.ItemCallback<Any>() {
+            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+                return when {
+                    oldItem is MovieResult && newItem is MovieResult -> oldItem.id == newItem.id
+                    oldItem is TvShowResult && newItem is TvShowResult -> oldItem.id == newItem.id
+                    oldItem is Person && newItem is Person -> oldItem.id == newItem.id
+                    else -> false
+                }
+            }
+
+            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+                return when {
+                    oldItem is MovieResult && newItem is MovieResult -> 
+                        oldItem.id == newItem.id && oldItem.title == newItem.title && 
+                        oldItem.posterPath == newItem.posterPath && oldItem.voteAverage == newItem.voteAverage
+                    oldItem is TvShowResult && newItem is TvShowResult -> 
+                        oldItem.id == newItem.id && oldItem.name == newItem.name && 
+                        oldItem.posterPath == newItem.posterPath && oldItem.voteAverage == newItem.voteAverage
+                    oldItem is Person && newItem is Person -> 
+                        oldItem.id == newItem.id && oldItem.name == newItem.name && 
+                        oldItem.profilePath == newItem.profilePath
+                    else -> false
+                }
+            }
+        }
+    }
 
     var onItemClick: ((Any) -> Unit)? = null
     var onItemLongClick: ((Any) -> Unit)? = null
@@ -25,7 +59,6 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
 
     fun updateQueryHighlight(q: String) {
         currentQuery = q.trim()
-        // Обновляем только видимые элементы
         for (i in 0 until itemCount) {
             notifyItemChanged(i)
         }
@@ -44,23 +77,41 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
         super.submitList(list)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-        val binding = ItemSearchResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return SearchViewHolder(binding)
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is Person -> VIEW_TYPE_PERSON
+            else -> VIEW_TYPE_MEDIA
+        }
     }
 
-    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            VIEW_TYPE_PERSON -> {
+                val binding = ItemPersonResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                PersonViewHolder(binding)
+            }
+            else -> {
+                val binding = ItemSearchResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                MediaViewHolder(binding)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = getItem(position)
-        holder.bind(currentItem)
         
-        // Animate items only on first appearance
+        when (holder) {
+            is MediaViewHolder -> holder.bind(currentItem)
+            is PersonViewHolder -> holder.bind(currentItem as Person)
+        }
+        
         if (position > lastAnimatedPosition) {
             animateItemEntry(holder.itemView, position)
             lastAnimatedPosition = position
         }
     }
     
-    private fun animateItemEntry(view: android.view.View, position: Int) {
+    private fun animateItemEntry(view: View, position: Int) {
         view.alpha = 0f
         view.translationY = 40f
         view.scaleX = 0.95f
@@ -82,11 +133,11 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
         }
     }
 
-    inner class SearchViewHolder(private val binding: ItemSearchResultBinding) : RecyclerView.ViewHolder(binding.root) {
+    // ViewHolder for Movies and TV Shows
+    inner class MediaViewHolder(private val binding: ItemSearchResultBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener { view ->
-                // Add press animation
                 view.animate()
                     .scaleX(0.97f)
                     .scaleY(0.97f)
@@ -111,7 +162,6 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     onItemLongClick?.invoke(getItem(position))
-                    // Анімація видалення
                     animateRemoval(binding.root)
                     removeItem(position)
                 }
@@ -122,10 +172,8 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
         fun bind(item: Any) {
             when (item) {
                 is MovieResult -> {
-                    // Назва фільму
                     binding.tvTitle.text = item.title ?: binding.root.context.getString(R.string.no_title)
 
-                    // Постер із завантаженням та кешуванням
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                     binding.ivPoster.load(posterUrl) {
                         crossfade(400)
@@ -133,7 +181,6 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                         error(R.drawable.ic_placeholder)
                     }
 
-                    // Рейтинг
                     val rating = item.voteAverage
                     binding.tvRating.text = if (rating > 0f) {
                         String.format(Locale.US, "★ %.1f", rating)
@@ -141,10 +188,10 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                         "★ N/A"
                     }
 
-                    // Тип медіа
-                    binding.tvMediaType.text = binding.root.context.getString(R.string.media_type_movie)
+                    // Media type with country
+                    val country = item.productionCountries?.firstOrNull()?.iso?.let { getCountryFlag(it) } ?: ""
+                    binding.tvMediaType.text = "$country ${binding.root.context.getString(R.string.media_type_movie)}"
 
-                    // Опис
                     binding.tvOverview.text = item.overview?.takeIf { it.isNotBlank() }
                         ?: binding.root.context.getString(R.string.no_description_available)
 
@@ -152,10 +199,8 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                     highlightText(binding.tvOverview, binding.tvOverview.text.toString())
                 }
                 is TvShowResult -> {
-                    // Назва серіалу
                     binding.tvTitle.text = item.name ?: binding.root.context.getString(R.string.no_title)
 
-                    // Постер із завантаженням та кешуванням
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                     binding.ivPoster.load(posterUrl) {
                         crossfade(400)
@@ -163,7 +208,6 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                         error(R.drawable.ic_placeholder)
                     }
 
-                    // Рейтинг
                     val rating = item.voteAverage
                     binding.tvRating.text = if (rating > 0f) {
                         String.format(Locale.US, "★ %.1f", rating)
@@ -171,10 +215,12 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                         "★ N/A"
                     }
 
-                    // Тип медіа
-                    binding.tvMediaType.text = binding.root.context.getString(R.string.media_type_tv_show)
+                    // Media type with country (use originCountry for TV shows first, then productionCountries)
+                    val country = item.originCountry?.firstOrNull()?.let { getCountryFlag(it) }
+                        ?: item.productionCountries?.firstOrNull()?.iso?.let { getCountryFlag(it) }
+                        ?: ""
+                    binding.tvMediaType.text = "$country ${binding.root.context.getString(R.string.media_type_tv_show)}"
 
-                    // Опис
                     binding.tvOverview.text = item.overview?.takeIf { it.isNotBlank() }
                         ?: binding.root.context.getString(R.string.no_description_available)
 
@@ -183,7 +229,6 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                 }
             }
 
-            // Анімація появи елемента
             itemView.alpha = 0f
             itemView.scaleX = 0.95f
             itemView.scaleY = 0.95f
@@ -194,6 +239,39 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
                 .setDuration(300)
                 .setStartDelay(0)
                 .start()
+        }
+
+        private fun getCountryFlag(iso: String): String {
+            return when (iso.uppercase()) {
+                "US" -> "🇺🇸"
+                "GB", "UK" -> "🇬🇧"
+                "UA" -> "🇺🇦"
+                "JP" -> "🇯🇵"
+                "KR" -> "🇰🇷"
+                "FR" -> "🇫🇷"
+                "DE" -> "🇩🇪"
+                "IT" -> "🇮🇹"
+                "ES" -> "🇪🇸"
+                "CA" -> "🇨🇦"
+                "AU" -> "🇦🇺"
+                "IN" -> "🇮🇳"
+                "CN" -> "🇨🇳"
+                "RU" -> "🇷🇺"
+                "BR" -> "🇧🇷"
+                "MX" -> "🇲🇽"
+                "NZ" -> "🇳🇿"
+                "SE" -> "🇸🇪"
+                "NO" -> "🇳🇴"
+                "DK" -> "🇩🇰"
+                "FI" -> "🇫🇮"
+                "PL" -> "🇵🇱"
+                "NL" -> "🇳🇱"
+                "BE" -> "🇧🇪"
+                "TR" -> "🇹🇷"
+                "TH" -> "🇹🇭"
+                "IE" -> "🇮🇪"
+                else -> ""
+            }
         }
 
         private fun highlightText(textView: android.widget.TextView, original: String) {
@@ -222,7 +300,7 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
             textView.text = span
         }
 
-        private fun animateRemoval(view: android.view.View) {
+        private fun animateRemoval(view: View) {
             AnimatorSet().apply {
                 playTogether(
                     ObjectAnimator.ofFloat(view, "alpha", 1f, 0f),
@@ -237,38 +315,67 @@ class SearchAdapter : ListAdapter<Any, SearchAdapter.SearchViewHolder>(DiffCallb
         }
     }
 
-    companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<Any>() {
-            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-                return when {
-                    oldItem is MovieResult && newItem is MovieResult -> {
-                        oldItem.id == newItem.id
-                    }
-                    oldItem is TvShowResult && newItem is TvShowResult -> {
-                        oldItem.id == newItem.id
-                    }
-                    else -> false
-                }
-            }
+    // ViewHolder for Person (Actors/Directors)
+    inner class PersonViewHolder(private val binding: ItemPersonResultBinding) : RecyclerView.ViewHolder(binding.root) {
 
-            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-                return when {
-                    oldItem is MovieResult && newItem is MovieResult -> {
-                        oldItem.id == newItem.id &&
-                                oldItem.title == newItem.title &&
-                                oldItem.posterPath == newItem.posterPath &&
-                                oldItem.voteAverage == newItem.voteAverage
+        init {
+            itemView.setOnClickListener { view ->
+                view.animate()
+                    .scaleX(0.97f)
+                    .scaleY(0.97f)
+                    .setDuration(80)
+                    .withEndAction {
+                        view.animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .setDuration(80)
+                            .setInterpolator(OvershootInterpolator(2f))
+                            .start()
                     }
-                    oldItem is TvShowResult && newItem is TvShowResult -> {
-                        oldItem.id == newItem.id &&
-                                oldItem.name == newItem.name &&
-                                oldItem.posterPath == newItem.posterPath &&
-                                oldItem.voteAverage == newItem.voteAverage
-                    }
-                    else -> false
+                    .start()
+                    
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClick?.invoke(getItem(position))
                 }
             }
         }
+
+        fun bind(person: Person) {
+            binding.tvName.text = person.name
+
+            val photoUrl = person.profilePath?.let { "https://image.tmdb.org/t/p/w500$it" }
+            binding.ivPhoto.load(photoUrl) {
+                crossfade(400)
+                placeholder(R.drawable.ic_placeholder)
+                error(R.drawable.ic_placeholder)
+            }
+
+            // Department
+            val context = binding.root.context
+            binding.tvDepartment.text = when (person.knownForDepartment?.lowercase()) {
+                "acting" -> context.getString(R.string.department_acting)
+                "directing" -> context.getString(R.string.department_directing)
+                "writing" -> context.getString(R.string.department_writing)
+                "production" -> context.getString(R.string.department_production)
+                else -> person.knownForDepartment ?: ""
+            }
+
+            // Known for (list of movies/tv shows)
+            val knownForTitles = person.knownFor?.mapNotNull { it.title ?: it.name }?.take(3)?.joinToString(", ")
+            binding.tvKnownFor.text = knownForTitles ?: ""
+            binding.tvKnownFor.visibility = if (knownForTitles.isNullOrEmpty()) View.GONE else View.VISIBLE
+
+            itemView.alpha = 0f
+            itemView.scaleX = 0.95f
+            itemView.scaleY = 0.95f
+            itemView.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(300)
+                .setStartDelay(0)
+                .start()
+        }
     }
 }
-

@@ -160,6 +160,19 @@
     <string name="media_type_movie">🎬 Фільм</string>
     <string name="media_type_tv_show">📺 Серіал</string>
     <string name="no_description_available">Опис недоступний</string>
+    
+    <!-- People tab -->
+    <string name="people">Люди</string>
+    <string name="person_photo_description">Фото</string>
+    <string name="department_acting">Актор</string>
+    <string name="department_directing">Режисер</string>
+    <string name="department_writing">Сценарист</string>
+    <string name="department_production">Продюсер</string>
+    <string name="known_for">Відомий за: %s</string>
+    <string name="biography">Біографія</string>
+    <string name="birthday">Дата народження</string>
+    <string name="birthplace">Місце народження</string>
+    <string name="known_for_title">Відомий завдяки</string>
 
     <!-- Search filters -->
     <string name="filter_all">Все</string>
@@ -440,12 +453,17 @@
     <string name="all_episodes_selected">Всі епізоди вибрано</string>
     <string name="no_episodes_selected">Епізоди не вибрано</string>
     <string name="progress_saved">Прогрес збережено</string>
+    <string name="series_completed_message">🎉 Вітаємо! Серіал завершено</string>
+    <string name="series_up_to_date_message">✅ Переглянуто всі доступні епізоди</string>
     <string name="unknown_episode">Невідомий епізод</string>
     <string name="track_progress">Відстежити прогрес</string>
     <string name="edit_progress">Редагувати прогрес</string>
     <string name="remaining">Залишилось</string>
     <string name="time_spent">Час</string>
     <string name="retry">Повторити</string>
+    <string name="delete_confirmation_title">Підтвердження видалення</string>
+    <string name="delete_watched_confirmation">Видалити "%1$s" з переглянутих?</string>
+    <string name="item_deleted">Видалено</string>
     <string name="selected_episodes_count" formatted="false">Обрано %d з %d серій</string>
     <string name="total_runtime_format">~%s загалом</string>
     <string name="seasons_episodes_format" formatted="false">%d сезонів • %d серій</string>

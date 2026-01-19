@@ -324,9 +324,19 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
         val totalEpisodes = seasons.sumOf { it.totalCount }
         val watchedEpisodes = seasons.sumOf { it.watchedCount }
         val watchedRuntime = seasons.sumOf { it.watchedRuntime }
+        val isFullyWatched = totalEpisodes > 0 && watchedEpisodes >= totalEpisodes
+        val isOngoing = tvShow?.status in listOf("Returning Series", "In Production")
         
         binding.tvShowSubtitle.text = if (watchedEpisodes > 0) {
-            "${getString(R.string.watched_episodes_format, watchedEpisodes, totalEpisodes)} • ${Utils.formatMinutesToHoursAndMinutes(watchedRuntime)}"
+            val progressText = when {
+                // All episodes watched, series ended
+                isFullyWatched && !isOngoing -> "✅ ${getString(R.string.watched_episodes_format, watchedEpisodes, totalEpisodes)}"
+                // All current episodes watched, but series still ongoing
+                isFullyWatched && isOngoing -> "⏸️ ${getString(R.string.watched_episodes_format, watchedEpisodes, totalEpisodes)}"
+                // Partial progress
+                else -> getString(R.string.watched_episodes_format, watchedEpisodes, totalEpisodes)
+            }
+            "$progressText • ${Utils.formatMinutesToHoursAndMinutes(watchedRuntime)}"
         } else {
             tvShow?.let { show ->
                 val seasonsCount = show.seasons?.size ?: 0
@@ -394,13 +404,26 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                     val watchedEpisodes = seasons.sumOf { it.watchedCount }
                     val totalEpisodes = seasons.sumOf { it.totalCount }
                     
+                    // Determine if series is fully watched (all available episodes)
+                    val isFullyWatched = totalEpisodes > 0 && watchedEpisodes >= totalEpisodes
+                    
+                    // Determine if series is ongoing (still releasing new episodes)
+                    val isOngoing = show.status in listOf("Returning Series", "In Production")
+                    
+                    // Determine final status for the series
+                    val finalStatus = when {
+                        // If all episodes watched AND series is ended (not ongoing)
+                        isFullyWatched && !isOngoing -> "Ended"
+                        // If all current episodes watched BUT series is still ongoing
+                        isFullyWatched && isOngoing -> "Returning Series" 
+                        // Otherwise keep original status
+                        else -> show.status
+                    }
+                    
                     // Update or create WatchedItem
                     val existingItem = watchedItemDao.getById(tvShowId, "tv")
                     
                     if (watchedEpisodes > 0) {
-                        // Determine status
-                        val isOngoing = show.status in listOf("Returning Series", "In Production")
-                        
                         val watchedItem = WatchedItem(
                             id = tvShowId,
                             title = show.name ?: "",
@@ -410,26 +433,45 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                             mediaType = "tv",
                             overview = show.overview,
                             voteAverage = show.voteAverage.toDouble(),
-                            episodeRuntime = if (totalEpisodes > 0) watchedRuntime / watchedEpisodes else 0,
+                            episodeRuntime = if (watchedEpisodes > 0) watchedRuntime / watchedEpisodes else 0,
                             totalEpisodes = totalEpisodes,
-                            isOngoing = isOngoing,
-                            status = show.status,
+                            isOngoing = isOngoing, // Keep original ongoing status
+                            status = finalStatus,
                             lastUpdated = currentTime
                         )
                         
                         // Always use insert with REPLACE strategy
                         watchedItemDao.insert(watchedItem)
-                    } else if (existingItem != null) {
-                        // Remove from watched if no episodes watched
-                        watchedItemDao.deleteById(tvShowId, "tv")
+                        
+                        Log.d(TAG, "Series saved - Progress: $watchedEpisodes/$totalEpisodes, isFullyWatched: $isFullyWatched, isOngoing: $isOngoing, finalStatus: $finalStatus")
+                    } else {
+                        // Remove from watched if no episodes watched and item exists
+                        existingItem?.let {
+                            watchedItemDao.deleteById(tvShowId, "tv")
+                            Log.d(TAG, "Removed series from watched (no episodes marked)")
+                        }
                     }
                 }
                 
                 withContext(Dispatchers.Main) {
                     val watchedRuntime = seasons.sumOf { it.watchedRuntime }
+                    val watchedEpisodes = seasons.sumOf { it.watchedCount }
+                    val totalEpisodes = seasons.sumOf { it.totalCount }
+                    val isFullyWatched = totalEpisodes > 0 && watchedEpisodes >= totalEpisodes
+                    val isOngoing = tvShow?.status in listOf("Returning Series", "In Production")
+                    
+                    val message = when {
+                        // All episodes watched, series ended
+                        isFullyWatched && !isOngoing -> getString(R.string.series_completed_message)
+                        // All current episodes watched, but series still ongoing
+                        isFullyWatched && isOngoing -> getString(R.string.series_up_to_date_message)
+                        // Partial progress or no episodes
+                        else -> getString(R.string.progress_saved)
+                    }
+                    
                     Toast.makeText(
                         requireContext(),
-                        getString(R.string.progress_saved),
+                        message,
                         Toast.LENGTH_SHORT
                     ).show()
                     onProgressSaved?.invoke(watchedRuntime)

@@ -22,14 +22,16 @@ interface TmdbApi {
     suspend fun searchMovies(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
-        @Query("language") language: String = "en-US"
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1
     ): MoviesResponse
 
     @GET("search/tv")
     suspend fun searchTvShows(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
-        @Query("language") language: String = "en-US"
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1
     ): TvShowsResponse
 
     @GET("movie/popular")
@@ -220,6 +222,13 @@ interface TmdbApi {
         @Query("api_key") apiKey: String,
         @Query("language") language: String = "uk-UA"
     ): PersonTvCredits
+
+    @GET("person/{person_id}/combined_credits")
+    suspend fun getPersonCombinedCredits(
+        @Path("person_id") personId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "uk-UA"
+    ): com.example.movietime.data.model.PersonCombinedCredits
 
     // ============ MOVIE/TV CREDITS ============
 

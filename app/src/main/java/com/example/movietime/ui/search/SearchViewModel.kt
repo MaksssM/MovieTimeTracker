@@ -32,10 +32,9 @@ class SearchViewModel @Inject constructor(
 
     private val _searchResult = MutableLiveData<List<Any>>()
     val searchResult: LiveData<List<Any>> = _searchResult
-
-    // For EnhancedSearchActivity
-    private val _searchResults = MutableLiveData<List<Any>>()
-    val searchResults: LiveData<List<Any>> = _searchResults
+    
+    // For EnhancedSearchActivity - alias to searchResult to share logic
+    val searchResults: LiveData<List<Any>> = _searchResult
 
     private val _popularContent = MutableLiveData<List<Any>>()
     val popularContent: LiveData<List<Any>> = _popularContent
@@ -159,46 +158,174 @@ class SearchViewModel @Inject constructor(
         ALL, MOVIES, TV_SHOWS
     }
 
-    fun searchMulti(query: String) {
+    // Pagination
+    private var currentPage = 1
+    private var isLastPage = false
+    private var isSearching = false
+
+    fun searchMulti(query: String, loadMore: Boolean = false) {
         if (query.isBlank()) {
             _searchResult.value = emptyList()
             return
         }
 
-        lastSearchQuery = query
-        addToSearchHistory(query)
+        if (isSearching) return
+        if (loadMore && isLastPage) return
 
-        // Перевірити кеш
-        searchCache[query]?.let {
-            lastSearchResults = it
-            Log.d("SearchViewModel", "Using cached results for: $query (cache size: ${searchCache.size})")
-            applyFiltersAndSort()
-            return
+        if (!loadMore) {
+            currentPage = 1
+            isLastPage = false
+            lastSearchQuery = query
+            addToSearchHistory(query)
+            
+             // Check cache ONLY for first page
+            searchCache[query]?.let {
+                lastSearchResults = it
+                Log.d("SearchViewModel", "Using cached results for: $query")
+                applyFiltersAndSort()
+                return
+            }
+        } else {
+            // Ensure we are continuing the same query
+            if (query != lastSearchQuery) {
+                // Should not happen if UI handles it right, but safety check
+                currentPage = 1
+                isLastPage = false
+                lastSearchQuery = query
+            }
         }
 
         // If API key not configured in BuildConfig, repository will throw — log a warning but continue.
-        if (BuildConfig.TMDB_API_KEY.isBlank() || BuildConfig.TMDB_API_KEY.contains("YOUR_DEFAULT_KEY") || BuildConfig.TMDB_API_KEY.contains("YOUR")) {
-            Log.w("SearchViewModel", "TMDB API key looks unset in BuildConfig; ensure AppModule provides correct key.")
+        if (BuildConfig.TMDB_API_KEY.isBlank() || BuildConfig.TMDB_API_KEY.contains("YOUR_DEFAULT_KEY")) {
+            Log.w("SearchViewModel", "TMDB API key looks unset.")
         }
 
         viewModelScope.launch {
             try {
-                _isLoading.value = true
-                var results = repository.searchMultiLanguage(query)
+                isSearching = true
+                if (!loadMore) _isLoading.value = true // Show full loader only for first page
+                
+                val reqPage = if (loadMore) currentPage + 1 else 1
+                var results = repository.searchMultiLanguage(query, reqPage)
 
-                // Видалити дублювання
-                results = removeDuplicates(results)
-
-                lastSearchResults = results
-                searchCache[query] = results  // Зберегти в кеш
-                applyFiltersAndSort()
+                // Deduplicate against current results if loading more
+                if (loadMore) {
+                    val currentIds = lastSearchResults.mapNotNull { 
+                        when(it) {
+                            is MovieResult -> "movie_${it.id}"
+                            is TvShowResult -> "tv_${it.id}"
+                            else -> null
+                        }
+                    }.toSet()
+                    
+                    results = results.filter { item ->
+                         val key = when (item) {
+                            is MovieResult -> "movie_${item.id}"
+                            is TvShowResult -> "tv_${item.id}"
+                            else -> null
+                        }
+                        key != null && !currentIds.contains(key)
+                    }
+                } else {
+                    results = removeDuplicates(results)
+                }
+                
+                if (results.isEmpty()) {
+                    isLastPage = true
+                } else {
+                    currentPage = reqPage
+                    if (loadMore) {
+                        lastSearchResults = lastSearchResults + results
+                    } else {
+                        lastSearchResults = results
+                        searchCache[query] = results // Cache only page 1 for now to keep it simple
+                    }
+                    applyFiltersAndSort()
+                }
+                
                 _errorMessage.value = null
             } catch (e: Exception) {
                 Log.e("SearchViewModel", "Error searching content", e)
-                _searchResult.value = emptyList()
-                _errorMessage.value = "\u041e\u0448\u0438\u0431\u043a\u0430 \u043f\u0440\u0438 \u043f\u043e\u0438\u0441\u043a\u0435: ${e.localizedMessage ?: e.message}"
+                if (!loadMore) {
+                    _searchResult.value = emptyList()
+                    _errorMessage.value = "Помилка при пошуці: ${e.localizedMessage ?: e.message}"
+                }
             } finally {
                 _isLoading.value = false
+                isSearching = false
+            }
+        }
+    }
+
+    // Convenience methods for EnhancedSearchActivity tabs
+    fun searchAll(query: String) {
+        setFilterType(FilterType.ALL)
+        searchMulti(query, false)
+    }
+
+    fun searchMovies(query: String) {
+        setFilterType(FilterType.MOVIES)
+        searchMulti(query, false)
+    }
+
+    fun searchTvShows(query: String) {
+        setFilterType(FilterType.TV_SHOWS)
+        searchMulti(query, false)
+    }
+
+    fun searchPeopleOnly(query: String, loadMore: Boolean = false) {
+        if (query.isBlank()) {
+            _searchResult.value = emptyList()
+            return
+        }
+
+        if (isSearching) return
+        if (loadMore && isLastPage) return
+
+        if (!loadMore) {
+            currentPage = 1
+            isLastPage = false
+            lastSearchQuery = query
+        }
+
+        viewModelScope.launch {
+            try {
+                isSearching = true
+                if (!loadMore) _isLoading.value = true
+
+                val reqPage = if (loadMore) currentPage + 1 else 1
+                val people = repository.searchPeople(query, "uk-UA", reqPage)
+                
+                if (people.isEmpty()) {
+                    isLastPage = true
+                } else {
+                    currentPage = reqPage
+                    // People deduplication
+                    val newPeople = if (loadMore) {
+                         val currentIds = lastSearchResults.filterIsInstance<Person>().map { it.id }.toSet()
+                         people.filter { !currentIds.contains(it.id) }
+                    } else {
+                        people
+                    }
+                    
+                    if (loadMore) {
+                        lastSearchResults = lastSearchResults + newPeople
+                    } else {
+                        lastSearchResults = newPeople
+                    }
+                    
+                    // For people search, we just show them directly usually, 
+                    // but applyFiltersAndSort handles casting to list of Any
+                    _searchResult.value = lastSearchResults
+                    
+                    Log.d("SearchViewModel", "People search returned ${newPeople.size} results for '$query' page $reqPage")
+                }
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error searching people", e)
+                if (!loadMore) _searchResult.value = emptyList()
+            } finally {
+                _isLoading.value = false
+                isSearching = false
             }
         }
     }
@@ -288,11 +415,11 @@ class SearchViewModel @Inject constructor(
             scoreB.compareTo(scoreA) // Descending
         })
 
-        // Apply results limit
-        val limit = _resultsLimit.value ?: 50
-        if (filtered.size > limit) {
-            filtered = filtered.take(limit).toMutableList()
-        }
+        // Apply results limit - removed for infinite scroll support
+        // val limit = _resultsLimit.value ?: 50
+        // if (filtered.size > limit) {
+        //     filtered = filtered.take(limit).toMutableList()
+        // }
 
         _searchResult.value = filtered
     }
@@ -425,7 +552,7 @@ class SearchViewModel @Inject constructor(
 
     @Suppress("unused")
     fun setResultsLimit(limit: Int) {
-        _resultsLimit.value = limit.coerceIn(10, 100)
+        _resultsLimit.value = limit
         applyFiltersAndSort()
     }
 
@@ -507,73 +634,6 @@ class SearchViewModel @Inject constructor(
         return searchCache.size
     }
 
-    // Enhanced Search Methods for EnhancedSearchActivity
-    fun searchAll(query: String) {
-        if (query.isBlank()) {
-            _searchResults.value = emptyList()
-            return
-        }
-
-        viewModelScope.launch {
-            try {
-                _isLoading.value = true
-                var results = repository.searchMultiLanguage(query)
-                results = removeDuplicates(results)
-                _searchResults.value = results
-                _errorMessage.value = null
-            } catch (e: Exception) {
-                Log.e("SearchViewModel", "Error searching all content", e)
-                _searchResults.value = emptyList()
-                _errorMessage.value = "Помилка при пошуці: ${e.localizedMessage ?: e.message}"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    fun searchMovies(query: String) {
-        if (query.isBlank()) {
-            _searchResults.value = emptyList()
-            return
-        }
-
-        viewModelScope.launch {
-            try {
-                _isLoading.value = true
-                val response = api.searchMovies(apiKey, query, "uk-UA")
-                _searchResults.value = response.results
-                _errorMessage.value = null
-            } catch (e: Exception) {
-                Log.e("SearchViewModel", "Error searching movies", e)
-                _searchResults.value = emptyList()
-                _errorMessage.value = "Помилка при пошуці фільмів: ${e.localizedMessage ?: e.message}"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    fun searchTvShows(query: String) {
-        if (query.isBlank()) {
-            _searchResults.value = emptyList()
-            return
-        }
-
-        viewModelScope.launch {
-            try {
-                _isLoading.value = true
-                val response = api.searchTvShows(apiKey, query, "uk-UA")
-                _searchResults.value = response.results
-                _errorMessage.value = null
-            } catch (e: Exception) {
-                Log.e("SearchViewModel", "Error searching TV shows", e)
-                _searchResults.value = emptyList()
-                _errorMessage.value = "Помилка при пошуці серіалів: ${e.localizedMessage ?: e.message}"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
 
     fun loadPopularContent() {
         viewModelScope.launch {
@@ -605,7 +665,7 @@ class SearchViewModel @Inject constructor(
                 // Sort combined list by discovery score to prioritize new items
                 val sortedCombined = combined.sortedByDescending { item ->
                     calculateDiscoveryScore(item, SortOption.POPULARITY_DESC)
-                }.take(20)
+                }
                 
                 // Shuffle the final selection a bit for extra variety
                 _popularContent.value = sortedCombined.shuffled()
@@ -697,7 +757,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val people = repository.getPopularPeople()
-                _popularPeople.value = people.take(20)
+                _popularPeople.value = people
                 Log.d("SearchViewModel", "Loaded ${people.size} popular people")
             } catch (e: Exception) {
                 Log.e("SearchViewModel", "Error loading popular people", e)
@@ -714,7 +774,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val companies = repository.searchCompanies(query)
-                _searchedCompanies.value = companies.take(30)
+                _searchedCompanies.value = companies
                 Log.d("SearchViewModel", "Found ${companies.size} companies for '$query'")
             } catch (e: Exception) {
                 Log.e("SearchViewModel", "Error searching companies", e)

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -67,7 +68,16 @@ class WatchedFragment : Fragment() {
                 startActivity(intent)
             },
             onDeleteClick = { item ->
-                viewModel.deleteWatchedItem(item)
+                // Показуємо діалог підтвердження перед видаленням
+                androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.delete_confirmation_title)
+                    .setMessage(getString(R.string.delete_watched_confirmation, item.title))
+                    .setPositiveButton(R.string.delete) { _, _ ->
+                        viewModel.deleteWatchedItem(item)
+                        Toast.makeText(requireContext(), R.string.item_deleted, Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
             },
             onRewatchClick = { item ->
                 viewModel.incrementWatchCount(item)

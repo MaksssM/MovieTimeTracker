@@ -1033,51 +1033,6 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/btnYearInReview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="0dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="@drawable/ripple_rounded_20dp"
-                        app:cardBackgroundColor="@android:color/transparent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingTop="18dp" android:paddingBottom="18dp"
-                            android:paddingHorizontal="8dp"
-                            android:gravity="center"
-                            android:background="@drawable/bg_quick_action_glass">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_history"
-                                app:tint="#E11D48"
-                                android:contentDescription="Кінорік" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Кінорік"
-                                android:textColor="@color/text_primary"
-                                android:textSize="12sp"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:ellipsize="none" />
-
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/btnFriends"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

@@ -112,11 +112,6 @@ class EnhancedMainFragment : Fragment() {
             }
         }
 
-        binding.btnYearInReview.setOnClickListener {
-            handleClickWithDebounce {
-                findNavController().navigate(R.id.yearInReviewFragment)
-            }
-        }
 
         binding.btnFriends.setOnClickListener {
             handleClickWithDebounce {
@@ -326,7 +321,6 @@ class EnhancedMainFragment : Fragment() {
             binding.btnTrending,
             binding.btnUpcomingReleases,
             binding.btnCollections,
-            binding.btnYearInReview,
             binding.btnFriends
         )
 
@@ -387,7 +381,6 @@ class EnhancedMainFragment : Fragment() {
             binding.btnTrending,
             binding.btnUpcomingReleases,
             binding.btnCollections,
-            binding.btnYearInReview,
             binding.btnFriends
         )
 
