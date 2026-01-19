@@ -3,8 +3,11 @@ package com.example.movietime.ui.calendar
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.size.Size
 import com.example.movietime.R
 import com.example.movietime.databinding.ItemCalendarEventBinding
 import com.example.movietime.databinding.ItemCalendarReleaseBinding
@@ -29,13 +32,22 @@ data class CalendarEventData(
 class CalendarEventAdapter(
     private val context: Context,
     private val onReleaseClick: (CalendarRelease) -> Unit
-) : RecyclerView.Adapter<CalendarEventAdapter.EventViewHolder>() {
+) : ListAdapter<CalendarEventData, CalendarEventAdapter.EventViewHolder>(DiffCallback) {
 
-    private var events: List<CalendarEventData> = emptyList()
+    companion object {
+        // Static formatter to avoid recreation on every bind
+        private val DATE_FORMATTER = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale("uk"))
+        
+        private val DiffCallback = object : DiffUtil.ItemCallback<CalendarEventData>() {
+            override fun areItemsTheSame(oldItem: CalendarEventData, newItem: CalendarEventData) =
+                oldItem.date == newItem.date
+            override fun areContentsTheSame(oldItem: CalendarEventData, newItem: CalendarEventData) =
+                oldItem == newItem
+        }
+    }
 
     fun submitEvents(newEvents: List<CalendarEventData>) {
-        events = newEvents
-        notifyDataSetChanged()
+        submitList(newEvents)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
@@ -48,10 +60,8 @@ class CalendarEventAdapter(
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
-        holder.bind(events[position], context, onReleaseClick)
+        holder.bind(getItem(position), context, onReleaseClick)
     }
-
-    override fun getItemCount(): Int = events.size
 
     inner class EventViewHolder(private val binding: ItemCalendarEventBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -61,9 +71,7 @@ class CalendarEventAdapter(
             context: Context,
             onReleaseClick: (CalendarRelease) -> Unit
         ) {
-            // Format date with Ukrainian locale
-            val formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale("uk"))
-            binding.tvEventDate.text = eventData.date.format(formatter)
+            binding.tvEventDate.text = eventData.date.format(DATE_FORMATTER)
             
             // Show releases count
             binding.tvReleasesCount.text = context.getString(R.string.releases_count, eventData.releases.size)
@@ -93,7 +101,9 @@ class CalendarEventAdapter(
                 if (release.posterUrl.isNotBlank()) {
                     releaseBinding.ivPoster.load(release.posterUrl) {
                         crossfade(true)
-                        placeholder(R.color.shimmer_base)
+                        size(200, 300)
+                        placeholder(R.drawable.ic_placeholder)
+                        error(R.drawable.ic_placeholder)
                     }
                 }
 

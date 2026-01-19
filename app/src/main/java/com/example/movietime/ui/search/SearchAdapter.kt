@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.size.Size
 import com.example.movietime.R
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.Person
@@ -204,6 +205,7 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
                     val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                     binding.ivPoster.load(posterUrl) {
                         crossfade(400)
+                        size(500, 750)
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)
                     }
@@ -347,6 +349,7 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
             val photoUrl = person.profilePath?.let { "https://image.tmdb.org/t/p/w500$it" }
             binding.ivPhoto.load(photoUrl) {
                 crossfade(400)
+                size(500, 750)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
             }
@@ -362,7 +365,7 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
             }
 
             // Known for (list of movies/tv shows)
-            val knownForTitles = person.knownFor?.mapNotNull { it.title ?: it.name }?.take(3)?.joinToString(", ")
+            val knownForTitles = person.knownFor?.mapNotNull { it.title ?: it.name }?.joinToString(", ")
             binding.tvKnownFor.text = knownForTitles ?: ""
             binding.tvKnownFor.visibility = if (knownForTitles.isNullOrEmpty()) View.GONE else View.VISIBLE
 

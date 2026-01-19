@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.size.Size
 import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.databinding.ItemWatchedBinding
 
@@ -65,6 +66,7 @@ class WatchedAdapter : ListAdapter<WatchedItem, WatchedAdapter.WatchedViewHolder
             // Poster with Coil
             binding.ivPoster.load(item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }) {
                 crossfade(true)
+                size(500, 750)
                 placeholder(com.example.movietime.R.drawable.ic_placeholder)
                 error(com.example.movietime.R.drawable.ic_placeholder)
             }

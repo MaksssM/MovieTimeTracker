@@ -52,7 +52,7 @@ class PersonAdapter(
             }
             
             // Known for
-            val knownForText = person.knownFor?.take(2)?.mapNotNull { 
+            val knownForText = person.knownFor?.mapNotNull { 
                 it.title ?: it.name 
             }?.joinToString(", ")
             

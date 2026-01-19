@@ -5,6 +5,10 @@ import android.content.Context
 import android.content.res.Configuration
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.disk.DiskCache
+import coil.memory.MemoryCache
 import com.example.movietime.util.SecurityUtils
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
@@ -13,7 +17,7 @@ import androidx.hilt.work.HiltWorkerFactory
 // removed conflicting import
 
 @HiltAndroidApp
-class MovieTimeApp : Application(), androidx.work.Configuration.Provider {
+class MovieTimeApp : Application(), androidx.work.Configuration.Provider, ImageLoaderFactory {
     
     @javax.inject.Inject
     lateinit var workerFactory: HiltWorkerFactory
@@ -45,6 +49,25 @@ class MovieTimeApp : Application(), androidx.work.Configuration.Provider {
 
         // Apply saved locale (default: Ukrainian)
         applyLocale()
+    }
+    
+    // Global Coil ImageLoader configuration for better performance
+    override fun newImageLoader(): ImageLoader {
+        return ImageLoader.Builder(this)
+            .crossfade(true)
+            .memoryCache {
+                MemoryCache.Builder(this)
+                    .maxSizePercent(0.25) // Use 25% of available memory for images
+                    .build()
+            }
+            .diskCache {
+                DiskCache.Builder()
+                    .directory(cacheDir.resolve("image_cache"))
+                    .maxSizePercent(0.05) // Use 5% of available disk space
+                    .build()
+            }
+            .respectCacheHeaders(false) // Ignore cache headers from TMDB for better caching
+            .build()
     }
 
     /**

@@ -541,8 +541,7 @@ class DetailsActivity : AppCompatActivity() {
                         binding.ivPoster.load(imageUrl) {
                             crossfade(true)
                             allowHardware(false)
-                            memoryCachePolicy(CachePolicy.DISABLED)
-                            diskCachePolicy(CachePolicy.DISABLED)
+                            size(780, 1170)
                             placeholder(R.drawable.ic_placeholder)
                             error(R.drawable.ic_placeholder)
                             listener(

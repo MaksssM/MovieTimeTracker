@@ -1,13 +1,19 @@
 package com.example.movietime.data.db
 
 import androidx.room.Entity
+import androidx.room.Index
 
 /**
  * Зберігає прогрес перегляду серіалів по окремих серіях
  */
 @Entity(
     tableName = "tv_show_progress",
-    primaryKeys = ["tvShowId", "seasonNumber", "episodeNumber"]
+    primaryKeys = ["tvShowId", "seasonNumber", "episodeNumber"],
+    indices = [
+        Index(value = ["tvShowId"]),
+        Index(value = ["watched"]),
+        Index(value = ["watchedAt"])
+    ]
 )
 data class TvShowProgress(
     val tvShowId: Int,

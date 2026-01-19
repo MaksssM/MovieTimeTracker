@@ -8,7 +8,9 @@ import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.repository.AppRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import android.util.Log
 
@@ -31,7 +33,9 @@ class TrendingViewModel @Inject constructor(
     private fun refreshSeenItems() {
         viewModelScope.launch {
             try {
-                val ids = repository.getAllSeenItemIds()
+                val ids = withContext(Dispatchers.IO) {
+                    repository.getAllSeenItemIds()
+                }
                 seenItemIds = ids.map { "${it.mediaType}:${it.id}" }.toSet()
             } catch (e: Exception) {
                 Log.e("TrendingViewModel", "Error refreshing seen items", e)

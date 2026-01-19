@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movietime.R
 import com.example.movietime.databinding.ItemCalendarDayBinding
@@ -19,13 +21,19 @@ data class CalendarDay(
 
 class CalendarAdapter(
     private val onDayClick: (Int) -> Unit
-) : RecyclerView.Adapter<CalendarAdapter.CalendarDayViewHolder>() {
+) : ListAdapter<CalendarDay, CalendarAdapter.CalendarDayViewHolder>(DiffCallback) {
 
-    private var days: List<CalendarDay> = emptyList()
+    companion object {
+        private val DiffCallback = object : DiffUtil.ItemCallback<CalendarDay>() {
+            override fun areItemsTheSame(oldItem: CalendarDay, newItem: CalendarDay) =
+                oldItem.dayOfMonth == newItem.dayOfMonth && oldItem.isCurrentMonth == newItem.isCurrentMonth
+            override fun areContentsTheSame(oldItem: CalendarDay, newItem: CalendarDay) =
+                oldItem == newItem
+        }
+    }
 
     fun submitDays(newDays: List<CalendarDay>) {
-        days = newDays
-        notifyDataSetChanged()
+        submitList(newDays)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarDayViewHolder {
@@ -38,10 +46,8 @@ class CalendarAdapter(
     }
 
     override fun onBindViewHolder(holder: CalendarDayViewHolder, position: Int) {
-        holder.bind(days[position], onDayClick)
+        holder.bind(getItem(position), onDayClick)
     }
-
-    override fun getItemCount(): Int = days.size
 
     inner class CalendarDayViewHolder(private val binding: ItemCalendarDayBinding) :
         RecyclerView.ViewHolder(binding.root) {

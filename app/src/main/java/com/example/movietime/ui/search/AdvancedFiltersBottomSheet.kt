@@ -19,8 +19,8 @@ import com.example.movietime.ui.search.adapters.CompanyAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -39,7 +39,6 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
     
     private var searchJob: Job? = null
     private var companySearchJob: Job? = null
-    private val scope = MainScope()
 
     var onApplyFilters: (() -> Unit)? = null
 
@@ -118,7 +117,7 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
                 return@addTextChangedListener
             }
             
-            searchJob = scope.launch {
+            searchJob = viewLifecycleOwner.lifecycleScope.launch {
                 delay(400)
                 viewModel.searchPeople(query)
             }
@@ -147,7 +146,7 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
                 return@addTextChangedListener
             }
 
-            companySearchJob = scope.launch {
+            companySearchJob = viewLifecycleOwner.lifecycleScope.launch {
                 delay(300)
                 viewModel.searchCompanies(query)
             }

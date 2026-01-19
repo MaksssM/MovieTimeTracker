@@ -151,8 +151,12 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    // Cache для результатів пошуку
-    private val searchCache = mutableMapOf<String, List<Any>>()
+    // LRU Cache для результатів пошуку (максимум 30 запросов)
+    private val searchCache = object : LinkedHashMap<String, List<Any>>(30, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, List<Any>>): Boolean {
+            return size > 30
+        }
+    }
 
     enum class FilterType {
         ALL, MOVIES, TV_SHOWS
@@ -736,7 +740,7 @@ class SearchViewModel @Inject constructor(
     }
     
     fun searchPeople(query: String) {
-        if (query.length < 2) {
+        if (query.isBlank()) {
             _searchedPeople.value = emptyList()
             return
         }
@@ -766,7 +770,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun searchCompanies(query: String) {
-        if (query.length < 2) {
+        if (query.isBlank()) {
             _searchedCompanies.value = emptyList()
             return
         }

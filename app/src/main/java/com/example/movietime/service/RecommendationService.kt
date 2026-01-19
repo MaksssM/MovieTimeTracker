@@ -34,7 +34,6 @@ class RecommendationService @Inject constructor(
         val favorites = watchedItems.filter { (it.userRating ?: 0f) >= 8f }
             .ifEmpty { watchedItems.takeLast(10) }
             .shuffled() // Додаємо випадковості
-            .take(5)
 
         val recommendedMovies = mutableListOf<MovieResult>()
         val recommendedTvShows = mutableListOf<TvShowResult>()
@@ -70,13 +69,11 @@ class RecommendationService @Inject constructor(
             .filter { !seenMovieIds.contains(it.id) }
             .distinctBy { it.id }
             .sortedByDescending { it.voteAverage }
-            .take(20)
 
         val uniqueTvShows = recommendedTvShows
             .filter { !seenTvShowIds.contains(it.id) }
             .distinctBy { it.id }
             .sortedByDescending { it.voteAverage }
-            .take(20)
 
         PersonalizedRecommendations(uniqueMovies, uniqueTvShows)
     }
