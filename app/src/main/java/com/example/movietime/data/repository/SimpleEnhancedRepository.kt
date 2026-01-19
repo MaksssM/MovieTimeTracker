@@ -44,8 +44,31 @@ class SimpleEnhancedRepository @Inject constructor(
                     0f
                 }
 
-                // Calculate this month watched (simple calculation for now)
-                val thisMonthWatched = minOf(totalWatchedMovies + totalWatchedTvShows, 8)
+                // Calculate this month watched - count actions this month (new watches + rewatches)
+                val calendar = java.util.Calendar.getInstance()
+                val currentMonth = calendar.get(java.util.Calendar.MONTH)
+                val currentYear = calendar.get(java.util.Calendar.YEAR)
+
+                calendar.set(currentYear, currentMonth, 1, 0, 0, 0)
+                calendar.set(java.util.Calendar.MILLISECOND, 0)
+                val startOfMonth = calendar.timeInMillis
+                calendar.set(java.util.Calendar.DAY_OF_MONTH, calendar.getActualMaximum(java.util.Calendar.DAY_OF_MONTH))
+                calendar.set(java.util.Calendar.HOUR_OF_DAY, 23)
+                calendar.set(java.util.Calendar.MINUTE, 59)
+                calendar.set(java.util.Calendar.SECOND, 59)
+                calendar.set(java.util.Calendar.MILLISECOND, 999)
+                val endOfMonth = calendar.timeInMillis
+
+                val itemsThisMonth = watchedItems.sumOf { item ->
+                    val lastUpdated = item.lastUpdated
+                    if (lastUpdated != null && lastUpdated in startOfMonth..endOfMonth) {
+                        maxOf(item.watchCount, 1)
+                    } else 0
+                }
+
+                val thisMonthWatched = itemsThisMonth
+
+                android.util.Log.d("SimpleEnhancedRepository", "Total this month (items+rewatches): $thisMonthWatched")
 
                 DetailedStatistics(
                     totalWatchedMovies = totalWatchedMovies,

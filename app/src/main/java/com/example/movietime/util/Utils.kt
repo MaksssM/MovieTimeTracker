@@ -307,7 +307,8 @@ object Utils {
             overview = overview,
             voteAverage = voteAverage,
             userRating = userRating,
-            genreIds = genreIds?.joinToString(",")
+            genreIds = genreIds?.joinToString(","),
+            lastUpdated = System.currentTimeMillis()
         )
     }
 

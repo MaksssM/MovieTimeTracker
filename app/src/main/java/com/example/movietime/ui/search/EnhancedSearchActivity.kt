@@ -18,13 +18,16 @@ import com.example.movietime.ui.details.DetailsActivity
 import com.example.movietime.ui.details.TvDetailsActivity
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
+import com.example.movietime.data.model.Person
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.launch
 import android.util.Log
 import java.util.Locale
+import com.example.movietime.ui.person.PersonDetailsActivity
 
 @AndroidEntryPoint
 class EnhancedSearchActivity : AppCompatActivity() {
@@ -99,24 +102,50 @@ class EnhancedSearchActivity : AppCompatActivity() {
 
         binding.rvSearchResults.apply {
             adapter = searchAdapter
-            layoutManager = LinearLayoutManager(this@EnhancedSearchActivity)
+            val layoutManager = LinearLayoutManager(this@EnhancedSearchActivity)
+            this.layoutManager = layoutManager
             layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
                 context, 
                 R.anim.layout_animation_cascade
             )
+            
+            addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 0) { // Scrolling down
+                        val visibleItemCount = layoutManager.childCount
+                        val totalItemCount = layoutManager.itemCount
+                        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                            loadMore()
+                        }
+                    }
+                }
+            })
         }
 
         binding.rvPopular.apply {
             adapter = popularAdapter
             layoutManager = LinearLayoutManager(this@EnhancedSearchActivity)
             layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
-                context, 
-                R.anim.layout_animation_cascade
-            )
-            layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
                 context,
                 R.anim.layout_animation_fall_down
             )
+        }
+    }
+
+    private fun loadMore() {
+        val query = binding.etSearch.text?.toString()?.trim() ?: ""
+        if (query.length < 2) return
+
+        lifecycleScope.launch {
+            if (currentFilter == "person") {
+                viewModel.searchPeopleOnly(query, true)
+            } else {
+                // For other types, searchMulti respects the current filter set in ViewModel
+                viewModel.searchMulti(query, true)
+            }
         }
     }
 
@@ -138,6 +167,7 @@ class EnhancedSearchActivity : AppCompatActivity() {
                     0 -> "all"
                     1 -> "movie"
                     2 -> "tv"
+                    3 -> "person"
                     else -> "all"
                 }
                 val query = binding.etSearch.text?.toString()?.trim() ?: ""
@@ -173,6 +203,7 @@ class EnhancedSearchActivity : AppCompatActivity() {
             when (currentFilter) {
                 "movie" -> viewModel.searchMovies(query)
                 "tv" -> viewModel.searchTvShows(query)
+                "person" -> viewModel.searchPeopleOnly(query)
                 else -> viewModel.searchAll(query)
             }
         }
@@ -199,6 +230,7 @@ class EnhancedSearchActivity : AppCompatActivity() {
                 when (item) {
                     is MovieResult -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
                     is TvShowResult -> GroupedSearchItem(GroupedSearchItem.ItemType.TV_SHOW, item)
+                    is Person -> GroupedSearchItem(GroupedSearchItem.ItemType.PERSON, item)
                     else -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
                 }
             }
@@ -217,6 +249,7 @@ class EnhancedSearchActivity : AppCompatActivity() {
                     when (item) {
                         is MovieResult -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
                         is TvShowResult -> GroupedSearchItem(GroupedSearchItem.ItemType.TV_SHOW, item)
+                        is Person -> GroupedSearchItem(GroupedSearchItem.ItemType.PERSON, item)
                         else -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
                     }
                 }
@@ -265,6 +298,13 @@ class EnhancedSearchActivity : AppCompatActivity() {
                 val intent = Intent(this, TvDetailsActivity::class.java).apply {
                     putExtra("ITEM_ID", item.id)
                     putExtra("MEDIA_TYPE", "tv")
+                }
+                startActivity(intent)
+            }
+            is Person -> {
+                Log.d("EnhancedSearchActivity", "Opening person details: id=${item.id}, name=${item.name}")
+                val intent = Intent(this, PersonDetailsActivity::class.java).apply {
+                    putExtra("PERSON_ID", item.id)
                 }
                 startActivity(intent)
             }

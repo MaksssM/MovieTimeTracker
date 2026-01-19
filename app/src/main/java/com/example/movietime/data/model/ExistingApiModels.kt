@@ -25,7 +25,9 @@ data class MovieResult(
     @SerializedName("genre_ids") val genreIds: List<Int>? = null,
     // Details API returns genres array instead of genre_ids
     val genres: List<Genre>? = null,
-    @SerializedName("belongs_to_collection") val belongsToCollection: BelongsToCollection? = null
+    @SerializedName("belongs_to_collection") val belongsToCollection: BelongsToCollection? = null,
+    @SerializedName("production_countries") val productionCountries: List<ProductionCountry>? = null,
+    @SerializedName("original_language") val originalLanguage: String? = null
 )
 
 data class TvShowResult(
@@ -50,7 +52,9 @@ data class TvShowResult(
     @SerializedName("in_production") val inProduction: Boolean? = null,
     val seasons: List<TvSeason>? = null,
     @SerializedName("next_episode_to_air") val nextEpisodeToAir: TvEpisodeDetails? = null,
-    @SerializedName("last_episode_to_air") val lastEpisodeToAir: TvEpisodeDetails? = null
+    @SerializedName("last_episode_to_air") val lastEpisodeToAir: TvEpisodeDetails? = null,
+    @SerializedName("production_countries") val productionCountries: List<ProductionCountry>? = null,
+    @SerializedName("origin_country") val originCountry: List<String>? = null
 )
 
 data class TvSeason(
@@ -100,4 +104,7 @@ data class CompanySearchResponse(
     val results: List<CompanyResult>
 )
 
-
+data class ProductionCountry(
+    @SerializedName("iso_3166_1") val iso: String,
+    val name: String
+)

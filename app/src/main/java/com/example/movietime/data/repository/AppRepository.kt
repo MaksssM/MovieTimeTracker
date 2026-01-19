@@ -47,7 +47,7 @@ class AppRepository @Inject constructor(
     }
 
     // --- API Methods ---
-    suspend fun searchMultiLanguage(query: String): List<Any> = coroutineScope {
+    suspend fun searchMultiLanguage(query: String, page: Int = 1): List<Any> = coroutineScope {
         if (query.isBlank()) return@coroutineScope emptyList()
 
         // detect script (simple heuristic): if contains Cyrillic -> prefer Ukrainian/Russian first
@@ -100,8 +100,8 @@ class AppRepository @Inject constructor(
                 Log.d("AppRepo", "Launching request: type=movie lang=$language q=$q")
                 movieDeferred.add(async {
                     try {
-                        val resp = api.searchMovies(apiKey, q, language)
-                        d("Movie response: lang=$language q=$q size=${resp.results.size}")
+                        val resp = api.searchMovies(apiKey, q, language, page)
+                        d("Movie response: lang=$language q=$q page=$page size=${resp.results.size}")
                         resp
                     } catch (e: Exception) {
                         d("Movie request failed: lang=$language q=$q error=${e.message}")
@@ -112,8 +112,8 @@ class AppRepository @Inject constructor(
                 Log.d("AppRepo", "Launching request: type=tv lang=$language q=$q")
                 tvDeferred.add(async {
                     try {
-                        val resp = api.searchTvShows(apiKey, q, language)
-                        d("TV response: lang=$language q=$q size=${resp.results.size}")
+                        val resp = api.searchTvShows(apiKey, q, language, page)
+                        d("TV response: lang=$language q=$q page=$page size=${resp.results.size}")
                         resp
                     } catch (e: Exception) {
                         d("TV request failed: lang=$language q=$q error=${e.message}")
@@ -211,8 +211,8 @@ class AppRepository @Inject constructor(
         val sorted = scored.sortedWith(compareByDescending<Scored> { it.score }
             .thenByDescending { it.vote })
 
-        // Return top 100 items as List<Any>
-        val result = sorted.map { it.item }.take(100)
+        // Return items
+        val result = sorted.map { it.item }
         d("Returning results count=${result.size}")
         result
     }
@@ -302,7 +302,10 @@ class AppRepository @Inject constructor(
         try {
             val currentItem = dao.getWatchedItem(id, mediaType)
             if (currentItem != null) {
-                val updatedItem = currentItem.copy(watchCount = currentItem.watchCount + 1)
+                val updatedItem = currentItem.copy(
+                    watchCount = currentItem.watchCount + 1,
+                    lastUpdated = System.currentTimeMillis() // Оновлюємо час останнього перегляду
+                )
                 dao.update(updatedItem)
                 Log.d("AppRepository", "Successfully incremented watch count to: ${updatedItem.watchCount}")
             } else {
@@ -597,6 +600,24 @@ class AppRepository @Inject constructor(
         }
     }
 
+    suspend fun getPersonDetails(personId: Int): com.example.movietime.data.model.PersonDetails? {
+        return try {
+            api.getPersonDetails(personId, apiKey, "uk-UA")
+        } catch (e: Exception) {
+            e("getPersonDetails failed: ${e.message}", e)
+            null
+        }
+    }
+
+    suspend fun getPersonCombinedCredits(personId: Int): com.example.movietime.data.model.PersonCombinedCredits? {
+        return try {
+            api.getPersonCombinedCredits(personId, apiKey, "uk-UA")
+        } catch (e: Exception) {
+            e("getPersonCombinedCredits failed: ${e.message}", e)
+            null
+        }
+    }
+
     suspend fun getAllGenres(language: String = "uk-UA"): List<com.example.movietime.data.model.Genre> = coroutineScope {
         val movieGenres = async { getMovieGenres(language) }
         val tvGenres = async { getTvGenres(language) }
@@ -609,11 +630,11 @@ class AppRepository @Inject constructor(
         allGenres
     }
 
-    suspend fun searchPeople(query: String, language: String = "uk-UA"): List<com.example.movietime.data.model.Person> {
+    suspend fun searchPeople(query: String, language: String = "uk-UA", page: Int = 1): List<com.example.movietime.data.model.Person> {
         if (query.isBlank()) return emptyList()
         return try {
-            val response = api.searchPeople(apiKey, query, language)
-            d("searchPeople success: ${response.results.size} results for '$query'")
+            val response = api.searchPeople(apiKey, query, language, page)
+            d("searchPeople success: ${response.results.size} results for '$query' page=$page")
             response.results
         } catch (e: Exception) {
             e("searchPeople failed: ${e.message}", e)
@@ -932,3 +953,4 @@ class AppRepository @Inject constructor(
         }
     }
 }
+

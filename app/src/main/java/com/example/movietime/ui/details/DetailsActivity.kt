@@ -325,34 +325,16 @@ class DetailsActivity : AppCompatActivity() {
                         }
                     }
                     is com.example.movietime.data.model.TvShowResult -> {
-                        // Для серіалів використовуємо спеціальний метод з розрахунком
-                        val runtimeInfo = Utils.autoComputeTvShowRuntime(current)
-                        val watched = WatchedItem(
-                            id = id,
-                            title = title ?: "",
-                            posterPath = posterPath,
-                            releaseDate = releaseDate,
-                            runtime = runtimeInfo.totalMinutes,
-                            mediaType = mType,
-                            overview = current.overview,
-                            voteAverage = current.voteAverage?.toDouble(),
-                            episodeRuntime = runtimeInfo.episodeRuntime,
-                            totalEpisodes = runtimeInfo.episodes,
-                            isOngoing = runtimeInfo.isOngoing,
-                            status = current.status,
-                            lastUpdated = System.currentTimeMillis(),
-                            genreIds = current.genreIds?.joinToString(",")
-                        )
-
-                        viewModel.addWatchedItem(watched) { success ->
-                            runOnUiThread {
-                                if (success) {
+                        // Для серіалів відразу відкриваємо діалог вибору епізодів
+                        runOnUiThread {
+                            val bottomSheet = TvProgressBottomSheet.newInstance(id) { watchedRuntime ->
+                                // Callback коли прогрес збережено
+                                if (watchedRuntime > 0) {
                                     disableButton(binding.btnWatched)
                                     Toast.makeText(this, getString(R.string.added_to_watched_toast), Toast.LENGTH_SHORT).show()
-                                } else {
-                                    Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
                                 }
                             }
+                            bottomSheet.show(supportFragmentManager, "TvProgressBottomSheet")
                         }
                     }
                 }

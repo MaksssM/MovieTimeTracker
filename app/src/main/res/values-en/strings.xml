@@ -411,12 +411,17 @@
     <string name="all_episodes_selected">All episodes selected</string>
     <string name="no_episodes_selected">No episodes selected</string>
     <string name="progress_saved">Progress saved</string>
+    <string name="series_completed_message">🎉 Congratulations! Series completed</string>
+    <string name="series_up_to_date_message">✅ All available episodes watched</string>
     <string name="unknown_episode">Unknown episode</string>
     <string name="track_progress">Track Progress</string>
     <string name="edit_progress">Edit Progress</string>
     <string name="remaining">Remaining</string>
     <string name="time_spent">Time</string>
     <string name="retry">Retry</string>
+    <string name="delete_confirmation_title">Confirm deletion</string>
+    <string name="delete_watched_confirmation">Delete "%1$s" from watched?</string>
+    <string name="item_deleted">Deleted</string>
     <string name="selected_episodes_count">Selected %1$d of %2$d episodes</string>
     <string name="total_runtime_format">~%s total</string>
     <string name="seasons_episodes_format">%1$d seasons • %2$d episodes</string>

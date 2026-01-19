@@ -411,12 +411,17 @@
     <string name="all_episodes_selected">Все эпизоды выбраны</string>
     <string name="no_episodes_selected">Эпизоды не выбраны</string>
     <string name="progress_saved">Прогресс сохранён</string>
+    <string name="series_completed_message">🎉 Поздравляем! Сериал завершён</string>
+    <string name="series_up_to_date_message">✅ Просмотрены все доступные эпизоды</string>
     <string name="unknown_episode">Неизвестный эпизод</string>
     <string name="track_progress">Отслеживать прогресс</string>
     <string name="edit_progress">Редактировать прогресс</string>
     <string name="remaining">Осталось</string>
     <string name="time_spent">Время</string>
     <string name="retry">Повторить</string>
+    <string name="delete_confirmation_title">Подтверждение удаления</string>
+    <string name="delete_watched_confirmation">Удалить "%1$s" из просмотренных?</string>
+    <string name="item_deleted">Удалено</string>
     <string name="selected_episodes_count">Выбрано %1$d из %2$d серий</string>
     <string name="total_runtime_format">~%s всего</string>
     <string name="seasons_episodes_format">%1$d сезонов • %2$d серий</string>

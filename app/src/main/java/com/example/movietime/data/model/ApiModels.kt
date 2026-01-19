@@ -108,7 +108,9 @@ data class KnownForItem(
     val title: String? = null, // for movies
     val name: String? = null, // for tv shows
     @SerializedName("poster_path") val posterPath: String?,
-    @SerializedName("vote_average") val voteAverage: Float = 0f
+    @SerializedName("vote_average") val voteAverage: Float = 0f,
+    @SerializedName("release_date") val releaseDate: String? = null,
+    @SerializedName("first_air_date") val firstAirDate: String? = null
 )
 
 data class PersonDetails(
