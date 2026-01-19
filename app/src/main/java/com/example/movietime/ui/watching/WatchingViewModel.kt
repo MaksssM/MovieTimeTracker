@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.data.db.WatchedItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import android.util.Log
 import javax.inject.Inject
 
@@ -29,7 +31,9 @@ class WatchingViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                val content = repository.getWatchingContentSync()
+                val content = withContext(Dispatchers.IO) {
+                    repository.getWatchingContentSync()
+                }
                 _watchingContent.value = content
                 _errorMessage.value = null
                 Log.d("WatchingViewModel", "Loaded ${content.size} watching items")
@@ -46,7 +50,9 @@ class WatchingViewModel @Inject constructor(
     fun addToWatching(item: WatchedItem) {
         viewModelScope.launch {
             try {
-                repository.addToWatching(item)
+                withContext(Dispatchers.IO) {
+                    repository.addToWatching(item)
+                }
                 loadWatchingContent() // Reload to update the list
                 Log.d("WatchingViewModel", "Added item to watching: ${item.title}")
             } catch (e: Exception) {
@@ -59,7 +65,9 @@ class WatchingViewModel @Inject constructor(
     fun removeFromWatching(item: WatchedItem) {
         viewModelScope.launch {
             try {
-                repository.removeFromWatching(item.id, item.mediaType)
+                withContext(Dispatchers.IO) {
+                    repository.removeFromWatching(item.id, item.mediaType)
+                }
                 loadWatchingContent() // Reload to update the list
                 Log.d("WatchingViewModel", "Removed item from watching: ${item.title}")
             } catch (e: Exception) {
@@ -72,9 +80,11 @@ class WatchingViewModel @Inject constructor(
     fun moveToWatched(item: WatchedItem) {
         viewModelScope.launch {
             try {
-                // Remove from watching and add to watched
-                repository.removeFromWatching(item.id, item.mediaType)
-                repository.addWatchedItem(item)
+                withContext(Dispatchers.IO) {
+                    // Remove from watching and add to watched
+                    repository.removeFromWatching(item.id, item.mediaType)
+                    repository.addWatchedItem(item)
+                }
                 loadWatchingContent() // Reload to update the list
                 Log.d("WatchingViewModel", "Moved item to watched: ${item.title}")
             } catch (e: Exception) {

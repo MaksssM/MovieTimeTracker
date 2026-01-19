@@ -18,7 +18,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         FollowedPerson::class,
         YearlyStats::class
     ],
-    version = 13,
+    version = 14,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -262,6 +262,30 @@ abstract class AppDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `watchCount` INTEGER NOT NULL DEFAULT 1")
                 // Add watchDate column to track last watch date
                 database.execSQL("ALTER TABLE `watched_items` ADD COLUMN `watchDate` INTEGER DEFAULT NULL")
+            }
+        }
+        
+        val MIGRATION_13_14 = object : Migration(13, 14) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add indexes for better query performance
+                
+                // WatchedItem indexes
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_watched_items_mediaType` ON `watched_items` (`mediaType`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_watched_items_lastUpdated` ON `watched_items` (`lastUpdated`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_watched_items_userRating` ON `watched_items` (`userRating`)")
+                
+                // PlannedItem indexes
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_planned_items_mediaType` ON `planned_items` (`mediaType`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_planned_items_dateAdded` ON `planned_items` (`dateAdded`)")
+                
+                // SearchHistoryItem indexes
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_search_history_timestamp` ON `search_history` (`timestamp`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_search_history_mediaType` ON `search_history` (`mediaType`)")
+                
+                // TvShowProgress indexes
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_tv_show_progress_tvShowId` ON `tv_show_progress` (`tvShowId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_tv_show_progress_watched` ON `tv_show_progress` (`watched`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_tv_show_progress_watchedAt` ON `tv_show_progress` (`watchedAt`)")
             }
         }
     }

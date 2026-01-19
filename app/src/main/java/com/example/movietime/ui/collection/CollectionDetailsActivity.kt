@@ -11,7 +11,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.movietime.R
@@ -76,6 +78,7 @@ class CollectionDetailsActivity : AppCompatActivity() {
                 if (!details.backdropPath.isNullOrEmpty()) {
                     binding.ivBackdrop.load("https://image.tmdb.org/t/p/w1280${details.backdropPath}") {
                         crossfade(true)
+                        size(1280, 720)
                     }
                 }
 
@@ -114,7 +117,12 @@ class CollectionDetailsActivity : AppCompatActivity() {
                     binding.tvNextUpDate.text = nextUp.releaseDate?.take(4)
                     
                     if (!nextUp.posterPath.isNullOrEmpty()) {
-                        binding.ivNextUpPoster.load("https://image.tmdb.org/t/p/w342${nextUp.posterPath}")
+                        binding.ivNextUpPoster.load("https://image.tmdb.org/t/p/w342${nextUp.posterPath}") {
+                            crossfade(true)
+                            size(342, 513)
+                            placeholder(R.drawable.ic_placeholder)
+                            error(R.drawable.ic_placeholder)
+                        }
                     }
                     
                     binding.cardNextUp.setOnClickListener {
@@ -145,21 +153,32 @@ class CollectionDetailsActivity : AppCompatActivity() {
     }
 }
 
+// Data class for adapter items with watched status
+data class CollectionMovieItem(
+    val movie: MovieResult,
+    val isWatched: Boolean
+)
+
 class CollectionAdapter(
     private val onItemClick: (MovieResult) -> Unit
-) : RecyclerView.Adapter<CollectionAdapter.ViewHolder>() {
+) : ListAdapter<CollectionMovieItem, CollectionAdapter.ViewHolder>(DiffCallback) {
 
-    private var items: List<MovieResult> = emptyList()
-    private var watchedIds: Set<Int> = emptySet()
+    companion object {
+        private val DiffCallback = object : DiffUtil.ItemCallback<CollectionMovieItem>() {
+            override fun areItemsTheSame(oldItem: CollectionMovieItem, newItem: CollectionMovieItem) =
+                oldItem.movie.id == newItem.movie.id
+            override fun areContentsTheSame(oldItem: CollectionMovieItem, newItem: CollectionMovieItem) =
+                oldItem == newItem
+        }
+    }
 
-    fun submitList(newItems: List<MovieResult>, newWatchedIds: Set<Int>) {
-        items = newItems
-        watchedIds = newWatchedIds
-        notifyDataSetChanged()
+    fun submitList(newItems: List<MovieResult>, watchedIds: Set<Int>) {
+        submitList(newItems.map { CollectionMovieItem(it, watchedIds.contains(it.id)) })
     }
 
     inner class ViewHolder(private val binding: ItemCollectionMovieBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: MovieResult) {
+        fun bind(item: CollectionMovieItem) {
+            val movie = item.movie
             binding.tvTitle.text = movie.title
             binding.tvYear.text = movie.releaseDate?.take(4) ?: ""
             binding.tvRating.text = String.format("%.1f", movie.voteAverage)
@@ -167,17 +186,18 @@ class CollectionAdapter(
             if (!movie.posterPath.isNullOrEmpty()) {
                 binding.ivPoster.load("https://image.tmdb.org/t/p/w342${movie.posterPath}") {
                     crossfade(true)
+                    size(342, 513)
                     placeholder(R.color.poster_placeholder_dark)
+                    error(R.color.poster_placeholder_dark)
                 }
             } else {
                 binding.ivPoster.setImageResource(R.color.poster_placeholder_dark)
             }
 
-            val isWatched = watchedIds.contains(movie.id)
-            binding.ivWatchedStatus.visibility = if (isWatched) View.VISIBLE else View.GONE
+            binding.ivWatchedStatus.visibility = if (item.isWatched) View.VISIBLE else View.GONE
             
             // Dim watched items slightly
-            binding.root.alpha = if (isWatched) 0.7f else 1.0f
+            binding.root.alpha = if (item.isWatched) 0.7f else 1.0f
 
             binding.root.setOnClickListener { onItemClick(movie) }
         }
@@ -189,8 +209,6 @@ class CollectionAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount(): Int = items.size
 }

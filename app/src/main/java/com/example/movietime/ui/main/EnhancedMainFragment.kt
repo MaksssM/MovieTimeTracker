@@ -197,7 +197,10 @@ class EnhancedMainFragment : Fragment() {
 
         binding.rvRecommendations.apply {
             adapter = recommendationsAdapter
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(), androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(), androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false).apply {
+                initialPrefetchItemCount = 5
+            }
+            setHasFixedSize(true)
             layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_scale_fade)
         }
     }

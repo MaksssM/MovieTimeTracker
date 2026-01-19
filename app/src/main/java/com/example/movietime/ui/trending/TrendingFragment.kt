@@ -64,6 +64,8 @@ class TrendingFragment : Fragment() {
         binding.trendingRecyclerView.apply {
             adapter = trendingAdapter
             layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+            itemAnimator = null // Disable animations for better performance
             layoutAnimation = AnimationUtils.loadLayoutAnimation(
                 context,
                 R.anim.layout_animation_cascade

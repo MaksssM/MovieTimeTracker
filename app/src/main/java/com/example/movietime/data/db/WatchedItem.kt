@@ -1,8 +1,17 @@
 package com.example.movietime.data.db
 
 import androidx.room.Entity
+import androidx.room.Index
 
-@Entity(tableName = "watched_items", primaryKeys = ["id", "mediaType"])
+@Entity(
+    tableName = "watched_items",
+    primaryKeys = ["id", "mediaType"],
+    indices = [
+        Index(value = ["mediaType"]),
+        Index(value = ["lastUpdated"]),
+        Index(value = ["userRating"])
+    ]
+)
 data class WatchedItem(
     val id: Int,
     val title: String,

@@ -111,9 +111,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-    // Image loading
+    // Image loading (removed coil-compose as we don't use Jetpack Compose)
     implementation("io.coil-kt:coil:2.5.0")
-    implementation("io.coil-kt:coil-compose:2.5.0")
 
     // UI & Animation
     implementation("com.airbnb.android:lottie:6.2.0")
