@@ -438,4 +438,29 @@
     <string name="share_text">Watching \"%1$s\" (%2$s) - MovieTime</string>
     <string name="share_via">Share via</string>
     <string name="rated_toast">Rated %d/10</string>
+    
+    <!-- Statistics Screen -->
+    <string name="statistics">Statistics</string>
+    <string name="watch_time_equivalent_days">≈ %.1f days of continuous viewing</string>
+    <string name="watch_time_equivalent_hours">≈ %.1f hours of continuous viewing</string>
+    <string name="avg_movie_rating">Avg Movie Rating</string>
+    <string name="avg_tv_rating">Avg TV Rating</string>
+    <string name="favorite_genres">Favorite Genres</string>
+    <string name="favorite_directors">Favorite Directors</string>
+    <string name="no_genre_data">No genre data available</string>
+    <string name="no_director_data">Loading directors...</string>
+    <string name="longest_movie">Longest Movie</string>
+    <string name="most_rewatched">Most Rewatched</string>
+    <string name="content_ratio">Content Ratio</string>
+    <string name="runtime_minutes">%d min</string>
+    
+    <plurals name="movies_count">
+        <item quantity="one">%d movie</item>
+        <item quantity="other">%d movies</item>
+    </plurals>
+    
+    <plurals name="times_count">
+        <item quantity="one">%d time</item>
+        <item quantity="other">%d times</item>
+    </plurals>
 </resources>

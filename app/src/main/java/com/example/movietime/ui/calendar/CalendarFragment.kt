@@ -80,6 +80,7 @@ class CalendarFragment : Fragment() {
             
             binding.rvCalendarEvents.adapter = eventAdapter
             binding.rvCalendarEvents.layoutManager = LinearLayoutManager(requireContext())
+            binding.rvCalendarEvents.setHasFixedSize(false)
             binding.rvCalendarEvents.layoutAnimation = AnimationUtils.loadLayoutAnimation(
                 requireContext(),
                 R.anim.layout_animation_cascade

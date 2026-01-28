@@ -16,7 +16,7 @@ class SimpleEnhancedRepository @Inject constructor(
 ) {
 
     // Real data from database using LiveData flow
-    fun getDetailedStatistics(): Flow<DetailedStatistics> =
+    fun getDetailedStatistics(): Flow<BasicStatistics> =
         appRepository.getWatchedItems().asFlow().map { watchedItems ->
             android.util.Log.d("SimpleEnhancedRepository", "getDetailedStatistics: got ${watchedItems.size} watched items")
             try {
@@ -70,7 +70,7 @@ class SimpleEnhancedRepository @Inject constructor(
 
                 android.util.Log.d("SimpleEnhancedRepository", "Total this month (items+rewatches): $thisMonthWatched")
 
-                DetailedStatistics(
+                BasicStatistics(
                     totalWatchedMovies = totalWatchedMovies,
                     totalWatchedTvShows = totalWatchedTvShows,
                     totalPlannedMovies = 0,
@@ -84,7 +84,7 @@ class SimpleEnhancedRepository @Inject constructor(
                 )
             } catch (e: Exception) {
                 // Fallback to empty stats if there's an error
-                DetailedStatistics(
+                BasicStatistics(
                     totalWatchedMovies = 0,
                     totalWatchedTvShows = 0,
                     totalPlannedMovies = 0,

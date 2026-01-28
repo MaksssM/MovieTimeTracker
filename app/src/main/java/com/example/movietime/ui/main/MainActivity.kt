@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import android.util.Log
 import com.example.movietime.data.db.WatchedItemDao
 import com.example.movietime.data.migration.TvShowRuntimeFixer
+import com.example.movietime.ui.today.TodayActivity
 import com.google.android.material.snackbar.Snackbar
 
 @AndroidEntryPoint
@@ -100,6 +101,12 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             Log.d(TAG, "Menu item clicked: ${menuItem.itemId}, title: ${menuItem.title}")
             when (menuItem.itemId) {
+                R.id.nav_today -> {
+                    Log.d(TAG, "Opening TodayActivity")
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    startActivity(android.content.Intent(this, TodayActivity::class.java))
+                    true
+                }
                 R.id.nav_planned -> {
                     Log.d(TAG, "Opening PlannedActivity")
                     binding.drawerLayout.closeDrawer(GravityCompat.START)

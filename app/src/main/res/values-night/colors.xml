@@ -124,5 +124,11 @@
     <color name="ripple_color">#20FFFFFF</color>
     <color name="track_inactive">#20FFFFFF</color>
     <color name="button_stroke">#40FFFFFF</color>
+
+    <!-- Activity Status Colors - Night Theme (slightly brighter) -->
+    <color name="status_watched">#4ADE80</color>
+    <color name="status_planned">#A78BFA</color>
+    <color name="status_watching">#60A5FA</color>
+    <color name="status_search">#FBBF24</color>
 </resources>
 

@@ -82,6 +82,18 @@
             android:theme="@style/Theme.MovieTimeTracker" />
 
         <activity
+            android:name=".ui.statistics.StatisticsActivity"
+            android:exported="false"
+            android:label="@string/statistics"
+            android:theme="@style/Theme.MovieTimeTracker" />
+
+        <activity
+            android:name=".ui.today.TodayActivity"
+            android:exported="false"
+            android:label="@string/today"
+            android:theme="@style/Theme.MovieTimeTracker" />
+
+        <activity
             android:name=".ui.test.TestDatabaseActivity"
             android:exported="false"
             android:label="Test Database"

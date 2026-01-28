@@ -16,7 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.movietime.R
 import com.example.movietime.databinding.FragmentEnhancedMainBinding
-import com.example.movietime.data.model.DetailedStatistics
+import com.example.movietime.data.model.BasicStatistics
 import com.example.movietime.ui.search.EnhancedSearchActivity
 import com.example.movietime.ui.upcoming.UpcomingReleasesActivity
 import com.example.movietime.ui.friends.FriendsActivity
@@ -116,6 +116,12 @@ class EnhancedMainFragment : Fragment() {
         binding.btnFriends.setOnClickListener {
             handleClickWithDebounce {
                 startActivity(Intent(requireActivity(), FriendsActivity::class.java))
+            }
+        }
+
+        binding.btnStatistics.setOnClickListener {
+            handleClickWithDebounce {
+                startActivity(Intent(requireActivity(), com.example.movietime.ui.statistics.StatisticsActivity::class.java))
             }
         }
 
@@ -263,7 +269,7 @@ class EnhancedMainFragment : Fragment() {
         }
     }
 
-    private fun updateStatistics(stats: DetailedStatistics) {
+    private fun updateStatistics(stats: BasicStatistics) {
         android.util.Log.d("EnhancedMainFragment", "updateStatistics called with: $stats")
         with(binding) {
             // Update header stats

@@ -490,4 +490,79 @@
     <string name="movie_runtime_fmt">%d хв</string>
     <string name="collection_empty">У цій колекції немає фільмів</string>
     <string name="order_release">За датою виходу</string>
+    
+    <!-- Statistics Screen -->
+    <string name="statistics">Статистика</string>
+    <string name="watch_time_equivalent_days">≈ %.1f днів безперервного перегляду</string>
+    <string name="watch_time_equivalent_hours">≈ %.1f годин безперервного перегляду</string>
+    <string name="avg_movie_rating">Середня оцінка фільмів</string>
+    <string name="avg_tv_rating">Середня оцінка серіалів</string>
+    <string name="favorite_genres">Улюблені жанри</string>
+    <string name="favorite_directors">Улюблені режисери</string>
+    <string name="no_genre_data">Немає даних про жанри</string>
+    <string name="no_director_data">Завантаження режисерів...</string>
+    <string name="longest_movie">Найдовший фільм</string>
+    <string name="most_rewatched">Переглянутий найчастіше</string>
+    <string name="content_ratio">Співвідношення контенту</string>
+    <string name="runtime_minutes">%d хв</string>
+    
+    <plurals name="movies_count">
+        <item quantity="one">%d фільм</item>
+        <item quantity="few">%d фільми</item>
+        <item quantity="many">%d фільмів</item>
+        <item quantity="other">%d фільмів</item>
+    </plurals>
+    
+    <plurals name="times_count">
+        <item quantity="one">%d раз</item>
+        <item quantity="few">%d рази</item>
+        <item quantity="many">%d разів</item>
+        <item quantity="other">%d разів</item>
+    </plurals>
+    
+    <!-- Today Screen -->
+    <string name="good_morning">Доброго ранку</string>
+    <string name="good_afternoon">Добрий день</string>
+    <string name="good_evening">Добрий вечір</string>
+    <string name="good_night">Доброї ночі</string>
+    <string name="new_episodes">Нові епізоди</string>
+    <string name="releases_today">Релізи сьогодні</string>
+    <string name="upcoming_this_week">На цьому тижні</string>
+    <string name="continue_watching">Продовжити перегляд</string>
+    <string name="personal_tips">Підказки для вас</string>
+    <string name="refresh">Оновити</string>
+    <string name="back">Назад</string>
+    <string name="play">Дивитися</string>
+    <string name="open">Відкрити</string>
+    <string name="tomorrow">Завтра</string>
+    <string name="in_days">Через %d дн.</string>
+    <string name="aired_today">Вийшла сьогодні</string>
+    <string name="aired_yesterday">Вийшла вчора</string>
+    <string name="aired_days_ago">%d дн. тому</string>
+    <string name="percent_watched">%d%% переглянуто</string>
+    <string name="movie_short">ФІЛЬМ</string>
+    <string name="tv_show_short">СЕРІАЛ</string>
+    <string name="today_empty_title">Немає новин на сьогодні</string>
+    <string name="today_empty_description">Додайте серіали до списку перегляду, щоб бачити нові епізоди</string>
+    <string name="tip_continue_watching">Продовжте перегляд</string>
+    <string name="tip_continue_watching_desc">Ви зупинились на %1$s. Наступна серія: %2$s</string>
+    <string name="tip_milestone_title">🎉 Ви досягли позначки!</string>
+    <string name="tip_milestone_desc">Ви переглянули %d фільмів та серіалів!</string>
+    <string name="tip_new_season">Новий сезон доступний!</string>
+    <string name="tip_similar_content">Вам може сподобатися</string>
+    <string name="view_statistics">Переглянути статистику</string>
+    
+    <plurals name="new_items_count">
+        <item quantity="one">%d новий</item>
+        <item quantity="few">%d нових</item>
+        <item quantity="many">%d нових</item>
+        <item quantity="other">%d нових</item>
+    </plurals>
+    
+    <plurals name="releases_count_plurals">
+        <item quantity="one">%d реліз</item>
+        <item quantity="few">%d релізи</item>
+        <item quantity="many">%d релізів</item>
+        <item quantity="other">%d релізів</item>
+    </plurals>
 </resources>

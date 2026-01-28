@@ -24,7 +24,7 @@ class EnhancedMainViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
-    fun getDetailedStatistics(): Flow<DetailedStatistics> {
+    fun getDetailedStatistics(): Flow<BasicStatistics> {
         return repository.getDetailedStatistics()
     }
 
