@@ -86,17 +86,18 @@ class CalendarEventAdapter(
                 )
 
                 releaseBinding.tvTitle.text = release.title
-                releaseBinding.tvRating.text = String.format(Locale.US, "%.1f", release.rating)
                 
-                // Set type text and icon
-                releaseBinding.tvType.text = if (release.isMovie) 
+                // Update chips instead of TextViews
+                releaseBinding.chipType.text = if (release.isMovie) 
                     context.getString(R.string.movie) 
                 else 
                     context.getString(R.string.tv_show)
                     
-                releaseBinding.ivTypeIcon.setImageResource(
+                releaseBinding.chipType.setChipIconResource(
                     if (release.isMovie) R.drawable.ic_movie_24 else R.drawable.ic_tv_24
                 )
+                
+                releaseBinding.chipRating.text = String.format(Locale.US, "⭐ %.1f", release.rating)
 
                 if (release.posterUrl.isNotBlank()) {
                     releaseBinding.ivPoster.load(release.posterUrl) {

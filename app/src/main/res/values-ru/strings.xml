@@ -438,4 +438,33 @@
     <string name="share_text">Смотрю \"%1$s\" (%2$s) - MovieTime</string>
     <string name="share_via">Поделиться через</string>
     <string name="rated_toast">Оценено на %d/10</string>
+    
+    <!-- Statistics Screen -->
+    <string name="statistics">Статистика</string>
+    <string name="watch_time_equivalent_days">≈ %.1f дней непрерывного просмотра</string>
+    <string name="watch_time_equivalent_hours">≈ %.1f часов непрерывного просмотра</string>
+    <string name="avg_movie_rating">Средняя оценка фильмов</string>
+    <string name="avg_tv_rating">Средняя оценка сериалов</string>
+    <string name="favorite_genres">Любимые жанры</string>
+    <string name="favorite_directors">Любимые режиссёры</string>
+    <string name="no_genre_data">Нет данных о жанрах</string>
+    <string name="no_director_data">Загрузка режиссёров...</string>
+    <string name="longest_movie">Самый длинный фильм</string>
+    <string name="most_rewatched">Пересмотренный чаще всего</string>
+    <string name="content_ratio">Соотношение контента</string>
+    <string name="runtime_minutes">%d мин</string>
+    
+    <plurals name="movies_count">
+        <item quantity="one">%d фильм</item>
+        <item quantity="few">%d фильма</item>
+        <item quantity="many">%d фильмов</item>
+        <item quantity="other">%d фильмов</item>
+    </plurals>
+    
+    <plurals name="times_count">
+        <item quantity="one">%d раз</item>
+        <item quantity="few">%d раза</item>
+        <item quantity="many">%d раз</item>
+        <item quantity="other">%d раз</item>
+    </plurals>
 </resources>

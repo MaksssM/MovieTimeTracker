@@ -106,16 +106,19 @@ class RecentActivityAdapter(
             when (item.type) {
                 RecentActivityItem.ActivityType.WATCHED -> {
                     binding.tvAction.text = context.getString(R.string.activity_watched_movie)
+                    binding.tvAction.setChipBackgroundColorResource(R.color.status_watched)
                     binding.iconContainer.setBackgroundResource(R.drawable.bg_icon_3d_primary)
                     binding.ivIcon.setImageResource(R.drawable.ic_check_24)
                 }
                 RecentActivityItem.ActivityType.PLANNED -> {
                     binding.tvAction.text = context.getString(R.string.activity_added_planned)
+                    binding.tvAction.setChipBackgroundColorResource(R.color.status_planned)
                     binding.iconContainer.setBackgroundResource(R.drawable.bg_icon_3d_accent)
                     binding.ivIcon.setImageResource(R.drawable.ic_bookmark_filled_24)
                 }
                 RecentActivityItem.ActivityType.WATCHING -> {
                     binding.tvAction.text = context.getString(R.string.activity_started_series)
+                    binding.tvAction.setChipBackgroundColorResource(R.color.status_watching)
                     binding.iconContainer.setBackgroundResource(R.drawable.bg_icon_3d_success)
                     binding.ivIcon.setImageResource(R.drawable.ic_play_circle_24)
                 }
@@ -127,6 +130,7 @@ class RecentActivityAdapter(
                         context.getString(R.string.activity_searched_tv)
                     }
                     binding.tvAction.text = actionText
+                    binding.tvAction.setChipBackgroundColorResource(R.color.status_search)
                     binding.iconContainer.setBackgroundResource(R.drawable.bg_icon_3d_warning)
                     binding.ivIcon.setImageResource(R.drawable.ic_search_24)
                 }

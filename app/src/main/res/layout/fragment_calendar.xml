@@ -261,6 +261,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
+                android:paddingHorizontal="8dp"
+                android:clipToPadding="false"
+                android:layout_marginTop="8dp"
                 tools:listitem="@layout/item_calendar_event" />
 
             <!-- Empty State -->

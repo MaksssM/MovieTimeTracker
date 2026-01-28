@@ -118,8 +118,8 @@ data class UserProfile(
     val isPublic: Boolean = true
 )
 
-// Statistics model
-data class DetailedStatistics(
+// Basic Statistics model for quick stats display
+data class BasicStatistics(
     val totalWatchedMovies: Int = 0,
     val totalWatchedTvShows: Int = 0,
     val totalPlannedMovies: Int = 0,

@@ -8,6 +8,7 @@
 
     <!-- Base Colors -->
     <color name="black">#FF000000</color>
+    <color name="black_alpha_50">#80000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
 
@@ -227,6 +228,12 @@
     <color name="details_background">@color/background_primary_dark</color>
     <color name="details_surface_transparent">#99000000</color>
     <color name="poster_placeholder_dark">#1F2937</color>
+
+    <!-- Activity Status Colors -->
+    <color name="status_watched">#22C55E</color>
+    <color name="status_planned">#8B5CF6</color>
+    <color name="status_watching">#3B82F6</color>
+    <color name="status_search">#F59E0B</color>
 
     <color name="text_on_dark_secondary">#B3FFFFFF</color>
     <color name="text_on_dark_tertiary">#80FFFFFF</color>
