@@ -69,7 +69,7 @@ class CollectionsFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding.toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         
         binding.fabCreateCollection.setOnClickListener {

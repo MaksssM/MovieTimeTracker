@@ -93,7 +93,7 @@ class CollectionDetailFragment : Fragment() {
                 updateHeader(collection)
             } else {
                 // Collection deleted or not found
-                requireActivity().onBackPressed()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
 
@@ -116,7 +116,7 @@ class CollectionDetailFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding.toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         
         binding.btnEdit.setOnClickListener {
