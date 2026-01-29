@@ -45,8 +45,8 @@ class TrendingViewModel @Inject constructor(
 
     private fun calculateDiscoveryScore(item: Any): Double {
         val (id, mediaType, popularity) = when (item) {
-            is MovieResult -> Triple(item.id, "movie", item.popularity?.toDouble() ?: 0.0)
-            is TvShowResult -> Triple(item.id, "tv", item.popularity?.toDouble() ?: 0.0)
+            is MovieResult -> Triple(item.id, "movie", item.popularity.toDouble())
+            is TvShowResult -> Triple(item.id, "tv", item.popularity.toDouble())
             else -> Triple(0, "unknown", 0.0)
         }
 

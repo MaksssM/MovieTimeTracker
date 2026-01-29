@@ -83,14 +83,14 @@ class RecommendationsAdapter(
                 is MovieResult -> {
                     title = item.title
                     posterPath = item.posterPath
-                    voteAverage = item.voteAverage?.toDouble()
+                    voteAverage = item.voteAverage.toDouble()
                     id = item.id
                     mediaType = "movie"
                 }
                 is TvShowResult -> {
                     title = item.name
                     posterPath = item.posterPath
-                    voteAverage = item.voteAverage?.toDouble()
+                    voteAverage = item.voteAverage.toDouble()
                     id = item.id
                     mediaType = "tv"
                 }

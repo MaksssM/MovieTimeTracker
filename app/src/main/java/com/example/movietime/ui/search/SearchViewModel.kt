@@ -374,8 +374,8 @@ class SearchViewModel @Inject constructor(
         if (minR > 0.0) {
             filtered = filtered.filter { any ->
                 when (any) {
-                    is MovieResult -> (any.voteAverage?.toDouble() ?: 0.0) >= minR
-                    is TvShowResult -> (any.voteAverage?.toDouble() ?: 0.0) >= minR
+                    is MovieResult -> any.voteAverage.toDouble() >= minR
+                    is TvShowResult -> any.voteAverage.toDouble() >= minR
                     else -> false
                 }
             }.toMutableList()
@@ -431,14 +431,14 @@ class SearchViewModel @Inject constructor(
     private fun calculateDiscoveryScore(item: Any, option: SortOption): Double {
         val (id, mediaType, rawScore) = when (item) {
             is MovieResult -> Triple(item.id, "movie", when(option) {
-                SortOption.VOTE_AVERAGE_DESC, SortOption.VOTE_AVERAGE_ASC -> item.voteAverage?.toDouble() ?: 0.0
+                SortOption.VOTE_AVERAGE_DESC, SortOption.VOTE_AVERAGE_ASC -> item.voteAverage.toDouble()
                 SortOption.RELEASE_DATE_DESC, SortOption.RELEASE_DATE_ASC -> (item.releaseDate?.substringBefore("-")?.toDoubleOrNull() ?: 0.0) / 2025.0
-                else -> item.popularity?.toDouble() ?: 0.0
+                else -> item.popularity.toDouble()
             })
             is TvShowResult -> Triple(item.id, "tv", when(option) {
-                SortOption.VOTE_AVERAGE_DESC, SortOption.VOTE_AVERAGE_ASC -> item.voteAverage?.toDouble() ?: 0.0
+                SortOption.VOTE_AVERAGE_DESC, SortOption.VOTE_AVERAGE_ASC -> item.voteAverage.toDouble()
                 SortOption.RELEASE_DATE_DESC, SortOption.RELEASE_DATE_ASC -> (item.firstAirDate?.substringBefore("-")?.toDoubleOrNull() ?: 0.0) / 2025.0
-                else -> item.popularity?.toDouble() ?: 0.0
+                else -> item.popularity.toDouble()
             })
             else -> Triple(0, "unknown", 0.0)
         }

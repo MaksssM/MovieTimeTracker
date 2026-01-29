@@ -102,46 +102,56 @@ class TodayRepository @Inject constructor(
                         language = getLanguage()
                     )
                     
-                    // Get the latest season details
-                    val latestSeason = details.numberOfSeasons ?: 0
-                    if (latestSeason > 0) {
-                        val seasonDetails = tmdbApi.getSeasonDetails(
-                            tvId = show.id,
-                            seasonNumber = latestSeason,
-                            apiKey = apiKey,
-                            language = getLanguage()
-                        )
+                    // Get the latest 2 seasons to catch more recent episodes
+                    val numberOfSeasons = details.numberOfSeasons ?: 0
+                    if (numberOfSeasons > 0) {
+                        val seasonsToCheck = listOf(numberOfSeasons, (numberOfSeasons - 1).coerceAtLeast(1))
+                            .distinct()
+                            .take(2)
                         
-                        // Find episodes that aired recently
-                        seasonDetails.episodes?.forEach { episode ->
+                        for (seasonNum in seasonsToCheck) {
+                            try {
+                                val seasonDetails = tmdbApi.getSeasonDetails(
+                                    tvId = show.id,
+                                    seasonNumber = seasonNum,
+                                    apiKey = apiKey,
+                                    language = getLanguage()
+                                )
+                                
+                                // Find episodes that aired recently
+                                seasonDetails.episodes?.forEach { episode ->
                             val airDate = episode.airDate
                             if (airDate != null && airDate >= weekAgo && airDate <= today) {
                                 // Check if user already watched this episode
                                 val episodeNum = episode.episodeNumber ?: 0
                                 val isWatched = tvShowProgressDao.isEpisodeWatched(
                                     show.id, 
-                                    latestSeason, 
+                                    seasonNum, 
                                     episodeNum
                                 ) ?: false
                                 
-                                episodes.add(
-                                    NewEpisodeItem(
-                                        tvShowId = show.id,
-                                        tvShowName = show.title,
-                                        posterPath = show.posterPath,
-                                        backdropPath = details.backdropPath,
-                                        seasonNumber = latestSeason,
-                                        episodeNumber = episodeNum,
-                                        episodeName = episode.name,
-                                        airDate = airDate,
-                                        overview = episode.overview,
-                                        runtime = episode.runtime,
-                                        voteAverage = episode.voteAverage ?: 0f,
-                                        isWatched = isWatched
+                                    episodes.add(
+                                        NewEpisodeItem(
+                                            tvShowId = show.id,
+                                            tvShowName = show.title,
+                                            posterPath = show.posterPath,
+                                            backdropPath = details.backdropPath,
+                                            seasonNumber = seasonNum,
+                                            episodeNumber = episodeNum,
+                                            episodeName = episode.name,
+                                            airDate = airDate,
+                                            overview = episode.overview,
+                                            runtime = episode.runtime,
+                                            voteAverage = episode.voteAverage ?: 0f,
+                                            isWatched = isWatched
+                                        )
                                     )
-                                )
+                                }
                             }
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Error fetching season $seasonNum for ${show.title}: ${e.message}")
                         }
+                    }
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "Error fetching episodes for ${show.title}: ${e.message}")
@@ -208,7 +218,7 @@ class TodayRepository @Inject constructor(
                             backdropPath = show.backdropPath,
                             releaseDate = show.firstAirDate,
                             mediaType = "tv",
-                            voteAverage = show.voteAverage ?: 0f,
+                            voteAverage = show.voteAverage,
                             overview = show.overview,
                             genres = emptyList(),
                             isInWatchlist = false
@@ -255,7 +265,7 @@ class TodayRepository @Inject constructor(
                             backdropPath = movie.backdropPath,
                             releaseDate = movie.releaseDate,
                             mediaType = "movie",
-                            voteAverage = movie.voteAverage ?: 0f,
+                            voteAverage = movie.voteAverage,
                             overview = movie.overview,
                             genres = emptyList(),
                             isInWatchlist = false
