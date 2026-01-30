@@ -269,6 +269,21 @@ class TvDetailsActivity : AppCompatActivity() {
         view.isFocusable = false
     }
     
+    private fun animateBadgeAppear(badge: View) {
+        badge.visibility = View.VISIBLE
+        badge.alpha = 0f
+        badge.scaleX = 0f
+        badge.scaleY = 0f
+        
+        badge.animate()
+            .alpha(1f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(350)
+            .setInterpolator(OvershootInterpolator(1.5f))
+            .start()
+    }
+    
     private fun shareTvShow(tvShow: TvShowResult) {
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
@@ -515,10 +530,63 @@ class TvDetailsActivity : AppCompatActivity() {
             if (tvShow != null) {
                 updateTotalWatchTime(tvShow, watchedItem)
                 
+                // Update status badges
+                binding.cardWatchedBadge.visibility = View.GONE
+                binding.cardInProgressBadge.visibility = View.GONE
+                
                 if (watchedItem != null) {
                     binding.fabAdd.text = getString(R.string.edit_progress)
+                    
+                    // Check if fully watched
+                    val totalEpisodes = watchedItem.totalEpisodes ?: 0
+                    val episodeRuntime = watchedItem.episodeRuntime ?: 1
+                    val watchedRuntime = watchedItem.runtime ?: 0
+                    val watchedEpisodes = if (episodeRuntime > 0) watchedRuntime / episodeRuntime else 0
+                    val isOngoing = watchedItem.isOngoing
+                    
+                    if (totalEpisodes > 0 && watchedEpisodes >= totalEpisodes && !isOngoing) {
+                        // Fully watched - show with user rating if available and animated
+                        animateBadgeAppear(binding.cardWatchedBadge)
+                        val userRating = watchedItem.userRating
+                        if (userRating != null && userRating > 0) {
+                            binding.tvWatchedBadge.text = getString(R.string.fully_watched) + " ⭐ ${userRating.toInt()}"
+                        } else {
+                            binding.tvWatchedBadge.text = getString(R.string.fully_watched)
+                        }
+                        
+                        // Disable buttons since fully watched
+                        disableButton(binding.btnWatched)
+                        disableButton(binding.btnPlanned)
+                        disableButton(binding.btnWatching)
+                    } else if (watchedEpisodes > 0) {
+                        // In progress with detailed info and animation
+                        animateBadgeAppear(binding.cardInProgressBadge)
+                        val progressPercent = if (totalEpisodes > 0) (watchedEpisodes * 100) / totalEpisodes else 0
+                        binding.tvInProgressBadge.text = "$watchedEpisodes/$totalEpisodes ($progressPercent%)"
+                        
+                        // Disable watching button since already tracking
+                        disableButton(binding.btnWatching)
+                    }
                 } else {
                     binding.fabAdd.text = getString(R.string.track_progress)
+                    
+                    // Check if in planned or watching
+                    viewModel.isItemPlanned(tvShow.id) { isPlanned ->
+                        if (isPlanned) {
+                            runOnUiThread {
+                                disableButton(binding.btnPlanned)
+                            }
+                        }
+                    }
+                    viewModel.isItemWatching(tvShow.id) { isWatching ->
+                        if (isWatching) {
+                            runOnUiThread {
+                                animateBadgeAppear(binding.cardInProgressBadge)
+                                binding.tvInProgressBadge.text = getString(R.string.watching)
+                                disableButton(binding.btnWatching)
+                            }
+                        }
+                    }
                 }
             }
         }

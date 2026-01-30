@@ -104,6 +104,20 @@ class CalendarAdapter(
             binding.root.setOnClickListener {
                 if (day.isCurrentMonth) {
                     com.example.movietime.utils.HapticFeedbackHelper.impactLow(it)
+                    // Animate day selection
+                    it.animate()
+                        .scaleX(0.9f)
+                        .scaleY(0.9f)
+                        .setDuration(100)
+                        .withEndAction {
+                            it.animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(150)
+                                .setInterpolator(android.view.animation.OvershootInterpolator(2f))
+                                .start()
+                        }
+                        .start()
                     onDayClick(day.dayOfMonth)
                 }
             }

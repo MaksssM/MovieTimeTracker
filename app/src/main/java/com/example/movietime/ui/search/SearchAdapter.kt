@@ -106,9 +106,10 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
             is PersonViewHolder -> holder.bind(currentItem as Person)
         }
         
-        if (position > lastAnimatedPosition) {
-            animateItemEntry(holder.itemView, position)
-            lastAnimatedPosition = position
+        val adapterPosition = holder.bindingAdapterPosition
+        if (adapterPosition != RecyclerView.NO_POSITION && adapterPosition > lastAnimatedPosition) {
+            animateItemEntry(holder.itemView, adapterPosition)
+            lastAnimatedPosition = adapterPosition
         }
     }
     

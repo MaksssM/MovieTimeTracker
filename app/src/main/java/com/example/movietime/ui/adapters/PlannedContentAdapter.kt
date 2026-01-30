@@ -52,13 +52,13 @@ class PlannedContentAdapter(
                     tvMediaType.setBackgroundResource(R.drawable.bg_badge_tv)
                     // For TV shows, display number of episodes
                     tvEpisodes.text = "${item.totalEpisodes ?: 0}"
-                    tvSeasons.text = "епізодів"
+                    tvSeasons.text = binding.root.context.getString(R.string.episodes_label)
                 } else {
-                    tvMediaType.text = "Фільм"
+                    tvMediaType.text = binding.root.context.getString(R.string.movie_short)
                     tvMediaType.setBackgroundResource(R.drawable.bg_badge_movie)
                     // For movies, display duration
                     tvEpisodes.text = formatRuntime(item.runtime)
-                    tvSeasons.text = "Фільм"
+                    tvSeasons.text = binding.root.context.getString(R.string.movie_label)
                 }
 
                 // Load poster with Coil

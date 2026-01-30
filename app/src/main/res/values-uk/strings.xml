@@ -1,0 +1,613 @@
+<resources>
+    <string name="app_name">MovieTime</string>
+
+    <!-- Navigation -->
+    <string name="nav_watched">Переглянуті</string>
+    <string name="nav_planned">Заплановані</string>
+    <string name="nav_watching">Дивлюсь</string>
+    <string name="nav_library">Бібліотека</string>
+    <string name="nav_discover">Відкривайте</string>
+    <string name="nav_calendar">Календар</string>
+    <string name="nav_trending">Популярне</string>
+    <string name="nav_settings">Налаштування</string>
+    <string name="today">Сьогодні</string>
+    <string name="upcoming_releases_title">Прем\'єри цього місяця</string>
+    <string name="releases_count">%d релізів</string>
+
+    <!-- Common Actions -->
+    <string name="rate">Оцінити</string>
+    <string name="share">Поділитися</string>
+    <string name="overview">Опис</string>
+
+    <!-- Main menu -->
+    <string name="main_menu_title">Головне меню</string>
+    <string name="movies_category">Фільми</string>
+    <string name="tv_shows_category">Серіали</string>
+    <string name="total_time_spent">Загальний час</string>
+    <string name="watched_movies">Переглянуті фільми</string>
+    <string name="watched_tv_shows">Переглянуті серіали</string>
+    <string name="planned_movies">Заплановані фільми</string>
+    <string name="planned_tv_shows">Заплановані серіали</string>
+    <string name="watching_movies">Дивлюсь фільми</string>
+    <string name="watching_tv_shows">Дивлюсь серіали</string>
+
+    <!-- Details / Watched -->
+    <string name="add_to_watched">Додати до переглянутих</string>
+    <string name="added">Додано</string>
+    <string name="already_watched">Вже у переглянутих</string>
+    <string name="edit_watched_data">Редагувати дані</string>
+    <string name="added_to_watched_toast">Додано до переглянутих</string>
+    <string name="add_failed">Не вдалося додати</string>
+    <string name="data_not_loaded">Дані ще не завантажені</string>
+    <string name="error_loading_data">Помилка завантаження даних</string>
+    <string name="unknown_media">Невідомий тип медіа</string>
+    <string name="poster_description">Постер фільму</string>
+
+    <!-- Enhanced Interface Strings -->
+    <string name="search">Пошук</string>
+    <string name="search_movies_tv_shows">Пошук фільмів та серіалів</string>
+    <string name="search_hint">Введіть назву фільму або серіалу</string>
+    <string name="rewatches">Переглядів</string>
+    <string name="add_rewatch">Додати перегляд</string>
+    <string name="rewatch_added">Додано перегляд</string>
+    <string name="watch_count">×%d</string>
+    <string name="watch_history">Історія переглядів</string>
+    <string name="watch_history_description">Кожен повторний перегляд додає час до вашої загальної статистики</string>
+    <string name="watched_times">Переглянуто %d разів</string>
+    <string name="watched_times_short">×%d разів</string>
+    <string name="search_filters">Фільтри пошуку</string>
+    <string name="all">Все</string>
+    <string name="movies">Фільми</string>
+    <string name="tv_shows">Серіали</string>
+    <string name="search_results">Результати пошуку</string>
+    <string name="search_results_count">Знайдено результатів: %d</string>
+    <string name="popular_now">Популярне зараз</string>
+    <string name="searching">Пошук…</string>
+    <string name="planned">Заплановані</string>
+    <string name="filter_by_type">Фільтрація за типом</string>
+    <string name="your_planned_content">Ваш запланований контент</string>
+    <string name="no_planned_content">Немає запланованого контенту</string>
+    <string name="add_content_to_planned">Додайте щось до запланованого списку</string>
+    <string name="browse_content">Переглянути контент</string>
+    <string name="add_to_planned">Додати до запланованих</string>
+    <string name="add_to_collection">Додати в колекцію</string>
+    <string name="loading">Завантаження…</string>
+    <string name="loading_show_data">Отримання даних про серіал…</string>
+
+    <!-- Category buttons -->
+    <string name="watched">Переглянуто</string>
+    <string name="watching">Дивлюсь</string>
+    <string name="added_to_planned">Додано до запланованих</string>
+    <string name="added_to_watching">Додано до "Дивлюсь"</string>
+    <string name="already_planned">Вже у запланованих</string>
+    <string name="already_watching">Вже у "Дивлюсь"</string>
+
+    <string name="planned_movies_count">Заплановані фільми: %d</string>
+    <string name="planned_tv_shows_count">Заплановані серіали: %d</string>
+    <string name="planned_content_count">Запланований контент: %d</string>
+    <string name="total_watch_time">Загальний час перегляду</string>
+    <string name="this_month">Цього місяця</string>
+    <string name="achievements">Досягнення</string>
+    <string name="days_streak">днів підряд</string>
+    <string name="best_month">Найкращий місяць</string>
+    <string name="quick_stats">Швидка статистика</string>
+    <string name="avg_rating">Середній рейтинг</string>
+    <string name="rating_short">Рейтинг</string>
+    <string name="categories">Категорії</string>
+    <string name="quick_actions">Швидкі дії</string>
+    <string name="trending">Тренди</string>
+    <string name="movie_premieres">Майбутні прем\'єри</string>
+    <string name="friends">Друзі</string>
+    <string name="recent_activity">Недавня активність</string>
+    <string name="no_recent_activity">Ще немає активності</string>
+    <string name="quick_add">Швидке додавання</string>
+
+    <string name="watching_count">Дивлюсь: %d</string>
+    <string name="add_to_watching">Додати до списку "Дивлюсь"</string>
+    <string name="remove_from_watching">Видалити зі списку "Дивлюсь"</string>
+    <string name="no_watching_content">Немає контенту, який ви зараз дивитесь</string>
+    <string name="watching_movies_count">Дивлюсь фільми: %d</string>
+    <string name="watching_tv_shows_count">Дивлюсь серіали: %d</string>
+    <string name="your_watching_content">Контент, який ви зараз дивитесь</string>
+
+    <!-- Advanced Search / Filters -->
+    <string name="advanced_filters">Розширені фільтри</string>
+    <string name="genres">Жанри</string>
+    <string name="genres_not_selected">Жанри не вибрані</string>
+    <string name="actor_or_director">Актор або режисер</string>
+    <string name="search_person_hint">Введіть ім\'я актора або режисера</string>
+    <string name="role_any">Будь-яка роль</string>
+    <string name="role_actor">Актор</string>
+    <string name="role_director">Режисер</string>
+    <string name="role_writer">Сценарист</string>
+    <string name="role_producer">Продюсер</string>
+    <string name="year">Рік</string>
+    <string name="studio_or_company">Студія/Компанія</string>
+    <string name="search_company_hint">Введіть назву студії або компанії</string>
+    <string name="any_year">Будь-який рік</string>
+    <string name="sort_by">Сортування</string>
+    <string name="apply">Застосувати</string>
+    <string name="reset">Скинути</string>
+    <string name="close">Закрити</string>
+    <string name="clear_selection">Очистити вибір</string>
+    <string name="person_photo">Фото людини</string>
+    <string name="active_filters">Активні фільтри: %d</string>
+    <string name="discover_by_filters">Пошук за фільтрами</string>
+    <string name="no_filters_selected">Фільтри не вибрані</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Екран налаштувань</string>
+    <string name="theme_title">Тема додатку</string>
+    <string name="theme_system">Система</string>
+    <string name="theme_light">Світла</string>
+    <string name="theme_dark">Темна</string>
+    <string name="theme_changed">Тему змінено</string>
+
+    <!-- Basic strings needed -->
+    <string name="delete">Видалити</string>
+    <string name="undo">Скасувати</string>
+
+    <!-- Time formatting -->
+    <string name="time_format_hours">%d год</string>
+    <string name="time_format_minutes">%d хв</string>
+    <string name="time_format_hours_minutes" formatted="false">%d год %d хв</string>
+
+    <!-- Additional missing strings -->
+    <string name="total_time">Загальний час</string>
+    <string name="total_time_default">0 год 0 хв</string>
+    <string name="runtime">Тривалість</string>
+    <string name="release_date">Дата виходу</string>
+    <string name="rate_content">Оцініть контент</string>
+    <string name="skip_rating">Пропустити оцінку</string>
+    <string name="no_title">Без назви</string>
+    <string name="media_type_movie">🎬 Фільм</string>
+    <string name="media_type_tv_show">📺 Серіал</string>
+    <string name="no_description_available">Опис недоступний</string>
+    
+    <!-- People tab -->
+    <string name="people">Люди</string>
+    <string name="person_photo_description">Фото</string>
+    <string name="department_acting">Актор</string>
+    <string name="department_directing">Режисер</string>
+    <string name="department_writing">Сценарист</string>
+    <string name="department_production">Продюсер</string>
+    <string name="known_for">Відомий за: %s</string>
+    <string name="biography">Біографія</string>
+    <string name="birthday">Дата народження</string>
+    <string name="birthplace">Місце народження</string>
+    <string name="known_for_title">Відомий завдяки</string>
+
+    <!-- Search filters -->
+    <string name="filter_all">Все</string>
+    <string name="filter_movies">Фільми</string>
+    <string name="filter_tv_shows">Серіали</string>
+    <string name="sort_by_rating">Сортувати за рейтингом</string>
+    <string name="sort_by_popularity">Сортувати за популярністю</string>
+    <string name="results_count_default">Знайдено: 0</string>
+    <string name="empty_results">Нічого не знайдено</string>
+    <string name="recent_searches">Недавні пошуки</string>
+    <string name="clear_history">Очистити історію</string>
+    <string name="min_rating">Мінімальний рейтинг</string>
+    <string name="reset_filters">Скинути фільтри</string>
+    <string name="spoiler_hidden_tap">Спойлер приховано — торкніться, щоб показати</string>
+
+    <!-- Language settings -->
+    <string name="language_title">Мова додатку</string>
+    <string name="lang_uk">Українська</string>
+    <string name="lang_ru">Русский</string>
+    <string name="lang_en">English</string>
+
+    <!-- Content descriptions -->
+    <string name="search_content_desc">Пошук</string>
+
+    <!-- Activity strings -->
+    <string name="activity_watched_movie">подивився фільм</string>
+    <string name="activity_watched_tv">подивився серіал</string>
+    <string name="activity_rated_movie">оцінив фільм</string>
+    <string name="activity_rated_tv">оцінив серіал</string>
+    <string name="activity_added_to_planned">додав до запланованих</string>
+    <string name="activity_wrote_review">написав відгук</string>
+    <string name="activity_searched_movie">шукав фільм</string>
+    <string name="activity_searched_tv">шукав серіал</string>
+
+    <!-- Episodes -->
+    <string name="enter_episodes_watched">Введіть кількість переглянутих епізодів</string>
+    <string name="enter_episodes_watched_hint">Кількість епізодів</string>
+
+    <!-- Additional search strings -->
+    <string name="no_results">Нічого не знайдено</string>
+    <string name="rating_value">Рейтинг: %.1f</string>
+    <string name="history_item_removed">Видалено з історії</string>
+
+    <!-- Settings -->
+    <string name="language_changed">Мову змінено</string>
+
+    <!-- Empty states -->
+    <string name="no_watched_content">Нічого не переглянуто</string>
+    <string name="start_watching_hint">Почніть переглядати фільми та серіали</string>
+    <string name="no_data">Немає даних</string>
+    <string name="start_watching_movies">Почніть дивитись фільми!</string>
+    <string name="episodes_label">епізодів</string>
+    <string name="movie_label">Фільм</string>
+    <string name="hours_short">годин</string>
+    <string name="minutes_short">хв</string>
+
+    <!-- About -->
+    <string name="about_title">Про додаток</string>
+    <string name="app_version">Версія %s</string>
+    <string name="clear_cache">Очистити кеш</string>
+    <string name="clear_cache_success">Кеш очищено</string>
+    <string name="data_management">Керування даними</string>
+    <string name="export_data">Експортувати дані</string>
+    <string name="import_data">Імпортувати дані</string>
+    <string name="clear_all_data">Очистити всі дані</string>
+    <string name="clear_all_data_confirm">Ви впевнені, що хочете видалити всі дані? Цю дію не можна скасувати.</string>
+    <string name="cancel">Скасувати</string>
+    <string name="confirm">Підтвердити</string>
+    <string name="notifications_title">Сповіщення</string>
+    <string name="enable_notifications">Увімкнути сповіщення</string>
+    <string name="notification_new_releases">Нові релізи</string>
+    <string name="notification_reminders">Нагадування</string>
+
+    <!-- New Settings Strings -->
+    <string name="settings_general">Загальні</string>
+    <string name="settings_appearance">Зовнішній вигляд</string>
+    <string name="settings_content">Контент</string>
+    <string name="settings_notifications">Сповіщення</string>
+    <string name="settings_storage">Дані та пам\'ять</string>
+    
+    <string name="backup_management">Управління резервними копіями</string>
+    <string name="backup_description">Локальне зберігання ваших даних без хмарних сервісів</string>
+    <string name="create_backup">Створити резервну копію</string>
+    <string name="manage_backups">Мої резервні копії</string>
+    <string name="view_restore_backups">Переглянути та відновити резервні копії</string>
+    <string name="creating_backup">Створення резервної копії...</string>
+    <string name="backup_list">Мої резервні копії</string>
+    <string name="restore_backup">Відновити</string>
+    <string name="delete_backup">Видалити</string>
+    <string name="backup_created_success">Резервна копія створена</string>
+    <string name="backup_restored_success">Резервна копія успішно відновлена</string>
+    <string name="backup_deleted">Резервна копія видалена</string>
+    <string name="backup_size_format">%d КБ</string>
+    <string name="no_backups">Немає резервних копій</string>
+    <string name="all_data_local">Усі ваші дані зберігаються локально на пристрої</string>
+    <string name="backup_location_info">Збережено в:\n%s</string>
+    <string name="restore_backup_confirm">Усі поточні дані будуть замінені даними з резервної копії. Продовжити?</string>
+    <string name="backup_restore_error">Помилка при відновленні: %s</string>
+    <string name="import_backup">Імпортувати бекап</string>
+    <string name="import_backup_desc">Відновити дані з файлу</string>
+    
+    <string name="tmdb_content_language">Мова контенту (TMDB)</string>
+    <string name="tmdb_content_language_desc">Мова опису та назв для фільмів</string>
+    <string name="content_region">Регіон контенту</string>
+    
+    <string name="notify_new_episodes">Нові епізоди</string>
+    <string name="notify_new_episodes_desc">Отримувати сповіщення про вихід нових серій</string>
+    <string name="notify_weekly_digest">Щотижневий дайджест</string>
+    <string name="on">Увімкнено</string>
+    <string name="off">Вимкнено</string>
+    <string name="notif_channel_episodes">Нові епізоди</string>
+    <string name="notif_channel_releases">Нові релізи</string>
+    
+    <string name="show_ratings">Показувати рейтинги</string>
+    <string name="show_ratings_desc">Відображати рейтинг на картках</string>
+    <string name="autoplay_trailers">Автовідтворення трейлерів</string>
+    <string name="autoplay_trailers_desc">Автоматично відтворювати трейлери</string>
+    <string name="compact_mode">Компактний режим</string>
+    <string name="compact_mode_desc">Більше контенту на екрані</string>
+    <string name="calculating">Обчислення…</string>
+    <string name="export_data_desc">Зберегти дані у файл</string>
+    <string name="clear_all_data_desc">Видалити всю історію та списки</string>
+    <string name="version_placeholder">Версія 1.0.0</string>
+    <string name="app_description">Ваш особистий трекер фільмів та серіалів. Відстежуйте, що ви дивитесь, плануєте дивитись та вже подивились.</string>
+    <string name="powered_by_tmdb">Працює на базі TMDB API</string>
+    <string name="cache_size_format">%s використано</string>
+    <string name="app_description_short">Трекер фільмів та серіалів</string>
+
+    <!-- New Modern UI Strings -->
+    <string name="welcome_back">Вітаємо назад,</string>
+    <string name="currently_in_progress">Зараз у процесі</string>
+    <string name="premieres">Прем\'єри</string>
+    <string name="new_releases">Новинки</string>
+    <string name="add_movie">Додати фільм</string>
+    <string name="activity_added_planned">Додано до запланованих</string>
+    <string name="activity_started_series">Почали дивитись серіал</string>
+    <string name="two_hours_ago">2 години тому</string>
+    <string name="yesterday">Вчора</string>
+    <string name="three_days_ago">3 дні тому</string>
+    <string name="text_on_dark">@android:color/white</string>
+
+    <!-- TV Show Status -->
+    <string name="status_ongoing"> • Серіал виходить</string>
+    <string name="status_ended">Завершено</string>
+    <string name="status_canceled">Скасовано</string>
+    <string name="status_returning">Серіал виходить</string>
+    <string name="status_in_production">У виробництві</string>
+    <string name="status_planned">Заплановано</string>
+    <string name="status_pilot">Пілот</string>
+    <string name="present">...</string>
+    <string name="rate_coming_soon">Оцінювання скоро</string>
+    <string name="time_with_status">%1$s%2$s</string>
+    <string name="precision_with_api">(з API: %d епізодів)</string>
+    <string name="precision_calculated">(розрахунок)</string>
+    <string name="time_with_precision">%1$s %2$s</string>
+
+    <!-- TV Details -->
+    <string name="seasons">Сезонів</string>
+    <string name="episodes">Епізодів</string>
+    <string name="first_air_date">Перша серія</string>
+    <string name="last_air_date">Остання серія</string>
+    <string name="episode_runtime">Тривалість серії</string>
+    <string name="status">Статус</string>
+
+    <!-- Calendar -->
+    <string name="previous_month">Попередній місяць</string>
+    <string name="next_month">Наступний місяць</string>
+    <string name="empty_calendar">Календар</string>
+    <string name="no_releases">Немає релізів у цей період</string>
+    <string name="check_back_later">Перевірте пізніше</string>
+    <string name="date">Дата</string>
+    <string name="movie">Фільм</string>
+    <string name="tv_show">Серіал</string>
+
+    <!-- Time formats -->
+    <string name="time_just_now">Щойно</string>
+    <string name="time_min_ago">%d хв тому</string>
+    <string name="time_hours_ago">%d год тому</string>
+    <string name="time_days_ago">%d дн тому</string>
+    <string name="time_recently">Нещодавно</string>
+
+    <!-- General UI -->
+    <string name="user_rank_movie_buff">Кіноман</string>
+    <string name="recommended_for_you">Рекомендовано для вас</string>
+    <string name="see_all">Всі</string>
+    <string name="add_tv_show_title">Додати серіал</string>
+    <string name="add">Додати</string>
+    <string name="about_series">Про серіал</string>
+    <string name="watched_label">Переглянуто</string>
+    <string name="hint_episodes_count">Кількість епізодів</string>
+    <string name="hint_episode_runtime">Тривалість епізоду (хв)</string>
+    <string name="helper_leave_empty">Залиште порожнім, якщо невідомо</string>
+    
+    <!-- Calendar Days -->
+    <string name="day_mon">Пн</string>
+    <string name="day_tue">Вт</string>
+    <string name="day_wed">Ср</string>
+    <string name="day_thu">Чт</string>
+    <string name="day_fri">Пт</string>
+    <string name="day_sat">Сб</string>
+    <string name="day_sun">Нд</string>
+
+    <!-- Auth & Social -->
+    <string name="sign_in">Увійти</string>
+    <string name="sign_up">Реєстрація</string>
+    <string name="sign_out">Вийти</string>
+    <string name="welcome_to_app">Ласкаво просимо до MovieTime</string>
+    <string name="auth_subtitle">Увійдіть, щоб синхронізувати дані та додати друзів</string>
+    <string name="email">Email</string>
+    <string name="email_hint">Email</string>
+    <string name="password">Пароль</string>
+    <string name="password_hint">Пароль</string>
+    <string name="display_name">Імʼя</string>
+    <string name="or">або</string>
+    <string name="continue_with_google">Продовжити з Google</string>
+    <string name="skip_for_now">Пропустити</string>
+    <string name="or_continue_with">Або продовжити з</string>
+    <string name="login_to_use_friends">Увійдіть, щоб використовувати друзів</string>
+    <string name="login_friends_description">Підключіться до своїх друзів, діліться рекомендаціями та дивіться, що вони переглядають</string>
+    
+    <!-- Friends Screen -->
+    <string name="friends_tab">Друзі</string>
+    <string name="feed_tab">Стрічка</string>
+    <string name="requests_tab">Запити</string>
+    <string name="add_friend">Додати друга</string>
+    <string name="no_friends_yet">Ще немає друзів</string>
+    <string name="find_friends_hint">Знайдіть друзів за їхнім ім\'ям користувача</string>
+    <string name="no_activity">Немає активності</string>
+    <string name="activity_hint">Ваші друзі поки що не ділилися активністю</string>
+    <string name="no_requests">Немає запитів</string>
+    <string name="incoming_requests">Вхідні запити</string>
+    <string name="recommendations">Рекомендації від друзів</string>
+    <string name="more_options">Більше опцій</string>
+    <string name="recommend_to_friend">Рекомендувати другу</string>
+    
+    <!-- User Search -->
+    <string name="find_friends">Знайти друзів</string>
+    <string name="search_username_hint">Пошук за ім\'ям або @username</string>
+    <string name="no_users_found">Користувачів не знайдено</string>
+    <string name="add_friend_short">Додати</string>
+    <string name="request_sent">Запит надіслано</string>
+    <string name="already_friends">Вже друзі</string>
+    
+    <!-- Recommendations -->
+    <string name="recommend_movie">Рекомендувати</string>
+    <string name="select_friend">Оберіть друга</string>
+    <string name="no_friends_to_recommend">Додайте друзів, щоб рекомендувати їм контент</string>
+    <string name="add_message_optional">Додати повідомлення (опціонально)</string>
+    <string name="send_recommendation">Надіслати</string>
+    <string name="recommends_you">рекомендує вам</string>
+    <string name="details">Деталі</string>
+    <string name="mark_read">Прочитано</string>
+    
+    <!-- Activity types -->
+    <string name="activity_watched">переглянув</string>
+    <string name="activity_watching">дивиться</string>
+    <string name="activity_planned_to_watch">додав до запланованих</string>
+    <string name="activity_rated">оцінив на</string>
+    <string name="activity_reviewed">написав рецензію</string>
+    <string name="activity_recommended">рекомендує</string>
+    
+    <!-- Stats -->
+    <string name="watched_count_format">%d переглянуто</string>
+    
+    <!-- TV Show Progress Tracking -->
+    <string name="select_episodes">Вибір епізодів</string>
+    <string name="select_all">Вибрати все</string>
+    <string name="select_all_episodes">Вибрати всі епізоди</string>
+    <string name="deselect_all">Скасувати вибір</string>
+    <string name="season_format">Сезон %d</string>
+    <string name="specials">Спеціальні випуски</string>
+    <string name="episode_format">Е%d</string>
+    <string name="episode_full_format">Епізод %d</string>
+    <string name="season_progress_format" formatted="false">%d/%d переглянуто • %s</string>
+    <string name="total_episodes_format">%d епізодів</string>
+    <string name="watched_episodes_format" formatted="false">%d/%d переглянуто</string>
+    <string name="episode_runtime_format">%d хв</string>
+    <string name="save">Зберегти</string>
+    <string name="save_progress">Зберегти прогрес</string>
+    <string name="no_seasons_available">Сезони недоступні</string>
+    <string name="loading_seasons">Завантаження сезонів…</string>
+    <string name="error_loading_seasons">Помилка завантаження сезонів</string>
+    <string name="all_episodes_selected">Всі епізоди вибрано</string>
+    <string name="no_episodes_selected">Епізоди не вибрано</string>
+    <string name="progress_saved">Прогрес збережено</string>
+    <string name="series_completed_message">🎉 Вітаємо! Серіал завершено</string>
+    <string name="series_up_to_date_message">✅ Переглянуто всі доступні епізоди</string>
+    <string name="unknown_episode">Невідомий епізод</string>
+    <string name="track_progress">Відстежити прогрес</string>
+    <string name="edit_progress">Редагувати прогрес</string>
+    <string name="remaining">Залишилось</string>
+    <string name="time_spent">Час</string>
+    <string name="retry">Повторити</string>
+    <string name="delete_confirmation_title">Підтвердження видалення</string>
+    <string name="delete_watched_confirmation">Видалити "%1$s" з переглянутих?</string>
+    <string name="item_deleted">Видалено</string>
+    <string name="selected_episodes_count" formatted="false">Обрано %d з %d серій</string>
+    <string name="total_runtime_format">~%s загалом</string>
+    <string name="seasons_episodes_format" formatted="false">%d сезонів • %d серій</string>
+    
+    <!-- Details Screen -->
+    <string name="user_score">Оцінка</string>
+    <string name="votes">Голоси</string>
+    <string name="release">Реліз</string>
+    <string name="additional_info">Детальніше</string>
+    <string name="director">Режисер</string>
+    <string name="budget">Бюджет</string>
+    <string name="revenue">Збори</string>
+    <string name="language">Мова</string>
+    <string name="share_text">Дивлюся \"%1$s\" (%2$s) - MovieTime</string>
+    <string name="share_via">Поділитися через</string>
+    <string name="rated_toast">Оцінено на %d/10</string>
+
+    <!-- Collection / Franchise -->
+    <string name="part_of_collection">Частина колекції: %s</string>
+    <string name="collection_progress">Переглянуто %1$d з %2$d фільмів</string>
+    <string name="next_up">Наступний для перегляду</string>
+    <string name="collection_order">Хронологія франшизи</string>
+    <string name="view_collection">Переглянути колекцію</string>
+    <string name="movie_runtime_fmt">%d хв</string>
+    <string name="collection_empty">У цій колекції немає фільмів</string>
+    <string name="order_release">За датою виходу</string>
+    
+    <!-- Statistics Screen -->
+    <string name="statistics">Статистика</string>
+    <string name="watch_time_equivalent_days">≈ %.1f днів безперервного перегляду</string>
+    <string name="watch_time_equivalent_hours">≈ %.1f годин безперервного перегляду</string>
+    <string name="avg_movie_rating">Середня оцінка фільмів</string>
+    <string name="avg_tv_rating">Середня оцінка серіалів</string>
+    <string name="favorite_genres">Улюблені жанри</string>
+    <string name="favorite_directors">Улюблені режисери</string>
+    <string name="no_genre_data">Немає даних про жанри</string>
+    <string name="no_director_data">Завантаження режисерів...</string>
+    <string name="longest_movie">Найдовший фільм</string>
+    <string name="most_rewatched">Переглянутий найчастіше</string>
+    <string name="content_ratio">Співвідношення контенту</string>
+    <string name="runtime_minutes">%d хв</string>
+    
+    <plurals name="movies_count">
+        <item quantity="one">%d фільм</item>
+        <item quantity="few">%d фільми</item>
+        <item quantity="many">%d фільмів</item>
+        <item quantity="other">%d фільмів</item>
+    </plurals>
+    
+    <plurals name="times_count">
+        <item quantity="one">%d раз</item>
+        <item quantity="few">%d рази</item>
+        <item quantity="many">%d разів</item>
+        <item quantity="other">%d разів</item>
+    </plurals>
+    
+    <!-- Today Screen -->
+    <string name="good_morning">Доброго ранку</string>
+    <string name="good_afternoon">Добрий день</string>
+    <string name="good_evening">Добрий вечір</string>
+    <string name="good_night">Доброї ночі</string>
+    <string name="new_episodes">Нові епізоди</string>
+    <string name="releases_today">Релізи сьогодні</string>
+    <string name="upcoming_this_week">На цьому тижні</string>
+    <string name="continue_watching">Продовжити перегляд</string>
+    <string name="personal_tips">Підказки для вас</string>
+    <string name="refresh">Оновити</string>
+    <string name="back">Назад</string>
+    <string name="play">Дивитися</string>
+    <string name="open">Відкрити</string>
+    <string name="tomorrow">Завтра</string>
+    <string name="in_days">Через %d дн.</string>
+    <string name="aired_today">Вийшла сьогодні</string>
+    <string name="aired_yesterday">Вийшла вчора</string>
+    <string name="aired_days_ago">%d дн. тому</string>
+    <string name="percent_watched">%d%% переглянуто</string>
+    <string name="movie_short">ФІЛЬМ</string>
+    <string name="tv_show_short">СЕРІАЛ</string>
+    <string name="today_empty_title">Немає новин на сьогодні</string>
+    <string name="today_empty_description">Додайте серіали до списку перегляду, щоб бачити нові епізоди</string>
+    <string name="tip_continue_watching">Продовжте перегляд</string>
+    <string name="tip_continue_watching_desc">Ви зупинились на %1$s. Наступна серія: %2$s</string>
+    <string name="tip_milestone_title">🎉 Ви досягли позначки!</string>
+    <string name="tip_milestone_desc">Ви переглянули %d фільмів та серіалів!</string>
+    <string name="tip_new_season">Новий сезон доступний!</string>
+    <string name="tip_similar_content">Вам може сподобатися</string>
+    <string name="view_statistics">Переглянути статистику</string>
+    
+    <plurals name="new_items_count">
+        <item quantity="one">%d новий</item>
+        <item quantity="few">%d нових</item>
+        <item quantity="many">%d нових</item>
+        <item quantity="other">%d нових</item>
+    </plurals>
+    
+    <plurals name="releases_count_plurals">
+        <item quantity="one">%d реліз</item>
+        <item quantity="few">%d релізи</item>
+        <item quantity="many">%d релізів</item>
+        <item quantity="other">%d релізів</item>
+    </plurals>
+    
+    <!-- Enhanced Statistics -->
+    <string name="avg_daily_watch_time">Середній час на день</string>
+    <string name="top_rated_content">Найвищі оцінки</string>
+    <string name="top_rated_movies">Топ фільмів</string>
+    <string name="top_rated_tv_shows">Топ серіалів</string>
+    <string name="viewing_trends">Тренди перегляду</string>
+    <string name="by_release_year">За роком виходу</string>
+    <string name="most_watched_decades">Найбільш переглянуті десятиліття</string>
+    <string name="watch_time_by_genre">Час за жанрами</string>
+    <string name="completion_rate">Рівень завершення</string>
+    <string name="completion_rate_desc">Відсоток завершених серіалів</string>
+    <string name="fastest_binge">Найшвидший марафон</string>
+    <string name="total_unique_titles">Унікальних назв</string>
+    <string name="avg_episode_per_day">Серій на день</string>
+    <string name="watching_since">Ви з нами з</string>
+    <string name="first_watch_date">Перший запис</string>
+    <string name="genre_diversity">Різноманітність жанрів</string>
+    <string name="you_explored_genres">Ви досліджували %d жанрів</string>
+    
+    <!-- Enhanced Status Badges -->
+    <string name="in_your_watchlist">У вашому списку</string>
+    <string name="watched_on_date">Переглянуто %s</string>
+    <string name="your_rating">Ваша оцінка: %.1f</string>
+    <string name="episodes_progress">%d/%d серій</string>
+    <string name="fully_watched">Повністю переглянуто</string>
+    <string name="partially_watched">Частково переглянуто</string>
+    
+    <!-- Calendar Improvements -->
+    <string name="calendar_legend">Легенда</string>
+    <string name="movie_release">Прем\'єра фільму</string>
+    <string name="tv_premiere">Прем\'єра серіалу</string>
+    <string name="new_season">Новий сезон</string>
+    <string name="week_view">Вигляд тижня</string>
+    <string name="month_view">Вигляд місяця</string>
+    <string name="releases_this_week">Релізи цього тижня</string>
+    <string name="no_releases_selected_day">Немає релізів у вибраний день</string>
+</resources>

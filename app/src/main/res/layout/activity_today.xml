@@ -79,7 +79,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="14sp"
+                                android:textSize="@dimen/body_text_size"
                                 tools:text="Добрий день" />
 
                             <TextView
@@ -88,7 +88,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:textColor="@color/text_primary"
-                                android:textSize="20sp"
+                                android:textSize="@dimen/title_text_size"
                                 android:textStyle="bold"
                                 tools:text="Вівторок, 28 січня" />
 
@@ -159,7 +159,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="12dp"
                                     android:textColor="@color/text_primary"
-                                    android:textSize="28sp"
+                                    android:textSize="@dimen/headline_large_text_size"
                                     android:textStyle="bold"
                                     tools:text="3" />
 
@@ -169,7 +169,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="@string/new_episodes"
                                     android:textColor="@color/text_secondary"
-                                    android:textSize="12sp"
+                                    android:textSize="@dimen/caption_text_size"
                                     android:gravity="center" />
 
                             </LinearLayout>
@@ -214,7 +214,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="12dp"
                                     android:textColor="@color/text_primary"
-                                    android:textSize="28sp"
+                                    android:textSize="@dimen/headline_large_text_size"
                                     android:textStyle="bold"
                                     tools:text="5" />
 
@@ -224,7 +224,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="@string/releases_today"
                                     android:textColor="@color/text_secondary"
-                                    android:textSize="12sp"
+                                    android:textSize="@dimen/caption_text_size"
                                     android:gravity="center" />
 
                             </LinearLayout>
@@ -269,7 +269,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="12dp"
                                     android:textColor="@color/text_primary"
-                                    android:textSize="28sp"
+                                    android:textSize="@dimen/headline_large_text_size"
                                     android:textStyle="bold"
                                     tools:text="8" />
 
@@ -279,7 +279,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="@string/upcoming_this_week"
                                     android:textColor="@color/text_secondary"
-                                    android:textSize="12sp"
+                                    android:textSize="@dimen/caption_text_size"
                                     android:gravity="center" />
 
                             </LinearLayout>
@@ -306,7 +306,7 @@
                         android:layout_marginHorizontal="20dp"
                         android:text="@string/continue_watching"
                         android:textColor="@color/text_primary"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/title_medium_text_size"
                         android:textStyle="bold" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -345,7 +345,7 @@
                             android:layout_weight="1"
                             android:text="@string/new_episodes"
                             android:textColor="@color/text_primary"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/title_medium_text_size"
                             android:textStyle="bold" />
 
                         <TextView
@@ -356,7 +356,7 @@
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="4dp"
                             android:textColor="@android:color/white"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/caption_text_size"
                             android:textStyle="bold"
                             tools:text="3 нових" />
 
@@ -396,7 +396,7 @@
                             android:layout_weight="1"
                             android:text="@string/releases_today"
                             android:textColor="@color/text_primary"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/title_medium_text_size"
                             android:textStyle="bold" />
 
                         <TextView
@@ -407,7 +407,7 @@
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="4dp"
                             android:textColor="@android:color/white"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/caption_text_size"
                             android:textStyle="bold"
                             tools:text="5 релізів" />
 
@@ -449,7 +449,7 @@
                             android:layout_weight="1"
                             android:text="@string/upcoming_this_week"
                             android:textColor="@color/text_primary"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/title_medium_text_size"
                             android:textStyle="bold" />
 
                         <TextView
@@ -458,7 +458,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/see_all"
                             android:textColor="@color/primary"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/body_text_size"
                             android:padding="8dp" />
 
                     </LinearLayout>
@@ -492,7 +492,7 @@
                         android:layout_marginHorizontal="20dp"
                         android:text="@string/personal_tips"
                         android:textColor="@color/text_primary"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/title_medium_text_size"
                         android:textStyle="bold" />
 
                     <androidx.recyclerview.widget.RecyclerView

@@ -100,11 +100,58 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun observeWatchedStatus() {
         viewModel.watchedItem.observe(this) { watchedItem ->
-            if (watchedItem != null && watchedItem.watchCount > 1) {
-                binding.layoutWatchCount.visibility = android.view.View.VISIBLE
-                binding.tvWatchCount.text = getString(R.string.watched_times, watchedItem.watchCount)
+            // Hide all badges first
+            binding.cardWatchedBadge.visibility = View.GONE
+            binding.cardPlannedBadge.visibility = View.GONE
+            binding.cardWatchingBadge.visibility = View.GONE
+            binding.layoutWatchCount.visibility = View.GONE
+
+            if (watchedItem != null) {
+                // Show watched badge with enhanced info and animation
+                animateBadgeAppear(binding.cardWatchedBadge)
+                
+                // Show user rating if available
+                val userRating = watchedItem.userRating
+                if (userRating != null && userRating > 0) {
+                    binding.tvWatchedBadge.text = getString(R.string.watched) + " ⭐ ${userRating.toInt()}"
+                } else {
+                    binding.tvWatchedBadge.text = getString(R.string.watched)
+                }
+
+                // Disable watched button
+                disableButton(binding.btnWatched)
+
+                if (watchedItem.watchCount > 1) {
+                    binding.layoutWatchCount.visibility = View.VISIBLE
+                    binding.tvWatchCount.text = getString(R.string.watched_times, watchedItem.watchCount)
+                }
+                
+                // Also disable other buttons since it's in watched
+                disableButton(binding.btnPlanned)
+                disableButton(binding.btnWatching)
             } else {
-                binding.layoutWatchCount.visibility = android.view.View.GONE
+                // Check planned status
+                val itemId = intent.getIntExtra("ITEM_ID", -1)
+                val mediaType = intent.getStringExtra("MEDIA_TYPE") ?: "movie"
+
+                viewModel.isItemPlanned(itemId, mediaType) { isPlanned ->
+                    runOnUiThread {
+                        if (isPlanned) {
+                            animateBadgeAppear(binding.cardPlannedBadge)
+                            disableButton(binding.btnPlanned)
+                        } else {
+                            // Check watching status
+                            viewModel.isItemWatching(itemId, mediaType) { isWatching ->
+                                runOnUiThread {
+                                    if (isWatching) {
+                                        animateBadgeAppear(binding.cardWatchingBadge)
+                                        disableButton(binding.btnWatching)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -115,13 +162,25 @@ class DetailsActivity : AppCompatActivity() {
             shareContent()
         }
         
-        // Rate button
+        // Rate button - now properly saves rating
     binding.btnRate.setOnClickListener {
         com.example.movietime.utils.HapticFeedbackHelper.impactLow(it)
+        val itemId = intent.getIntExtra("ITEM_ID", -1)
+        val mediaType = intent.getStringExtra("MEDIA_TYPE") ?: "movie"
+        
         showRatingDialog { rating ->
             if (rating != null) {
                 com.example.movietime.utils.HapticFeedbackHelper.impactMedium(it)
-                Toast.makeText(this, getString(R.string.rated_toast, rating.toInt()), Toast.LENGTH_SHORT).show()
+                viewModel.updateUserRating(itemId, mediaType, rating) { success ->
+                    runOnUiThread {
+                        if (success) {
+                            Toast.makeText(this, getString(R.string.rated_toast, rating.toInt()), Toast.LENGTH_SHORT).show()
+                        } else {
+                            // Item not in watched list yet - show hint
+                            Toast.makeText(this, "Спочатку додайте до переглянутих", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             }
         }
     }
@@ -209,6 +268,21 @@ class DetailsActivity : AppCompatActivity() {
             interpolator = OvershootInterpolator(1.2f)
             start()
         }
+    }
+
+    private fun animateBadgeAppear(badge: View) {
+        badge.visibility = View.VISIBLE
+        badge.alpha = 0f
+        badge.scaleX = 0f
+        badge.scaleY = 0f
+        
+        badge.animate()
+            .alpha(1f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(350)
+            .setInterpolator(OvershootInterpolator(1.5f))
+            .start()
     }
 
     private fun setupCategoryButtons() {
