@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="@dimen/body_text_size"
                 android:textStyle="bold"
                 android:maxLines="1"
                 android:ellipsize="end"
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/text_secondary"
-                android:textSize="12sp"
+                android:textSize="@dimen/caption_text_size"
                 android:maxLines="1"
                 android:ellipsize="end"
                 tools:text="S3 E5 • Mas" />
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/primary"
-                android:textSize="11sp"
+                android:textSize="@dimen/caption_small_text_size"
                 tools:text="65% переглянуто" />
 
         </LinearLayout>

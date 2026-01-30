@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
-    android:padding="6dp"
+    android:layout_height="56dp"
+    android:padding="4dp"
     android:foreground="?attr/selectableItemBackgroundBorderless">
 
     <!-- Selection/Today Background -->
     <View
         android:id="@+id/dayBackground"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
         android:background="@drawable/bg_calendar_selected"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +28,7 @@
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:textColor="@color/text_on_dark_secondary"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:letterSpacing="0.02"
         app:layout_constraintBottom_toBottomOf="@+id/dayBackground"
         app:layout_constraintEnd_toEndOf="@+id/dayBackground"
@@ -36,11 +36,11 @@
         app:layout_constraintTop_toTopOf="@+id/dayBackground"
         tools:text="15" />
 
-    <!-- Today Ring (Outline) -->
+    <!-- Today Ring (Outline) with gradient effect -->
     <View
         android:id="@+id/todayHighlight"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/bg_today_highlight_circle"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/dayBackground"
@@ -48,12 +48,12 @@
         app:layout_constraintStart_toStartOf="@+id/dayBackground"
         app:layout_constraintTop_toTopOf="@+id/dayBackground" />
 
-    <!-- Event Indicator Dot -->
+    <!-- Event Indicator Dot with glow -->
     <View
         android:id="@+id/eventIndicator"
-        android:layout_width="6dp"
-        android:layout_height="6dp"
-        android:layout_marginTop="6dp"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/circle_accent"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,17 +67,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_event_count_micro"
-        android:minWidth="16dp"
-        android:paddingHorizontal="3dp"
+        android:minWidth="18dp"
+        android:minHeight="18dp"
+        android:paddingHorizontal="4dp"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="9sp"
+        android:textSize="10sp"
+        android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@+id/dayBackground"
         app:layout_constraintEnd_toEndOf="@+id/dayBackground"
-        android:layout_marginEnd="-3dp"
-        android:layout_marginTop="-3dp"
-        tools:text="2"
+        android:layout_marginEnd="-2dp"
+        android:layout_marginTop="-2dp"
+        android:elevation="2dp"
+        tools:text="3"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

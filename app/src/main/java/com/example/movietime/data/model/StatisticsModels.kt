@@ -38,7 +38,24 @@ data class DetailedStatistics(
     val movieVsTvRatio: Float = 0.5f, // 0.0 = all TV, 1.0 = all movies
     
     // Release year distribution
-    val releaseYearDistribution: Map<Int, Int> = emptyMap()
+    val releaseYearDistribution: Map<Int, Int> = emptyMap(),
+
+    // This month stats
+    val thisMonthMovies: Int = 0,
+    val thisMonthEpisodes: Int = 0,
+    val thisMonthMinutes: Long = 0,
+
+    // Achievements
+    val currentStreak: Int = 0,
+    val bestMonth: BestMonthItem? = null,
+    
+    // Enhanced statistics
+    val avgDailyWatchMinutes: Long = 0,
+    val totalUniqueGenres: Int = 0,
+    val firstWatchDate: Long? = null,
+    val completedTvShows: Int = 0,
+    val avgEpisodesPerDay: Float = 0f,
+    val decadeDistribution: Map<String, Int> = emptyMap()
 )
 
 /**
@@ -97,6 +114,16 @@ data class RewatchedItem(
     val posterPath: String?,
     val rewatchCount: Int,
     val mediaType: String
+)
+
+/**
+ * Best month statistics
+ */
+data class BestMonthItem(
+    val monthName: String,
+    val year: Int,
+    val count: Int,
+    val watchTimeMinutes: Long = 0
 )
 
 /**

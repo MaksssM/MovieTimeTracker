@@ -44,7 +44,7 @@ class SimpleEnhancedRepository @Inject constructor(
                     0f
                 }
 
-                // Calculate this month watched - count actions this month (new watches + rewatches)
+                // Calculate this month watched - count items added/watched this month
                 val calendar = java.util.Calendar.getInstance()
                 val currentMonth = calendar.get(java.util.Calendar.MONTH)
                 val currentYear = calendar.get(java.util.Calendar.YEAR)
@@ -59,11 +59,10 @@ class SimpleEnhancedRepository @Inject constructor(
                 calendar.set(java.util.Calendar.MILLISECOND, 999)
                 val endOfMonth = calendar.timeInMillis
 
-                val itemsThisMonth = watchedItems.sumOf { item ->
+                // Count items where lastUpdated is in current month (both movies and TV shows)
+                val itemsThisMonth = watchedItems.count { item ->
                     val lastUpdated = item.lastUpdated
-                    if (lastUpdated != null && lastUpdated in startOfMonth..endOfMonth) {
-                        maxOf(item.watchCount, 1)
-                    } else 0
+                    lastUpdated != null && lastUpdated in startOfMonth..endOfMonth
                 }
 
                 val thisMonthWatched = itemsThisMonth

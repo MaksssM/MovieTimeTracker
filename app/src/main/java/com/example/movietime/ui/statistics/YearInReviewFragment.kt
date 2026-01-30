@@ -75,7 +75,7 @@ class YearInReviewFragment : Fragment() {
                 tvTopRatedTitle.text = stats.topRatedItemTitle
                 tvTopRatedRating.text = "${stats.topRatedItemRating?.toInt() ?: 0}/10"
             } else {
-                tvTopRatedTitle.text = "Немає даних"
+                tvTopRatedTitle.text = getString(R.string.no_data)
                 tvTopRatedRating.text = "-"
             }
 
@@ -228,11 +228,11 @@ class YearInReviewFragment : Fragment() {
 
     private fun showEmptyState() {
         with(binding) {
-            tvTotalWatchTime.text = "0 годин"
-            tvWatchTimeEquivalent.text = "Почніть дивитися фільми!"
+            tvTotalWatchTime.text = "0 ${getString(R.string.hours_short)}"
+            tvWatchTimeEquivalent.text = getString(R.string.start_watching_movies)
             tvTotalMovies.text = "0"
             tvTotalEpisodes.text = "0"
-            tvTopRatedTitle.text = "Немає даних"
+            tvTopRatedTitle.text = getString(R.string.no_data)
             tvTopRatedRating.text = "-"
             cardMostRewatched.isVisible = false
             cardLongestMovie.isVisible = false

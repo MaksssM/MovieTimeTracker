@@ -1,8 +1,11 @@
 package com.example.movietime.ui.statistics
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -30,12 +33,64 @@ class StatisticsActivity : AppCompatActivity() {
         setupToolbar()
         setupAdapters()
         observeViewModel()
+        prepareAnimations()
     }
 
     private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
+    }
+    
+    private fun prepareAnimations() {
+        // Prepare stat cards for animation (only cards with IDs)
+        val cards = listOf(
+            binding.cardWatchTime,
+            binding.cardLongestMovie,
+            binding.cardMostRewatched,
+            binding.cardTrends
+        )
+        
+        cards.forEach { card ->
+            card.alpha = 0f
+            card.translationY = 50f
+        }
+    }
+    
+    private fun animateStatsAppearance() {
+        val cards = listOf(
+            binding.cardWatchTime,
+            binding.cardLongestMovie,
+            binding.cardMostRewatched,
+            binding.cardTrends
+        )
+        
+        cards.forEachIndexed { index, card ->
+            card.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setStartDelay((index * 60).toLong())
+                .setDuration(400)
+                .setInterpolator(OvershootInterpolator(0.8f))
+                .start()
+        }
+    }
+    
+    private fun animateCounterValue(textView: android.widget.TextView, value: String) {
+        textView.animate()
+            .scaleX(1.1f)
+            .scaleY(1.1f)
+            .setDuration(150)
+            .withEndAction {
+                textView.text = value
+                textView.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(200)
+                    .setInterpolator(OvershootInterpolator(1.2f))
+                    .start()
+            }
+            .start()
     }
 
     private fun setupAdapters() {
@@ -80,6 +135,9 @@ class StatisticsActivity : AppCompatActivity() {
     }
 
     private fun updateUI(stats: com.example.movietime.data.model.DetailedStatistics) {
+        // Trigger card animations
+        animateStatsAppearance()
+        
         // Total watch time
         binding.tvTotalWatchTime.text = viewModel.formatWatchTime(stats.totalWatchTimeMinutes)
         
@@ -91,10 +149,10 @@ class StatisticsActivity : AppCompatActivity() {
             getString(R.string.watch_time_equivalent_hours, hours)
         }
 
-        // Content counts
-        binding.tvTotalMovies.text = stats.totalMovies.toString()
-        binding.tvTotalTvShows.text = stats.totalTvShows.toString()
-        binding.tvTotalEpisodes.text = stats.totalTvEpisodes.toString()
+        // Content counts with animation
+        animateCounterValue(binding.tvTotalMovies, stats.totalMovies.toString())
+        animateCounterValue(binding.tvTotalTvShows, stats.totalTvShows.toString())
+        animateCounterValue(binding.tvTotalEpisodes, stats.totalTvEpisodes.toString())
 
         // Average ratings
         binding.tvAvgMovieRating.text = String.format(Locale.US, "%.1f", stats.averageMovieRating)
@@ -146,5 +204,39 @@ class StatisticsActivity : AppCompatActivity() {
         binding.progressRatio.progress = moviePercent
         binding.tvMoviePercent.text = "🎬 $moviePercent% ${getString(R.string.movies)}"
         binding.tvTvPercent.text = "📺 $tvPercent% ${getString(R.string.tv_shows)}"
+
+        // This month stats
+        binding.tvThisMonthMovies.text = stats.thisMonthMovies.toString()
+        binding.tvThisMonthEpisodes.text = stats.thisMonthEpisodes.toString()
+        val thisMonthHours = stats.thisMonthMinutes / 60
+        binding.tvThisMonthTime.text = "${thisMonthHours}h"
+
+        // Achievements / Milestones
+        binding.tvCurrentStreak.text = stats.currentStreak.toString()
+
+        // Best month
+        if (stats.bestMonth != null) {
+            binding.tvBestMonth.text = stats.bestMonth.monthName
+            binding.tvBestMonthCount.text = resources.getQuantityString(
+                R.plurals.movies_count, stats.bestMonth.count, stats.bestMonth.count
+            )
+        } else {
+            binding.tvBestMonth.text = "—"
+            binding.tvBestMonthCount.text = ""
+        }
+        
+        // Enhanced stats - viewing trends
+        binding.tvAvgDailyTime.text = viewModel.formatWatchTimeShort(stats.avgDailyWatchMinutes)
+        binding.tvUniqueGenres.text = stats.totalUniqueGenres.toString()
+        binding.tvCompletedShows.text = stats.completedTvShows.toString()
+        
+        // First watch date
+        stats.firstWatchDate?.let { timestamp ->
+            binding.layoutFirstWatch.isVisible = true
+            val dateFormat = java.text.SimpleDateFormat("d MMMM yyyy", Locale.getDefault())
+            binding.tvFirstWatchDate.text = dateFormat.format(java.util.Date(timestamp))
+        } ?: run {
+            binding.layoutFirstWatch.isVisible = false
+        }
     }
 }

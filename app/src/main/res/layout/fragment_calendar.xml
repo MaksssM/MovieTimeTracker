@@ -94,15 +94,16 @@
                             android:id="@+id/btnToday"
                             style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="32dp"
+                            android:layout_height="36dp"
                             android:text="@string/today"
-                            android:textSize="12sp"
+                            android:textSize="13sp"
                             android:textColor="#60A5FA"
                             app:icon="@drawable/ic_calendar_24"
-                            app:iconSize="14dp"
+                            app:iconSize="16dp"
                             app:iconTint="#60A5FA"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
+                            android:visibility="visible"
+                            app:rippleColor="#3060A5FA"
+                            android:paddingHorizontal="12dp" />
 
                     </LinearLayout>
 

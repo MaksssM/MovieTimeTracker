@@ -167,5 +167,27 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
+    
+    // Update user rating for a watched item
+    fun updateUserRating(id: Int, mediaType: String, rating: Float, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val existingItem = repository.getWatchedItemById(id, mediaType)
+                if (existingItem != null) {
+                    val updatedItem = existingItem.copy(userRating = rating)
+                    repository.updateWatchedItem(updatedItem)
+                    _watchedItem.value = updatedItem
+                    android.util.Log.d("DetailsViewModel", "Successfully updated rating to $rating for item $id")
+                    callback(true)
+                } else {
+                    android.util.Log.w("DetailsViewModel", "Item not found in watched list, cannot update rating")
+                    callback(false)
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("DetailsViewModel", "Failed to update rating: ${e.message}", e)
+                callback(false)
+            }
+        }
+    }
 
 }

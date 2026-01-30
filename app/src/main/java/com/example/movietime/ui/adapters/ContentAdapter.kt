@@ -94,7 +94,7 @@ class ContentAdapter(
                     tvMediaType.text = "TV"
                     tvMediaType.setBackgroundResource(R.drawable.bg_badge_tv)
                 } else {
-                    tvMediaType.text = "Фільм"
+                    tvMediaType.text = binding.root.context.getString(R.string.movie_short)
                     tvMediaType.setBackgroundResource(R.drawable.bg_badge_movie)
                 }
 

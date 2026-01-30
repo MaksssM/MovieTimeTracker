@@ -232,6 +232,12 @@ class AppRepository @Inject constructor(
     suspend fun deleteWatchedItem(item: WatchedItem) {
         dao.deleteById(item.id, item.mediaType)
     }
+    
+    // Update existing watched item (for rating updates, etc.)
+    suspend fun updateWatchedItem(item: WatchedItem) {
+        dao.update(item)
+        Log.d("AppRepository", "Updated watched item: id=${item.id}, rating=${item.userRating}")
+    }
 
     // Updated: get watched item by id + mediaType (composite primary key)
     suspend fun getWatchedItemById(id: Int, mediaType: String): WatchedItem? {

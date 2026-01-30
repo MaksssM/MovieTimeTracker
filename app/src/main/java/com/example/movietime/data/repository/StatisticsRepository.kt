@@ -9,6 +9,7 @@ import com.example.movietime.data.model.DirectorStatItem
 import com.example.movietime.data.model.TopRatedItem
 import com.example.movietime.data.model.LongestItem
 import com.example.movietime.data.model.RewatchedItem
+import com.example.movietime.data.model.BestMonthItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -425,6 +426,93 @@ class StatisticsRepository @Inject constructor(
         // Total TV episodes from progress table
         val totalTvEpisodes = tvShowProgressDao.getWatchedEpisodesCount()
         
+        // Enhanced statistics calculations
+        // First watch date
+        val firstWatchDate = allWatched.mapNotNull { it.lastUpdated }.minOrNull()
+        
+        // Calculate average daily watch time
+        val daysSinceFirst = if (firstWatchDate != null) {
+            val diffMs = System.currentTimeMillis() - firstWatchDate
+            (diffMs / (1000 * 60 * 60 * 24)).coerceAtLeast(1)
+        } else 1L
+        val avgDailyWatchMinutes = totalWatchTime / daysSinceFirst
+        
+        // Average episodes per day for TV
+        val avgEpisodesPerDay = if (daysSinceFirst > 0) {
+            totalTvEpisodes.toFloat() / daysSinceFirst
+        } else 0f
+        
+        // Total unique genres
+        val totalUniqueGenres = genreCounts.size
+        
+        // Completed TV shows (non-ongoing with all episodes watched)
+        val completedTvShows = tvShows.count { tv ->
+            val isComplete = tv.isOngoing == false
+            val totalEps = tv.totalEpisodes ?: 0
+            val episodeRuntime = tv.episodeRuntime ?: 45
+            val watchedEps = if (episodeRuntime > 0) (tv.runtime ?: 0) / episodeRuntime else 0
+            isComplete && totalEps > 0 && watchedEps >= totalEps
+        }
+        
+        // Decade distribution (e.g., "2020s", "2010s")
+        val decadeDistribution = mutableMapOf<String, Int>()
+        allWatched.forEach { item ->
+            item.releaseDate?.take(4)?.toIntOrNull()?.let { year ->
+                val decade = "${(year / 10) * 10}s"
+                decadeDistribution[decade] = decadeDistribution.getOrDefault(decade, 0) + 1
+            }
+        }
+        
+        // This month calculations
+        val currentCalendar = Calendar.getInstance()
+        val currentYear = currentCalendar.get(Calendar.YEAR)
+        val currentMonth = currentCalendar.get(Calendar.MONTH)
+        
+        val thisMonthMovies = movies.count { movie ->
+            movie.lastUpdated?.let { timestamp ->
+                calendar.timeInMillis = timestamp
+                calendar.get(Calendar.YEAR) == currentYear && calendar.get(Calendar.MONTH) == currentMonth
+            } ?: false
+        }
+        
+        var thisMonthMinutes = 0L
+        allWatched.forEach { item ->
+            item.lastUpdated?.let { timestamp ->
+                calendar.timeInMillis = timestamp
+                if (calendar.get(Calendar.YEAR) == currentYear && calendar.get(Calendar.MONTH) == currentMonth) {
+                    if (item.mediaType == "movie") {
+                        thisMonthMinutes += (item.runtime ?: 0)
+                    }
+                }
+            }
+        }
+        
+        // Best month calculation
+        val monthCounts = mutableMapOf<String, Pair<Int, Int>>() // "YYYY-MM" -> (count, year)
+        allWatched.forEach { item ->
+            item.lastUpdated?.let { timestamp ->
+                calendar.timeInMillis = timestamp
+                val year = calendar.get(Calendar.YEAR)
+                val month = calendar.get(Calendar.MONTH)
+                val key = "$year-${month.toString().padStart(2, '0')}"
+                val current = monthCounts[key] ?: Pair(0, year)
+                monthCounts[key] = Pair(current.first + 1, year)
+            }
+        }
+        val bestMonthEntry = monthCounts.maxByOrNull { it.value.first }
+        val bestMonth = bestMonthEntry?.let { (key, value) ->
+            val parts = key.split("-")
+            val year = parts[0].toInt()
+            val month = parts[1].toInt()
+            val monthNames = arrayOf("Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень",
+                "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень")
+            BestMonthItem(
+                monthName = monthNames.getOrElse(month) { "Unknown" },
+                year = year,
+                count = value.first
+            )
+        }
+        
         DetailedStatistics(
             totalWatchTimeMinutes = totalWatchTime,
             totalMovies = movies.size,
@@ -442,7 +530,16 @@ class StatisticsRepository @Inject constructor(
             longestTvShow = longestTv,
             mostRewatchedItem = mostRewatched,
             movieVsTvRatio = movieVsTvRatio,
-            releaseYearDistribution = releaseYearDist
+            releaseYearDistribution = releaseYearDist,
+            thisMonthMovies = thisMonthMovies,
+            thisMonthMinutes = thisMonthMinutes,
+            bestMonth = bestMonth,
+            avgDailyWatchMinutes = avgDailyWatchMinutes,
+            totalUniqueGenres = totalUniqueGenres,
+            firstWatchDate = firstWatchDate,
+            completedTvShows = completedTvShows,
+            avgEpisodesPerDay = avgEpisodesPerDay,
+            decadeDistribution = decadeDistribution
         )
     }
     
