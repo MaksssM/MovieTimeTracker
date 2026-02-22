@@ -17,6 +17,7 @@ import com.example.movietime.R
 import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.databinding.ItemWatchedBinding
 import com.example.movietime.ui.details.DetailsActivity
+import com.example.movietime.ui.details.TvDetailsActivity
 
 /**
  * Universal adapter for displaying content items (watched, planned, watching)
@@ -56,22 +57,22 @@ class ContentAdapter(
     
     private fun animateItem(view: android.view.View, position: Int) {
         view.alpha = 0f
-        view.translationX = -60f
-        view.scaleX = 0.95f
-        view.scaleY = 0.95f
+        view.translationY = 60f
+        view.scaleX = 0.92f
+        view.scaleY = 0.92f
         
-        val delay = (position * 50).toLong().coerceAtMost(300)
+        val delay = (position * 50).toLong().coerceAtMost(350)
         
         AnimatorSet().apply {
             playTogether(
                 ObjectAnimator.ofFloat(view, "alpha", 0f, 1f),
-                ObjectAnimator.ofFloat(view, "translationX", -60f, 0f),
-                ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f),
-                ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f)
+                ObjectAnimator.ofFloat(view, "translationY", 60f, 0f),
+                ObjectAnimator.ofFloat(view, "scaleX", 0.92f, 1f),
+                ObjectAnimator.ofFloat(view, "scaleY", 0.92f, 1f)
             )
-            duration = 350
+            duration = 400
             startDelay = delay
-            interpolator = DecelerateInterpolator()
+            interpolator = OvershootInterpolator(1.5f)
             start()
         }
     }
@@ -98,12 +99,19 @@ class ContentAdapter(
                     tvMediaType.setBackgroundResource(R.drawable.bg_badge_movie)
                 }
 
-                // Display rating if available
-                item.voteAverage?.let { rating ->
-                    if (rating > 0) {
-                        // TODO: Add rating TextView to layout if needed
-                        // For now, we'll append it to title or add later
-                    }
+                // Accent bar colour by media type (blue = movie, amber = TV)
+                viewAccentBar.setBackgroundResource(
+                    if (item.mediaType == "tv") R.drawable.bg_accent_bar_tv
+                    else R.drawable.bg_accent_bar_movie
+                )
+
+                // Display rating badge
+                val rating = item.voteAverage ?: 0.0
+                if (rating > 0) {
+                    binding.layoutRating?.visibility = android.view.View.VISIBLE
+                    binding.tvRating?.text = String.format("%.1f", rating)
+                } else {
+                    binding.layoutRating?.visibility = android.view.View.GONE
                 }
 
                 // Load poster with Coil
@@ -149,7 +157,12 @@ class ContentAdapter(
                     
                     val context = root.context
                     if (context is Activity) {
-                        val intent = Intent(context, DetailsActivity::class.java).apply {
+                        val targetActivity = if (item.mediaType == "tv") {
+                            TvDetailsActivity::class.java
+                        } else {
+                            DetailsActivity::class.java
+                        }
+                        val intent = Intent(context, targetActivity).apply {
                             putExtra("ITEM_ID", item.id)
                             putExtra("MEDIA_TYPE", item.mediaType)
                         }

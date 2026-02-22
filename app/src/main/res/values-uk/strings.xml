@@ -86,6 +86,7 @@
     <string name="planned_tv_shows_count">Заплановані серіали: %d</string>
     <string name="planned_content_count">Запланований контент: %d</string>
     <string name="total_watch_time">Загальний час перегляду</string>
+    <string name="watch_time_desc">з початку ведення статистики</string>
     <string name="this_month">Цього місяця</string>
     <string name="achievements">Досягнення</string>
     <string name="days_streak">днів підряд</string>
@@ -610,4 +611,24 @@
     <string name="month_view">Вигляд місяця</string>
     <string name="releases_this_week">Релізи цього тижня</string>
     <string name="no_releases_selected_day">Немає релізів у вибраний день</string>
+
+    <!-- Category Transfer -->
+    <string name="move_to_watched">Перенести до переглянутих</string>
+    <string name="move_to_planned">Перенести до запланованих</string>
+    <string name="move_to_watching">Перенести до «дивлюсь»</string>
+    <string name="moved_to_watched">Перенесено до переглянутих</string>
+    <string name="moved_to_planned">Перенесено до запланованих</string>
+    <string name="moved_to_watching">Перенесено до «дивлюсь»</string>
+
+    <!-- Sort & Filter -->
+    <string name="sort">Сортування</string>
+    <string name="search_in_list">Пошук у списку…</string>
+    <string name="sort_by_name_asc">Назва (А → Я)</string>
+    <string name="sort_by_name_desc">Назва (Я → А)</string>
+    <string name="sort_by_date_newest">Дата додавання (Нові)</string>
+    <string name="sort_by_date_oldest">Дата додавання (Старі)</string>
+    <string name="sort_by_rating_high">Рейтинг (Високий)</string>
+    <string name="sort_by_rating_low">Рейтинг (Низький)</string>
+    <string name="sort_by_runtime_long">Тривалість (Довгі)</string>
+    <string name="sort_by_runtime_short">Тривалість (Короткі)</string>
 </resources>

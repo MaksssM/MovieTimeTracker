@@ -36,10 +36,12 @@ class EnhancedMainViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                // Statistics are loaded via Flow, no need for explicit loading
+                // Trigger a fresh collection of statistics
+                repository.getDetailedStatistics().collect { stats ->
+                    _isLoading.value = false
+                }
             } catch (e: Exception) {
                 _error.value = e.message
-            } finally {
                 _isLoading.value = false
             }
         }
@@ -78,15 +80,20 @@ class EnhancedMainViewModel @Inject constructor(
     fun loadRecommendations() {
         viewModelScope.launch {
             try {
-                // Fetch personalized recommendations
                 val recs = recommendationService.getPersonalizedRecommendations()
-                
-                // Combine movies and tv shows into a single list
-                val allRecs = (recs.movies + recs.tvShows).shuffled()
-                
+
+                // Чергуємо фільми і серіали для різноманітності стрічки
+                val allRecs = buildList {
+                    val movies = recs.movies.iterator()
+                    val tvShows = recs.tvShows.iterator()
+                    while (movies.hasNext() || tvShows.hasNext()) {
+                        if (movies.hasNext()) add(movies.next())
+                        if (tvShows.hasNext()) add(tvShows.next())
+                    }
+                }
+
                 _recommendations.value = allRecs
-            } catch (e: Exception) {
-                // Silently fail for recommendations, don't show error
+            } catch (_: Exception) {
                 _recommendations.value = emptyList()
             }
         }

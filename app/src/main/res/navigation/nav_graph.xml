@@ -48,9 +48,9 @@
             android:id="@+id/action_main_to_settings"
             app:destination="@id/settingsFragment"
             app:enterAnim="@anim/slide_up_bounce"
-            app:exitAnim="@anim/fade_in"
+            app:exitAnim="@anim/smooth_fade_out"
             app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_up_bounce" />
+            app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
 
     <fragment

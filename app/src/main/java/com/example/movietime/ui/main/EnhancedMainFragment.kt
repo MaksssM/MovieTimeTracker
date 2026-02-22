@@ -308,14 +308,23 @@ class EnhancedMainFragment : Fragment() {
     }
 
     private fun animateCounterUpdate(textView: View, @Suppress("UNUSED_PARAMETER") newValue: Int) {
-        ObjectAnimator.ofFloat(textView, "scaleX", 1f, 1.1f, 1f).apply {
-            duration = 300
-            interpolator = DecelerateInterpolator()
-            start()
+        // Scale bounce + color flash effect
+        val scaleUp = AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(textView, "scaleX", 1f, 1.3f, 0.9f, 1.1f, 1f),
+                ObjectAnimator.ofFloat(textView, "scaleY", 1f, 1.3f, 0.9f, 1.1f, 1f)
+            )
+            duration = 600
+            interpolator = OvershootInterpolator(1.5f)
         }
-        ObjectAnimator.ofFloat(textView, "scaleY", 1f, 1.1f, 1f).apply {
+        
+        // Subtle alpha flash
+        val alphaFlash = ObjectAnimator.ofFloat(textView, "alpha", 1f, 0.6f, 1f).apply {
             duration = 300
-            interpolator = DecelerateInterpolator()
+        }
+        
+        AnimatorSet().apply {
+            playTogether(scaleUp, alphaFlash)
             start()
         }
     }
@@ -335,49 +344,105 @@ class EnhancedMainFragment : Fragment() {
 
         elementsToAnimate.forEach { view ->
             view.alpha = 0f
-            view.scaleX = 0.8f
-            view.scaleY = 0.8f
-            view.translationY = 50f
+            view.scaleX = 0.7f
+            view.scaleY = 0.7f
+            view.translationY = 60f
         }
 
         // Animate FAB
         binding.fabAdd.alpha = 0f
         binding.fabAdd.scaleX = 0f
         binding.fabAdd.scaleY = 0f
+        binding.fabAdd.rotation = -45f
 
-        // Staggered animation for cards
-        elementsToAnimate.forEachIndexed { index, view ->
+        // Animate floating orbs with subtle pulsing
+        listOfNotNull(binding.floatingOrb1, binding.floatingOrb2, binding.floatingOrb3).forEachIndexed { index, orb ->
+            orb.alpha = 0f
+            orb.scaleX = 0.5f
+            orb.scaleY = 0.5f
+            
             viewLifecycleOwner.lifecycleScope.launch {
-                delay(100L + index * 60L) // Slightly faster stagger since more items
+                delay(200L + index * 150L)
+                ObjectAnimator.ofFloat(orb, "alpha", 0f, if (index == 0) 0.5f else 0.35f).apply {
+                    duration = 800
+                    start()
+                }
+                ObjectAnimator.ofFloat(orb, "scaleX", 0.5f, 1f).apply {
+                    duration = 800
+                    interpolator = OvershootInterpolator(1.5f)
+                    start()
+                }
+                ObjectAnimator.ofFloat(orb, "scaleY", 0.5f, 1f).apply {
+                    duration = 800
+                    interpolator = OvershootInterpolator(1.5f)
+                    start()
+                }
                 
-                val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.8f, 1f)
-                val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.8f, 1f)
-                val alpha = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f)
-                val translateY = ObjectAnimator.ofFloat(view, "translationY", 50f, 0f)
-                
+                // Add continuous gentle pulsing after entrance
+                delay(800L)
+                val pulseX = ObjectAnimator.ofFloat(orb, "scaleX", 1f, 1.08f, 1f).apply {
+                    duration = 3000L + index * 500L
+                    repeatCount = ObjectAnimator.INFINITE
+                    interpolator = AccelerateDecelerateInterpolator()
+                }
+                val pulseY = ObjectAnimator.ofFloat(orb, "scaleY", 1f, 1.08f, 1f).apply {
+                    duration = 3000L + index * 500L
+                    repeatCount = ObjectAnimator.INFINITE
+                    interpolator = AccelerateDecelerateInterpolator()
+                }
                 AnimatorSet().apply {
-                    playTogether(scaleX, scaleY, alpha, translateY)
-                    duration = 400
-                    interpolator = OvershootInterpolator(1.2f)
+                    playTogether(pulseX, pulseY)
                     start()
                 }
             }
         }
 
-        // FAB bounce animation
+        // Staggered animation for cards with spring effect
+        elementsToAnimate.forEachIndexed { index, view ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(150L + index * 70L)
+                
+                val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.7f, 1.05f, 1f)
+                val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.7f, 1.05f, 1f)
+                val alpha = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f)
+                val translateY = ObjectAnimator.ofFloat(view, "translationY", 60f, -5f, 0f)
+                
+                AnimatorSet().apply {
+                    playTogether(scaleX, scaleY, alpha, translateY)
+                    duration = 500
+                    interpolator = OvershootInterpolator(1.5f)
+                    start()
+                }
+            }
+        }
+
+        // FAB bounce and rotate animation
         viewLifecycleOwner.lifecycleScope.launch {
-            delay(800L) // Delayed a bit more
+            delay(700L)
             
-            val scaleX = ObjectAnimator.ofFloat(binding.fabAdd, "scaleX", 0f, 1.2f, 1f)
-            val scaleY = ObjectAnimator.ofFloat(binding.fabAdd, "scaleY", 0f, 1.2f, 1f)
+            val scaleX = ObjectAnimator.ofFloat(binding.fabAdd, "scaleX", 0f, 1.3f, 1f)
+            val scaleY = ObjectAnimator.ofFloat(binding.fabAdd, "scaleY", 0f, 1.3f, 1f)
             val alpha = ObjectAnimator.ofFloat(binding.fabAdd, "alpha", 0f, 1f)
+            val rotation = ObjectAnimator.ofFloat(binding.fabAdd, "rotation", -45f, 0f)
             
             AnimatorSet().apply {
-                playTogether(scaleX, scaleY, alpha)
-                duration = 500
-                interpolator = OvershootInterpolator(2f)
+                playTogether(scaleX, scaleY, alpha, rotation)
+                duration = 600
+                interpolator = OvershootInterpolator(2.5f)
                 start()
             }
+        }
+        
+        // Animate header with a subtle slide-down
+        binding.headerContainer?.let { header ->
+            header.alpha = 0f
+            header.translationY = -30f
+            header.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(500)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
         }
     }
 
@@ -460,6 +525,8 @@ class EnhancedMainFragment : Fragment() {
 
     private fun loadData() {
         viewModel.loadStatistics()
+        viewModel.loadRecommendations()
+        viewModel.loadTrendingForBackground()
     }
 
     override fun onResume() {

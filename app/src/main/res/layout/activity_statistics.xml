@@ -72,11 +72,15 @@
 
                     <TextView
                         android:id="@+id/tvTotalWatchTime"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="42sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
+                        android:maxLines="1"
+                        android:autoSizeTextType="uniform"
+                        android:autoSizeMinTextSize="16sp"
+                        android:autoSizeMaxTextSize="42sp"
                         tools:text="156 ч 30 мин" />
 
                     <TextView
@@ -124,11 +128,16 @@
 
                         <TextView
                             android:id="@+id/tvTotalMovies"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="28sp"
                             android:textStyle="bold"
                             android:textColor="?attr/colorOnSurface"
+                            android:maxLines="1"
+                            android:gravity="center"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="28sp"
                             tools:text="142" />
 
                         <TextView
@@ -165,11 +174,16 @@
 
                         <TextView
                             android:id="@+id/tvTotalTvShows"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="28sp"
                             android:textStyle="bold"
                             android:textColor="?attr/colorOnSurface"
+                            android:maxLines="1"
+                            android:gravity="center"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="28sp"
                             tools:text="38" />
 
                         <TextView
@@ -206,11 +220,16 @@
 
                         <TextView
                             android:id="@+id/tvTotalEpisodes"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="28sp"
                             android:textStyle="bold"
                             android:textColor="?attr/colorOnSurface"
+                            android:maxLines="1"
+                            android:gravity="center"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="28sp"
                             tools:text="892" />
 
                         <TextView

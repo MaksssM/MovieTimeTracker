@@ -4,8 +4,8 @@ import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.repository.AppRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,67 +15,172 @@ class RecommendationService @Inject constructor(
     private val repository: AppRepository
 ) {
 
+    companion object {
+        /** Минімальний рейтинг для фільтрації результатів */
+        private const val MIN_VOTE_AVERAGE = 5.5
+        /** Максимальна кількість "улюблених" елементів для запитів до API */
+        private const val MAX_FAVORITES = 5
+        /** Якщо Phase 1 дала менше цього числа — підключаємо жанр-дискавері */
+        private const val FALLBACK_THRESHOLD = 8
+        /** Максимум результатів у фінальному списку по кожному типу */
+        private const val MAX_RESULTS_PER_TYPE = 20
+    }
+
     /**
-     * Генерує персональні рекомендації на основі переглянутого контенту.
+     * Генерує персоналізовані рекомендації на основі переглянутого контенту.
+     *
      * Алгоритм:
-     * 1. Знаходить контент з найвищим рейтингом (userRating >= 8 або просто останні, якщо немає оцінок).
-     * 2. Вибирає топ-5 улюблених елементів.
-     * 3. Запитує API рекомендації для кожного з них.
-     * 4. Об'єднує результати, видаляє дублікати та те, що вже переглянуто.
+     * 1. Оцінює кожен елемент: userRating (65%) + recency (30%) + watchCount-бонус (5%).
+     * 2. Бере топ-5 за score — «улюблені».
+     * 3. Phase 1: запитує TMDB /recommendations для кожного улюбленого.
+     * 4. Phase 2 (fallback): якщо результатів мало — genre-discover з топ-жанрів.
+     * 5. Фільтрує: voteAverage >= 5.5, без вже переглянутих.
+     * 6. Сортує: вищий рейтинг + популярність вперед.
      */
     suspend fun getPersonalizedRecommendations(): PersonalizedRecommendations = withContext(Dispatchers.IO) {
         val watchedItems = repository.getWatchedItemsSync()
-        
+
         if (watchedItems.isEmpty()) {
             return@withContext PersonalizedRecommendations(emptyList(), emptyList())
         }
 
-        // 1. Фільтруємо найкращі (оцінка >= 8 або просто останні 10)
-        val favorites = watchedItems.filter { (it.userRating ?: 0f) >= 8f }
-            .ifEmpty { watchedItems.takeLast(10) }
-            .shuffled() // Додаємо випадковості
+        val now = System.currentTimeMillis()
+
+        // 1. Скоримо кожен переглянутий елемент
+        val scoredItems = watchedItems.map { item ->
+            val normalizedRating = ((item.userRating ?: item.voteAverage?.toFloat() ?: 5f)
+                .coerceIn(0f, 10f)) / 10f
+
+            // Recency: чим нещодавніше — тим вище. Параметр 0.015 → ~47 днів до 50% decay
+            val recencyScore = item.lastUpdated?.let { ts ->
+                val daysSince = (now - ts) / 86_400_000.0
+                (1.0 / (1.0 + daysSince * 0.015)).coerceIn(0.0, 1.0)
+            } ?: 0.4
+
+            val watchBonus = if (item.watchCount > 1) 0.05 else 0.0
+            val score = normalizedRating * 0.65 + recencyScore * 0.30 + watchBonus
+            item to score
+        }
+
+        // 2. Топ MAX_FAVORITES за score → "улюблені"
+        val favorites = scoredItems
+            .sortedByDescending { it.second }
+            .take(MAX_FAVORITES)
+            .map { it.first }
+
+        // Збираємо ідентифікатори вже переглянутого контенту (Watched / Planned / Watching / History)
+        val seenMediaIds = repository.getAllSeenItemIds()
+        val seenMovieIds = seenMediaIds.filter { it.mediaType == "movie" }.map { it.id }.toSet()
+        val seenTvShowIds = seenMediaIds.filter { it.mediaType == "tv" }.map { it.id }.toSet()
 
         val recommendedMovies = mutableListOf<MovieResult>()
         val recommendedTvShows = mutableListOf<TvShowResult>()
 
+        // 3. Phase 1: TMDB /recommendations для кожного улюбленого
         coroutineScope {
-            favorites.forEach { item ->
-                launch {
+            favorites.map { item ->
+                async {
                     try {
                         if (item.mediaType == "movie") {
-                            val recs = repository.getMovieRecommendations(item.id)
-                            synchronized(recommendedMovies) {
-                                recommendedMovies.addAll(recs)
-                            }
+                            repository.getMovieRecommendations(item.id)
+                                .also { recs -> synchronized(recommendedMovies) { recommendedMovies.addAll(recs) } }
                         } else {
-                            val recs = repository.getTvShowRecommendations(item.id)
-                            synchronized(recommendedTvShows) {
-                                recommendedTvShows.addAll(recs)
-                            }
+                            repository.getTvShowRecommendations(item.id)
+                                .also { recs -> synchronized(recommendedTvShows) { recommendedTvShows.addAll(recs) } }
                         }
-                    } catch (_: Exception) {
-                        // Ігноруємо помилки окремих запитів
-                    }
+                    } catch (_: Exception) { /* ігноруємо окремі помилки */ }
                 }
+            }.forEach { it.await() }
+        }
+
+        // 4. Phase 2 (жанровий fallback) — якщо Phase 1 дала мало результатів
+        val phase1MoviesOk = recommendedMovies
+            .count { !seenMovieIds.contains(it.id) && it.voteAverage >= MIN_VOTE_AVERAGE.toFloat() }
+        val phase1TvOk = recommendedTvShows
+            .count { !seenTvShowIds.contains(it.id) && it.voteAverage >= MIN_VOTE_AVERAGE.toFloat() }
+
+        if (phase1MoviesOk + phase1TvOk < FALLBACK_THRESHOLD) {
+            // Топ-жанри з улюблених (оцінка >= 7)
+            val likedItems = scoredItems
+                .filter { (it.first.userRating ?: 0f) >= 7f }
+                .map { it.first }
+                .ifEmpty { favorites }
+
+            fun extractTopGenres(mediaType: String): List<Int> =
+                likedItems
+                    .filter { it.mediaType == mediaType }
+                    .flatMap { item ->
+                        item.genreIds?.split(",")
+                            ?.mapNotNull { g -> g.trim().toIntOrNull() }
+                            ?: emptyList()
+                    }
+                    .groupingBy { it }
+                    .eachCount()
+                    .entries
+                    .sortedByDescending { it.value }
+                    .take(3)
+                    .map { it.key }
+
+            val movieGenres = extractTopGenres("movie")
+            val tvGenres = extractTopGenres("tv")
+
+            coroutineScope {
+                val discoverMoviesJob: kotlinx.coroutines.Deferred<List<com.example.movietime.data.model.MovieResult>>? =
+                    if (movieGenres.isNotEmpty()) {
+                        async {
+                            try {
+                                repository.discoverMovies(
+                                    genreIds = movieGenres,
+                                    minRating = MIN_VOTE_AVERAGE.toFloat(),
+                                    sortBy = "vote_average.desc"
+                                )
+                            } catch (_: Exception) { emptyList<com.example.movietime.data.model.MovieResult>() }
+                        }
+                    } else null
+
+                val discoverTvJob: kotlinx.coroutines.Deferred<List<com.example.movietime.data.model.TvShowResult>>? =
+                    if (tvGenres.isNotEmpty()) {
+                        async {
+                            try {
+                                repository.discoverTvShows(
+                                    genreIds = tvGenres,
+                                    minRating = MIN_VOTE_AVERAGE.toFloat(),
+                                    sortBy = "vote_average.desc"
+                                )
+                            } catch (_: Exception) { emptyList<com.example.movietime.data.model.TvShowResult>() }
+                        }
+                    } else null
+
+                discoverMoviesJob?.await()
+                    ?.filter { !seenMovieIds.contains(it.id) }
+                    ?.also { discovered -> synchronized(recommendedMovies) { recommendedMovies.addAll(discovered) } }
+
+                discoverTvJob?.await()
+                    ?.filter { !seenTvShowIds.contains(it.id) }
+                    ?.also { discovered -> synchronized(recommendedTvShows) { recommendedTvShows.addAll(discovered) } }
             }
         }
 
-        // Видаляємо дублікати і те, що вже бачили (Watched, Planned, Watching, Search History)
-        val seenMediaIds = repository.getAllSeenItemIds()
-        val seenMovieIds = seenMediaIds.filter { it.mediaType == "movie" }.map { it.id }.toSet()
-        val seenTvShowIds = seenMediaIds.filter { it.mediaType == "tv" }.map { it.id }.toSet()
-        
-        val uniqueMovies = recommendedMovies
-            .filter { !seenMovieIds.contains(it.id) }
+        // 5. Фінальна дедублікація, фільтрація якості та сортування
+        val finalMovies = recommendedMovies
+            .filter { !seenMovieIds.contains(it.id) && it.voteAverage >= MIN_VOTE_AVERAGE.toFloat() }
             .distinctBy { it.id }
-            .sortedByDescending { it.voteAverage }
+            .sortedWith(
+                compareByDescending<MovieResult> { it.voteAverage }
+                    .thenByDescending { it.popularity }
+            )
+            .take(MAX_RESULTS_PER_TYPE)
 
-        val uniqueTvShows = recommendedTvShows
-            .filter { !seenTvShowIds.contains(it.id) }
+        val finalTv = recommendedTvShows
+            .filter { !seenTvShowIds.contains(it.id) && it.voteAverage >= MIN_VOTE_AVERAGE.toFloat() }
             .distinctBy { it.id }
-            .sortedByDescending { it.voteAverage }
+            .sortedWith(
+                compareByDescending<TvShowResult> { it.voteAverage }
+                    .thenByDescending { it.popularity }
+            )
+            .take(MAX_RESULTS_PER_TYPE)
 
-        PersonalizedRecommendations(uniqueMovies, uniqueTvShows)
+        PersonalizedRecommendations(finalMovies, finalTv)
     }
 
     data class PersonalizedRecommendations(

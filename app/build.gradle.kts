@@ -11,7 +11,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
-    id("com.google.gms.google-services")
+    // Temporarily disabled: requires google-services.json
+    // id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
