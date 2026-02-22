@@ -84,6 +84,20 @@ class PlannedViewModel @Inject constructor(
         }
     }
 
+    fun moveToWatching(item: WatchedItem) {
+        viewModelScope.launch {
+            try {
+                repository.removeFromPlanned(item.id, item.mediaType)
+                repository.addToWatching(item)
+                loadPlannedContent()
+                Log.d("PlannedViewModel", "Moved item to watching: ${item.title}")
+            } catch (e: Exception) {
+                Log.e("PlannedViewModel", "Error moving to watching", e)
+                _errorMessage.value = "Помилка при переміщенні: ${e.localizedMessage}"
+            }
+        }
+    }
+
     fun getPlannedMoviesCount(): Int {
         return _plannedContent.value?.count { it.mediaType == "movie" } ?: 0
     }

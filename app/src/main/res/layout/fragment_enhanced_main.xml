@@ -4,8 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_main_premium">
+    android:layout_height="match_parent">
+
+    <!-- Animated nebula background — replaces static drawable -->
+    <com.example.movietime.ui.views.NebulaBackgroundView
+        android:id="@+id/nebulaBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <!-- Floating orb decorations for parallax effect -->
     <View
@@ -37,6 +42,17 @@
         android:layout_marginEnd="-60dp"
         android:background="@drawable/bg_floating_orb_success"
         android:alpha="0.25" />
+
+    <!-- 4th orb: warm rose glow - center left -->
+    <View
+        android:id="@+id/floatingOrb4"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_gravity="center|start"
+        android:layout_marginStart="-80dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/bg_glow_orb_orange"
+        android:alpha="0.20" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -106,33 +122,54 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_stats_widget_premium">
 
-                            <!-- Decorative elements -->
+                            <!-- Rainbow top accent strip -->
                             <View
-                                android:layout_width="120dp"
-                                android:layout_height="120dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_gravity="top"
+                                android:background="@drawable/bg_stats_top_strip"
+                                android:alpha="0.85" />
+
+                            <!-- Decorative orb top-right -->
+                            <View
+                                android:layout_width="160dp"
+                                android:layout_height="160dp"
                                 android:layout_gravity="top|end"
-                                android:layout_marginTop="-30dp"
-                                android:layout_marginEnd="-30dp"
+                                android:layout_marginTop="-50dp"
+                                android:layout_marginEnd="-50dp"
                                 android:background="@drawable/bg_floating_orb_primary"
-                                android:alpha="0.15" />
+                                android:alpha="0.10" />
+
+                            <!-- Decorative orb bottom-left -->
+                            <View
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:layout_gravity="bottom|start"
+                                android:layout_marginBottom="-20dp"
+                                android:layout_marginStart="-20dp"
+                                android:background="@drawable/bg_glow_accent"
+                                android:alpha="0.08" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:padding="24dp">
+                                android:paddingStart="22dp"
+                                android:paddingEnd="22dp"
+                                android:paddingTop="22dp"
+                                android:paddingBottom="18dp">
 
-                                <!-- Header with icon -->
+                                <!-- Top row: icon badge + label -->
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical"
-                                    android:layout_marginBottom="20dp">
+                                    android:layout_marginBottom="14dp">
 
                                     <FrameLayout
-                                        android:layout_width="44dp"
-                                        android:layout_height="44dp"
+                                        android:layout_width="42dp"
+                                        android:layout_height="42dp"
                                         android:background="@drawable/bg_icon_glow_primary">
 
                                         <ImageView
@@ -144,66 +181,106 @@
 
                                     </FrameLayout>
 
-                                    <LinearLayout
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
-                                        android:layout_marginStart="16dp"
-                                        android:orientation="vertical">
+                                        android:layout_marginStart="12dp"
+                                        android:text="@string/total_watch_time"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="11sp"
+                                        android:textStyle="bold"
+                                        android:textAllCaps="true"
+                                        android:letterSpacing="0.10"
+                                        android:fontFamily="sans-serif-medium" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="@string/total_watch_time"
-                                            android:textColor="@color/text_secondary"
-                                            android:textSize="12sp"
-                                            android:fontFamily="sans-serif-medium"
-                                            android:textAllCaps="true"
-                                            android:letterSpacing="0.05" />
-
-                                        <TextView
-                                            android:id="@+id/tvTotalTime"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="4dp"
-                                            android:textColor="@color/text_primary"
-                                            android:textSize="32sp"
-                                            android:textStyle="bold"
-                                            android:fontFamily="sans-serif-medium"
-                                            tools:text="125 год" />
-
-                                    </LinearLayout>
+                                    <!-- Small star/sparkle -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="✦"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/primary"
+                                        android:alpha="0.5" />
 
                                 </LinearLayout>
 
-                                <!-- Divider -->
-                                <View
+                                <!-- HERO: large time number centered -->
+                                <TextView
+                                    android:id="@+id/tvTotalTime"
                                     android:layout_width="match_parent"
-                                    android:layout_height="1dp"
-                                    android:background="@color/divider"
-                                    android:alpha="0.5" />
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_horizontal"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="44sp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:maxLines="1"
+                                    android:autoSizeTextType="uniform"
+                                    android:autoSizeMinTextSize="18sp"
+                                    android:autoSizeMaxTextSize="44sp"
+                                    android:letterSpacing="-0.02"
+                                    tools:text="125 год 30 хв" />
 
-                                <!-- Stats row -->
+                                <!-- Subtitle -->
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_horizontal"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@string/watch_time_desc"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp"
+                                    android:alpha="0.75" />
+
+                                <!-- Rainbow gradient separator line -->
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="3dp"
+                                    android:layout_marginTop="18dp"
+                                    android:layout_marginBottom="16dp">
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="@drawable/bg_gradient_accent_line"
+                                        android:alpha="0.6" />
+
+                                </FrameLayout>
+
+                                <!-- Stats row — three glowing tiles, equal height -->
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
-                                    android:layout_marginTop="20dp"
+                                    android:weightSum="3"
                                     android:baselineAligned="false">
 
-                                    <!-- This Month -->
+                                    <!-- This Month tile -->
                                     <LinearLayout
                                         android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="match_parent"
                                         android:layout_weight="1"
                                         android:orientation="vertical"
-                                        android:gravity="center">
+                                        android:gravity="center"
+                                        android:padding="14dp"
+                                        android:layout_marginEnd="5dp"
+                                        android:background="@drawable/bg_stat_card_accent"
+                                        android:minHeight="90dp">
 
-                                        <ImageView
-                                            android:layout_width="20dp"
-                                            android:layout_height="20dp"
-                                            android:src="@drawable/ic_calendar_24"
-                                            app:tint="@color/accent_purple_light" />
+                                        <FrameLayout
+                                            android:layout_width="36dp"
+                                            android:layout_height="36dp"
+                                            android:background="@drawable/bg_icon_small_circle_accent">
+
+                                            <ImageView
+                                                android:layout_width="20dp"
+                                                android:layout_height="20dp"
+                                                android:layout_gravity="center"
+                                                android:src="@drawable/ic_calendar_24"
+                                                app:tint="@android:color/white" />
+
+                                        </FrameLayout>
 
                                         <TextView
                                             android:id="@+id/tvThisMonthCount"
@@ -211,41 +288,49 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="8dp"
                                             android:textColor="@color/text_primary"
-                                            android:textSize="22sp"
+                                            android:textSize="26sp"
                                             android:textStyle="bold"
                                             android:fontFamily="sans-serif-medium"
+                                            android:maxLines="1"
                                             tools:text="8" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginTop="4dp"
+                                            android:layout_marginTop="2dp"
                                             android:text="@string/this_month"
                                             android:textColor="@color/text_secondary"
-                                            android:textSize="11sp" />
+                                            android:textSize="10sp"
+                                            android:gravity="center"
+                                            android:maxLines="1" />
 
                                     </LinearLayout>
 
-                                    <!-- Vertical divider -->
-                                    <View
-                                        android:layout_width="1dp"
-                                        android:layout_height="50dp"
-                                        android:background="@color/divider"
-                                        android:alpha="0.5" />
-
-                                    <!-- Movies count -->
+                                    <!-- Movies tile -->
                                     <LinearLayout
                                         android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="match_parent"
                                         android:layout_weight="1"
                                         android:orientation="vertical"
-                                        android:gravity="center">
+                                        android:gravity="center"
+                                        android:padding="14dp"
+                                        android:layout_marginHorizontal="3dp"
+                                        android:background="@drawable/bg_stat_card_primary"
+                                        android:minHeight="90dp">
 
-                                        <ImageView
-                                            android:layout_width="20dp"
-                                            android:layout_height="20dp"
-                                            android:src="@drawable/ic_movie_24"
-                                            app:tint="@color/primary_light" />
+                                        <FrameLayout
+                                            android:layout_width="36dp"
+                                            android:layout_height="36dp"
+                                            android:background="@drawable/bg_icon_small_circle_primary">
+
+                                            <ImageView
+                                                android:layout_width="20dp"
+                                                android:layout_height="20dp"
+                                                android:layout_gravity="center"
+                                                android:src="@drawable/ic_movie_24"
+                                                app:tint="@android:color/white" />
+
+                                        </FrameLayout>
 
                                         <TextView
                                             android:id="@+id/tvMoviesCountWidget"
@@ -253,41 +338,49 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="8dp"
                                             android:textColor="@color/text_primary"
-                                            android:textSize="22sp"
+                                            android:textSize="26sp"
                                             android:textStyle="bold"
                                             android:fontFamily="sans-serif-medium"
+                                            android:maxLines="1"
                                             tools:text="45" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginTop="4dp"
+                                            android:layout_marginTop="2dp"
                                             android:text="@string/movies"
                                             android:textColor="@color/text_secondary"
-                                            android:textSize="11sp" />
+                                            android:textSize="10sp"
+                                            android:gravity="center"
+                                            android:maxLines="1" />
 
                                     </LinearLayout>
 
-                                    <!-- Vertical divider -->
-                                    <View
-                                        android:layout_width="1dp"
-                                        android:layout_height="50dp"
-                                        android:background="@color/divider"
-                                        android:alpha="0.5" />
-
-                                    <!-- TV Shows count -->
+                                    <!-- TV Shows tile -->
                                     <LinearLayout
                                         android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="match_parent"
                                         android:layout_weight="1"
                                         android:orientation="vertical"
-                                        android:gravity="center">
+                                        android:gravity="center"
+                                        android:padding="14dp"
+                                        android:layout_marginStart="5dp"
+                                        android:background="@drawable/bg_stat_card_success"
+                                        android:minHeight="90dp">
 
-                                        <ImageView
-                                            android:layout_width="20dp"
-                                            android:layout_height="20dp"
-                                            android:src="@drawable/ic_tv_24"
-                                            app:tint="@color/success_green_light" />
+                                        <FrameLayout
+                                            android:layout_width="36dp"
+                                            android:layout_height="36dp"
+                                            android:background="@drawable/bg_icon_small_circle_success">
+
+                                            <ImageView
+                                                android:layout_width="20dp"
+                                                android:layout_height="20dp"
+                                                android:layout_gravity="center"
+                                                android:src="@drawable/ic_tv_24"
+                                                app:tint="@android:color/white" />
+
+                                        </FrameLayout>
 
                                         <TextView
                                             android:id="@+id/tvTvShowsCountWidget"
@@ -295,18 +388,21 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="8dp"
                                             android:textColor="@color/text_primary"
-                                            android:textSize="22sp"
+                                            android:textSize="26sp"
                                             android:textStyle="bold"
                                             android:fontFamily="sans-serif-medium"
+                                            android:maxLines="1"
                                             tools:text="12" />
 
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginTop="4dp"
+                                            android:layout_marginTop="2dp"
                                             android:text="@string/tv_shows"
                                             android:textColor="@color/text_secondary"
-                                            android:textSize="11sp" />
+                                            android:textSize="10sp"
+                                            android:gravity="center"
+                                            android:maxLines="1" />
 
                                     </LinearLayout>
 
@@ -377,7 +473,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_glass_card_premium">
+                            android:background="@drawable/bg_stat_card_primary">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -443,7 +539,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_glass_card_premium">
+                            android:background="@drawable/bg_stat_card_accent">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -509,7 +605,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_glass_card_premium">
+                            android:background="@drawable/bg_stat_card_success">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -614,7 +710,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_category_card_glass">
+                            android:background="@drawable/bg_category_card_watched">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -626,7 +722,8 @@
                                 <FrameLayout
                                     android:layout_width="56dp"
                                     android:layout_height="56dp"
-                                    android:background="@drawable/bg_icon_glow_primary">
+                                    android:background="@drawable/bg_icon_glow_primary"
+                                    android:alpha="0.85">
 
                                     <ImageView
                                         android:layout_width="28dp"
@@ -643,7 +740,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="16dp"
                                     android:text="@string/nav_watched"
-                                    android:textColor="@color/text_primary"
+                                    android:textColor="#FFFFFF"
                                     android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:fontFamily="sans-serif-medium" />
@@ -653,7 +750,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
-                                    android:textColor="@color/primary_light"
+                                    android:textColor="#FFFFFF"
                                     android:textSize="28sp"
                                     android:textStyle="bold"
                                     android:fontFamily="sans-serif-medium"
@@ -682,7 +779,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_category_card_glass">
+                            android:background="@drawable/bg_category_card_planned">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -694,7 +791,8 @@
                                 <FrameLayout
                                     android:layout_width="56dp"
                                     android:layout_height="56dp"
-                                    android:background="@drawable/bg_icon_glow_accent">
+                                    android:background="@drawable/bg_icon_glow_accent"
+                                    android:alpha="0.85">
 
                                     <ImageView
                                         android:layout_width="28dp"
@@ -711,7 +809,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="16dp"
                                     android:text="@string/nav_planned"
-                                    android:textColor="@color/text_primary"
+                                    android:textColor="#FFFFFF"
                                     android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:fontFamily="sans-serif-medium" />
@@ -721,7 +819,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
-                                    android:textColor="@color/accent_purple_light"
+                                    android:textColor="#FFFFFF"
                                     android:textSize="28sp"
                                     android:textStyle="bold"
                                     android:fontFamily="sans-serif-medium"
@@ -751,7 +849,7 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_glass_card_premium">
+                        android:background="@drawable/bg_category_card_watching">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -763,7 +861,8 @@
                             <FrameLayout
                                 android:layout_width="56dp"
                                 android:layout_height="56dp"
-                                android:background="@drawable/bg_icon_glow_success">
+                                android:background="@drawable/bg_icon_glow_success"
+                                android:alpha="0.85">
 
                                 <ImageView
                                     android:layout_width="28dp"
@@ -786,7 +885,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/nav_watching"
-                                    android:textColor="@color/text_primary"
+                                    android:textColor="#FFFFFF"
                                     android:textSize="15sp"
                                     android:textStyle="bold"
                                     android:fontFamily="sans-serif-medium" />
@@ -796,9 +895,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
                                     android:text="@string/currently_in_progress"
-                                    android:textColor="@color/text_primary"
+                                    android:textColor="#FFFFFF"
                                     android:textSize="12sp"
-                                    android:alpha="0.7"
+                                    android:alpha="0.8"
                                     android:fontFamily="sans-serif" />
 
                             </LinearLayout>
@@ -807,7 +906,7 @@
                                 android:id="@+id/tvWatchingCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/success_green_light"
+                                android:textColor="#FFFFFF"
                                 android:textSize="36sp"
                                 android:textStyle="bold"
                                 android:fontFamily="sans-serif-medium"

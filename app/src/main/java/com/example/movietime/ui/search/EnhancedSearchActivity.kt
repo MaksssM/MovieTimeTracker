@@ -24,7 +24,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.launch
 import android.util.Log
 import java.util.Locale
 import com.example.movietime.ui.person.PersonDetailsActivity
@@ -106,7 +105,7 @@ class EnhancedSearchActivity : AppCompatActivity() {
             this.layoutManager = layoutManager
             layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
                 context, 
-                R.anim.layout_animation_cascade
+                R.anim.layout_animation_slide_up
             )
             
             addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
@@ -243,8 +242,10 @@ class EnhancedSearchActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.searchResults.observe(this) { results ->
             binding.layoutLoading.isVisible = false
+            
+            val query = binding.etSearch.text?.toString()?.trim() ?: ""
 
-            if (results.isNotEmpty()) {
+            if (results.isNotEmpty() && query.isNotEmpty()) {
                 val groupedItems = results.map { item ->
                     when (item) {
                         is MovieResult -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
@@ -259,14 +260,22 @@ class EnhancedSearchActivity : AppCompatActivity() {
 
                 val resultCount = results.size
                 binding.tvResultsHeader.text = getString(R.string.search_results_count, resultCount)
+            } else if (query.isEmpty()) {
+                binding.cardResults.isVisible = false
+                showPopularContent()
             } else {
                 binding.cardResults.isVisible = false
                 showPopularContent()
             }
         }
 
-        viewModel.popularContent.observe(this) { 
+        viewModel.popularContent.observe(this) { content ->
             updatePopularContent()
+            // Show popular content immediately when loaded and no search active
+            val query = binding.etSearch.text?.toString()?.trim() ?: ""
+            if (query.isEmpty() && content.isNotEmpty()) {
+                showPopularContent()
+            }
         }
 
         viewModel.isLoading.observe(this) { isLoading ->

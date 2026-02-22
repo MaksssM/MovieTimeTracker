@@ -95,6 +95,7 @@
     <string name="planned_tv_shows_count">Planned TV Shows: %d</string>
     <string name="planned_content_count">Planned Content: %d</string>
     <string name="total_watch_time">Total Watch Time</string>
+    <string name="watch_time_desc">since you started tracking</string>
     <string name="this_month">This Month</string>
     <string name="achievements">Achievements</string>
     <string name="days_streak">days streak</string>
@@ -473,6 +474,27 @@
     <string name="delete_confirmation_title">Confirm deletion</string>
     <string name="delete_watched_confirmation">Delete "%1$s" from watched?</string>
     <string name="item_deleted">Deleted</string>
+    
+    <!-- Category Transfer -->
+    <string name="move_to_watched">Move to Watched</string>
+    <string name="move_to_planned">Move to Planned</string>
+    <string name="move_to_watching">Move to Watching</string>
+    <string name="moved_to_watched">Moved to Watched</string>
+    <string name="moved_to_planned">Moved to Planned</string>
+    <string name="moved_to_watching">Moved to Watching</string>
+    
+    <!-- Sort & Filter -->
+    <string name="sort">Sort</string>
+    <string name="search_in_list">Search in list…</string>
+    <string name="sort_by_name_asc">Name (A → Z)</string>
+    <string name="sort_by_name_desc">Name (Z → A)</string>
+    <string name="sort_by_date_newest">Date Added (Newest)</string>
+    <string name="sort_by_date_oldest">Date Added (Oldest)</string>
+    <string name="sort_by_rating_high">Rating (Highest)</string>
+    <string name="sort_by_rating_low">Rating (Lowest)</string>
+    <string name="sort_by_runtime_long">Runtime (Longest)</string>
+    <string name="sort_by_runtime_short">Runtime (Shortest)</string>
+    
     <string name="selected_episodes_count" formatted="false">Selected %d of %d episodes</string>
     <string name="total_runtime_format">~%s total</string>
     <string name="seasons_episodes_format" formatted="false">%d seasons • %d episodes</string>

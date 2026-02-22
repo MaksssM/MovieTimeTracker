@@ -193,6 +193,7 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
                     // Media type with country
                     val country = item.productionCountries?.firstOrNull()?.iso?.let { getCountryFlag(it) } ?: ""
                     binding.tvMediaType.text = "$country ${binding.root.context.getString(R.string.media_type_movie)}"
+                    binding.viewAccentBar.setBackgroundResource(R.drawable.bg_accent_bar_movie)
 
                     binding.tvOverview.text = item.overview?.takeIf { it.isNotBlank() }
                         ?: binding.root.context.getString(R.string.no_description_available)
@@ -223,6 +224,7 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
                         ?: item.productionCountries?.firstOrNull()?.iso?.let { getCountryFlag(it) }
                         ?: ""
                     binding.tvMediaType.text = "$country ${binding.root.context.getString(R.string.media_type_tv_show)}"
+                    binding.viewAccentBar.setBackgroundResource(R.drawable.bg_accent_bar_tv)
 
                     binding.tvOverview.text = item.overview?.takeIf { it.isNotBlank() }
                         ?: binding.root.context.getString(R.string.no_description_available)

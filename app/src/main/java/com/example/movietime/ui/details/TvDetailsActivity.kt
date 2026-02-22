@@ -74,9 +74,15 @@ class TvDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
+        // Enable shared element transitions
+        window.requestFeature(android.view.Window.FEATURE_CONTENT_TRANSITIONS)
+        
         // Activity transition
         @Suppress("DEPRECATION")
         overridePendingTransition(R.anim.activity_open_enter, R.anim.smooth_fade_out)
+        
+        // Postpone enter transition until poster is loaded
+        supportPostponeEnterTransition()
         
         binding = ActivityTvDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -98,6 +104,9 @@ class TvDetailsActivity : AppCompatActivity() {
         observeViewModel()
         setupClickListeners()
         animateEntranceElements()
+        
+        // Fallback: start postponed transition after timeout if poster hasn't loaded
+        binding.ivPoster.postDelayed({ supportStartPostponedEnterTransition() }, 500)
 
         // Обробник додавання в переглянуті - відкриває вибір епізодів
         binding.fabAdd.setOnClickListener { view ->
@@ -448,6 +457,7 @@ class TvDetailsActivity : AppCompatActivity() {
 
                 // Poster
                 val poster = tvShow.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+                binding.ivPoster.transitionName = "poster_transition"
                 binding.ivPoster.load(poster) {
                     crossfade(true)
                     allowHardware(false)
@@ -455,10 +465,14 @@ class TvDetailsActivity : AppCompatActivity() {
                     error(R.drawable.ic_placeholder)
                     listener(
                         onSuccess = { _, result ->
+                            supportStartPostponedEnterTransition()
                             val bitmap = (result.drawable as? android.graphics.drawable.BitmapDrawable)?.bitmap
                             if (bitmap != null) {
                                 applyDynamicColors(bitmap)
                             }
+                        },
+                        onError = { _, _ ->
+                            supportStartPostponedEnterTransition()
                         }
                     )
                 }

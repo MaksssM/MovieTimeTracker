@@ -3,161 +3,209 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="4dp"
+    android:layout_marginHorizontal="12dp"
     android:layout_marginVertical="6dp"
     app:cardCornerRadius="20dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="0dp"
-    app:cardBackgroundColor="@android:color/transparent"
+    app:cardElevation="6dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/divider"
+    app:cardBackgroundColor="@color/card_background"
     android:foreground="?attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:stateListAnimator="@animator/card_press_animator">
 
     <FrameLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_search_result_card">
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/viewAccentBar"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_accent_bar_movie" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="14dp">
+            android:layout_weight="1"
+            android:padding="12dp">
 
-            <!-- Poster with rounded corners and shadow -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/posterCard"
-                android:layout_width="80dp"
-                android:layout_height="120dp"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="8dp"
-                app:strokeWidth="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+        <!-- Poster with rounded corners and elegant shadow -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/posterCard"
+            android:layout_width="90dp"
+            android:layout_height="135dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#503B82F6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-                <FrameLayout
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/ivPoster"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/poster_description"
+                    android:background="@color/shimmer_base"
+                    android:transitionName="poster_transition"
+                    tools:src="@tools:sample/backgrounds/scenic" />
 
-                    <ImageView
-                        android:id="@+id/ivPoster"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="@string/poster_description"
-                        android:background="@color/card_background_alpha"
-                        android:transitionName="poster_transition"
-                        tools:src="@tools:sample/backgrounds/scenic" />
+                <!-- Bottom gradient for badge readability -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/gradient_overlay_dark" />
 
-                    <!-- Gradient overlay for badge readability -->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_gravity="bottom"
-                        android:background="@drawable/gradient_overlay_dark" />
-
-                    <!-- Media Type Badge -->
-                    <TextView
-                        android:id="@+id/tvMediaType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|start"
-                        android:layout_margin="6dp"
-                        android:background="@drawable/bg_type_badge_movie"
-                        android:paddingHorizontal="8dp"
-                        android:paddingTop="3dp" android:paddingBottom="3dp"
-                        android:textSize="9sp"
-                        android:textColor="@color/text_primary"
-                        android:fontFamily="sans-serif-medium"
-                        android:textAllCaps="true"
-                        tools:text="TV" />
-
-                </FrameLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Content Container -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@id/posterCard"
-                app:layout_constraintEnd_toStartOf="@+id/btnDelete"
-                app:layout_constraintStart_toEndOf="@id/posterCard"
-                app:layout_constraintTop_toTopOf="@id/posterCard">
-
-                <!-- Title -->
+                <!-- Media Type Badge -->
                 <TextView
-                    android:id="@+id/tvTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    android:fontFamily="sans-serif-medium"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:minHeight="32dp"
-                    android:gravity="center_vertical"
-                    android:lineSpacingMultiplier="1.1"
-                    tools:text="Інтерстеллар" />
-
-                <!-- Release Date -->
-                <LinearLayout
+                    android:id="@+id/tvMediaType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_gravity="bottom|start"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/bg_type_badge_movie"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="3dp"
+                    android:textSize="9sp"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.05"
+                    tools:text="TV" />
+
+                <!-- Rating badge at top-right of poster -->
+                <LinearLayout
+                    android:id="@+id/layoutRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/bg_rating_badge_gold"
                     android:orientation="horizontal"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="3dp"
                     android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:src="@drawable/ic_calendar"
-                        app:tint="@color/primary_light"
-                        android:contentDescription="@string/release_date" />
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/ic_star_filled_24"
+                        app:tint="#FBBF24"
+                        android:contentDescription="@null" />
 
                     <TextView
-                        android:id="@+id/tvReleaseDate"
+                        android:id="@+id/tvRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:textSize="13sp"
-                        android:textColor="@color/text_secondary"
+                        android:layout_marginStart="3dp"
+                        android:textSize="10sp"
+                        android:textColor="#FBBF24"
                         android:fontFamily="sans-serif-medium"
-                        tools:text="2014" />
+                        android:textStyle="bold"
+                        tools:text="8.5" />
 
                 </LinearLayout>
 
-                <!-- Runtime Badge -->
-                <LinearLayout
+            </FrameLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Content Container -->
+        <LinearLayout
+            android:id="@+id/contentContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/posterCard"
+            app:layout_constraintEnd_toStartOf="@+id/actionsContainer"
+            app:layout_constraintStart_toEndOf="@id/posterCard"
+            app:layout_constraintTop_toTopOf="@id/posterCard"
+            app:layout_constraintVertical_bias="0.0">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.15"
+                tools:text="Інтерстеллар" />
+
+            <!-- Release Date with icon -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_calendar"
+                    app:tint="@color/text_secondary"
+                    android:contentDescription="@string/release_date" />
+
+                <TextView
+                    android:id="@+id/tvReleaseDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_type_badge_movie"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="10dp"
-                    android:paddingTop="5dp" android:paddingBottom="5dp"
-                    android:gravity="center_vertical">
+                    android:layout_marginStart="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:fontFamily="sans-serif"
+                    tools:text="2014" />
 
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/ic_time"
-                        app:tint="@android:color/white"
-                        android:contentDescription="@string/runtime" />
+            </LinearLayout>
+
+            <!-- Runtime Badge -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_type_badge_movie"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_time"
+                    app:tint="@color/accent_primary"
+                    android:contentDescription="@string/runtime" />
 
                 <TextView
                     android:id="@+id/tvRuntime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_primary"
+                    android:layout_marginStart="5dp"
+                    android:textSize="11sp"
+                    android:textColor="@color/accent_primary"
                     android:fontFamily="sans-serif-medium"
-                    tools:text="169 хв" />
+                    tools:text="2 год 49 хв" />
 
             </LinearLayout>
 
@@ -166,19 +214,19 @@
                 android:id="@+id/layoutRewatchCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_chip"
                 android:backgroundTint="#1510B981"
                 android:orientation="horizontal"
                 android:paddingHorizontal="10dp"
-                android:paddingVertical="5dp"
+                android:paddingVertical="4dp"
                 android:gravity="center_vertical"
                 android:visibility="gone"
                 tools:visibility="visible">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
                     android:src="@drawable/ic_replay_24"
                     app:tint="#10B981"
                     android:contentDescription="@string/rewatches" />
@@ -187,51 +235,62 @@
                     android:id="@+id/tvRewatchCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:textSize="13sp"
+                    android:layout_marginStart="5dp"
+                    android:textSize="12sp"
                     android:textColor="#10B981"
-                    android:fontFamily="sans-serif-black"
+                    android:fontFamily="sans-serif-medium"
                     android:letterSpacing="0.02"
-                    tools:text="×3 разів" />
+                    tools:text="×3" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-            <!-- Action Buttons Container -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+        <!-- Action Buttons Container -->
+        <LinearLayout
+            android:id="@+id/actionsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-                <!-- Add Rewatch Button -->
-                <FrameLayout
-                    android:id="@+id/btnAddRewatch"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/bg_quick_action_glass"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginBottom="8dp">
+            <!-- Add Rewatch Button -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnAddRewatch"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1.5dp"
+                app:strokeColor="#6034D399"
+                app:cardBackgroundColor="#3034D399"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="10dp">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_replay_24"
-                        app:tint="#34D399"
-                        android:contentDescription="@string/add_rewatch" />
-                </FrameLayout>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_replay_24"
+                    app:tint="#34D399"
+                    android:contentDescription="@string/add_rewatch" />
 
-            <!-- Delete Button with premium style -->
-            <FrameLayout
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Delete Button -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/btnDelete"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_quick_action_glass"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1.5dp"
+                app:strokeColor="#60EF4444"
+                app:cardBackgroundColor="#30EF4444"
                 android:clickable="true"
                 android:focusable="true">
 
@@ -242,11 +301,22 @@
                     android:src="@drawable/ic_delete_forever_24"
                     app:tint="@color/error_light"
                     android:contentDescription="@string/delete" />
-            </FrameLayout>
 
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+        <!-- Gradient top strip overlay -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_gravity="top"
+            android:background="@drawable/bg_card_top_strip_watched"
+            android:alpha="0.9" />
 
     </FrameLayout>
 

@@ -85,6 +85,7 @@
     <string name="planned_tv_shows_count">Запланированные сериалы: %d</string>
     <string name="planned_content_count">Запланированный контент: %d</string>
     <string name="total_watch_time">Общее время просмотра</string>
+    <string name="watch_time_desc">с начала ведения статистики</string>
     <string name="this_month">В этом месяце</string>
     <string name="quick_stats">Быстрая статистика</string>
     <string name="avg_rating">Средний рейтинг</string>
@@ -428,6 +429,27 @@
     <string name="delete_confirmation_title">Подтверждение удаления</string>
     <string name="delete_watched_confirmation">Удалить "%1$s" из просмотренных?</string>
     <string name="item_deleted">Удалено</string>
+    
+    <!-- Category Transfer -->
+    <string name="move_to_watched">Перенести в просмотренные</string>
+    <string name="move_to_planned">Перенести в запланированные</string>
+    <string name="move_to_watching">Перенести в «смотрю»</string>
+    <string name="moved_to_watched">Перенесено в просмотренные</string>
+    <string name="moved_to_planned">Перенесено в запланированные</string>
+    <string name="moved_to_watching">Перенесено в «смотрю»</string>
+    
+    <!-- Sort & Filter -->
+    <string name="sort">Сортировка</string>
+    <string name="search_in_list">Поиск в списке…</string>
+    <string name="sort_by_name_asc">Название (А → Я)</string>
+    <string name="sort_by_name_desc">Название (Я → А)</string>
+    <string name="sort_by_date_newest">Дата добавления (Новые)</string>
+    <string name="sort_by_date_oldest">Дата добавления (Старые)</string>
+    <string name="sort_by_rating_high">Рейтинг (Высокий)</string>
+    <string name="sort_by_rating_low">Рейтинг (Низкий)</string>
+    <string name="sort_by_runtime_long">Время (Длинные)</string>
+    <string name="sort_by_runtime_short">Время (Короткие)</string>
+    
     <string name="selected_episodes_count">Выбрано %1$d из %2$d серий</string>
     <string name="total_runtime_format">~%s всего</string>
     <string name="seasons_episodes_format">%1$d сезонов • %2$d серий</string>
