@@ -64,9 +64,8 @@ class WatchedAdapter : ListAdapter<WatchedItem, WatchedAdapter.WatchedViewHolder
             }
 
             // Poster with Coil
-            binding.ivPoster.load(item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }) {
+            binding.ivPoster.load(item.posterPath?.let { "https://image.tmdb.org/t/p/w342$it" }) {
                 crossfade(true)
-                size(500, 750)
                 placeholder(com.example.movietime.R.drawable.ic_placeholder)
                 error(com.example.movietime.R.drawable.ic_placeholder)
             }

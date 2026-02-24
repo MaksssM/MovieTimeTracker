@@ -3,6 +3,7 @@ package com.example.movietime.ui.collection
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.example.movietime.data.repository.AppRepository
+import java.util.Locale
 
 @AndroidEntryPoint
 class CollectionDetailsActivity : AppCompatActivity() {
@@ -34,6 +36,10 @@ class CollectionDetailsActivity : AppCompatActivity() {
     
     @Inject
     lateinit var repository: AppRepository
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
+    }
 
     private val adapter = CollectionAdapter(
         onItemClick = { movie ->

@@ -28,23 +28,7 @@ import java.util.Locale
 class PlannedActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(applyLocale(newBase))
-    }
-
-    private fun applyLocale(context: Context): Context {
-        val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
-        val locale = when (langPref) {
-            "uk" -> Locale("uk")
-            "ru" -> Locale("ru")
-            "en" -> Locale("en")
-            else -> Locale("uk")
-        }
-        Locale.setDefault(locale)
-        val config = Configuration(context.resources.configuration)
-        val localeList = android.os.LocaleList(locale)
-        config.setLocales(localeList)
-        return context.createConfigurationContext(config)
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
     }
 
     private lateinit var binding: ActivityPlannedBinding
@@ -174,6 +158,8 @@ class PlannedActivity : AppCompatActivity() {
         binding.rvPlanned.apply {
             adapter = plannedAdapter
             layoutManager = LinearLayoutManager(this@PlannedActivity)
+            setHasFixedSize(true)
+            setItemViewCacheSize(15)
             layoutAnimation = AnimationUtils.loadLayoutAnimation(
                 context,
                 R.anim.layout_animation_slide_up

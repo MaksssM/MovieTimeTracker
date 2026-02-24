@@ -62,7 +62,7 @@ class PlannedContentAdapter(
                 }
 
                 // Load poster with Coil
-                ivPoster.load(item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }) {
+                ivPoster.load(item.posterPath?.let { "https://image.tmdb.org/t/p/w342$it" }) {
                     crossfade(true)
                     placeholder(R.drawable.ic_placeholder)
                     error(R.drawable.ic_placeholder)

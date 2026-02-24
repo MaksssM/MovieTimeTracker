@@ -156,9 +156,15 @@ class CalendarFragment : Fragment() {
     }
 
     private fun updateMonthYear(month: YearMonth) {
-        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("uk"))
+        val prefs = requireContext().getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE)
+        val locale = when (prefs.getString("pref_lang", "uk")) {
+            "ru" -> Locale("ru")
+            "en" -> Locale("en")
+            else -> Locale("uk")
+        }
+        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", locale)
         binding.tvMonthYear.text = month.format(formatter)
-            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale("uk")) else it.toString() }
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
     }
 
     override fun onDestroyView() {

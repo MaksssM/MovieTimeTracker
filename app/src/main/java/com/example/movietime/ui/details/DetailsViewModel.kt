@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movietime.data.model.CastMember
+import com.example.movietime.data.model.CrewMember
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.repository.AppRepository
@@ -27,6 +29,12 @@ class DetailsViewModel @Inject constructor(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _cast = MutableLiveData<List<CastMember>>()
+    val cast: LiveData<List<CastMember>> = _cast
+
+    private val _crew = MutableLiveData<List<CrewMember>>()
+    val crew: LiveData<List<CrewMember>> = _crew
+
     fun loadMovie(movieId: Int) {
         viewModelScope.launch {
             try {
@@ -41,6 +49,16 @@ class DetailsViewModel @Inject constructor(
                 _item.value = null
             } finally {
                 _isLoading.value = false
+            }
+        }
+        // Load credits in parallel
+        viewModelScope.launch {
+            try {
+                val credits = repository.getMovieCredits(movieId)
+                _cast.value = credits?.cast?.take(20) ?: emptyList()
+                _crew.value = credits?.crew ?: emptyList()
+            } catch (e: Exception) {
+                android.util.Log.e("DetailsViewModel", "Error loading movie credits: ${e.message}")
             }
         }
     }
@@ -59,6 +77,16 @@ class DetailsViewModel @Inject constructor(
                 _item.value = null
             } finally {
                 _isLoading.value = false
+            }
+        }
+        // Load credits in parallel
+        viewModelScope.launch {
+            try {
+                val credits = repository.getTvCredits(tvShowId)
+                _cast.value = credits?.cast?.take(20) ?: emptyList()
+                _crew.value = credits?.crew ?: emptyList()
+            } catch (e: Exception) {
+                android.util.Log.e("DetailsViewModel", "Error loading TV credits: ${e.message}")
             }
         }
     }

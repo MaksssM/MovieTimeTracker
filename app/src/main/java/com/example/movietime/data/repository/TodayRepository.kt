@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
+import com.example.movietime.util.LanguageManager
 import com.example.movietime.BuildConfig
 
 /**
@@ -30,7 +31,8 @@ class TodayRepository @Inject constructor(
     private val tmdbApi: TmdbApi,
     private val watchedItemDao: WatchedItemDao,
     private val watchingDao: WatchingDao,
-    private val tvShowProgressDao: TvShowProgressDao
+    private val tvShowProgressDao: TvShowProgressDao,
+    private val languageManager: LanguageManager
 ) {
     private val apiKey = BuildConfig.TMDB_API_KEY
     
@@ -384,10 +386,6 @@ class TodayRepository @Inject constructor(
     }
     
     private fun getLanguage(): String {
-        return when (Locale.getDefault().language) {
-            "uk" -> "uk-UA"
-            "ru" -> "ru-RU"
-            else -> "en-US"
-        }
+        return languageManager.getApiLanguage()
     }
 }

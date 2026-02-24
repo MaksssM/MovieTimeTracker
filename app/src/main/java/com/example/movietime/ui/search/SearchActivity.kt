@@ -2,7 +2,9 @@ package com.example.movietime.ui.search
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -35,6 +37,10 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchAdapter: SearchAdapter
     private var searchJob: Job? = null
     private var advancedFiltersSheet: AdvancedFiltersBottomSheet? = null
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,8 +125,8 @@ class SearchActivity : AppCompatActivity() {
         binding.rvSearchResults.apply {
             adapter = searchAdapter
             layoutManager = LinearLayoutManager(this@SearchActivity)
-            // Improve performance for fixed size items
             setHasFixedSize(true)
+            setItemViewCacheSize(20)
         }
     }
 

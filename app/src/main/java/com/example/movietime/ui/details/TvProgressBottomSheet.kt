@@ -20,6 +20,7 @@ import com.example.movietime.data.model.TvSeasonDetails
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.databinding.BottomSheetTvProgressBinding
 import com.example.movietime.util.Utils
+import com.example.movietime.util.LanguageManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +45,9 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
     
     @Inject
     lateinit var watchedItemDao: WatchedItemDao
+
+    @Inject
+    lateinit var languageManager: LanguageManager
     
     private var tvShow: TvShowResult? = null
     private var tvShowId: Int = -1
@@ -171,7 +175,7 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
         lifecycleScope.launch {
             try {
                 // Load TV show details
-                val language = getContentLanguage()
+                val language = languageManager.getApiLanguage()
                 Log.d(TAG, "Fetching TV show details with language: $language")
                 
                 tvShow = withContext(Dispatchers.IO) {
@@ -507,16 +511,9 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
         binding.btnSave.isEnabled = false
     }
     
-    private fun getContentLanguage(): String {
-        val prefs = requireContext().getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE)
-        return when (prefs.getString("pref_lang", "uk")) {
-            "uk" -> "uk-UA"
-            "ru" -> "ru-RU"
-            "en" -> "en-US"
-            else -> "uk-UA"
-        }
-    }
-    
+    private fun getContentLanguage(): String =
+        languageManager.getApiLanguage()
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

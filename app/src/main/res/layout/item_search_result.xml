@@ -164,6 +164,43 @@
             android:background="@drawable/bg_card_top_strip_search"
             android:alpha="0.9" />
 
+        <!-- Library Status Badge (top-right corner) -->
+        <LinearLayout
+            android:id="@+id/layoutStatusBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="5dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_status_badge_watched"
+            android:visibility="gone"
+            android:elevation="4dp">
+
+            <ImageView
+                android:id="@+id/ivStatusIcon"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/ic_check_circle"
+                app:tint="@android:color/white"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/tvStatusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textSize="10sp"
+                android:textColor="@android:color/white"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                tools:text="Переглянуто" />
+
+        </LinearLayout>
+
     </FrameLayout>
 
 </com.google.android.material.card.MaterialCardView>
