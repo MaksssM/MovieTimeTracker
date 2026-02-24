@@ -55,7 +55,20 @@ data class DetailedStatistics(
     val firstWatchDate: Long? = null,
     val completedTvShows: Int = 0,
     val avgEpisodesPerDay: Float = 0f,
-    val decadeDistribution: Map<String, Int> = emptyMap()
+    val decadeDistribution: Map<String, Int> = emptyMap(),
+    
+    // Extended statistics
+    val totalRewatches: Int = 0,
+    val avgMovieRuntime: Int = 0,
+    val avgMoviesPerMonth: Float = 0f,
+    val totalWatchTimeMovies: Long = 0,
+    val totalWatchTimeTvShows: Long = 0,
+    val thisMonthTvShows: Int = 0,
+    val shortestMovie: LongestItem? = null,
+    val highestRatedMovie: TopRatedItem? = null,
+    val highestRatedTvShow: TopRatedItem? = null,
+    val mostPopularGenre: String = "",
+    val avgContentPerMonth: Float = 0f
 )
 
 /**

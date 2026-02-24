@@ -35,15 +35,22 @@ class CalendarEventAdapter(
 ) : ListAdapter<CalendarEventData, CalendarEventAdapter.EventViewHolder>(DiffCallback) {
 
     companion object {
-        // Static formatter to avoid recreation on every bind
-        private val DATE_FORMATTER = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale("uk"))
-        
         private val DiffCallback = object : DiffUtil.ItemCallback<CalendarEventData>() {
             override fun areItemsTheSame(oldItem: CalendarEventData, newItem: CalendarEventData) =
                 oldItem.date == newItem.date
             override fun areContentsTheSame(oldItem: CalendarEventData, newItem: CalendarEventData) =
                 oldItem == newItem
         }
+    }
+
+    private fun getDateFormatter(): DateTimeFormatter {
+        val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val locale = when (prefs.getString("pref_lang", "uk")) {
+            "ru" -> Locale("ru")
+            "en" -> Locale("en")
+            else -> Locale("uk")
+        }
+        return DateTimeFormatter.ofPattern("d MMMM yyyy", locale)
     }
 
     fun submitEvents(newEvents: List<CalendarEventData>) {
@@ -71,7 +78,8 @@ class CalendarEventAdapter(
             context: Context,
             onReleaseClick: (CalendarRelease) -> Unit
         ) {
-            binding.tvEventDate.text = eventData.date.format(DATE_FORMATTER)
+            val formatter = getDateFormatter()
+            binding.tvEventDate.text = eventData.date.format(formatter)
             
             // Show releases count
             binding.tvReleasesCount.text = context.getString(R.string.releases_count, eventData.releases.size)
@@ -87,7 +95,7 @@ class CalendarEventAdapter(
 
                 releaseBinding.tvTitle.text = release.title
                 
-                // Update chips instead of TextViews
+                // Update chips - color-coded for movie vs TV
                 releaseBinding.chipType.text = if (release.isMovie) 
                     context.getString(R.string.movie) 
                 else 
@@ -96,6 +104,21 @@ class CalendarEventAdapter(
                 releaseBinding.chipType.setChipIconResource(
                     if (release.isMovie) R.drawable.ic_movie_24 else R.drawable.ic_tv_24
                 )
+
+                // Color code by type
+                if (release.isMovie) {
+                    releaseBinding.chipType.setChipBackgroundColorResource(R.color.chip_movie_bg)
+                    releaseBinding.chipType.setTextColor(android.graphics.Color.parseColor("#60A5FA"))
+                    releaseBinding.chipType.chipIconTint = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#60A5FA"))
+                    releaseBinding.releaseRoot.setBackgroundResource(R.drawable.bg_calendar_release_movie)
+                    releaseBinding.viewTypeBar.setBackgroundColor(android.graphics.Color.parseColor("#60A5FA"))
+                } else {
+                    releaseBinding.chipType.setChipBackgroundColorResource(R.color.chip_tv_bg)
+                    releaseBinding.chipType.setTextColor(android.graphics.Color.parseColor("#22C55E"))
+                    releaseBinding.chipType.chipIconTint = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#22C55E"))
+                    releaseBinding.releaseRoot.setBackgroundResource(R.drawable.bg_calendar_release_tv)
+                    releaseBinding.viewTypeBar.setBackgroundColor(android.graphics.Color.parseColor("#22C55E"))
+                }
                 
                 releaseBinding.chipRating.text = String.format(Locale.US, "⭐ %.1f", release.rating)
 

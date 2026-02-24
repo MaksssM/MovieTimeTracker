@@ -19,7 +19,6 @@ import com.example.movietime.R
 import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.databinding.ActivityWatchingBinding
 import com.example.movietime.ui.search.EnhancedSearchActivity
-import com.example.movietime.ui.adapters.ContentAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import android.widget.Toast
@@ -36,7 +35,7 @@ class WatchingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWatchingBinding
     private val viewModel: WatchingViewModel by viewModels()
 
-    private lateinit var watchingAdapter: ContentAdapter
+    private lateinit var watchingAdapter: WatchingAdapter
     private var currentFilter = "all"
     private var currentSort = SortType.DATE_NEWEST
     private var searchQuery = ""
@@ -133,9 +132,8 @@ class WatchingActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        watchingAdapter = ContentAdapter(
+        watchingAdapter = WatchingAdapter(
             onItemClick = { item ->
-                // Navigate to details
                 val intent = if (item.mediaType == "tv") {
                     Intent(this, com.example.movietime.ui.details.TvDetailsActivity::class.java).apply {
                         putExtra("ITEM_ID", item.id)
@@ -150,7 +148,11 @@ class WatchingActivity : AppCompatActivity() {
                 startActivity(intent)
             },
             onDeleteClick = { item ->
-                showMoveOptionsDialog(item)
+                showDeleteConfirmDialog(item)
+            },
+            onMoveToWatchedClick = { item ->
+                viewModel.moveToWatched(item)
+                Toast.makeText(this, getString(R.string.moved_to_watched), Toast.LENGTH_SHORT).show()
             }
         )
 
@@ -161,30 +163,25 @@ class WatchingActivity : AppCompatActivity() {
             setItemViewCacheSize(15)
             layoutAnimation = AnimationUtils.loadLayoutAnimation(
                 context,
-                R.anim.layout_animation_slide_up
+                R.anim.layout_animation_slide_in_right
             )
         }
     }
 
-    private fun showMoveOptionsDialog(item: com.example.movietime.data.db.WatchedItem) {
+    private fun showDeleteConfirmDialog(item: com.example.movietime.data.db.WatchedItem) {
         val options = arrayOf(
-            getString(R.string.move_to_watched),
             getString(R.string.move_to_planned),
             getString(R.string.delete)
         )
-        androidx.appcompat.app.AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder(this)
             .setTitle(item.title)
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> {
-                        viewModel.moveToWatched(item)
-                        Toast.makeText(this, getString(R.string.moved_to_watched), Toast.LENGTH_SHORT).show()
-                    }
-                    1 -> {
                         viewModel.moveToPlanned(item)
                         Toast.makeText(this, getString(R.string.moved_to_planned), Toast.LENGTH_SHORT).show()
                     }
-                    2 -> viewModel.removeFromWatching(item)
+                    1 -> viewModel.removeFromWatching(item)
                 }
             }
             .show()

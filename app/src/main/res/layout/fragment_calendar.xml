@@ -42,14 +42,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="8dp"
+            android:paddingBottom="4dp">
 
             <!-- Month/Year Navigation -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp"
@@ -58,64 +58,143 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="8dp">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnPrevMonth"
-                        style="@style/Widget.Material3.Button.IconButton"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        android:background="@drawable/bg_quick_action_glass"
-                        app:icon="@drawable/ic_arrow_back_24"
-                        app:iconTint="@android:color/white"
-                        android:contentDescription="@string/previous_month" />
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginHorizontal="12dp">
-
-                        <TextView
-                            android:id="@+id/tvMonthYear"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Грудень 2025"
-                            android:textColor="@color/text_primary"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif-medium" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="6dp">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnToday"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="@string/today"
-                            android:textSize="13sp"
-                            android:textColor="#60A5FA"
-                            app:icon="@drawable/ic_calendar_24"
-                            app:iconSize="16dp"
-                            app:iconTint="#60A5FA"
-                            android:visibility="visible"
-                            app:rippleColor="#3060A5FA"
-                            android:paddingHorizontal="12dp" />
+                            android:id="@+id/btnPrevMonth"
+                            style="@style/Widget.Material3.Button.IconButton"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_quick_action_glass"
+                            app:icon="@drawable/ic_arrow_back_24"
+                            app:iconTint="@android:color/white"
+                            android:contentDescription="@string/previous_month" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_marginHorizontal="12dp">
+
+                            <TextView
+                                android:id="@+id/tvMonthYear"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/text_primary"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:fontFamily="sans-serif-medium"
+                                tools:text="Декабрь 2025" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnToday"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="28dp"
+                                android:text="@string/today"
+                                android:textSize="11sp"
+                                android:textColor="#60A5FA"
+                                app:icon="@drawable/ic_calendar_24"
+                                app:iconSize="14dp"
+                                app:iconTint="#60A5FA"
+                                android:visibility="visible"
+                                app:rippleColor="#3060A5FA"
+                                android:paddingHorizontal="8dp" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnNextMonth"
+                            style="@style/Widget.Material3.Button.IconButton"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_quick_action_glass"
+                            app:icon="@drawable/ic_arrow_right"
+                            app:iconTint="@android:color/white"
+                            android:contentDescription="@string/next_month" />
 
                     </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnNextMonth"
-                        style="@style/Widget.Material3.Button.IconButton"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        android:background="@drawable/bg_quick_action_glass"
-                        app:icon="@drawable/ic_arrow_right"
-                        app:iconTint="@android:color/white"
-                        android:contentDescription="@string/next_month" />
+                    <!-- Month Stats Row -->
+                    <LinearLayout
+                        android:id="@+id/layoutMonthStats"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:paddingHorizontal="12dp"
+                        android:paddingBottom="12dp"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <!-- Movies count -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:background="@drawable/bg_calendar_release_movie"
+                            android:paddingVertical="8dp"
+                            android:paddingHorizontal="12dp"
+                            android:layout_marginEnd="6dp">
+
+                            <View
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:background="@drawable/dot_movie_blue" />
+
+                            <TextView
+                                android:id="@+id/tvMonthMovieCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:textColor="#60A5FA"
+                                android:textSize="12sp"
+                                android:fontFamily="sans-serif-medium"
+                                tools:text="5 фильмов" />
+
+                        </LinearLayout>
+
+                        <!-- TV shows count -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:background="@drawable/bg_calendar_release_tv"
+                            android:paddingVertical="8dp"
+                            android:paddingHorizontal="12dp"
+                            android:layout_marginStart="6dp">
+
+                            <View
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:background="@drawable/dot_tv_green" />
+
+                            <TextView
+                                android:id="@+id/tvMonthTvCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:textColor="#22C55E"
+                                android:textSize="12sp"
+                                android:fontFamily="sans-serif-medium"
+                                tools:text="3 сериала" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -126,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:gravity="center_horizontal">
 
                 <TextView
@@ -135,7 +214,7 @@
                     android:layout_weight="1"
                     android:text="@string/day_mon"
                     android:gravity="center"
-                    android:textSize="13sp"
+                    android:textSize="11sp"
                     android:textColor="@color/text_hint"
                     android:fontFamily="sans-serif-medium" />
 
@@ -145,7 +224,7 @@
                     android:layout_weight="1"
                     android:text="@string/day_tue"
                     android:gravity="center"
-                    android:textSize="13sp"
+                    android:textSize="11sp"
                     android:textColor="@color/text_hint"
                     android:fontFamily="sans-serif-medium" />
 
@@ -155,7 +234,7 @@
                     android:layout_weight="1"
                     android:text="@string/day_wed"
                     android:gravity="center"
-                    android:textSize="13sp"
+                    android:textSize="11sp"
                     android:textColor="@color/text_hint"
                     android:fontFamily="sans-serif-medium" />
 
@@ -165,7 +244,7 @@
                     android:layout_weight="1"
                     android:text="@string/day_thu"
                     android:gravity="center"
-                    android:textSize="13sp"
+                    android:textSize="11sp"
                     android:textColor="@color/text_hint"
                     android:fontFamily="sans-serif-medium" />
 
@@ -175,7 +254,7 @@
                     android:layout_weight="1"
                     android:text="@string/day_fri"
                     android:gravity="center"
-                    android:textSize="13sp"
+                    android:textSize="11sp"
                     android:textColor="@color/text_hint"
                     android:fontFamily="sans-serif-medium" />
 
@@ -185,7 +264,7 @@
                     android:layout_weight="1"
                     android:text="@string/day_sat"
                     android:gravity="center"
-                    android:textSize="13sp"
+                    android:textSize="11sp"
                     android:textColor="#60A5FA"
                     android:fontFamily="sans-serif-medium" />
 
@@ -195,7 +274,7 @@
                     android:layout_weight="1"
                     android:text="@string/day_sun"
                     android:gravity="center"
-                    android:textSize="13sp"
+                    android:textSize="11sp"
                     android:textColor="#F87171"
                     android:fontFamily="sans-serif-medium" />
 

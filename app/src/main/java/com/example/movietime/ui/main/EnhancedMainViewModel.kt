@@ -80,6 +80,8 @@ class EnhancedMainViewModel @Inject constructor(
     fun loadRecommendations() {
         viewModelScope.launch {
             try {
+                // Invalidate cache to get fresh recommendations on each load
+                recommendationService.invalidateCache()
                 val recs = recommendationService.getPersonalizedRecommendations()
 
                 // Чергуємо фільми і серіали для різноманітності стрічки

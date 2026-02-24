@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -62,9 +63,12 @@ class EnhancedSearchActivity : AppCompatActivity() {
         setupSearchInput()
         setupTabs()
         setupSortButton()
+        setupClearButton()
+        setupAdvancedFilters()
         observeViewModel()
         observeLibraryStatus()
         loadPopularContent()
+        loadRecentSearches()
     }
     
     @Suppress("DEPRECATION")
@@ -147,9 +151,68 @@ class EnhancedSearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 val query = s?.toString()?.trim() ?: ""
+                binding.btnClearSearch.isVisible = query.isNotEmpty()
                 performSearch(query)
             }
         })
+        
+        // Handle keyboard search action
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val query = binding.etSearch.text?.toString()?.trim() ?: ""
+                if (query.length >= 2) {
+                    performSearch(query)
+                }
+                true
+            } else false
+        }
+    }
+
+    private fun setupClearButton() {
+        binding.btnClearSearch.setOnClickListener {
+            binding.etSearch.text?.clear()
+            binding.etSearch.requestFocus()
+            binding.layoutNoResults.isVisible = false
+        }
+    }
+
+    private fun setupAdvancedFilters() {
+        binding.btnAdvancedFilters.setOnClickListener {
+            try {
+                val bottomSheet = AdvancedFiltersBottomSheet.newInstance()
+                bottomSheet.show(supportFragmentManager, AdvancedFiltersBottomSheet.TAG)
+            } catch (e: Exception) {
+                Log.d("EnhancedSearchActivity", "Advanced filters not available: ${e.message}")
+            }
+        }
+    }
+
+    private var recentSearchAdapter: RecentSearchChipsAdapter? = null
+
+    private fun loadRecentSearches() {
+        binding.rvRecentSearches.layoutManager = LinearLayoutManager(
+            this, LinearLayoutManager.HORIZONTAL, false
+        )
+        recentSearchAdapter = RecentSearchChipsAdapter(emptyList()) { query ->
+            binding.etSearch.setText(query)
+            binding.etSearch.setSelection(query.length)
+        }
+        binding.rvRecentSearches.adapter = recentSearchAdapter
+
+        viewModel.searchHistory.observe(this) { history ->
+            val query = binding.etSearch.text?.toString()?.trim() ?: ""
+            if (history.isNullOrEmpty() || query.isNotEmpty()) {
+                binding.layoutRecentSearches.isVisible = false
+            } else {
+                binding.layoutRecentSearches.isVisible = true
+                recentSearchAdapter?.updateItems(history)
+            }
+        }
+
+        binding.btnClearHistory.setOnClickListener {
+            viewModel.clearSearchHistory()
+            binding.layoutRecentSearches.isVisible = false
+        }
     }
 
     private fun setupTabs() {
@@ -205,6 +268,10 @@ class EnhancedSearchActivity : AppCompatActivity() {
         binding.cardResults.isVisible = false
         binding.cardPopular.isVisible = true
         binding.layoutLoading.isVisible = false
+        binding.layoutNoResults.isVisible = false
+        // Show recent searches if there is history
+        val history = viewModel.searchHistory.value
+        binding.layoutRecentSearches.isVisible = !history.isNullOrEmpty()
     }
 
     private fun updatePopularContent() {
@@ -250,21 +317,26 @@ class EnhancedSearchActivity : AppCompatActivity() {
                 allSearchResults = groupedItems
                 binding.cardResults.isVisible = true
                 binding.cardPopular.isVisible = false
+                binding.layoutNoResults.isVisible = false
+                binding.layoutRecentSearches.isVisible = false
                 applyLibraryAndSortFilter()
             } else if (query.isEmpty()) {
                 allSearchResults = emptyList()
                 binding.cardResults.isVisible = false
+                binding.layoutNoResults.isVisible = false
                 showPopularContent()
             } else {
+                // Has query but no results
                 allSearchResults = emptyList()
                 binding.cardResults.isVisible = false
-                showPopularContent()
+                binding.cardPopular.isVisible = false
+                binding.layoutNoResults.isVisible = true
+                binding.layoutRecentSearches.isVisible = false
             }
         }
 
         viewModel.popularContent.observe(this) { content ->
             updatePopularContent()
-            // Show popular content immediately when loaded and no search active
             val query = binding.etSearch.text?.toString()?.trim() ?: ""
             if (query.isEmpty() && content.isNotEmpty()) {
                 showPopularContent()
@@ -273,6 +345,9 @@ class EnhancedSearchActivity : AppCompatActivity() {
 
         viewModel.isLoading.observe(this) { isLoading ->
             binding.layoutLoading.isVisible = isLoading
+            if (isLoading) {
+                binding.layoutNoResults.isVisible = false
+            }
         }
     }
 

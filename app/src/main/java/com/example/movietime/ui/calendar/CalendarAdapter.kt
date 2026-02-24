@@ -16,12 +16,17 @@ data class CalendarDay(
     val isCurrentMonth: Boolean,
     val hasEvents: Boolean = false,
     val eventCount: Int = 0,
-    val isToday: Boolean = false
+    val isToday: Boolean = false,
+    val movieCount: Int = 0,
+    val tvCount: Int = 0,
+    val isSelected: Boolean = false
 )
 
 class CalendarAdapter(
     private val onDayClick: (Int) -> Unit
 ) : ListAdapter<CalendarDay, CalendarAdapter.CalendarDayViewHolder>(DiffCallback) {
+
+    private var selectedDay: Int = -1
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<CalendarDay>() {
@@ -34,6 +39,17 @@ class CalendarAdapter(
 
     fun submitDays(newDays: List<CalendarDay>) {
         submitList(newDays)
+    }
+
+    fun setSelectedDay(day: Int) {
+        val oldSelected = selectedDay
+        selectedDay = day
+        // Refresh old and new selection
+        currentList.forEachIndexed { index, calendarDay ->
+            if (calendarDay.isCurrentMonth && (calendarDay.dayOfMonth == oldSelected || calendarDay.dayOfMonth == day)) {
+                notifyItemChanged(index)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarDayViewHolder {
@@ -55,65 +71,83 @@ class CalendarAdapter(
         fun bind(day: CalendarDay, onDayClick: (Int) -> Unit) {
             val context = binding.root.context
             
-            // Set day number
             binding.tvDayNumber.text = day.dayOfMonth.toString()
+            
+            val isSelected = day.isCurrentMonth && day.dayOfMonth == selectedDay
             
             // Apply styling based on current month
             if (day.isCurrentMonth) {
                 binding.tvDayNumber.alpha = 1f
                 binding.root.isEnabled = true
             } else {
-                binding.tvDayNumber.alpha = 0.3f
+                binding.tvDayNumber.alpha = 0.25f
                 binding.root.isEnabled = false
             }
             
-            // Show today highlight (Ring)
-            binding.todayHighlight.visibility = if (day.isToday && day.isCurrentMonth) View.VISIBLE else View.GONE
+            // Show selected background
+            binding.dayBackground.visibility = if (isSelected) View.VISIBLE else View.INVISIBLE
             
-            // Show event indicators
-            if (day.isCurrentMonth) {
-                if (day.eventCount > 0) {
-                     binding.eventIndicator.visibility = View.VISIBLE
-                     
-                     // Optional count badge for many events
-                     if (day.eventCount > 2) {
-                         binding.tvEventCount.visibility = View.VISIBLE
-                         binding.tvEventCount.text = day.eventCount.toString()
-                     } else {
-                         binding.tvEventCount.visibility = View.GONE
-                     }
+            // Show today highlight (ring) only when not selected
+            binding.todayHighlight.visibility = if (day.isToday && day.isCurrentMonth && !isSelected) View.VISIBLE else View.GONE
+            
+            // Show movie/TV dots
+            if (day.isCurrentMonth && day.eventCount > 0) {
+                binding.dotMovie.visibility = if (day.movieCount > 0) View.VISIBLE else View.GONE
+                binding.dotTv.visibility = if (day.tvCount > 0) View.VISIBLE else View.GONE
+                binding.eventIndicator.visibility = View.GONE
+                
+                // Count badge for many events
+                if (day.eventCount > 2) {
+                    binding.tvEventCount.visibility = View.VISIBLE
+                    binding.tvEventCount.text = day.eventCount.toString()
                 } else {
-                    binding.eventIndicator.visibility = View.GONE
                     binding.tvEventCount.visibility = View.GONE
                 }
             } else {
+                binding.dotMovie.visibility = View.GONE
+                binding.dotTv.visibility = View.GONE
                 binding.eventIndicator.visibility = View.GONE
                 binding.tvEventCount.visibility = View.GONE
+            }
+            
+            if (!day.isCurrentMonth) {
                 binding.todayHighlight.visibility = View.GONE
+                binding.tvEventCount.visibility = View.GONE
             }
             
             // Text Color Logic
-            if (day.isToday && day.isCurrentMonth) {
-                binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.accent))
-                binding.tvDayNumber.typeface = android.graphics.Typeface.DEFAULT_BOLD
-            } else {
-                binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.text_primary))
-                binding.tvDayNumber.typeface = android.graphics.Typeface.DEFAULT
+            when {
+                isSelected -> {
+                    binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, android.R.color.white))
+                    binding.tvDayNumber.typeface = android.graphics.Typeface.DEFAULT_BOLD
+                }
+                day.isToday && day.isCurrentMonth -> {
+                    binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.accent))
+                    binding.tvDayNumber.typeface = android.graphics.Typeface.DEFAULT_BOLD
+                }
+                day.hasEvents && day.isCurrentMonth -> {
+                    binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+                    binding.tvDayNumber.typeface = android.graphics.Typeface.DEFAULT_BOLD
+                }
+                else -> {
+                    binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+                    binding.tvDayNumber.typeface = android.graphics.Typeface.DEFAULT
+                }
             }
 
             binding.root.setOnClickListener {
                 if (day.isCurrentMonth) {
                     com.example.movietime.utils.HapticFeedbackHelper.impactLow(it)
-                    // Animate day selection
+                    setSelectedDay(day.dayOfMonth)
                     it.animate()
                         .scaleX(0.9f)
                         .scaleY(0.9f)
-                        .setDuration(100)
+                        .setDuration(80)
                         .withEndAction {
                             it.animate()
                                 .scaleX(1f)
                                 .scaleY(1f)
-                                .setDuration(150)
+                                .setDuration(120)
                                 .setInterpolator(android.view.animation.OvershootInterpolator(2f))
                                 .start()
                         }

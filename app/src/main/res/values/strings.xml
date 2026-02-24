@@ -105,6 +105,7 @@
     <string name="rating_short">Rating</string>
     <string name="categories">Categories</string>
     <string name="quick_actions">Quick Actions</string>
+    <string name="collections">Collections</string>
     <string name="trending">Trending</string>
     <string name="movie_premieres">Upcoming Premieres</string>
     <string name="friends">Friends</string>
@@ -543,6 +544,18 @@
     <string name="movie_runtime_fmt">%d min</string>
     <string name="collection_empty">No movies in this collection</string>
     <string name="order_release">By Release Date</string>
+    <string name="new_collection">New Collection</string>
+    <string name="create_collection">Create</string>
+    <string name="edit_collection">Edit Collection</string>
+    <string name="edit">Edit</string>
+    <string name="delete_collection">Delete Collection</string>
+    <string name="no_collections">You have no collections yet.\nCreate your first!</string>
+    <string name="collection_tab_empty">This collection is empty.\nAdd movies or shows here!</string>
+    <string name="items_count">%d items</string>
+    <string name="your_progress">Your Progress</string>
+    <string name="create_new_collection">Create new collection</string>
+    <string name="delete_collection_title">Delete Collection?</string>
+    <string name="delete_collection_confirm">Are you sure you want to delete this collection? This action cannot be undone.</string>
     
     <!-- Statistics Screen -->
     <string name="statistics">Statistics</string>
@@ -630,11 +643,22 @@
     <string name="genre_diversity">Genres</string>
     <string name="you_explored_genres">You explored %d genres</string>
     
+    <!-- Extended Statistics -->
+    <string name="extended_statistics">Extended Statistics</string>
+    <string name="total_rewatches">Total Rewatches</string>
+    <string name="avg_movie_runtime">Avg. Runtime</string>
+    <string name="movies_per_month">Movies/Month</string>
+    <string name="content_per_month">Content/Month</string>
+    <string name="most_popular_genre">Favorite Genre</string>
+    <string name="watch_time_breakdown">Watch Time Breakdown</string>
+    <string name="shortest_movie">Shortest Movie</string>
+    <string name="highest_rated">Highest Rated</string>
+    
     <!-- Enhanced Status Badges -->
     <string name="in_your_watchlist">In Your List</string>
     <string name="watched_on_date">Watched on %s</string>
     <string name="your_rating">Your Rating: %.1f</string>
-    <string name="episodes_progress">%d/%d episodes</string>
+    <string name="episodes_progress">%1$d/%2$d episodes</string>
     <string name="fully_watched">Fully Watched</string>
     <string name="partially_watched">Partially Watched</string>
     
@@ -647,4 +671,8 @@
     <string name="month_view">Month</string>
     <string name="releases_this_week">Releases This Week</string>
     <string name="no_releases_selected_day">No releases on selected day</string>
+
+    <!-- Search improvements -->
+    <string name="try_different_query">Try a different search query</string>
+    <string name="tv_shows_count_fmt">%d TV shows</string>
 </resources>

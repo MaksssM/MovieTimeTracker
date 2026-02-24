@@ -233,7 +233,7 @@
                     android:nestedScrollingEnabled="false"
                     android:clipToPadding="false"
                     android:paddingHorizontal="16dp"
-                    tools:listitem="@layout/item_watched" />
+                    tools:listitem="@layout/item_watching" />
 
                 <!-- Empty State -->
                 <LinearLayout

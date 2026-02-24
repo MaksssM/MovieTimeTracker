@@ -1114,13 +1114,13 @@
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_folder"
                                 app:tint="#3B82F6"
-                                android:contentDescription="Колекції" />
+                                android:contentDescription="@string/collections" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="Колекції"
+                                android:text="@string/collections"
                                 android:textColor="@color/text_primary"
                                 android:textSize="12sp"
                                 android:gravity="center"

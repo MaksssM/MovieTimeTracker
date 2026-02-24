@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Flip-in card effect with scale and fade -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/decelerate_cubic">
+    <translate
+        android:fromYDelta="15%p" android:toYDelta="0"
+        android:duration="500" />
+    <alpha
+        android:fromAlpha="0" android:toAlpha="1"
+        android:duration="400" />
+    <scale
+        android:fromXScale="0.7" android:fromYScale="0.7"
+        android:toXScale="1" android:toYScale="1"
+        android:pivotX="50%" android:pivotY="100%"
+        android:duration="500" />
+    <rotate
+        android:fromDegrees="-3" android:toDegrees="0"
+        android:pivotX="50%" android:pivotY="50%"
+        android:duration="500" />
+</set>

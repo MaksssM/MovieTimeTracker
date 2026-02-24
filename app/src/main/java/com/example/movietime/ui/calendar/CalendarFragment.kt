@@ -108,8 +108,19 @@ class CalendarFragment : Fragment() {
                 binding.layoutEmpty.visibility = View.GONE
                 binding.rvCalendarEvents.visibility = View.VISIBLE
                 eventAdapter.submitEvents(events)
-                // Trigger layout animation when events change
                 binding.rvCalendarEvents.scheduleLayoutAnimation()
+            }
+        }
+
+        viewModel.monthStats.observe(viewLifecycleOwner) { stats ->
+            if (stats.movieCount > 0 || stats.tvCount > 0) {
+                binding.layoutMonthStats.visibility = View.VISIBLE
+                binding.tvMonthMovieCount.text = resources.getQuantityString(
+                    R.plurals.movies_count, stats.movieCount, stats.movieCount
+                )
+                binding.tvMonthTvCount.text = getString(R.string.tv_shows_count_fmt, stats.tvCount)
+            } else {
+                binding.layoutMonthStats.visibility = View.GONE
             }
         }
 

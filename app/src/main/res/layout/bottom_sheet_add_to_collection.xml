@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Додати до колекції"
+        android:text="@string/add_to_collection"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="?attr/colorOnSurface"
@@ -39,7 +39,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Створити нову колекцію"
+            android:text="@string/create_new_collection"
             android:textSize="16sp"
             android:textColor="?attr/colorPrimary"
             android:layout_marginStart="16dp"
