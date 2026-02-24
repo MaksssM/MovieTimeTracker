@@ -147,6 +147,8 @@
     <string name="time_format_hours">%d ч</string>
     <string name="time_format_minutes">%d мин</string>
     <string name="time_format_hours_minutes" formatted="false">%d ч %d мин</string>
+    <string name="time_format_days">%d д</string>
+    <string name="time_format_days_hours" formatted="false">%d д %d ч</string>
 
     <!-- Additional strings -->
     <string name="total_time">Общее время</string>
@@ -166,6 +168,10 @@
     <string name="filter_tv_shows">Сериалы</string>
     <string name="sort_by_rating">Сортировать по рейтингу</string>
     <string name="sort_by_popularity">Сортировать по популярности</string>
+    <string name="sort_results">Сортировка</string>
+    <string name="library_status_watched">Просмотрено</string>
+    <string name="library_status_planned">Запланировано</string>
+    <string name="library_status_watching">Смотрю</string>
     <string name="results_count_default">Найдено: 0</string>
     <string name="empty_results">Ничего не найдено</string>
     <string name="recent_searches">Недавние поиски</string>
@@ -242,8 +248,19 @@
     <string name="all_data_local">Все ваши данные хранятся локально на устройстве</string>
     <string name="backup_location_info">Сохранено в:\n%s</string>
     <string name="restore_backup_confirm">Все текущие данные будут заменены данными из резервной копии. Продолжить?</string>
-
-    <!-- New Settings Strings -->
+    <string name="restore_backup_merge_confirm">Будут добавлены только те записи, которых нет в вашей коллекции. Текущие данные не будут удалены. Продолжить?</string>
+    <string name="backup_restore_error">Ошибка при восстановлении: %s</string>
+    <string name="backup_restore_mode_title">Режим восстановления</string>
+    <string name="backup_restore_replace">Заменить всё (полное восстановление)</string>
+    <string name="backup_restore_merge">Добавить отсутствующее (слияние)</string>
+    <string name="import_backup_mode_message">Выберите режим восстановления из файла:</string>
+    <string name="backup_restore_in_progress">Восстановление…</string>
+    <string name="delete_backup_confirm">Удалить эту резервную копию?</string>
+    <string name="backup_auto_label">Авто</string>
+    <string name="backup_counts_format" formatted="false">%1$d просм. · %2$d запл. · %3$d смотрю</string>
+    <string name="backup_kb_unit">КБ</string>
+    <string name="import_backup">Импортировать бекап</string>
+    <string name="import_backup_desc">Восстановить данные из файла</string>
     <string name="settings_appearance">Внешний вид</string>
     <string name="settings_content">Контент</string>
     <string name="tmdb_content_language">Язык контента TMDB</string>
@@ -458,6 +475,12 @@
     <string name="user_score">Оценка</string>
     <string name="votes">Голосов</string>
     <string name="release">Релиз</string>
+    <string name="cast_title">Актёрский состав</string>
+    <string name="crew_title">Съёмочная группа</string>
+    <string name="crew_writer">Сценарист</string>
+    <string name="crew_producer">Продюсер</string>
+    <string name="crew_composer">Музыка</string>
+    <string name="as_role">в роли %s</string>
     <string name="additional_info">Подробнее</string>
     <string name="director">Режиссёр</string>
     <string name="budget">Бюджет</string>

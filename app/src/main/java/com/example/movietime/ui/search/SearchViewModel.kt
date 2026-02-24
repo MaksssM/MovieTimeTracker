@@ -15,6 +15,9 @@ import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import android.util.Log
@@ -128,6 +131,24 @@ class SearchViewModel @Inject constructor(
     private val _activeFiltersCount = MutableLiveData<Int>(0)
     val activeFiltersCount: LiveData<Int> = _activeFiltersCount
 
+    // ============ LIBRARY STATUS ============
+    private val _libraryStatusMap = MutableStateFlow<Map<String, String>>(emptyMap())
+    val libraryStatusMap: StateFlow<Map<String, String>> = _libraryStatusMap.asStateFlow()
+
+    fun loadLibraryStatus() {
+        viewModelScope.launch {
+            try {
+                val watched = repository.getWatchedItemsSync().associate { "${it.id}_${it.mediaType}" to "watched" }
+                val planned = repository.getPlannedContentSync().associate { "${it.id}_${it.mediaType}" to "planned" }
+                val watching = repository.getWatchingContentSync().associate { "${it.id}_${it.mediaType}" to "watching" }
+                // watching > planned > watched in priority order
+                _libraryStatusMap.value = watched + planned + watching
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error loading library status", e)
+            }
+        }
+    }
+
     private var lastSearchQuery = ""
     private var lastSearchResults: List<Any> = emptyList()
 
@@ -137,6 +158,7 @@ class SearchViewModel @Inject constructor(
     init {
         refreshSeenItems()
         loadGenres()
+        loadLibraryStatus()
     }
 
     private fun refreshSeenItems() {
@@ -298,7 +320,7 @@ class SearchViewModel @Inject constructor(
                 if (!loadMore) _isLoading.value = true
 
                 val reqPage = if (loadMore) currentPage + 1 else 1
-                val people = repository.searchPeople(query, "uk-UA", reqPage)
+                val people = repository.searchPeople(query, reqPage)
                 
                 if (people.isEmpty()) {
                     isLastPage = true

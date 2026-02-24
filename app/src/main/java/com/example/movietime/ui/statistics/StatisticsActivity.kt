@@ -2,7 +2,9 @@ package com.example.movietime.ui.statistics
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.animation.OvershootInterpolator
@@ -24,6 +26,10 @@ class StatisticsActivity : AppCompatActivity() {
 
     private lateinit var genreAdapter: GenreStatAdapter
     private lateinit var directorAdapter: DirectorStatAdapter
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

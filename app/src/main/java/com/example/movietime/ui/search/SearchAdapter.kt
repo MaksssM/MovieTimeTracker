@@ -25,6 +25,7 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
     companion object {
         private const val VIEW_TYPE_MEDIA = 0
         private const val VIEW_TYPE_PERSON = 1
+        const val PAYLOAD_HIGHLIGHT = "highlight"
         
         private val DiffCallback = object : DiffUtil.ItemCallback<Any>() {
             override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
@@ -59,9 +60,10 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
     private var lastAnimatedPosition = -1
 
     fun updateQueryHighlight(q: String) {
+        val old = currentQuery
         currentQuery = q.trim()
-        for (i in 0 until itemCount) {
-            notifyItemChanged(i)
+        if (old != currentQuery) {
+            notifyItemRangeChanged(0, itemCount, PAYLOAD_HIGHLIGHT)
         }
     }
 
@@ -111,6 +113,27 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
             animateItemEntry(holder.itemView, adapterPosition)
             lastAnimatedPosition = adapterPosition
         }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.contains(PAYLOAD_HIGHLIGHT)) {
+            // Only update text highlighting, skip full rebind and image reload
+            when (holder) {
+                is MediaViewHolder -> holder.updateHighlight()
+                // PersonViewHolder doesn't use highlighting
+            }
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+    }
+
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        super.onViewRecycled(holder)
+        holder.itemView.animate().cancel()
+        holder.itemView.alpha = 1f
+        holder.itemView.translationY = 0f
+        holder.itemView.scaleX = 1f
+        holder.itemView.scaleY = 1f
     }
     
     private fun animateItemEntry(view: View, position: Int) {
@@ -171,14 +194,18 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
             }
         }
 
+        private var lastBoundTitle: String = ""
+        private var lastBoundOverview: String = ""
+
         fun bind(item: Any) {
             when (item) {
                 is MovieResult -> {
-                    binding.tvTitle.text = item.title ?: binding.root.context.getString(R.string.no_title)
+                    lastBoundTitle = item.title ?: binding.root.context.getString(R.string.no_title)
+                    binding.tvTitle.text = lastBoundTitle
 
-                    val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+                    val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w342$it" }
                     binding.ivPoster.load(posterUrl) {
-                        crossfade(400)
+                        crossfade(200)
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)
                     }
@@ -195,19 +222,20 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
                     binding.tvMediaType.text = "$country ${binding.root.context.getString(R.string.media_type_movie)}"
                     binding.viewAccentBar.setBackgroundResource(R.drawable.bg_accent_bar_movie)
 
-                    binding.tvOverview.text = item.overview?.takeIf { it.isNotBlank() }
+                    lastBoundOverview = item.overview?.takeIf { it.isNotBlank() }
                         ?: binding.root.context.getString(R.string.no_description_available)
+                    binding.tvOverview.text = lastBoundOverview
 
-                    highlightText(binding.tvTitle, binding.tvTitle.text.toString())
-                    highlightText(binding.tvOverview, binding.tvOverview.text.toString())
+                    highlightText(binding.tvTitle, lastBoundTitle)
+                    highlightText(binding.tvOverview, lastBoundOverview)
                 }
                 is TvShowResult -> {
-                    binding.tvTitle.text = item.name ?: binding.root.context.getString(R.string.no_title)
+                    lastBoundTitle = item.name ?: binding.root.context.getString(R.string.no_title)
+                    binding.tvTitle.text = lastBoundTitle
 
-                    val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+                    val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w342$it" }
                     binding.ivPoster.load(posterUrl) {
-                        crossfade(400)
-                        size(500, 750)
+                        crossfade(200)
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)
                     }
@@ -226,24 +254,19 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
                     binding.tvMediaType.text = "$country ${binding.root.context.getString(R.string.media_type_tv_show)}"
                     binding.viewAccentBar.setBackgroundResource(R.drawable.bg_accent_bar_tv)
 
-                    binding.tvOverview.text = item.overview?.takeIf { it.isNotBlank() }
+                    lastBoundOverview = item.overview?.takeIf { it.isNotBlank() }
                         ?: binding.root.context.getString(R.string.no_description_available)
+                    binding.tvOverview.text = lastBoundOverview
 
-                    highlightText(binding.tvTitle, binding.tvTitle.text.toString())
-                    highlightText(binding.tvOverview, binding.tvOverview.text.toString())
+                    highlightText(binding.tvTitle, lastBoundTitle)
+                    highlightText(binding.tvOverview, lastBoundOverview)
                 }
             }
+        }
 
-            itemView.alpha = 0f
-            itemView.scaleX = 0.95f
-            itemView.scaleY = 0.95f
-            itemView.animate()
-                .alpha(1f)
-                .scaleX(1f)
-                .scaleY(1f)
-                .setDuration(300)
-                .setStartDelay(0)
-                .start()
+        fun updateHighlight() {
+            if (lastBoundTitle.isNotEmpty()) highlightText(binding.tvTitle, lastBoundTitle)
+            if (lastBoundOverview.isNotEmpty()) highlightText(binding.tvOverview, lastBoundOverview)
         }
 
         private fun getCountryFlag(iso: String): String {
@@ -349,10 +372,9 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
         fun bind(person: Person) {
             binding.tvName.text = person.name
 
-            val photoUrl = person.profilePath?.let { "https://image.tmdb.org/t/p/w500$it" }
+            val photoUrl = person.profilePath?.let { "https://image.tmdb.org/t/p/w185$it" }
             binding.ivPhoto.load(photoUrl) {
-                crossfade(400)
-                size(500, 750)
+                crossfade(200)
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
             }
@@ -372,16 +394,6 @@ class SearchAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
             binding.tvKnownFor.text = knownForTitles ?: ""
             binding.tvKnownFor.visibility = if (knownForTitles.isNullOrEmpty()) View.GONE else View.VISIBLE
 
-            itemView.alpha = 0f
-            itemView.scaleX = 0.95f
-            itemView.scaleY = 0.95f
-            itemView.animate()
-                .alpha(1f)
-                .scaleX(1f)
-                .scaleY(1f)
-                .setDuration(300)
-                .setStartDelay(0)
-                .start()
         }
     }
 }

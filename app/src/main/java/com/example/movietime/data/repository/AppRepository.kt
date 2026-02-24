@@ -20,9 +20,13 @@ import com.example.movietime.data.model.TvShowsResponse
 import com.example.movietime.data.model.TvSeasonDetails
 import com.example.movietime.data.model.TvEpisodeDetails
 import com.example.movietime.data.model.CompanyResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,15 +43,43 @@ class AppRepository @Inject constructor(
     private val apiKey: String
 ) {
 
-    // LRU-кэш для деталей фильмов и сериалов (максимум 100 элементов)
+    // LRU-кэш для деталей фильмов и сериалов
     private val movieDetailsCache = LruCache<Int, MovieResult>(50)
     private val tvShowDetailsCache = LruCache<Int, TvShowResult>(50)
     private val seasonDetailsCache = LruCache<String, TvSeasonDetails>(30)
-    
+
     // Кэш для рекомендаций с TTL
     private data class CachedRecommendations(val data: List<Any>, val timestamp: Long)
     private val recommendationsCache = LruCache<String, CachedRecommendations>(20)
     private val CACHE_TTL_MS = 5 * 60 * 1000L // 5 минут
+
+    /** Скоуп синглтона — переживает Activity.recreate(). */
+    private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    // ── Проверяем при первом создании, не нужен ли refresh после смены языка ──
+    init {
+        if (languageManager.isLibraryRefreshNeeded()) {
+            d("init: needs_library_refresh flag detected – launching refresh")
+            appScope.launch {
+                try {
+                    refreshLibraryTitles()
+                    languageManager.clearLibraryRefreshFlag()
+                    d("init: library refresh completed, flag cleared")
+                } catch (ex: Exception) {
+                    e("init: library refresh failed: ${ex.message}", ex)
+                }
+            }
+        }
+    }
+
+    /** Очищает ВСЕ in-memory кэши (details + recommendations). */
+    fun clearAllCaches() {
+        movieDetailsCache.evictAll()
+        tvShowDetailsCache.evictAll()
+        seasonDetailsCache.evictAll()
+        recommendationsCache.evictAll()
+        d("clearAllCaches: all LRU caches evicted")
+    }
 
     private inline fun d(message: String) {
         if (BuildConfig.DEBUG) Log.d("AppRepo", message)
@@ -58,41 +90,67 @@ class AppRepository @Inject constructor(
     }
 
     // --- API Methods ---
+
+    /** Параллельный поиск фильмов и сериалов по заданному языку. */
+    private suspend fun fetchSearchResults(
+        query: String, language: String, page: Int
+    ): Pair<List<MovieResult>, List<TvShowResult>> = coroutineScope {
+        val movieDeferred = async {
+            try {
+                api.searchMovies(apiKey, query, language, page).results
+            } catch (e: Exception) {
+                d("Movie search failed ($language): ${e.message}")
+                emptyList()
+            }
+        }
+        val tvDeferred = async {
+            try {
+                api.searchTvShows(apiKey, query, language, page).results
+            } catch (e: Exception) {
+                d("TV search failed ($language): ${e.message}")
+                emptyList()
+            }
+        }
+        Pair(movieDeferred.await(), tvDeferred.await())
+    }
+
+    /**
+     * Поиск фильмов и сериалов. Если с текущим языком результатов 0,
+     * повторяет поиск на английском — TMDB может не найти по оригинальному
+     * названию при не-en языке ответа.
+     */
     suspend fun searchMultiLanguage(query: String, page: Int = 1): List<Any> = coroutineScope {
         if (query.isBlank()) return@coroutineScope emptyList()
 
-        // Use current language for search to avoid excessive API calls
         val currentLanguage = languageManager.getApiLanguage()
-        
         d("searchMultiLanguage() query='$query' lang=$currentLanguage page=$page")
 
-        // Launch parallel requests for movies and TV shows
-        val movieDeferred = async {
-            try {
-                val resp = api.searchMovies(apiKey, query, currentLanguage, page)
-                d("Movie response: lang=$currentLanguage page=$page size=${resp.results.size}")
-                resp.results
-            } catch (e: Exception) {
-                d("Movie request failed: error=${e.message}")
-                emptyList()
+        val (movieItems, tvItems) = fetchSearchResults(query, currentLanguage, page)
+        d("Primary search results: movies=${movieItems.size} tv=${tvItems.size}")
+
+        // Фоллбэк на английский, если основной язык дал 0 результатов
+        if (movieItems.isEmpty() && tvItems.isEmpty() && currentLanguage != "en-US") {
+            d("Primary language returned 0 results – retrying with en-US")
+            val (enMovies, enTv) = fetchSearchResults(query, "en-US", page)
+            d("Fallback en-US results: movies=${enMovies.size} tv=${enTv.size}")
+
+            if (enMovies.isNotEmpty() || enTv.isNotEmpty()) {
+                // Пере-запрашиваем найденные элементы на текущем языке
+                val translatedMovies = enMovies.mapNotNull { movie ->
+                    try {
+                        api.getMovieDetails(movie.id, apiKey, currentLanguage)
+                    } catch (_: Exception) { movie }
+                }
+                val translatedTv = enTv.mapNotNull { tv ->
+                    try {
+                        api.getTvShowDetails(tv.id, apiKey, currentLanguage)
+                    } catch (_: Exception) { tv }
+                }
+                val result = (translatedMovies + translatedTv) as List<Any>
+                d("Translated fallback results: ${result.size}")
+                return@coroutineScope result
             }
         }
-
-        val tvDeferred = async {
-            try {
-                val resp = api.searchTvShows(apiKey, query, currentLanguage, page)
-                d("TV response: lang=$currentLanguage page=$page size=${resp.results.size}")
-                resp.results
-            } catch (e: Exception) {
-                d("TV request failed: error=${e.message}")
-                emptyList()
-            }
-        }
-
-        val movieItems = movieDeferred.await()
-        val tvItems = tvDeferred.await()
-
-        d("Total items fetched: movies=${movieItems.size} tv=${tvItems.size}")
 
         // Combine and return (no deduplication needed since single language)
         val result = (movieItems + tvItems) as List<Any>
@@ -456,18 +514,18 @@ class AppRepository @Inject constructor(
 
     // --- Recommendations & Similar Content ---
 
-    suspend fun getMovieRecommendations(movieId: Int, language: String = "uk-UA"): List<MovieResult> {
+    suspend fun getMovieRecommendations(movieId: Int): List<MovieResult> {
         return try {
-            val response = api.getMovieRecommendations(movieId, apiKey, language)
+            val response = api.getMovieRecommendations(movieId, apiKey, languageManager.getApiLanguage())
             response.results
         } catch (e: Exception) {
             emptyList()
         }
     }
 
-    suspend fun getTvShowRecommendations(tvId: Int, language: String = "uk-UA"): List<TvShowResult> {
+    suspend fun getTvShowRecommendations(tvId: Int): List<TvShowResult> {
         return try {
-            val response = api.getTvShowRecommendations(tvId, apiKey, language)
+            val response = api.getTvShowRecommendations(tvId, apiKey, languageManager.getApiLanguage())
             response.results
         } catch (e: Exception) {
             emptyList()
@@ -476,7 +534,7 @@ class AppRepository @Inject constructor(
 
     suspend fun getUpcomingMovies(): List<MovieResult> {
         return try {
-            val response = api.getUpcomingMovies(apiKey, "uk-UA", "UA")
+            val response = api.getUpcomingMovies(apiKey, languageManager.getApiLanguage(), languageManager.getRegion())
             response.results
         } catch (e: Exception) {
             Log.e("AppRepo", "Failed to get upcoming movies: ${e.message}")
@@ -486,7 +544,7 @@ class AppRepository @Inject constructor(
 
     suspend fun getUpcomingTvShows(): List<TvShowResult> {
         return try {
-            val response = api.getOnTheAirTvShows(apiKey, "uk-UA")
+            val response = api.getOnTheAirTvShows(apiKey, languageManager.getApiLanguage())
             response.results
         } catch (e: Exception) {
             Log.e("AppRepo", "Failed to get on-the-air TV shows: ${e.message}")
@@ -496,9 +554,9 @@ class AppRepository @Inject constructor(
 
     // ============ ADVANCED SEARCH / DISCOVER ============
 
-    suspend fun getMovieGenres(language: String = "uk-UA"): List<com.example.movietime.data.model.Genre> {
+    suspend fun getMovieGenres(): List<com.example.movietime.data.model.Genre> {
         return try {
-            val response = api.getMovieGenres(apiKey, language)
+            val response = api.getMovieGenres(apiKey, languageManager.getApiLanguage())
             d("getMovieGenres success: ${response.genres.size} genres")
             response.genres
         } catch (e: Exception) {
@@ -507,9 +565,9 @@ class AppRepository @Inject constructor(
         }
     }
 
-    suspend fun getTvGenres(language: String = "uk-UA"): List<com.example.movietime.data.model.Genre> {
+    suspend fun getTvGenres(): List<com.example.movietime.data.model.Genre> {
         return try {
-            val response = api.getTvGenres(apiKey, language)
+            val response = api.getTvGenres(apiKey, languageManager.getApiLanguage())
             d("getTvGenres success: ${response.genres.size} genres")
             response.genres
         } catch (e: Exception) {
@@ -520,7 +578,7 @@ class AppRepository @Inject constructor(
 
     suspend fun getPersonDetails(personId: Int): com.example.movietime.data.model.PersonDetails? {
         return try {
-            api.getPersonDetails(personId, apiKey, "uk-UA")
+            api.getPersonDetails(personId, apiKey, languageManager.getApiLanguage())
         } catch (e: Exception) {
             e("getPersonDetails failed: ${e.message}", e)
             null
@@ -529,16 +587,16 @@ class AppRepository @Inject constructor(
 
     suspend fun getPersonCombinedCredits(personId: Int): com.example.movietime.data.model.PersonCombinedCredits? {
         return try {
-            api.getPersonCombinedCredits(personId, apiKey, "uk-UA")
+            api.getPersonCombinedCredits(personId, apiKey, languageManager.getApiLanguage())
         } catch (e: Exception) {
             e("getPersonCombinedCredits failed: ${e.message}", e)
             null
         }
     }
 
-    suspend fun getAllGenres(language: String = "uk-UA"): List<com.example.movietime.data.model.Genre> = coroutineScope {
-        val movieGenres = async { getMovieGenres(language) }
-        val tvGenres = async { getTvGenres(language) }
+    suspend fun getAllGenres(): List<com.example.movietime.data.model.Genre> = coroutineScope {
+        val movieGenres = async { getMovieGenres() }
+        val tvGenres = async { getTvGenres() }
         
         val allGenres = (movieGenres.await() + tvGenres.await())
             .distinctBy { it.id }
@@ -548,10 +606,10 @@ class AppRepository @Inject constructor(
         allGenres
     }
 
-    suspend fun searchPeople(query: String, language: String = "uk-UA", page: Int = 1): List<com.example.movietime.data.model.Person> {
+    suspend fun searchPeople(query: String, page: Int = 1): List<com.example.movietime.data.model.Person> {
         if (query.isBlank()) return emptyList()
         return try {
-            val response = api.searchPeople(apiKey, query, language, page)
+            val response = api.searchPeople(apiKey, query, languageManager.getApiLanguage(), page)
             d("searchPeople success: ${response.results.size} results for '$query' page=$page")
             response.results
         } catch (e: Exception) {
@@ -572,9 +630,9 @@ class AppRepository @Inject constructor(
         }
     }
 
-    suspend fun getPopularPeople(language: String = "uk-UA"): List<com.example.movietime.data.model.Person> {
+    suspend fun getPopularPeople(): List<com.example.movietime.data.model.Person> {
         return try {
-            val response = api.getPopularPeople(apiKey, language)
+            val response = api.getPopularPeople(apiKey, languageManager.getApiLanguage())
             d("getPopularPeople success: ${response.results.size} people")
             response.results
         } catch (e: Exception) {
@@ -583,9 +641,9 @@ class AppRepository @Inject constructor(
         }
     }
 
-    suspend fun getPersonDetails(personId: Int, language: String = "uk-UA"): com.example.movietime.data.model.PersonDetails? {
+    suspend fun getPersonDetailsWithLanguage(personId: Int): com.example.movietime.data.model.PersonDetails? {
         return try {
-            val result = api.getPersonDetails(personId, apiKey, language)
+            val result = api.getPersonDetails(personId, apiKey, languageManager.getApiLanguage())
             d("getPersonDetails success: ${result.name}")
             result
         } catch (e: Exception) {
@@ -594,9 +652,9 @@ class AppRepository @Inject constructor(
         }
     }
 
-    suspend fun getMovieCredits(movieId: Int, language: String = "uk-UA"): com.example.movietime.data.model.CreditsResponse? {
+    suspend fun getMovieCredits(movieId: Int): com.example.movietime.data.model.CreditsResponse? {
         return try {
-            val result = api.getMovieCredits(movieId, apiKey, language)
+            val result = api.getMovieCredits(movieId, apiKey, languageManager.getApiLanguage())
             d("getMovieCredits success: ${result.cast.size} cast, ${result.crew.size} crew")
             result
         } catch (e: Exception) {
@@ -605,9 +663,9 @@ class AppRepository @Inject constructor(
         }
     }
 
-    suspend fun getTvCredits(tvId: Int, language: String = "uk-UA"): com.example.movietime.data.model.CreditsResponse? {
+    suspend fun getTvCredits(tvId: Int): com.example.movietime.data.model.CreditsResponse? {
         return try {
-            val result = api.getTvCredits(tvId, apiKey, language)
+            val result = api.getTvCredits(tvId, apiKey, languageManager.getApiLanguage())
             d("getTvCredits success: ${result.cast.size} cast, ${result.crew.size} crew")
             result
         } catch (e: Exception) {
@@ -616,9 +674,9 @@ class AppRepository @Inject constructor(
         }
     }
 
-    suspend fun getCollectionDetails(collectionId: Int, language: String = "uk-UA"): com.example.movietime.data.model.CollectionDetails? {
+    suspend fun getCollectionDetails(collectionId: Int): com.example.movietime.data.model.CollectionDetails? {
         return try {
-            val result = api.getCollectionDetails(collectionId, apiKey, language)
+            val result = api.getCollectionDetails(collectionId, apiKey, languageManager.getApiLanguage())
             d("getCollectionDetails success: ${result.name} with ${result.parts.size} parts")
             result
         } catch (e: Exception) {
@@ -776,9 +834,9 @@ class AppRepository @Inject constructor(
         results
     }
 
-    suspend fun getPersonMovieCredits(personId: Int, language: String = "uk-UA"): com.example.movietime.data.model.PersonMovieCredits? {
+    suspend fun getPersonMovieCredits(personId: Int): com.example.movietime.data.model.PersonMovieCredits? {
         return try {
-            val result = api.getPersonMovieCredits(personId, apiKey, language)
+            val result = api.getPersonMovieCredits(personId, apiKey, languageManager.getApiLanguage())
             d("getPersonMovieCredits success: ${result.cast.size} cast, ${result.crew.size} crew")
             result
         } catch (e: Exception) {
@@ -787,9 +845,9 @@ class AppRepository @Inject constructor(
         }
     }
 
-    suspend fun getPersonTvCredits(personId: Int, language: String = "uk-UA"): com.example.movietime.data.model.PersonTvCredits? {
+    suspend fun getPersonTvCredits(personId: Int): com.example.movietime.data.model.PersonTvCredits? {
         return try {
-            val result = api.getPersonTvCredits(personId, apiKey, language)
+            val result = api.getPersonTvCredits(personId, apiKey, languageManager.getApiLanguage())
             d("getPersonTvCredits success: ${result.cast.size} cast, ${result.crew.size} crew")
             result
         } catch (e: Exception) {
@@ -853,6 +911,16 @@ class AppRepository @Inject constructor(
         }
     }
 
+    /** Returns Set of (id, mediaType) pairs for merge-mode backup restore. */
+    suspend fun getWatchedItemIds(): Set<Pair<Int, String>> =
+        dao.getAllIds().map { it.id to it.mediaType }.toSet()
+
+    suspend fun getPlannedItemIds(): Set<Pair<Int, String>> =
+        plannedDao.getAllIds().map { it.id to it.mediaType }.toSet()
+
+    suspend fun getWatchingItemIds(): Set<Pair<Int, String>> =
+        watchingDao.getAllIds().map { it.id to it.mediaType }.toSet()
+
     suspend fun insertPlannedDirect(item: PlannedItem) {
         try {
             plannedDao.insert(item)
@@ -870,5 +938,81 @@ class AppRepository @Inject constructor(
             e("insertWatchingDirect failed: ${e.message}", e)
         }
     }
-}
 
+    /**
+     * Обновляет title/overview/posterPath всех элементов библиотеки (watched/planned/watching)
+     * из API с учётом текущего языка. Вызывается после смены языка.
+     */
+    suspend fun refreshLibraryTitles() {
+        val lang = languageManager.getApiLanguage()
+        try {
+            // Watched
+            dao.getAllSync().forEach { item ->
+                try {
+                    if (item.mediaType == "movie") {
+                        val m = api.getMovieDetails(item.id, apiKey, lang)
+                        movieDetailsCache.put(item.id, m)
+                        dao.update(item.copy(
+                            title    = m.title     ?: item.title,
+                            overview = m.overview  ?: item.overview,
+                            posterPath = m.posterPath ?: item.posterPath
+                        ))
+                    } else {
+                        val s = api.getTvShowDetails(item.id, apiKey, lang)
+                        tvShowDetailsCache.put(item.id, s)
+                        dao.update(item.copy(
+                            title    = s.name      ?: item.title,
+                            overview = s.overview  ?: item.overview,
+                            posterPath = s.posterPath ?: item.posterPath
+                        ))
+                    }
+                } catch (ex: Exception) {
+                    d("refreshLibraryTitles: skip watched ${item.id} – ${ex.message}")
+                }
+            }
+            // Planned
+            plannedDao.getAllSync().forEach { item ->
+                try {
+                    if (item.mediaType == "movie") {
+                        val m = api.getMovieDetails(item.id, apiKey, lang)
+                        plannedDao.insert(item.copy(
+                            title      = m.title     ?: item.title,
+                            posterPath = m.posterPath ?: item.posterPath
+                        ))
+                    } else {
+                        val s = api.getTvShowDetails(item.id, apiKey, lang)
+                        plannedDao.insert(item.copy(
+                            title      = s.name      ?: item.title,
+                            posterPath = s.posterPath ?: item.posterPath
+                        ))
+                    }
+                } catch (ex: Exception) {
+                    d("refreshLibraryTitles: skip planned ${item.id} – ${ex.message}")
+                }
+            }
+            // Watching
+            watchingDao.getAllSync().forEach { item ->
+                try {
+                    if (item.mediaType == "movie") {
+                        val m = api.getMovieDetails(item.id, apiKey, lang)
+                        watchingDao.insert(item.copy(
+                            title      = m.title     ?: item.title,
+                            posterPath = m.posterPath ?: item.posterPath
+                        ))
+                    } else {
+                        val s = api.getTvShowDetails(item.id, apiKey, lang)
+                        watchingDao.insert(item.copy(
+                            title      = s.name      ?: item.title,
+                            posterPath = s.posterPath ?: item.posterPath
+                        ))
+                    }
+                } catch (ex: Exception) {
+                    d("refreshLibraryTitles: skip watching ${item.id} – ${ex.message}")
+                }
+            }
+            d("refreshLibraryTitles: done, lang=$lang")
+        } catch (ex: Exception) {
+            e("refreshLibraryTitles failed: ${ex.message}", ex)
+        }
+    }
+}

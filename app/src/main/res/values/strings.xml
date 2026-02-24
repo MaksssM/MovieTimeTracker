@@ -161,6 +161,8 @@
     <string name="time_format_hours">%d h</string>
     <string name="time_format_minutes">%d min</string>
     <string name="time_format_hours_minutes" formatted="false">%d h %d min</string>
+    <string name="time_format_days">%d d</string>
+    <string name="time_format_days_hours" formatted="false">%d d %d h</string>
 
     <!-- Additional strings -->
     <string name="total_time">Total Time</string>
@@ -193,6 +195,10 @@
     <string name="filter_tv_shows">TV Shows</string>
     <string name="sort_by_rating">Sort by Rating</string>
     <string name="sort_by_popularity">Sort by Popularity</string>
+    <string name="sort_results">Sort Results</string>
+    <string name="library_status_watched">Watched</string>
+    <string name="library_status_planned">Planned</string>
+    <string name="library_status_watching">Watching</string>
     <string name="results_count_default">Found: 0</string>
     <string name="empty_results">Nothing Found</string>
     <string name="recent_searches">Recent Searches</string>
@@ -277,7 +283,17 @@
     <string name="all_data_local">All your data is stored locally on device</string>
     <string name="backup_location_info">Saved to:\n%s</string>
     <string name="restore_backup_confirm">All current data will be replaced with data from the backup. Continue?</string>
+    <string name="restore_backup_merge_confirm">Only records missing from your collection will be added. Current data will not be deleted. Continue?</string>
     <string name="backup_restore_error">Error restoring: %s</string>
+    <string name="backup_restore_mode_title">Restore Mode</string>
+    <string name="backup_restore_replace">Replace all (full restore)</string>
+    <string name="backup_restore_merge">Add missing (merge)</string>
+    <string name="import_backup_mode_message">Choose the restore mode for the imported file:</string>
+    <string name="backup_restore_in_progress">Restoring…</string>
+    <string name="delete_backup_confirm">Delete this backup?</string>
+    <string name="backup_auto_label">Auto</string>
+    <string name="backup_counts_format" formatted="false">%1$d watched · %2$d planned · %3$d watching</string>
+    <string name="backup_kb_unit">KB</string>
     <string name="import_backup">Import Backup</string>
     <string name="import_backup_desc">Restore data from file</string>
     
@@ -503,6 +519,12 @@
     <string name="user_score">User Score</string>
     <string name="votes">Votes</string>
     <string name="release">Release</string>
+    <string name="cast_title">Cast</string>
+    <string name="crew_title">Crew</string>
+    <string name="crew_writer">Writer</string>
+    <string name="crew_producer">Producer</string>
+    <string name="crew_composer">Music</string>
+    <string name="as_role">as %s</string>
     <string name="additional_info">Details</string>
     <string name="director">Director</string>
     <string name="budget">Budget</string>

@@ -29,6 +29,7 @@ import java.util.Locale
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import com.example.movietime.data.backup.BackupFile
+import com.example.movietime.data.backup.BackupManager
 import com.example.movietime.worker.NotificationHelper
 
 @AndroidEntryPoint
@@ -51,18 +52,7 @@ class SettingsFragment : Fragment() {
     }
 
     private val importBackupLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        uri?.let {
-            lifecycleScope.launch {
-                val result = backupViewModel.restoreBackupFromUri(it)
-                if (result.isSuccess) {
-                    Toast.makeText(requireContext(), getString(R.string.backup_restored_success), Toast.LENGTH_SHORT).show()
-                    // Recreate activity to apply restored settings
-                    requireActivity().recreate()
-                } else {
-                    Toast.makeText(requireContext(), "Error: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+        uri?.let { showImportModeDialog(it) }
     }
 
     private lateinit var tvCurrentLanguage: TextView
@@ -163,92 +153,137 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showBackupManagerDialog() {
-        // Load backup list
-        backupViewModel.loadBackups()
-
-        backupViewModel.backupList.observe(viewLifecycleOwner) { backups ->
+        lifecycleScope.launch {
+            val backups = backupViewModel.getBackupListDirect()
+            if (!isAdded) return@launch
             if (backups.isEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.no_backups),
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@observe
+                Toast.makeText(requireContext(), getString(R.string.no_backups), Toast.LENGTH_SHORT).show()
+            } else {
+                showBackupListDialog(backups)
             }
-    
-            showBackupListDialog(backups)
         }
     }
 
     private fun showBackupListDialog(backups: List<BackupFile>) {
-        val backupNames = backups.map { backup ->
-            "${backup.name} (${backup.sizeKb} КБ)"
+        val sdf = SimpleDateFormat("dd.MM.yy HH:mm", Locale.getDefault())
+        val displayItems = backups.map { backup ->
+            val autoLabel = if (backup.isAutoBackup) " [${getString(R.string.backup_auto_label)}]" else ""
+            val cleanName = backup.name
+                .removePrefix("backup_")
+                .removePrefix(BackupManager.AUTO_BACKUP_PREFIX)
+                .removeSuffix(".json")
+                .replace("_", " ")
+            val date = sdf.format(Date(backup.dateModified))
+            val line2 = if (backup.watchedCount >= 0) {
+                getString(R.string.backup_counts_format, backup.watchedCount, backup.plannedCount, backup.watchingCount) +
+                    "  \u00b7  ${backup.sizeKb} " + getString(R.string.backup_kb_unit)
+            } else {
+                "$date  \u00b7  ${backup.sizeKb} " + getString(R.string.backup_kb_unit)
+            }
+            "$cleanName$autoLabel\n$line2"
         }.toTypedArray()
 
-        val backupPath = backupViewModel.getBackupsDirPath()
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.backup_list))
-            .setMessage(getString(R.string.backup_location_info, backupPath))
-            .setItems(backupNames) { _, which ->
-                val selectedBackup = backups[which]
-                showBackupActionDialog(selectedBackup)
-            }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setItems(displayItems) { _, which -> showBackupActionDialog(backups[which]) }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
             .show()
     }
 
     private fun showBackupActionDialog(backup: BackupFile) {
         val actions = arrayOf(
-            getString(R.string.restore_backup),
+            getString(R.string.backup_restore_replace),
+            getString(R.string.backup_restore_merge),
             getString(R.string.delete_backup)
         )
-
+        val cleanTitle = backup.name.removeSuffix(".json").replace("_", " ")
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(backup.name)
+            .setTitle(cleanTitle)
             .setItems(actions) { _, which ->
                 when (which) {
-                    0 -> restoreBackup(backup)
-                    1 -> deleteBackup(backup)
+                    0 -> confirmAndRestore(backup, merge = false)
+                    1 -> confirmAndRestore(backup, merge = true)
+                    2 -> deleteBackup(backup)
                 }
             }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
             .show()
     }
 
-    private fun restoreBackup(backup: BackupFile) {
+    private fun confirmAndRestore(backup: BackupFile, merge: Boolean) {
+        val message = getString(
+            if (merge) R.string.restore_backup_merge_confirm else R.string.restore_backup_confirm
+        )
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.restore_backup))
-            .setMessage(getString(R.string.restore_backup_confirm))
+            .setMessage(message)
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 lifecycleScope.launch {
-                    val result = backupViewModel.restoreBackup(backup.path)
+                    // Always create a safety auto-backup before restore
+                    backupViewModel.createAutoBackup()
+                    val progressDialog = MaterialAlertDialogBuilder(requireContext())
+                        .setMessage(getString(R.string.backup_restore_in_progress))
+                        .setCancelable(false)
+                        .show()
+                    val result = backupViewModel.restoreBackup(backup.path, merge)
+                    progressDialog.dismiss()
                     result.onSuccess {
                         Toast.makeText(
                             requireContext(),
                             getString(R.string.backup_restored_success),
                             Toast.LENGTH_LONG
                         ).show()
+                        requireActivity().recreate()
                     }
                     result.onFailure { error ->
                         Toast.makeText(
                             requireContext(),
-                            "Помилка: ${error.message}",
+                            getString(R.string.backup_restore_error, error.message),
                             Toast.LENGTH_LONG
                         ).show()
                     }
                 }
             }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
             .show()
+    }
+
+    private fun showImportModeDialog(uri: android.net.Uri) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.backup_restore_mode_title))
+            .setMessage(getString(R.string.import_backup_mode_message))
+            .setPositiveButton(getString(R.string.backup_restore_replace)) { _, _ ->
+                performImportRestore(uri, merge = false)
+            }
+            .setNeutralButton(getString(R.string.backup_restore_merge)) { _, _ ->
+                performImportRestore(uri, merge = true)
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
+    }
+
+    private fun performImportRestore(uri: android.net.Uri, merge: Boolean) {
+        lifecycleScope.launch {
+            val progressDialog = MaterialAlertDialogBuilder(requireContext())
+                .setMessage(getString(R.string.backup_restore_in_progress))
+                .setCancelable(false)
+                .show()
+            val result = backupViewModel.restoreBackupFromUri(uri, merge)
+            progressDialog.dismiss()
+            result.onSuccess {
+                Toast.makeText(requireContext(), getString(R.string.backup_restored_success), Toast.LENGTH_SHORT).show()
+                requireActivity().recreate()
+            }
+            result.onFailure { error ->
+                Toast.makeText(requireContext(), getString(R.string.backup_restore_error, error.message), Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun deleteBackup(backup: BackupFile) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.delete_backup))
-            .setMessage("Видалити резервну копію?")
+            .setMessage(getString(R.string.delete_backup_confirm))
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 lifecycleScope.launch {
                     val result = backupViewModel.deleteBackup(backup.path)
@@ -258,13 +293,12 @@ class SettingsFragment : Fragment() {
                             getString(R.string.backup_deleted),
                             Toast.LENGTH_SHORT
                         ).show()
-                        // Reload backup list
                         showBackupManagerDialog()
                     }
                     result.onFailure { error ->
                         Toast.makeText(
                             requireContext(),
-                            "Помилка: ${error.message}",
+                            getString(R.string.backup_restore_error, error.message),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -299,9 +333,13 @@ class SettingsFragment : Fragment() {
                 val selectedCode = codes[which]
                 if (selectedCode != currentCode) {
                     prefs.edit { putString("pref_lang", selectedCode) }
-                    updateLanguageText()
+                    viewModel.onLanguageChanged()
                     applyLocale(selectedCode)
-                    requireActivity().recreate()
+                    dialog.dismiss()
+                    // Полный перезапуск — гарантирует, что все ViewModel,
+                    // кэши Coil и Retrofit-ответы используют новый язык
+                    restartApp()
+                    return@setSingleChoiceItems
                 }
                 dialog.dismiss()
             }
@@ -309,7 +347,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun updateContentLanguageText() {
-        val langCode = prefs.getString("pref_tmdb_lang", "uk") ?: "uk"
+        val langCode = prefs.getString("pref_lang", "uk") ?: "uk"
         tvCurrentContentLanguage.text = when (langCode) {
             "uk" -> getString(R.string.lang_uk)
             "ru" -> getString(R.string.lang_ru)
@@ -319,24 +357,8 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showContentLanguageDialog() {
-        val languages = arrayOf(getString(R.string.lang_uk), getString(R.string.lang_ru), getString(R.string.lang_en))
-        val codes = arrayOf("uk", "ru", "en")
-        
-        val currentCode = prefs.getString("pref_tmdb_lang", "uk")
-        val checkedItem = codes.indexOf(currentCode).takeIf { it != -1 } ?: 0
-
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.content_region))
-            .setSingleChoiceItems(languages, checkedItem) { dialog, which ->
-                val selectedCode = codes[which]
-                if (selectedCode != currentCode) {
-                    prefs.edit { putString("pref_tmdb_lang", selectedCode) }
-                    updateContentLanguageText()
-                    Toast.makeText(requireContext(), getString(R.string.language_changed), Toast.LENGTH_SHORT).show()
-                }
-                dialog.dismiss()
-            }
-            .show()
+        // Язык контента теперь совпадает с основным языком приложения
+        showLanguageDialog()
     }
 
     private fun updateThemeText() {
@@ -429,20 +451,24 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    /**
+     * Полный перезапуск приложения — убивает процесс и стартует заново.
+     * Гарантирует, что все синглтоны (AppRepository, LanguageManager),
+     * ViewModel-ы и in-memory кэши создадутся с новым языком.
+     */
+    private fun restartApp() {
+        val ctx = requireContext()
+        val pm = ctx.packageManager
+        val intent = pm.getLaunchIntentForPackage(ctx.packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        ctx.startActivity(intent)
+        Runtime.getRuntime().exit(0)
+    }
+
     private fun applyLocale(langCode: String) {
-        val locale = when (langCode) {
-            "uk" -> Locale("uk")
-            "ru" -> Locale("ru")
-            "en" -> Locale("en")
-            else -> Locale("uk")
-        }
+        val locale = com.example.movietime.util.LocaleHelper.codeToLocale(langCode)
         Locale.setDefault(locale)
-        val activity = requireActivity()
-        val res = activity.resources
-        val config = Configuration(res.configuration)
-        val localeList = android.os.LocaleList(locale)
-        android.os.LocaleList.setDefault(localeList)
-        config.setLocales(localeList)
-        activity.createConfigurationContext(config)
+        android.os.LocaleList.setDefault(android.os.LocaleList(locale))
+        com.example.movietime.util.LocaleHelper.applyToApp(requireActivity().application)
     }
 }

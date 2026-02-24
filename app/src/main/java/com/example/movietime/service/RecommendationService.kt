@@ -3,6 +3,7 @@ package com.example.movietime.service
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.repository.AppRepository
+import com.example.movietime.util.LanguageManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -12,7 +13,8 @@ import javax.inject.Singleton
 
 @Singleton
 class RecommendationService @Inject constructor(
-    private val repository: AppRepository
+    private val repository: AppRepository,
+    private val languageManager: LanguageManager
 ) {
 
     companion object {

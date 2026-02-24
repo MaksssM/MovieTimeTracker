@@ -108,9 +108,9 @@ class RecommendationsAdapter(
                 }
 
                 // Poster
-                ivPoster.load(posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }) {
+                ivPoster.load(posterPath?.let { "https://image.tmdb.org/t/p/w342$it" }) {
                     crossfade(true)
-                    crossfade(400)
+                    crossfade(200)
                     placeholder(R.drawable.ic_placeholder)
                     error(R.drawable.ic_placeholder)
                 }

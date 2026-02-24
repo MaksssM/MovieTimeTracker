@@ -19,6 +19,7 @@ import com.example.movietime.ui.details.TvDetailsActivity
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.model.Person
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -39,25 +40,11 @@ class EnhancedSearchActivity : AppCompatActivity() {
 
     private var searchJob: Job? = null
     private var currentFilter = "all"
+    private var allSearchResults: List<GroupedSearchItem> = emptyList()
+    private var currentSortMode = "popularity"
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(applyLocale(newBase))
-    }
-
-    private fun applyLocale(context: Context): Context {
-        val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
-        val locale = when (langPref) {
-            "uk" -> Locale("uk")
-            "ru" -> Locale("ru")
-            "en" -> Locale("en")
-            else -> Locale("uk")
-        }
-        Locale.setDefault(locale)
-        val config = Configuration(context.resources.configuration)
-        val localeList = android.os.LocaleList(locale)
-        config.setLocales(localeList)
-        return context.createConfigurationContext(config)
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +61,9 @@ class EnhancedSearchActivity : AppCompatActivity() {
         setupRecyclerViews()
         setupSearchInput()
         setupTabs()
+        setupSortButton()
         observeViewModel()
+        observeLibraryStatus()
         loadPopularContent()
     }
     
@@ -103,6 +92,8 @@ class EnhancedSearchActivity : AppCompatActivity() {
             adapter = searchAdapter
             val layoutManager = LinearLayoutManager(this@EnhancedSearchActivity)
             this.layoutManager = layoutManager
+            setHasFixedSize(true)
+            setItemViewCacheSize(20)
             layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
                 context, 
                 R.anim.layout_animation_slide_up
@@ -127,6 +118,8 @@ class EnhancedSearchActivity : AppCompatActivity() {
         binding.rvPopular.apply {
             adapter = popularAdapter
             layoutManager = LinearLayoutManager(this@EnhancedSearchActivity)
+            setHasFixedSize(true)
+            setItemViewCacheSize(15)
             layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
                 context,
                 R.anim.layout_animation_fall_down
@@ -254,16 +247,16 @@ class EnhancedSearchActivity : AppCompatActivity() {
                         else -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
                     }
                 }
-                searchAdapter.updateItems(groupedItems)
+                allSearchResults = groupedItems
                 binding.cardResults.isVisible = true
                 binding.cardPopular.isVisible = false
-
-                val resultCount = results.size
-                binding.tvResultsHeader.text = getString(R.string.search_results_count, resultCount)
+                applyLibraryAndSortFilter()
             } else if (query.isEmpty()) {
+                allSearchResults = emptyList()
                 binding.cardResults.isVisible = false
                 showPopularContent()
             } else {
+                allSearchResults = emptyList()
                 binding.cardResults.isVisible = false
                 showPopularContent()
             }
@@ -281,6 +274,56 @@ class EnhancedSearchActivity : AppCompatActivity() {
         viewModel.isLoading.observe(this) { isLoading ->
             binding.layoutLoading.isVisible = isLoading
         }
+    }
+
+    private fun setupSortButton() {
+        binding.btnSort.setOnClickListener {
+            val options = arrayOf(
+                getString(R.string.sort_by_popularity),
+                getString(R.string.sort_by_rating)
+            )
+            MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.sort_results))
+                .setItems(options) { _, which ->
+                    currentSortMode = if (which == 0) "popularity" else "rating"
+                    binding.tvSortLabel.text = options[which]
+                    applyLibraryAndSortFilter()
+                }
+                .show()
+        }
+    }
+
+    private fun applyLibraryAndSortFilter() {
+        val filtered = when (currentSortMode) {
+            "rating" -> allSearchResults.sortedByDescending { item ->
+                when (val data = item.data) {
+                    is MovieResult -> data.voteAverage?.toDouble() ?: 0.0
+                    is TvShowResult -> data.voteAverage?.toDouble() ?: 0.0
+                    else -> 0.0
+                }
+            }
+            else -> allSearchResults
+        }
+        searchAdapter.updateItems(filtered)
+        binding.tvResultsHeader.text = getString(R.string.search_results_count, filtered.size)
+    }
+
+    private fun observeLibraryStatus() {
+        lifecycleScope.launch {
+            viewModel.libraryStatusMap.collect { statusMap ->
+                searchAdapter.updateLibraryStatus(statusMap)
+                popularAdapter.updateLibraryStatus(statusMap)
+                // Re-apply filter if we have results
+                if (allSearchResults.isNotEmpty()) {
+                    applyLibraryAndSortFilter()
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadLibraryStatus()
     }
 
     private fun loadPopularContent() {

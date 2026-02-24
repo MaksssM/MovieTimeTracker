@@ -1,11 +1,14 @@
 package com.example.movietime.ui.statistics
 
+import android.content.Context
 import androidx.lifecycle.*
+import com.example.movietime.R
 import com.example.movietime.data.model.DetailedStatistics
 import com.example.movietime.data.model.DirectorStatItem
 import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.data.repository.StatisticsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -13,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val statisticsRepository: StatisticsRepository,
     private val appRepository: AppRepository
 ) : ViewModel() {
@@ -119,16 +123,18 @@ class StatisticsViewModel @Inject constructor(
 
     fun formatWatchTime(minutes: Long): String {
         return when {
-            minutes < 60 -> "$minutes мин"
+            minutes < 60 -> context.getString(R.string.time_format_minutes, minutes.toInt())
             minutes < 1440 -> {
                 val hours = minutes / 60
                 val mins = minutes % 60
-                if (mins > 0) "$hours ч $mins мин" else "$hours ч"
+                if (mins > 0) context.getString(R.string.time_format_hours_minutes, hours.toInt(), mins.toInt())
+                else context.getString(R.string.time_format_hours, hours.toInt())
             }
             else -> {
                 val days = minutes / 1440
                 val hours = (minutes % 1440) / 60
-                if (hours > 0) "$days д $hours ч" else "$days д"
+                if (hours > 0) context.getString(R.string.time_format_days_hours, days.toInt(), hours.toInt())
+                else context.getString(R.string.time_format_days, days.toInt())
             }
         }
     }
@@ -137,9 +143,9 @@ class StatisticsViewModel @Inject constructor(
         val hours = minutes / 60
         val days = hours / 24
         return when {
-            days >= 1 -> "$days д"
-            hours >= 1 -> "$hours ч"
-            else -> "$minutes мин"
+            days >= 1 -> context.getString(R.string.time_format_days, days.toInt())
+            hours >= 1 -> context.getString(R.string.time_format_hours, hours.toInt())
+            else -> context.getString(R.string.time_format_minutes, minutes.toInt())
         }
     }
 

@@ -207,6 +207,7 @@ class EnhancedMainFragment : Fragment() {
                 initialPrefetchItemCount = 5
             }
             setHasFixedSize(true)
+            setItemViewCacheSize(10)
             layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_scale_fade)
         }
     }
@@ -555,6 +556,8 @@ class EnhancedMainFragment : Fragment() {
         binding.rvRecentActivity.apply {
             adapter = recentActivityAdapter
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+            setItemViewCacheSize(10)
             layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_cascade)
         }
     }

@@ -194,13 +194,46 @@
 
                     <TextView
                         android:id="@+id/tvResultsHeader"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="@string/search_results"
                         android:textColor="@android:color/white"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
+
+                    <!-- Sort Button -->
+                    <LinearLayout
+                        android:id="@+id/btnSort"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_filter_chip_normal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="7dp"
+                        android:gravity="center_vertical"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_sort"
+                            app:tint="@android:color/white"
+                            android:contentDescription="@null" />
+
+                        <TextView
+                            android:id="@+id/tvSortLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/sort_by_popularity"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="sans-serif-medium" />
+
+                    </LinearLayout>
                         
                 </LinearLayout>
 

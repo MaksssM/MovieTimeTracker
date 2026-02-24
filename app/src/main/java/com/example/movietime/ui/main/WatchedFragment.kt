@@ -149,6 +149,7 @@ class WatchedFragment : Fragment() {
             adapter = contentAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(false)
+            setItemViewCacheSize(15)
             layoutAnimation = AnimationUtils.loadLayoutAnimation(
                 context,
                 R.anim.layout_animation_slide_up

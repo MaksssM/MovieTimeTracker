@@ -152,6 +152,8 @@
     <string name="time_format_hours">%d год</string>
     <string name="time_format_minutes">%d хв</string>
     <string name="time_format_hours_minutes" formatted="false">%d год %d хв</string>
+    <string name="time_format_days">%d д</string>
+    <string name="time_format_days_hours" formatted="false">%d д %d год</string>
 
     <!-- Additional missing strings -->
     <string name="total_time">Загальний час</string>
@@ -184,6 +186,10 @@
     <string name="filter_tv_shows">Серіали</string>
     <string name="sort_by_rating">Сортувати за рейтингом</string>
     <string name="sort_by_popularity">Сортувати за популярністю</string>
+    <string name="sort_results">Сортування</string>
+    <string name="library_status_watched">Переглянуто</string>
+    <string name="library_status_planned">Заплановано</string>
+    <string name="library_status_watching">Дивлюся</string>
     <string name="results_count_default">Знайдено: 0</string>
     <string name="empty_results">Нічого не знайдено</string>
     <string name="recent_searches">Недавні пошуки</string>
@@ -274,7 +280,17 @@
     <string name="all_data_local">Усі ваші дані зберігаються локально на пристрої</string>
     <string name="backup_location_info">Збережено в:\n%s</string>
     <string name="restore_backup_confirm">Усі поточні дані будуть замінені даними з резервної копії. Продовжити?</string>
+    <string name="restore_backup_merge_confirm">Будуть додані лише ті записи, яких немає у вашій колекції. Поточні дані не будуть видалені. Продовжити?</string>
     <string name="backup_restore_error">Помилка при відновленні: %s</string>
+    <string name="backup_restore_mode_title">Режим відновлення</string>
+    <string name="backup_restore_replace">Замінити все (повне відновлення)</string>
+    <string name="backup_restore_merge">Додати відсутнє (злиття)</string>
+    <string name="import_backup_mode_message">Оберіть режим відновлення з файлу:</string>
+    <string name="backup_restore_in_progress">Відновлення…</string>
+    <string name="delete_backup_confirm">Видалити цю резервну копію?</string>
+    <string name="backup_auto_label">Авто</string>
+    <string name="backup_counts_format" formatted="false">%1$d переглян. · %2$d заплан. · %3$d дивлюся</string>
+    <string name="backup_kb_unit">КБ</string>
     <string name="import_backup">Імпортувати бекап</string>
     <string name="import_backup_desc">Відновити дані з файлу</string>
     
@@ -481,6 +497,12 @@
     <string name="user_score">Оцінка</string>
     <string name="votes">Голоси</string>
     <string name="release">Реліз</string>
+    <string name="cast_title">Акторський склад</string>
+    <string name="crew_title">Знімальна група</string>
+    <string name="crew_writer">Сценарист</string>
+    <string name="crew_producer">Продюсер</string>
+    <string name="crew_composer">Музика</string>
+    <string name="as_role">в ролі %s</string>
     <string name="additional_info">Детальніше</string>
     <string name="director">Режисер</string>
     <string name="budget">Бюджет</string>

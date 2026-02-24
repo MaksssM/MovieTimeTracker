@@ -99,25 +99,15 @@ class MovieTimeApp : Application(), androidx.work.Configuration.Provider, ImageL
     }
 
     private fun applyLocale() {
-        val prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
-        val locale = when (langPref) {
-            "uk" -> Locale("uk")
-            "ru" -> Locale("ru")
-            "en" -> Locale("en")
-            else -> Locale("uk")
-        }
-        Locale.setDefault(locale)
-        val res = resources
-        val config = Configuration(res.configuration)
-        val localeList = android.os.LocaleList(locale)
-        android.os.LocaleList.setDefault(localeList)
-        config.setLocales(localeList)
-        @Suppress("DEPRECATION")
-        res.updateConfiguration(config, res.displayMetrics)
+        com.example.movietime.util.LocaleHelper.applyToApp(this)
     }
 
     override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(base))
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        com.example.movietime.util.LocaleHelper.applyToApp(this)
     }
 }
