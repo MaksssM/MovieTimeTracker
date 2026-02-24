@@ -54,7 +54,9 @@ class StatisticsActivity : AppCompatActivity() {
             binding.cardWatchTime,
             binding.cardLongestMovie,
             binding.cardMostRewatched,
-            binding.cardTrends
+            binding.cardTrends,
+            binding.cardExtended,
+            binding.cardWatchTimeBreakdown
         )
         
         cards.forEach { card ->
@@ -68,7 +70,9 @@ class StatisticsActivity : AppCompatActivity() {
             binding.cardWatchTime,
             binding.cardLongestMovie,
             binding.cardMostRewatched,
-            binding.cardTrends
+            binding.cardTrends,
+            binding.cardExtended,
+            binding.cardWatchTimeBreakdown
         )
         
         cards.forEachIndexed { index, card ->
@@ -243,6 +247,42 @@ class StatisticsActivity : AppCompatActivity() {
             binding.tvFirstWatchDate.text = dateFormat.format(java.util.Date(timestamp))
         } ?: run {
             binding.layoutFirstWatch.isVisible = false
+        }
+        
+        // Extended statistics
+        binding.tvTotalRewatches.text = stats.totalRewatches.toString()
+        binding.tvAvgMovieRuntime.text = getString(R.string.runtime_minutes, stats.avgMovieRuntime)
+        binding.tvAvgMoviesPerMonth.text = String.format(Locale.US, "%.1f", stats.avgMoviesPerMonth)
+        binding.tvAvgContentPerMonth.text = String.format(Locale.US, "%.1f", stats.avgContentPerMonth)
+        
+        // Most popular genre
+        if (stats.mostPopularGenre.isNotEmpty()) {
+            binding.layoutMostPopularGenre.isVisible = true
+            binding.tvMostPopularGenre.text = stats.mostPopularGenre
+        } else {
+            binding.layoutMostPopularGenre.isVisible = false
+        }
+        
+        // Watch time breakdown
+        binding.tvMovieWatchTime.text = viewModel.formatWatchTimeShort(stats.totalWatchTimeMovies)
+        binding.tvTvWatchTime.text = viewModel.formatWatchTimeShort(stats.totalWatchTimeTvShows)
+        
+        // Shortest movie
+        stats.shortestMovie?.let { movie ->
+            binding.cardShortestMovie.isVisible = true
+            binding.tvShortestMovieTitle.text = movie.title
+            binding.tvShortestMovieRuntime.text = getString(R.string.runtime_minutes, movie.runtimeMinutes)
+        } ?: run {
+            binding.cardShortestMovie.isVisible = false
+        }
+        
+        // Highest rated movie
+        stats.highestRatedMovie?.let { movie ->
+            binding.cardHighestRated.isVisible = true
+            binding.tvHighestRatedTitle.text = movie.title
+            binding.tvHighestRatedScore.text = String.format(Locale.US, "%.1f ⭐", movie.userRating)
+        } ?: run {
+            binding.cardHighestRated.isVisible = false
         }
     }
 }

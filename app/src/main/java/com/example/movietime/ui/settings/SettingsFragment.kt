@@ -1,7 +1,6 @@
 package com.example.movietime.ui.settings
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
@@ -332,13 +331,11 @@ class SettingsFragment : Fragment() {
             .setSingleChoiceItems(languages, checkedItem) { dialog, which ->
                 val selectedCode = codes[which]
                 if (selectedCode != currentCode) {
-                    prefs.edit { putString("pref_lang", selectedCode) }
                     viewModel.onLanguageChanged()
-                    applyLocale(selectedCode)
+                    // Use the modern per-app language API — it handles
+                    // saving, applying, and recreating activities automatically
+                    com.example.movietime.util.LocaleHelper.setLocale(requireContext(), selectedCode)
                     dialog.dismiss()
-                    // Полный перезапуск — гарантирует, что все ViewModel,
-                    // кэши Coil и Retrofit-ответы используют новый язык
-                    restartApp()
                     return@setSingleChoiceItems
                 }
                 dialog.dismiss()
@@ -347,7 +344,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun updateContentLanguageText() {
-        val langCode = prefs.getString("pref_lang", "uk") ?: "uk"
+        val langCode = com.example.movietime.util.LocaleHelper.getSavedLanguageCode(requireContext())
         tvCurrentContentLanguage.text = when (langCode) {
             "uk" -> getString(R.string.lang_uk)
             "ru" -> getString(R.string.lang_ru)
@@ -449,26 +446,5 @@ class SettingsFragment : Fragment() {
             "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
-    }
-
-    /**
-     * Полный перезапуск приложения — убивает процесс и стартует заново.
-     * Гарантирует, что все синглтоны (AppRepository, LanguageManager),
-     * ViewModel-ы и in-memory кэши создадутся с новым языком.
-     */
-    private fun restartApp() {
-        val ctx = requireContext()
-        val pm = ctx.packageManager
-        val intent = pm.getLaunchIntentForPackage(ctx.packageName)
-        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        ctx.startActivity(intent)
-        Runtime.getRuntime().exit(0)
-    }
-
-    private fun applyLocale(langCode: String) {
-        val locale = com.example.movietime.util.LocaleHelper.codeToLocale(langCode)
-        Locale.setDefault(locale)
-        android.os.LocaleList.setDefault(android.os.LocaleList(locale))
-        com.example.movietime.util.LocaleHelper.applyToApp(requireActivity().application)
     }
 }

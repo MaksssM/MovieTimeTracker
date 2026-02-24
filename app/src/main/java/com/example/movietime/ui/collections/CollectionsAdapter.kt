@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.movietime.R
 import com.example.movietime.data.repository.CollectionWithCount
 import com.example.movietime.databinding.ItemCollectionBinding
 
@@ -45,7 +46,7 @@ class CollectionsAdapter(
                 tvCollectionDescription.text = item.collection.description
                 tvCollectionDescription.isVisible = !item.collection.description.isNullOrEmpty()
                 
-                tvItemCount.text = "${item.itemCount} елементів"
+                tvItemCount.text = itemView.context.getString(R.string.items_count, item.itemCount)
                 
                 // Emoji / Icon
                 tvEmoji.text = item.collection.emoji ?: "📂"

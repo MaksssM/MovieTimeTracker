@@ -92,6 +92,7 @@
     <string name="rating_short">Рейтинг</string>
     <string name="categories">Категории</string>
     <string name="quick_actions">Быстрые действия</string>
+    <string name="collections">Коллекции</string>
     <string name="trending">Тренды</string>
     <string name="movie_premieres">Будущие премьеры</string>
     <string name="friends">Друзья</string>
@@ -584,11 +585,22 @@
     <string name="genre_diversity">Жанров</string>
     <string name="you_explored_genres">Вы исследовали %d жанров</string>
     
+    <!-- Extended Statistics -->
+    <string name="extended_statistics">Расширенная статистика</string>
+    <string name="total_rewatches">Всего пересмотров</string>
+    <string name="avg_movie_runtime">Сред. длительность</string>
+    <string name="movies_per_month">Фильмов/месяц</string>
+    <string name="content_per_month">Контента/месяц</string>
+    <string name="most_popular_genre">Любимый жанр</string>
+    <string name="watch_time_breakdown">Время просмотра</string>
+    <string name="shortest_movie">Самый короткий фильм</string>
+    <string name="highest_rated">Наивысшая оценка</string>
+    
     <!-- Enhanced Status Badges -->
     <string name="in_your_watchlist">В вашем списке</string>
     <string name="watched_on_date">Просмотрено %s</string>
     <string name="your_rating">Ваша оценка: %.1f</string>
-    <string name="episodes_progress">%d/%d серий</string>
+    <string name="episodes_progress">%1$d/%2$d серий</string>
     <string name="fully_watched">Полностью просмотрено</string>
     <string name="partially_watched">Частично просмотрено</string>
     
@@ -601,4 +613,79 @@
     <string name="month_view">Месяц</string>
     <string name="releases_this_week">Релизы на этой неделе</string>
     <string name="no_releases_selected_day">Нет релизов в выбранный день</string>
+    
+    <!-- Rewatches -->
+    <string name="rewatches">Пересмотры</string>
+    <string name="add_rewatch">Добавить пересмотр</string>
+    <string name="rewatch_added">Пересмотр добавлен</string>
+    <string name="watch_count">×%d</string>
+    <string name="watch_history">История просмотров</string>
+    <string name="watch_history_description">Каждый пересмотр добавляет время к вашей общей статистике</string>
+    <string name="watched_times">Просмотрено %d раз</string>
+    <string name="watched_times_short">×%d раз</string>
+    
+    <!-- Collection -->
+    <string name="add_to_collection">Добавить в коллекцию</string>
+    
+    <!-- Achievements -->
+    <string name="achievements">Достижения</string>
+    <string name="days_streak">дн. подряд</string>
+    <string name="best_month">Лучший месяц</string>
+    
+    <!-- Advanced Filters (missing) -->
+    <string name="studio_or_company">Студия/Компания</string>
+    <string name="search_company_hint">Введите название студии или компании</string>
+    
+    <!-- People tab -->
+    <string name="people">Персоны</string>
+    <string name="person_photo_description">Фото</string>
+    <string name="biography">Биография</string>
+    <string name="birthday">Дата рождения</string>
+    <string name="birthplace">Место рождения</string>
+    <string name="known_for_title">Известен по</string>
+    <string name="known_for">Известен по: %s</string>
+    
+    <!-- Spoiler -->
+    <string name="spoiler_hidden_tap">Спойлер скрыт — нажмите для просмотра</string>
+    
+    <!-- Settings (missing) -->
+    <string name="settings_general">Общие</string>
+    <string name="settings_notifications">Уведомления</string>
+    <string name="settings_storage">Данные и хранилище</string>
+    
+    <!-- Content & Notifications (missing) -->
+    <string name="content_region">Регион контента</string>
+    <string name="notify_new_episodes">Новые эпизоды</string>
+    <string name="notify_new_episodes_desc">Получать уведомления о выходе новых серий</string>
+    <string name="notify_weekly_digest">Еженедельный дайджест</string>
+    <string name="on">Вкл</string>
+    <string name="off">Выкл</string>
+    <string name="notif_channel_episodes">Новые эпизоды</string>
+    <string name="notif_channel_releases">Новые релизы</string>
+    
+    <!-- Collection / Franchise -->
+    <string name="part_of_collection">Часть коллекции: %s</string>
+    <string name="collection_progress">Просмотрено %1$d из %2$d фильмов</string>
+    <string name="next_up">Далее</string>
+    <string name="collection_order">Хронология франшизы</string>
+    <string name="view_collection">Показать коллекцию</string>
+    <string name="movie_runtime_fmt">%d мин</string>
+    <string name="collection_empty">Нет фильмов в этой коллекции</string>
+    <string name="order_release">По дате выхода</string>
+    <string name="new_collection">Новая коллекция</string>
+    <string name="create_collection">Создать</string>
+    <string name="edit_collection">Редактировать коллекцию</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete_collection">Удалить коллекцию</string>
+    <string name="no_collections">У вас ещё нет коллекций.\nСоздайте первую!</string>
+    <string name="collection_tab_empty">Эта коллекция пуста.\nДобавьте сюда фильмы или сериалы!</string>
+    <string name="items_count">%d элементов</string>
+    <string name="your_progress">Ваш прогресс</string>
+    <string name="create_new_collection">Создать новую коллекцию</string>
+    <string name="delete_collection_title">Удалить коллекцию?</string>
+    <string name="delete_collection_confirm">Вы уверены, что хотите удалить эту коллекцию? Это действие невозможно отменить.</string>
+
+    <!-- Search improvements -->
+    <string name="try_different_query">Попробуйте другой поисковый запрос</string>
+    <string name="tv_shows_count_fmt">%d сериалов</string>
 </resources>

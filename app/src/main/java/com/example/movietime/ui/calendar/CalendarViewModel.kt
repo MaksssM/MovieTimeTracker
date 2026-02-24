@@ -31,6 +31,11 @@ class CalendarViewModel @Inject constructor(
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    private val _monthStats = MutableLiveData<MonthStats>()
+    val monthStats: LiveData<MonthStats> = _monthStats
+
+    data class MonthStats(val movieCount: Int, val tvCount: Int)
+
     private val releasesCache = mutableMapOf<LocalDate, List<CalendarRelease>>()
 
     init {
@@ -75,10 +80,13 @@ class CalendarViewModel @Inject constructor(
         // Add current month's days
         for (day in 1..lastDay.dayOfMonth) {
             val date = month.atDay(day)
-            val eventCount = releasesCache[date]?.size ?: 0
+            val releases = releasesCache[date] ?: emptyList()
+            val eventCount = releases.size
+            val movieCount = releases.count { it.isMovie }
+            val tvCount = releases.count { !it.isMovie }
             val hasEvents = eventCount > 0
             val isToday = date == today
-            days.add(CalendarDay(day, true, hasEvents, eventCount, isToday))
+            days.add(CalendarDay(day, true, hasEvents, eventCount, isToday, movieCount, tvCount))
         }
 
         // Add next month's days to fill grid
@@ -154,6 +162,13 @@ class CalendarViewModel @Inject constructor(
 
                 releasesCache.putAll(eventsMap)
                 updateCalendarDays()
+
+                // Calculate month stats
+                val allReleases = eventsMap.values.flatten()
+                _monthStats.value = MonthStats(
+                    movieCount = allReleases.count { it.isMovie },
+                    tvCount = allReleases.count { !it.isMovie }
+                )
 
                 _events.value = eventsMap.toSortedMap().map { (date, releases) ->
                     CalendarEventData(date, releases)

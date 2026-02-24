@@ -28,6 +28,19 @@ class RecommendationService @Inject constructor(
         private const val MAX_RESULTS_PER_TYPE = 20
     }
 
+    // Track last refresh time to avoid unnecessary API calls
+    private var lastRefreshTime = 0L
+    private var cachedRecommendations: PersonalizedRecommendations? = null
+    private val REFRESH_INTERVAL_MS = 10 * 60 * 1000L // 10 minutes
+
+    /**
+     * Force clear cached recommendations so next call fetches fresh data
+     */
+    fun invalidateCache() {
+        cachedRecommendations = null
+        lastRefreshTime = 0L
+    }
+
     /**
      * Генерує персоналізовані рекомендації на основі переглянутого контенту.
      *
@@ -40,13 +53,19 @@ class RecommendationService @Inject constructor(
      * 6. Сортує: вищий рейтинг + популярність вперед.
      */
     suspend fun getPersonalizedRecommendations(): PersonalizedRecommendations = withContext(Dispatchers.IO) {
+        // Return cached if within refresh interval
+        val now = System.currentTimeMillis()
+        cachedRecommendations?.let { cached ->
+            if (now - lastRefreshTime < REFRESH_INTERVAL_MS) {
+                return@withContext cached
+            }
+        }
+
         val watchedItems = repository.getWatchedItemsSync()
 
         if (watchedItems.isEmpty()) {
             return@withContext PersonalizedRecommendations(emptyList(), emptyList())
         }
-
-        val now = System.currentTimeMillis()
 
         // 1. Скоримо кожен переглянутий елемент
         val scoredItems = watchedItems.map { item ->
@@ -172,6 +191,7 @@ class RecommendationService @Inject constructor(
                     .thenByDescending { it.popularity }
             )
             .take(MAX_RESULTS_PER_TYPE)
+            .shuffled() // Shuffle for variety on each load
 
         val finalTv = recommendedTvShows
             .filter { !seenTvShowIds.contains(it.id) && it.voteAverage >= MIN_VOTE_AVERAGE.toFloat() }
@@ -181,8 +201,12 @@ class RecommendationService @Inject constructor(
                     .thenByDescending { it.popularity }
             )
             .take(MAX_RESULTS_PER_TYPE)
+            .shuffled() // Shuffle for variety on each load
 
-        PersonalizedRecommendations(finalMovies, finalTv)
+        val result = PersonalizedRecommendations(finalMovies, finalTv)
+        cachedRecommendations = result
+        lastRefreshTime = System.currentTimeMillis()
+        result
     }
 
     data class PersonalizedRecommendations(

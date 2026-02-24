@@ -96,6 +96,7 @@
     <string name="rating_short">Рейтинг</string>
     <string name="categories">Категорії</string>
     <string name="quick_actions">Швидкі дії</string>
+    <string name="collections">Колекції</string>
     <string name="trending">Тренди</string>
     <string name="movie_premieres">Майбутні прем\'єри</string>
     <string name="friends">Друзі</string>
@@ -653,4 +654,20 @@
     <string name="sort_by_rating_low">Рейтинг (Низький)</string>
     <string name="sort_by_runtime_long">Тривалість (Довгі)</string>
     <string name="sort_by_runtime_short">Тривалість (Короткі)</string>
+    <string name="new_collection">Нова колекція</string>
+    <string name="create_collection">Створити</string>
+    <string name="edit_collection">Редагувати колекцію</string>
+    <string name="edit">Редагувати</string>
+    <string name="delete_collection">Видалити колекцію</string>
+    <string name="no_collections">У вас ще немає колекцій.\nСтворіть першу!</string>
+    <string name="collection_tab_empty">Ця колекція порожня.\nДодайте сюди фільми або серіали!</string>
+    <string name="items_count">%d елементів</string>
+    <string name="your_progress">Ваш прогрес</string>
+    <string name="create_new_collection">Створити нову колекцію</string>
+    <string name="delete_collection_title">Видалити колекцію?</string>
+    <string name="delete_collection_confirm">Ви впевнені, що хочете видалити цю колекцію? Це дію неможливо скасувати.</string>
+
+    <!-- Search improvements -->
+    <string name="try_different_query">Спробуйте інший пошуковий запит</string>
+    <string name="tv_shows_count_fmt">%d серіалів</string>
 </resources>

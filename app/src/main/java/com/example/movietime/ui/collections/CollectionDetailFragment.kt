@@ -99,7 +99,7 @@ class CollectionDetailFragment : Fragment() {
 
         viewModel.items.observe(viewLifecycleOwner) { items ->
             adapter.submitList(items)
-            binding.tvItemCount.text = "${items.size} елементів"
+            binding.tvItemCount.text = requireContext().getString(R.string.items_count, items.size)
             binding.tvEmptyState.isVisible = items.isEmpty()
             binding.rvCollectionItems.isVisible = items.isNotEmpty()
         }
@@ -135,9 +135,9 @@ class CollectionDetailFragment : Fragment() {
         etDescription.setText(current.description)
 
         AlertDialog.Builder(requireContext())
-            .setTitle("Редагувати колекцію")
+            .setTitle(R.string.edit_collection)
             .setView(dialogView)
-            .setPositiveButton("Зберегти") { _, _ ->
+            .setPositiveButton(R.string.save) { _, _ ->
                 val name = etName.text.toString().trim()
                 val description = etDescription.text.toString().trim()
                 
@@ -145,21 +145,21 @@ class CollectionDetailFragment : Fragment() {
                     viewModel.updateCollection(name, description)
                 }
             }
-            .setNeutralButton("Видалити") { _, _ ->
+            .setNeutralButton(R.string.delete) { _, _ ->
                 showDeleteConfirmation()
             }
-            .setNegativeButton("Скасувати", null)
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
     
     private fun showDeleteConfirmation() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Видалити колекцію?")
-            .setMessage("Ви впевнені, що хочете видалити цю колекцію? Це дію неможливо скасувати.")
-            .setPositiveButton("Видалити") { _, _ ->
+            .setTitle(R.string.delete_collection_title)
+            .setMessage(R.string.delete_collection_confirm)
+            .setPositiveButton(R.string.delete) { _, _ ->
                 viewModel.deleteCollection()
             }
-            .setNegativeButton("Скасувати", null)
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
 

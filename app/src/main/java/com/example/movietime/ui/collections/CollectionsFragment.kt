@@ -83,9 +83,9 @@ class CollectionsFragment : Fragment() {
         val etDescription = dialogView.findViewById<EditText>(R.id.etCollectionDescription)
 
         AlertDialog.Builder(requireContext())
-            .setTitle("Нова колекція")
+            .setTitle(R.string.new_collection)
             .setView(dialogView)
-            .setPositiveButton("Створити") { _, _ ->
+            .setPositiveButton(R.string.create_collection) { _, _ ->
                 val name = etName.text.toString().trim()
                 val description = etDescription.text.toString().trim()
                 
@@ -93,7 +93,7 @@ class CollectionsFragment : Fragment() {
                     viewModel.createCollection(name, description)
                 }
             }
-            .setNegativeButton("Скасувати", null)
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
 

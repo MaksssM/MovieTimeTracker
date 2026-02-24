@@ -92,8 +92,9 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="14dp">
+                        android:paddingStart="20dp"
+                        android:paddingEnd="8dp"
+                        android:paddingVertical="6dp">
                         
                         <ImageView
                             android:layout_width="24dp"
@@ -115,7 +116,22 @@
                             android:textSize="16sp"
                             android:imeOptions="actionSearch"
                             android:inputType="text"
-                            android:maxLines="1" />
+                            android:maxLines="1"
+                            android:paddingVertical="10dp" />
+
+                        <!-- Clear Button -->
+                        <ImageButton
+                            android:id="@+id/btnClearSearch"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_close_24"
+                            android:background="@drawable/bg_search_clear_btn"
+                            android:scaleType="centerInside"
+                            android:padding="10dp"
+                            app:tint="#80FFFFFF"
+                            android:contentDescription="@string/clear_history"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
                         
                     </LinearLayout>
                     
@@ -123,11 +139,58 @@
                 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Advanced Filters Button -->
+            <LinearLayout
+                android:id="@+id/btnAdvancedFilters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_filter_chip_normal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_filter"
+                    app:tint="#C084FC"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:id="@+id/tvAdvancedFiltersLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/advanced_filters"
+                    android:textColor="#C084FC"
+                    android:textSize="13sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:id="@+id/tvActiveFilterCount"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_event_count_micro"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="2"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
             <!-- Premium Tabs -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="20dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp"
@@ -248,13 +311,94 @@
 
             </LinearLayout>
 
-            <!-- Popular Content Section (no header) -->
+            <!-- Recent Searches Section -->
+            <LinearLayout
+                android:id="@+id/layoutRecentSearches"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/bg_section_title_underline"
+                        android:layout_marginEnd="12dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/recent_searches"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:id="@+id/btnClearHistory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/clear_history"
+                        android:textColor="#60A5FA"
+                        android:textSize="13sp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="4dp"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRecentSearches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </LinearLayout>
+
+            <!-- Popular Content Section -->
             <LinearLayout
                 android:id="@+id/cardPopular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/bg_section_title_underline"
+                        android:layout_marginEnd="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/trending"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium" />
+
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvPopular"
@@ -264,6 +408,52 @@
                     android:clipToPadding="false"
                     tools:listitem="@layout/item_search_result"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </LinearLayout>
+
+            <!-- No Results State -->
+            <LinearLayout
+                android:id="@+id/layoutNoResults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="48dp"
+                android:visibility="gone"
+                tools:visibility="gone">
+
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/bg_icon_glow_primary">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_search_24"
+                        app:tint="@android:color/white"
+                        android:contentDescription="@null" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/no_results"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvNoResultsHint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/try_different_query"
+                    android:textColor="@color/text_hint"
+                    android:textSize="14sp"
+                    android:gravity="center" />
 
             </LinearLayout>
 

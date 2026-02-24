@@ -47,8 +47,8 @@ class MovieTimeApp : Application(), androidx.work.Configuration.Provider, ImageL
             else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
 
-        // Apply saved locale (default: Ukrainian)
-        applyLocale()
+        // Apply saved locale using per-app language API
+        com.example.movietime.util.LocaleHelper.initLocale(this)
     }
     
     // Global Coil ImageLoader configuration for better performance
