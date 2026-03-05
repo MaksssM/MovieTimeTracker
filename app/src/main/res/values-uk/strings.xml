@@ -534,6 +534,9 @@
     <string name="no_genre_data">Немає даних про жанри</string>
     <string name="no_director_data">Завантаження режисерів...</string>
     <string name="longest_movie">Найдовший фільм</string>
+    <string name="shortest_movie">Найкоротший фільм</string>
+    <string name="longest_tv_show">Найдовший серіал</string>
+    <string name="runtime_records">Рекорди хронометражу</string>
     <string name="most_rewatched">Переглянутий найчастіше</string>
     <string name="content_ratio">Співвідношення контенту</string>
     <string name="runtime_minutes">%d хв</string>

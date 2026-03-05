@@ -56,7 +56,8 @@ class StatisticsActivity : AppCompatActivity() {
             binding.cardMostRewatched,
             binding.cardTrends,
             binding.cardExtended,
-            binding.cardWatchTimeBreakdown
+            binding.cardWatchTimeBreakdown,
+            binding.cardHighestRated
         )
         
         cards.forEach { card ->
@@ -72,7 +73,8 @@ class StatisticsActivity : AppCompatActivity() {
             binding.cardMostRewatched,
             binding.cardTrends,
             binding.cardExtended,
-            binding.cardWatchTimeBreakdown
+            binding.cardWatchTimeBreakdown,
+            binding.cardHighestRated
         )
         
         cards.forEachIndexed { index, card ->
@@ -188,22 +190,48 @@ class StatisticsActivity : AppCompatActivity() {
             binding.tvNoDirectors.isVisible = true
         }
 
-        // Longest movie
+        // Runtime records card — show if any of shortest/longest exists
+        val hasRuntimeData = stats.longestMovieWatched != null ||
+                stats.shortestMovie != null || stats.longestTvShow != null
+        binding.cardLongestMovie.isVisible = hasRuntimeData
+
         stats.longestMovieWatched?.let { movie ->
-            binding.cardLongestMovie.isVisible = true
+            binding.tvLongestMovieTitle.isVisible = true
+            binding.tvLongestMovieRuntime.isVisible = true
             binding.tvLongestMovieTitle.text = movie.title
             binding.tvLongestMovieRuntime.text = getString(R.string.runtime_minutes, movie.runtimeMinutes)
         } ?: run {
-            binding.cardLongestMovie.isVisible = false
+            binding.tvLongestMovieTitle.isVisible = false
+            binding.tvLongestMovieRuntime.isVisible = false
+        }
+
+        stats.shortestMovie?.let { movie ->
+            binding.tvShortestMovieTitle.isVisible = true
+            binding.tvShortestMovieRuntime.isVisible = true
+            binding.tvShortestMovieTitle.text = movie.title
+            binding.tvShortestMovieRuntime.text = getString(R.string.runtime_minutes, movie.runtimeMinutes)
+        } ?: run {
+            binding.tvShortestMovieTitle.isVisible = false
+            binding.tvShortestMovieRuntime.isVisible = false
+        }
+
+        stats.longestTvShow?.let { tv ->
+            binding.tvLongestTvTitle.isVisible = true
+            binding.tvLongestTvRuntime.isVisible = true
+            binding.tvLongestTvTitle.text = tv.title
+            val tvHours = tv.runtimeMinutes / 60
+            val tvMins = tv.runtimeMinutes % 60
+            binding.tvLongestTvRuntime.text = if (tvHours > 0) "${tvHours}г ${tvMins}хв" else "${tvMins}хв"
+        } ?: run {
+            binding.tvLongestTvTitle.isVisible = false
+            binding.tvLongestTvRuntime.isVisible = false
         }
 
         // Most rewatched
         stats.mostRewatchedItem?.let { item ->
             binding.cardMostRewatched.isVisible = true
             binding.tvMostRewatchedTitle.text = item.title
-            binding.tvRewatchCount.text = resources.getQuantityString(
-                R.plurals.times_count, item.rewatchCount, item.rewatchCount
-            )
+            binding.tvRewatchCount.text = "${item.rewatchCount}×"
         } ?: run {
             binding.cardMostRewatched.isVisible = false
         }
@@ -266,15 +294,6 @@ class StatisticsActivity : AppCompatActivity() {
         // Watch time breakdown
         binding.tvMovieWatchTime.text = viewModel.formatWatchTimeShort(stats.totalWatchTimeMovies)
         binding.tvTvWatchTime.text = viewModel.formatWatchTimeShort(stats.totalWatchTimeTvShows)
-        
-        // Shortest movie
-        stats.shortestMovie?.let { movie ->
-            binding.cardShortestMovie.isVisible = true
-            binding.tvShortestMovieTitle.text = movie.title
-            binding.tvShortestMovieRuntime.text = getString(R.string.runtime_minutes, movie.runtimeMinutes)
-        } ?: run {
-            binding.cardShortestMovie.isVisible = false
-        }
         
         // Highest rated movie
         stats.highestRatedMovie?.let { movie ->

@@ -14,6 +14,7 @@ import com.example.movietime.R
 import com.example.movietime.databinding.FragmentCollectionsBinding
 import com.example.movietime.utils.GridSpacingItemDecoration
 import androidx.navigation.fragment.findNavController
+import com.example.movietime.ui.universe.UniversesActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -74,6 +75,10 @@ class CollectionsFragment : Fragment() {
         
         binding.fabCreateCollection.setOnClickListener {
             showCreateCollectionDialog()
+        }
+
+        binding.chipUniverses.setOnClickListener {
+            UniversesActivity.start(requireContext())
         }
     }
 

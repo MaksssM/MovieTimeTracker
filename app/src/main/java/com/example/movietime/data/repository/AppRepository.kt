@@ -743,10 +743,17 @@ class AppRepository @Inject constructor(
         maxRating: Float? = null,
         companyId: Int? = null,
         sortBy: String = "popularity.desc",
-        page: Int = 1
+        page: Int = 1,
+        year: Int? = null
     ): List<TvShowResult> {
         return try {
             val genresStr = genreIds?.joinToString(",")
+            
+            // TMDB discover/tv uses "name" instead of "title" for sorting
+            val tvSortBy = sortBy
+                .replace("title.asc", "name.asc")
+                .replace("title.desc", "name.desc")
+                .replace("primary_release_date", "first_air_date")
             
             // Determine person filter based on role (same logic as discoverMovies)
             val withCast = when (personRole) {
@@ -766,13 +773,14 @@ class AppRepository @Inject constructor(
                 apiKey = apiKey,
                 language = languageManager.getApiLanguage(),
                 page = page,
-                sortBy = sortBy,
+                sortBy = tvSortBy,
                 withGenres = genresStr,
                 withCast = withCast,
                 withCrew = withCrew,
                 withCompanies = companyId?.toString(),
                 voteAverageGte = minRating,
-                voteAverageLte = maxRating
+                voteAverageLte = maxRating,
+                firstAirDateYear = year
             )
             
             d("discoverTvShows success: ${response.results.size} results (genres=$genresStr, person=$personId, role=$personRole, company=$companyId)")
@@ -801,11 +809,11 @@ class AppRepository @Inject constructor(
                 results.addAll(discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, companyId, sortBy))
             }
             "tv" -> {
-                results.addAll(discoverTvShows(genreIds, personId, personRole, minRating, maxRating, companyId, sortBy))
+                results.addAll(discoverTvShows(genreIds, personId, personRole, minRating, maxRating, companyId, sortBy, year = year))
             }
             else -> { // "all"
                 val movies = async { discoverMovies(genreIds, personId, personRole, minRating, maxRating, year, companyId, sortBy) }
-                val tvShows = async { discoverTvShows(genreIds, personId, personRole, minRating, maxRating, companyId, sortBy) }
+                val tvShows = async { discoverTvShows(genreIds, personId, personRole, minRating, maxRating, companyId, sortBy, year = year) }
                 
                 results.addAll(movies.await())
                 results.addAll(tvShows.await())

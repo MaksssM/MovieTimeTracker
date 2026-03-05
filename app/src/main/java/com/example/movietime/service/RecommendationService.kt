@@ -64,7 +64,8 @@ class RecommendationService @Inject constructor(
         val watchedItems = repository.getWatchedItemsSync()
 
         if (watchedItems.isEmpty()) {
-            return@withContext PersonalizedRecommendations(emptyList(), emptyList())
+            // Fallback: показуємо найбільш популярний контент
+            return@withContext getPopularFallback()
         }
 
         // 1. Скоримо кожен переглянутий елемент
@@ -186,22 +187,14 @@ class RecommendationService @Inject constructor(
         val finalMovies = recommendedMovies
             .filter { !seenMovieIds.contains(it.id) && it.voteAverage >= MIN_VOTE_AVERAGE.toFloat() }
             .distinctBy { it.id }
-            .sortedWith(
-                compareByDescending<MovieResult> { it.voteAverage }
-                    .thenByDescending { it.popularity }
-            )
+            .sortedByDescending { it.popularity }
             .take(MAX_RESULTS_PER_TYPE)
-            .shuffled() // Shuffle for variety on each load
 
         val finalTv = recommendedTvShows
             .filter { !seenTvShowIds.contains(it.id) && it.voteAverage >= MIN_VOTE_AVERAGE.toFloat() }
             .distinctBy { it.id }
-            .sortedWith(
-                compareByDescending<TvShowResult> { it.voteAverage }
-                    .thenByDescending { it.popularity }
-            )
+            .sortedByDescending { it.popularity }
             .take(MAX_RESULTS_PER_TYPE)
-            .shuffled() // Shuffle for variety on each load
 
         val result = PersonalizedRecommendations(finalMovies, finalTv)
         cachedRecommendations = result
@@ -213,4 +206,18 @@ class RecommendationService @Inject constructor(
         val movies: List<MovieResult>,
         val tvShows: List<TvShowResult>
     )
+
+    private suspend fun getPopularFallback(): PersonalizedRecommendations {
+        return try {
+            val movies = repository.getPopularMovies().results
+                .sortedByDescending { it.popularity }
+                .take(MAX_RESULTS_PER_TYPE)
+            val tv = repository.getPopularTvShows().results
+                .sortedByDescending { it.popularity }
+                .take(MAX_RESULTS_PER_TYPE)
+            PersonalizedRecommendations(movies, tv)
+        } catch (_: Exception) {
+            PersonalizedRecommendations(emptyList(), emptyList())
+        }
+    }
 }

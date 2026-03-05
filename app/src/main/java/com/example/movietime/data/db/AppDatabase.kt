@@ -7,18 +7,21 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [
-        WatchedItem::class, 
-        PlannedItem::class, 
-        WatchingItem::class, 
-        SearchHistoryItem::class, 
+        WatchedItem::class,
+        PlannedItem::class,
+        WatchingItem::class,
+        SearchHistoryItem::class,
         TvShowProgress::class,
         UserCollection::class,
         CollectionItem::class,
         RewatchEntry::class,
         FollowedPerson::class,
-        YearlyStats::class
+        YearlyStats::class,
+        CinematicUniverse::class,
+        FranchiseSaga::class,
+        FranchiseEntry::class
     ],
-    version = 14,
+    version = 15,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -35,7 +38,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun rewatchDao(): RewatchDao
     abstract fun followedPersonDao(): FollowedPersonDao
     abstract fun yearlyStatsDao(): YearlyStatsDao
-
+    abstract fun universeDao(): UniverseDao
 
     companion object {
 
@@ -286,6 +289,56 @@ abstract class AppDatabase : RoomDatabase() {
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_tv_show_progress_tvShowId` ON `tv_show_progress` (`tvShowId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_tv_show_progress_watched` ON `tv_show_progress` (`watched`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_tv_show_progress_watchedAt` ON `tv_show_progress` (`watchedAt`)")
+            }
+        }
+
+        val MIGRATION_14_15 = object : Migration(14, 15) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `cinematic_universes` (
+                        `id` INTEGER NOT NULL PRIMARY KEY,
+                        `name` TEXT NOT NULL,
+                        `description` TEXT,
+                        `backdropPath` TEXT,
+                        `posterPath` TEXT,
+                        `logoEmoji` TEXT NOT NULL DEFAULT '🎬',
+                        `accentColorHex` TEXT,
+                        `isSeeded` INTEGER NOT NULL DEFAULT 1
+                    )
+                """.trimIndent())
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `franchise_sagas` (
+                        `id` INTEGER NOT NULL PRIMARY KEY,
+                        `universeId` INTEGER NOT NULL,
+                        `name` TEXT NOT NULL,
+                        `description` TEXT,
+                        `displayOrder` INTEGER NOT NULL DEFAULT 0,
+                        `yearRange` TEXT,
+                        FOREIGN KEY(`universeId`) REFERENCES `cinematic_universes`(`id`) ON DELETE CASCADE
+                    )
+                """.trimIndent())
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_franchise_sagas_universeId` ON `franchise_sagas` (`universeId`)")
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `franchise_entries` (
+                        `id` INTEGER NOT NULL PRIMARY KEY,
+                        `universeId` INTEGER NOT NULL,
+                        `sagaId` INTEGER,
+                        `name` TEXT NOT NULL,
+                        `entryType` TEXT NOT NULL,
+                        `tmdbCollectionId` INTEGER,
+                        `tmdbMediaId` INTEGER,
+                        `mediaType` TEXT,
+                        `displayOrder` INTEGER NOT NULL DEFAULT 0,
+                        `relationshipType` TEXT NOT NULL DEFAULT 'CORE',
+                        `movieIds` TEXT NOT NULL DEFAULT '',
+                        `totalCount` INTEGER NOT NULL DEFAULT 1,
+                        `note` TEXT,
+                        FOREIGN KEY(`universeId`) REFERENCES `cinematic_universes`(`id`) ON DELETE CASCADE,
+                        FOREIGN KEY(`sagaId`) REFERENCES `franchise_sagas`(`id`) ON DELETE SET NULL
+                    )
+                """.trimIndent())
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_franchise_entries_universeId` ON `franchise_entries` (`universeId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_franchise_entries_sagaId` ON `franchise_entries` (`sagaId`)")
             }
         }
     }

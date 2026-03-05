@@ -1,9 +1,11 @@
 package com.example.movietime.ui.search.adapters
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,13 +36,29 @@ class GenreAdapter(
             tvGenreName.text = genre.name
             
             val selected = isSelected(genre)
+            val context = itemView.context
             cardView.isChecked = selected
-            cardView.strokeWidth = if (selected) 4 else 0
+            
+            if (selected) {
+                cardView.strokeWidth = 4
+                cardView.strokeColor = ContextCompat.getColor(context, R.color.accent)
+                cardView.setCardBackgroundColor(
+                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.accent_light))
+                )
+                tvGenreName.setTextColor(ContextCompat.getColor(context, R.color.primary_text))
+            } else {
+                cardView.strokeWidth = 2
+                cardView.strokeColor = ContextCompat.getColor(context, R.color.divider)
+                cardView.setCardBackgroundColor(
+                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.surface_variant))
+                )
+                tvGenreName.setTextColor(ContextCompat.getColor(context, R.color.primary_text))
+            }
             
             cardView.setOnClickListener {
                 onGenreClick(genre)
-                // Animate selection change
-                cardView.isChecked = isSelected(genre)
+                // Re-bind to update visual state
+                bind(genre)
             }
         }
     }

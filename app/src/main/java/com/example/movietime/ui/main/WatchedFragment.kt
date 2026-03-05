@@ -271,6 +271,7 @@ class WatchedFragment : Fragment() {
 
         contentAdapter.updateItems(filteredItems)
         binding.layoutEmpty.isVisible = filteredItems.isEmpty()
+        binding.rvWatchedItems.scrollToPosition(0)
         binding.rvWatchedItems.scheduleLayoutAnimation()
     }
 

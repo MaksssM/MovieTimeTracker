@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.App.CardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <!-- Left: completion indicator -->
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressEntry"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:trackThickness="4dp"
+                app:indicatorSize="40dp"
+                tools:progress="50" />
+
+            <TextView
+                android:id="@+id/tvEntryProgressText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface"
+                tools:text="2/3" />
+
+        </FrameLayout>
+
+        <!-- Main info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvEntryName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface"
+                android:maxLines="2"
+                android:ellipsize="end"
+                tools:text="Залізна Людина" />
+
+            <TextView
+                android:id="@+id/tvEntryNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginTop="2dp"
+                android:visibility="gone"
+                tools:text="Частина Всесвіту Sony" />
+
+        </LinearLayout>
+
+        <!-- Right: relationship badge -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipRelType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Chip.Assist"
+            android:textSize="10sp"
+            app:chipMinHeight="24dp"
+            android:visibility="gone"
+            tools:text="SPIN-OFF"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

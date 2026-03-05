@@ -37,6 +37,17 @@
             android:name=".ui.collection.CollectionDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MovieTimeTracker" />
+
+        <activity
+            android:name=".ui.universe.UniversesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MovieTimeTracker" />
+
+        <activity
+            android:name=".ui.universe.UniverseDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MovieTimeTracker" />
+
         <activity
             android:name=".ui.details.DetailsActivity"
             android:exported="false"

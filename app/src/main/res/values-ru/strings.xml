@@ -594,6 +594,8 @@
     <string name="most_popular_genre">Любимый жанр</string>
     <string name="watch_time_breakdown">Время просмотра</string>
     <string name="shortest_movie">Самый короткий фильм</string>
+    <string name="longest_tv_show">Самый длинный сериал</string>
+    <string name="runtime_records">Рекорды хронометража</string>
     <string name="highest_rated">Наивысшая оценка</string>
     
     <!-- Enhanced Status Badges -->

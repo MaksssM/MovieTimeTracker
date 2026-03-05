@@ -182,7 +182,8 @@ interface TmdbApi {
         @Query("vote_average.lte") voteAverageLte: Float? = null,
         @Query("first_air_date.gte") firstAirDateGte: String? = null,
         @Query("first_air_date.lte") firstAirDateLte: String? = null,
-        @Query("with_original_language") withOriginalLanguage: String? = null
+        @Query("with_original_language") withOriginalLanguage: String? = null,
+        @Query("first_air_date_year") firstAirDateYear: Int? = null
     ): TvShowsResponse
 
     // ============ PEOPLE SEARCH ============

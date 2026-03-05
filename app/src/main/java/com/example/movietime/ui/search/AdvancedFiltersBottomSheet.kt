@@ -161,43 +161,46 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
             years.add(year.toString())
         }
         
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, years)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerYear.adapter = adapter
+        val adapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, years)
+        binding.spinnerYear.setAdapter(adapter)
         
         // Set current selection
-        viewModel.selectedYear.value?.let { year ->
-            val position = years.indexOf(year.toString())
-            if (position > 0) {
-                binding.spinnerYear.setSelection(position)
-            }
+        val selectedYearVal = viewModel.selectedYear.value
+        val position = if (selectedYearVal != null) {
+            years.indexOf(selectedYearVal.toString())
+        } else {
+            0
         }
         
-        binding.spinnerYear.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val year = if (position == 0) null else years[position].toIntOrNull()
-                viewModel.setSelectedYear(year)
-            }
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+        if (position >= 0 && position < years.size) {
+             binding.spinnerYear.setText(years[position], false)
+        } else {
+             binding.spinnerYear.setText(years[0], false)
+        }
+        
+        binding.spinnerYear.setOnItemClickListener { _, _, pos, _ ->
+            val year = if (pos == 0) null else years[pos].toIntOrNull()
+            viewModel.setSelectedYear(year)
         }
     }
 
     private fun setupSortSpinner() {
-        val sortOptions = SortOption.values().map { it.displayName }
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sortOptions)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerSort.adapter = adapter
+        val sortOptions = SortOption.values()
+        val sortDisplayNames = sortOptions.map { it.displayName }
+        val adapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, sortDisplayNames)
+        binding.spinnerSort.setAdapter(adapter)
         
         // Set current selection
-        viewModel.sortOption.value?.let { option ->
-            binding.spinnerSort.setSelection(option.ordinal)
+        val currentOption = viewModel.sortOption.value ?: SortOption.POPULARITY_DESC
+        val position = currentOption.ordinal
+        if (position >= 0 && position < sortDisplayNames.size) {
+             binding.spinnerSort.setText(sortDisplayNames[position], false)
         }
         
-        binding.spinnerSort.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.setSortOption(SortOption.values()[position])
+        binding.spinnerSort.setOnItemClickListener { _, _, pos, _ ->
+            if (pos >= 0 && pos < sortOptions.size) {
+                viewModel.setSortOption(sortOptions[pos])
             }
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
         }
     }
 
@@ -228,8 +231,9 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
             viewModel.resetAdvancedFilters()
             binding.etSearchPerson.text?.clear()
             binding.etSearchCompany.text?.clear()
-            binding.spinnerYear.setSelection(0)
-            binding.spinnerSort.setSelection(0)
+            binding.spinnerYear.setText("Будь-який рік", false)
+            val firstSort = SortOption.values().firstOrNull()?.displayName ?: ""
+            binding.spinnerSort.setText(firstSort, false)
             genreAdapter.notifyDataSetChanged()
             updateSelectedPersonUI()
             updateSelectedCompanyUI()

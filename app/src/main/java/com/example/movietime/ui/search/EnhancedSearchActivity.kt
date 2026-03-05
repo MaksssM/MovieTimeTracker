@@ -178,11 +178,13 @@ class EnhancedSearchActivity : AppCompatActivity() {
 
     private fun setupAdvancedFilters() {
         binding.btnAdvancedFilters.setOnClickListener {
-            try {
-                val bottomSheet = AdvancedFiltersBottomSheet.newInstance()
+            if (supportFragmentManager.findFragmentByTag(AdvancedFiltersBottomSheet.TAG) == null) {
+                val bottomSheet = AdvancedFiltersBottomSheet.newInstance().apply {
+                    onApplyFilters = {
+                        viewModel.discoverWithFilters()
+                    }
+                }
                 bottomSheet.show(supportFragmentManager, AdvancedFiltersBottomSheet.TAG)
-            } catch (e: Exception) {
-                Log.d("EnhancedSearchActivity", "Advanced filters not available: ${e.message}")
             }
         }
     }

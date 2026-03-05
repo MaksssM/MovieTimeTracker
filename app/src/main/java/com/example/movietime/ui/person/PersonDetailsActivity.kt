@@ -33,6 +33,12 @@ class PersonDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private val tvShowsAdapter by lazy {
+        CombinedCreditsAdapter { id, mediaType ->
+            navigateToDetails(id, mediaType)
+        }
+    }
+
     private val directingAdapter by lazy {
         CombinedCreditsAdapter { id, mediaType ->
             navigateToDetails(id, mediaType)
@@ -85,6 +91,15 @@ class PersonDetailsActivity : AppCompatActivity() {
                 false
             )
             adapter = actingAdapter
+        }
+
+        binding.rvTvShows.apply {
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+                this@PersonDetailsActivity,
+                androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            adapter = tvShowsAdapter
         }
 
         binding.rvDirecting.apply {
@@ -141,14 +156,27 @@ class PersonDetailsActivity : AppCompatActivity() {
         }
         
         lifecycleScope.launch {
-            viewModel.actingCredits.collect { credits ->
-                 if (credits.isNotEmpty()) {
+            viewModel.movieCredits.collect { credits ->
+                if (credits.isNotEmpty()) {
                     binding.tvActingTitle.visibility = View.VISIBLE
                     binding.rvActing.visibility = View.VISIBLE
                     actingAdapter.submitList(credits)
                 } else {
                     binding.tvActingTitle.visibility = View.GONE
                     binding.rvActing.visibility = View.GONE
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.tvShowCredits.collect { credits ->
+                if (credits.isNotEmpty()) {
+                    binding.tvTvShowsTitle.visibility = View.VISIBLE
+                    binding.rvTvShows.visibility = View.VISIBLE
+                    tvShowsAdapter.submitList(credits)
+                } else {
+                    binding.tvTvShowsTitle.visibility = View.GONE
+                    binding.rvTvShows.visibility = View.GONE
                 }
             }
         }

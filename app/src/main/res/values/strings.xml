@@ -184,6 +184,8 @@
     <string name="department_directing">Director</string>
     <string name="department_writing">Writer</string>
     <string name="department_production">Producer</string>
+    <string name="person_filmography">Movies &amp; Series</string>
+    <string name="person_talk_shows">Talk Shows &amp; Reality</string>
     <string name="known_for">Known for: %s</string>
     <string name="biography">Biography</string>
     <string name="birthday">Birthday</string>
@@ -652,6 +654,8 @@
     <string name="most_popular_genre">Favorite Genre</string>
     <string name="watch_time_breakdown">Watch Time Breakdown</string>
     <string name="shortest_movie">Shortest Movie</string>
+    <string name="longest_tv_show">Longest TV Show</string>
+    <string name="runtime_records">Runtime Records</string>
     <string name="highest_rated">Highest Rated</string>
     
     <!-- Enhanced Status Badges -->
