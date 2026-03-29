@@ -475,6 +475,13 @@ class StatisticsRepository @Inject constructor(
             } ?: false
         }
         
+        val thisMonthTvShows = tvShows.count { tv ->
+            tv.lastUpdated?.let { timestamp ->
+                calendar.timeInMillis = timestamp
+                calendar.get(Calendar.YEAR) == currentYear && calendar.get(Calendar.MONTH) == currentMonth
+            } ?: false
+        }
+        
         var thisMonthMinutes = 0L
         allWatched.forEach { item ->
             item.lastUpdated?.let { timestamp ->
@@ -482,6 +489,11 @@ class StatisticsRepository @Inject constructor(
                 if (calendar.get(Calendar.YEAR) == currentYear && calendar.get(Calendar.MONTH) == currentMonth) {
                     if (item.mediaType == "movie") {
                         thisMonthMinutes += (item.runtime ?: 0)
+                    } else {
+                        // Include TV show watch time for current month
+                        val episodeRuntime = item.episodeRuntime ?: 45
+                        val episodes = item.totalEpisodes ?: 1
+                        thisMonthMinutes += episodeRuntime.toLong() * episodes
                     }
                 }
             }
@@ -504,14 +516,72 @@ class StatisticsRepository @Inject constructor(
             val parts = key.split("-")
             val year = parts[0].toInt()
             val month = parts[1].toInt()
-            val monthNames = arrayOf("Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень",
-                "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень")
+            // Use locale-aware month names
+            val cal = Calendar.getInstance()
+            cal.set(Calendar.MONTH, month)
+            val monthName = java.text.SimpleDateFormat("LLLL", java.util.Locale.getDefault()).format(cal.time)
+                .replaceFirstChar { it.uppercaseChar() }
             BestMonthItem(
-                monthName = monthNames.getOrElse(month) { "Unknown" },
+                monthName = monthName,
                 year = year,
                 count = value.first
             )
         }
+        
+        // Extended statistics calculations
+        
+        // Total rewatches
+        val totalRewatches = allWatched.sumOf { (it.watchCount - 1).coerceAtLeast(0) }
+        
+        // Average movie runtime
+        val movieRuntimes = movies.mapNotNull { it.runtime }.filter { it > 0 }
+        val avgMovieRuntime = if (movieRuntimes.isNotEmpty()) movieRuntimes.average().toInt() else 0
+        
+        // Separate watch times
+        var totalWatchTimeMovies = 0L
+        movies.forEach { movie ->
+            totalWatchTimeMovies += (movie.runtime ?: 0).toLong() * movie.watchCount
+        }
+        var totalWatchTimeTvShows = 0L
+        tvShows.forEach { tv ->
+            val episodeRuntime = tv.episodeRuntime ?: 45
+            val episodes = tv.totalEpisodes ?: 1
+            totalWatchTimeTvShows += episodeRuntime.toLong() * episodes
+        }
+        
+        // Average movies per month
+        val avgMoviesPerMonth = if (daysSinceFirst >= 30) {
+            movies.size.toFloat() / (daysSinceFirst / 30f)
+        } else {
+            movies.size.toFloat()
+        }
+        
+        // Average content per month (movies + TV shows)
+        val avgContentPerMonth = if (daysSinceFirst >= 30) {
+            allWatched.size.toFloat() / (daysSinceFirst / 30f)
+        } else {
+            allWatched.size.toFloat()
+        }
+        
+        // Shortest movie
+        val shortestMovie = movies
+            .filter { it.runtime != null && it.runtime!! > 0 }
+            .minByOrNull { it.runtime!! }
+            ?.let { LongestItem(it.id, it.title, it.posterPath, it.runtime!!, "movie") }
+        
+        // Highest rated single items
+        val highestRatedMovie = movies
+            .filter { it.userRating != null && it.userRating!! > 0f }
+            .maxByOrNull { it.userRating!! }
+            ?.let { TopRatedItem(it.id, it.title, it.posterPath, it.userRating!!, "movie") }
+        
+        val highestRatedTvShow = tvShows
+            .filter { it.userRating != null && it.userRating!! > 0f }
+            .maxByOrNull { it.userRating!! }
+            ?.let { TopRatedItem(it.id, it.title, it.posterPath, it.userRating!!, "tv") }
+        
+        // Most popular genre name
+        val mostPopularGenre = favoriteGenres.firstOrNull()?.genreName ?: ""
         
         DetailedStatistics(
             totalWatchTimeMinutes = totalWatchTime,
@@ -539,7 +609,18 @@ class StatisticsRepository @Inject constructor(
             firstWatchDate = firstWatchDate,
             completedTvShows = completedTvShows,
             avgEpisodesPerDay = avgEpisodesPerDay,
-            decadeDistribution = decadeDistribution
+            decadeDistribution = decadeDistribution,
+            totalRewatches = totalRewatches,
+            avgMovieRuntime = avgMovieRuntime,
+            avgMoviesPerMonth = avgMoviesPerMonth,
+            totalWatchTimeMovies = totalWatchTimeMovies,
+            totalWatchTimeTvShows = totalWatchTimeTvShows,
+            thisMonthTvShows = thisMonthTvShows,
+            shortestMovie = shortestMovie,
+            highestRatedMovie = highestRatedMovie,
+            highestRatedTvShow = highestRatedTvShow,
+            mostPopularGenre = mostPopularGenre,
+            avgContentPerMonth = avgContentPerMonth
         )
     }
     

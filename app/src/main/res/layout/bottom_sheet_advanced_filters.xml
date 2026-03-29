@@ -161,7 +161,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipRoleAny"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/role_any"
@@ -169,28 +169,28 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipRoleActor"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/role_actor" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipRoleDirector"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/role_director" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipRoleWriter"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/role_writer" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipRoleProducer"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/role_producer" />
@@ -223,7 +223,6 @@
                 android:id="@+id/rvPeople"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:nestedScrollingEnabled="false"
                 android:layout_marginBottom="16dp"
                 android:visibility="gone" />
 
@@ -314,7 +313,6 @@
                 android:id="@+id/rvCompanies"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:nestedScrollingEnabled="false"
                 android:layout_marginBottom="16dp"
                 android:visibility="gone" />
 
@@ -332,55 +330,51 @@
                 android:orientation="horizontal"
                 android:layout_marginBottom="16dp">
 
-                <!-- Year Spinner -->
-                <LinearLayout
+                <!-- Year Dropdown -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginEnd="8dp">
+                    android:layout_marginEnd="8dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    android:hint="@string/year">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/year"
-                        android:textColor="@color/primary_text"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
-
-                    <Spinner
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/spinnerYear"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@drawable/bg_spinner"
-                        android:padding="8dp" />
-                </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:textSize="14sp"
+                        android:textColor="@color/primary_text"
+                        android:popupBackground="@color/surface_elevated" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Sort Spinner -->
-                <LinearLayout
+                <!-- Sort Dropdown -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="8dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    android:hint="@string/sort_by">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/sort_by"
-                        android:textColor="@color/primary_text"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
-
-                    <Spinner
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/spinnerSort"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@drawable/bg_spinner"
-                        android:padding="8dp" />
-                </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:textSize="14sp"
+                        android:textColor="@color/primary_text"
+                        android:popupBackground="@color/surface_elevated" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <!-- Action Buttons -->
@@ -392,22 +386,26 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnResetFilters"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:text="@string/reset"
+                    android:textColor="@color/primary_text"
+                    app:strokeColor="@color/divider"
                     app:cornerRadius="12dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnApplyFilters"
-                    style="@style/Widget.Material3.Button"
+                    style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:text="@string/apply"
+                    android:textColor="@color/text_on_dark"
+                    app:backgroundTint="@color/accent"
                     app:cornerRadius="12dp" />
             </LinearLayout>
         </LinearLayout>

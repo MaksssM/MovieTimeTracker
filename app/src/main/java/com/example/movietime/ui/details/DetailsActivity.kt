@@ -28,6 +28,7 @@ import android.util.Log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -35,29 +36,14 @@ class DetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailsBinding
     private val viewModel: DetailsViewModel by viewModels()
+    private lateinit var castAdapter: CastAdapter
 
     companion object {
         private const val TAG = "DetailsActivity"
     }
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(applyLocale(newBase))
-    }
-
-    private fun applyLocale(context: Context): Context {
-        val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
-        val locale = when (langPref) {
-            "uk" -> Locale("uk")
-            "ru" -> Locale("ru")
-            "en" -> Locale("en")
-            else -> Locale("uk")
-        }
-        Locale.setDefault(locale)
-        val config = Configuration(context.resources.configuration)
-        val localeList = android.os.LocaleList(locale)
-        config.setLocales(localeList)
-        return context.createConfigurationContext(config)
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,10 +78,101 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         observeViewModel()
+        setupCastRecyclerView()
         setupCategoryButtons()
         setupActionButtons()
         animateEntrance()
         observeWatchedStatus()
+        observeCredits()
+    }
+
+    private fun setupCastRecyclerView() {
+        castAdapter = CastAdapter()
+        binding.rvCast.apply {
+            layoutManager = LinearLayoutManager(this@DetailsActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = castAdapter
+            setHasFixedSize(true)
+        }
+    }
+
+    private fun observeCredits() {
+        viewModel.cast.observe(this) { castList ->
+            if (castList.isNullOrEmpty()) {
+                binding.layoutCast.visibility = View.GONE
+            } else {
+                binding.layoutCast.visibility = View.VISIBLE
+                castAdapter.submitList(castList)
+            }
+        }
+
+        viewModel.crew.observe(this) { crewList ->
+            if (crewList.isNullOrEmpty()) {
+                binding.layoutCrewInfo.visibility = View.GONE
+                return@observe
+            }
+
+            // Group key crew by job
+            val directors = crewList.filter { it.job == "Director" }
+            val writers = crewList.filter { it.job == "Screenplay" || it.job == "Writer" || it.job == "Story" }
+            val producers = crewList.filter { it.job == "Producer" }
+            val composers = crewList.filter { it.job == "Original Music Composer" }
+
+            val crewContainer = binding.layoutCrewList
+            crewContainer.removeAllViews()
+
+            var hasContent = false
+
+            if (directors.isNotEmpty()) {
+                addCrewRow(crewContainer, getString(R.string.director), directors.joinToString(", ") { it.name })
+                hasContent = true
+            }
+            if (writers.isNotEmpty()) {
+                addCrewRow(crewContainer, getString(R.string.crew_writer), writers.distinctBy { it.name }.joinToString(", ") { it.name })
+                hasContent = true
+            }
+            if (producers.isNotEmpty()) {
+                addCrewRow(crewContainer, getString(R.string.crew_producer), producers.distinctBy { it.name }.take(3).joinToString(", ") { it.name })
+                hasContent = true
+            }
+            if (composers.isNotEmpty()) {
+                addCrewRow(crewContainer, getString(R.string.crew_composer), composers.joinToString(", ") { it.name })
+                hasContent = true
+            }
+
+            binding.layoutCrewInfo.visibility = if (hasContent) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun addCrewRow(container: android.widget.LinearLayout, role: String, names: String) {
+        val row = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            if (container.childCount > 0) {
+                setPadding(0, (12 * resources.displayMetrics.density).toInt(), 0, 0)
+            }
+        }
+        val roleView = TextView(this).apply {
+            layoutParams = android.widget.LinearLayout.LayoutParams(
+                (100 * resources.displayMetrics.density).toInt(),
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            text = role
+            setTextColor(resources.getColor(R.color.text_on_dark_tertiary, theme))
+            textSize = 14f
+        }
+        val nameView = TextView(this).apply {
+            layoutParams = android.widget.LinearLayout.LayoutParams(
+                0,
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+            text = names
+            setTextColor(android.graphics.Color.WHITE)
+            textSize = 14f
+        }
+        row.addView(roleView)
+        row.addView(nameView)
+        container.addView(row)
     }
 
     private fun observeWatchedStatus() {
@@ -229,10 +306,8 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     private fun animateEntrance() {
-        // Hide elements initially
+        // Hide elements initially  
         val elementsToAnimate = listOf(
-            binding.btnPlanned,
-            binding.btnWatched,
             binding.btnPlanned,
             binding.btnWatched,
             binding.btnWatching,
@@ -241,16 +316,35 @@ class DetailsActivity : AppCompatActivity() {
         
         elementsToAnimate.forEach { view ->
             view.alpha = 0f
-            view.translationY = 40f
-            view.scaleX = 0.9f
-            view.scaleY = 0.9f
+            view.translationY = 50f
+            view.scaleX = 0.85f
+            view.scaleY = 0.85f
         }
 
-        // Staggered animation for action buttons
+        // Animate decorative glow orbs
+        listOfNotNull(
+            binding.root.findViewWithTag<View>("glowOrb1"),
+            binding.root.findViewWithTag<View>("glowOrb2"),
+            binding.root.findViewWithTag<View>("glowOrb3")
+        ).forEachIndexed { index, orb ->
+            orb.alpha = 0f
+            orb.scaleX = 0.3f
+            orb.scaleY = 0.3f
+            orb.animate()
+                .alpha(if (index == 0) 0.4f else 0.25f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(1000)
+                .setStartDelay(300L + index * 200L)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
+        }
+
+        // Staggered animation for action buttons with spring
         lifecycleScope.launch {
-            delay(200)
+            delay(250)
             elementsToAnimate.forEachIndexed { index, view ->
-                delay(80L * index)
+                delay(100L * index)
                 animateViewEntrance(view)
             }
         }
@@ -260,12 +354,12 @@ class DetailsActivity : AppCompatActivity() {
         AnimatorSet().apply {
             playTogether(
                 ObjectAnimator.ofFloat(view, "alpha", 0f, 1f),
-                ObjectAnimator.ofFloat(view, "translationY", 40f, 0f),
-                ObjectAnimator.ofFloat(view, "scaleX", 0.9f, 1f),
-                ObjectAnimator.ofFloat(view, "scaleY", 0.9f, 1f)
+                ObjectAnimator.ofFloat(view, "translationY", 50f, -5f, 0f),
+                ObjectAnimator.ofFloat(view, "scaleX", 0.85f, 1.05f, 1f),
+                ObjectAnimator.ofFloat(view, "scaleY", 0.85f, 1.05f, 1f)
             )
-            duration = 400
-            interpolator = OvershootInterpolator(1.2f)
+            duration = 500
+            interpolator = OvershootInterpolator(1.5f)
             start()
         }
     }
@@ -275,14 +369,19 @@ class DetailsActivity : AppCompatActivity() {
         badge.alpha = 0f
         badge.scaleX = 0f
         badge.scaleY = 0f
+        badge.rotation = -10f
         
-        badge.animate()
-            .alpha(1f)
-            .scaleX(1f)
-            .scaleY(1f)
-            .setDuration(350)
-            .setInterpolator(OvershootInterpolator(1.5f))
-            .start()
+        val anim = AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(badge, "alpha", 0f, 1f),
+                ObjectAnimator.ofFloat(badge, "scaleX", 0f, 1.2f, 1f),
+                ObjectAnimator.ofFloat(badge, "scaleY", 0f, 1.2f, 1f),
+                ObjectAnimator.ofFloat(badge, "rotation", -10f, 0f)
+            )
+            duration = 450
+            interpolator = OvershootInterpolator(2f)
+        }
+        anim.start()
     }
 
     private fun setupCategoryButtons() {
@@ -305,16 +404,24 @@ class DetailsActivity : AppCompatActivity() {
    private fun animateButtonPress(view: View, action: () -> Unit) {
         com.example.movietime.utils.HapticFeedbackHelper.impactLow(view)
         view.animate()
-            .scaleX(0.9f)
-            .scaleY(0.9f)
+            .scaleX(0.88f)
+            .scaleY(0.88f)
             .setDuration(80)
             .withEndAction {
                 view.animate()
-                    .scaleX(1f)
-                    .scaleY(1f)
+                    .scaleX(1.05f)
+                    .scaleY(1.05f)
                     .setDuration(100)
+                    .withEndAction {
+                        view.animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .setDuration(80)
+                            .setInterpolator(OvershootInterpolator(2f))
+                            .start()
+                        action()
+                    }
                     .start()
-                action()
             }
             .start()
     }

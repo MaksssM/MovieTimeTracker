@@ -14,6 +14,7 @@ import com.example.movietime.R
 import com.example.movietime.databinding.FragmentCollectionsBinding
 import com.example.movietime.utils.GridSpacingItemDecoration
 import androidx.navigation.fragment.findNavController
+import com.example.movietime.ui.universe.UniversesActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -75,6 +76,10 @@ class CollectionsFragment : Fragment() {
         binding.fabCreateCollection.setOnClickListener {
             showCreateCollectionDialog()
         }
+
+        binding.chipUniverses.setOnClickListener {
+            UniversesActivity.start(requireContext())
+        }
     }
 
     private fun showCreateCollectionDialog() {
@@ -83,9 +88,9 @@ class CollectionsFragment : Fragment() {
         val etDescription = dialogView.findViewById<EditText>(R.id.etCollectionDescription)
 
         AlertDialog.Builder(requireContext())
-            .setTitle("Нова колекція")
+            .setTitle(R.string.new_collection)
             .setView(dialogView)
-            .setPositiveButton("Створити") { _, _ ->
+            .setPositiveButton(R.string.create_collection) { _, _ ->
                 val name = etName.text.toString().trim()
                 val description = etDescription.text.toString().trim()
                 
@@ -93,7 +98,7 @@ class CollectionsFragment : Fragment() {
                     viewModel.createCollection(name, description)
                 }
             }
-            .setNegativeButton("Скасувати", null)
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
 

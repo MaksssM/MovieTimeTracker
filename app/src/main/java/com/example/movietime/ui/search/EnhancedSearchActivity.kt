@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -19,11 +20,11 @@ import com.example.movietime.ui.details.TvDetailsActivity
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.model.Person
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.launch
 import android.util.Log
 import java.util.Locale
@@ -40,25 +41,11 @@ class EnhancedSearchActivity : AppCompatActivity() {
 
     private var searchJob: Job? = null
     private var currentFilter = "all"
+    private var allSearchResults: List<GroupedSearchItem> = emptyList()
+    private var currentSortMode = "popularity"
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(applyLocale(newBase))
-    }
-
-    private fun applyLocale(context: Context): Context {
-        val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
-        val locale = when (langPref) {
-            "uk" -> Locale("uk")
-            "ru" -> Locale("ru")
-            "en" -> Locale("en")
-            else -> Locale("uk")
-        }
-        Locale.setDefault(locale)
-        val config = Configuration(context.resources.configuration)
-        val localeList = android.os.LocaleList(locale)
-        config.setLocales(localeList)
-        return context.createConfigurationContext(config)
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,8 +62,13 @@ class EnhancedSearchActivity : AppCompatActivity() {
         setupRecyclerViews()
         setupSearchInput()
         setupTabs()
+        setupSortButton()
+        setupClearButton()
+        setupAdvancedFilters()
         observeViewModel()
+        observeLibraryStatus()
         loadPopularContent()
+        loadRecentSearches()
     }
     
     @Suppress("DEPRECATION")
@@ -104,9 +96,11 @@ class EnhancedSearchActivity : AppCompatActivity() {
             adapter = searchAdapter
             val layoutManager = LinearLayoutManager(this@EnhancedSearchActivity)
             this.layoutManager = layoutManager
+            setHasFixedSize(true)
+            setItemViewCacheSize(20)
             layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
                 context, 
-                R.anim.layout_animation_cascade
+                R.anim.layout_animation_slide_up
             )
             
             addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
@@ -128,6 +122,8 @@ class EnhancedSearchActivity : AppCompatActivity() {
         binding.rvPopular.apply {
             adapter = popularAdapter
             layoutManager = LinearLayoutManager(this@EnhancedSearchActivity)
+            setHasFixedSize(true)
+            setItemViewCacheSize(15)
             layoutAnimation = android.view.animation.AnimationUtils.loadLayoutAnimation(
                 context,
                 R.anim.layout_animation_fall_down
@@ -155,9 +151,70 @@ class EnhancedSearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 val query = s?.toString()?.trim() ?: ""
+                binding.btnClearSearch.isVisible = query.isNotEmpty()
                 performSearch(query)
             }
         })
+        
+        // Handle keyboard search action
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val query = binding.etSearch.text?.toString()?.trim() ?: ""
+                if (query.length >= 2) {
+                    performSearch(query)
+                }
+                true
+            } else false
+        }
+    }
+
+    private fun setupClearButton() {
+        binding.btnClearSearch.setOnClickListener {
+            binding.etSearch.text?.clear()
+            binding.etSearch.requestFocus()
+            binding.layoutNoResults.isVisible = false
+        }
+    }
+
+    private fun setupAdvancedFilters() {
+        binding.btnAdvancedFilters.setOnClickListener {
+            if (supportFragmentManager.findFragmentByTag(AdvancedFiltersBottomSheet.TAG) == null) {
+                val bottomSheet = AdvancedFiltersBottomSheet.newInstance().apply {
+                    onApplyFilters = {
+                        viewModel.discoverWithFilters()
+                    }
+                }
+                bottomSheet.show(supportFragmentManager, AdvancedFiltersBottomSheet.TAG)
+            }
+        }
+    }
+
+    private var recentSearchAdapter: RecentSearchChipsAdapter? = null
+
+    private fun loadRecentSearches() {
+        binding.rvRecentSearches.layoutManager = LinearLayoutManager(
+            this, LinearLayoutManager.HORIZONTAL, false
+        )
+        recentSearchAdapter = RecentSearchChipsAdapter(emptyList()) { query ->
+            binding.etSearch.setText(query)
+            binding.etSearch.setSelection(query.length)
+        }
+        binding.rvRecentSearches.adapter = recentSearchAdapter
+
+        viewModel.searchHistory.observe(this) { history ->
+            val query = binding.etSearch.text?.toString()?.trim() ?: ""
+            if (history.isNullOrEmpty() || query.isNotEmpty()) {
+                binding.layoutRecentSearches.isVisible = false
+            } else {
+                binding.layoutRecentSearches.isVisible = true
+                recentSearchAdapter?.updateItems(history)
+            }
+        }
+
+        binding.btnClearHistory.setOnClickListener {
+            viewModel.clearSearchHistory()
+            binding.layoutRecentSearches.isVisible = false
+        }
     }
 
     private fun setupTabs() {
@@ -213,6 +270,10 @@ class EnhancedSearchActivity : AppCompatActivity() {
         binding.cardResults.isVisible = false
         binding.cardPopular.isVisible = true
         binding.layoutLoading.isVisible = false
+        binding.layoutNoResults.isVisible = false
+        // Show recent searches if there is history
+        val history = viewModel.searchHistory.value
+        binding.layoutRecentSearches.isVisible = !history.isNullOrEmpty()
     }
 
     private fun updatePopularContent() {
@@ -243,8 +304,10 @@ class EnhancedSearchActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.searchResults.observe(this) { results ->
             binding.layoutLoading.isVisible = false
+            
+            val query = binding.etSearch.text?.toString()?.trim() ?: ""
 
-            if (results.isNotEmpty()) {
+            if (results.isNotEmpty() && query.isNotEmpty()) {
                 val groupedItems = results.map { item ->
                     when (item) {
                         is MovieResult -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
@@ -253,25 +316,91 @@ class EnhancedSearchActivity : AppCompatActivity() {
                         else -> GroupedSearchItem(GroupedSearchItem.ItemType.MOVIE, item)
                     }
                 }
-                searchAdapter.updateItems(groupedItems)
+                allSearchResults = groupedItems
                 binding.cardResults.isVisible = true
                 binding.cardPopular.isVisible = false
-
-                val resultCount = results.size
-                binding.tvResultsHeader.text = getString(R.string.search_results_count, resultCount)
-            } else {
+                binding.layoutNoResults.isVisible = false
+                binding.layoutRecentSearches.isVisible = false
+                applyLibraryAndSortFilter()
+            } else if (query.isEmpty()) {
+                allSearchResults = emptyList()
                 binding.cardResults.isVisible = false
+                binding.layoutNoResults.isVisible = false
+                showPopularContent()
+            } else {
+                // Has query but no results
+                allSearchResults = emptyList()
+                binding.cardResults.isVisible = false
+                binding.cardPopular.isVisible = false
+                binding.layoutNoResults.isVisible = true
+                binding.layoutRecentSearches.isVisible = false
+            }
+        }
+
+        viewModel.popularContent.observe(this) { content ->
+            updatePopularContent()
+            val query = binding.etSearch.text?.toString()?.trim() ?: ""
+            if (query.isEmpty() && content.isNotEmpty()) {
                 showPopularContent()
             }
         }
 
-        viewModel.popularContent.observe(this) { 
-            updatePopularContent()
-        }
-
         viewModel.isLoading.observe(this) { isLoading ->
             binding.layoutLoading.isVisible = isLoading
+            if (isLoading) {
+                binding.layoutNoResults.isVisible = false
+            }
         }
+    }
+
+    private fun setupSortButton() {
+        binding.btnSort.setOnClickListener {
+            val options = arrayOf(
+                getString(R.string.sort_by_popularity),
+                getString(R.string.sort_by_rating)
+            )
+            MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.sort_results))
+                .setItems(options) { _, which ->
+                    currentSortMode = if (which == 0) "popularity" else "rating"
+                    binding.tvSortLabel.text = options[which]
+                    applyLibraryAndSortFilter()
+                }
+                .show()
+        }
+    }
+
+    private fun applyLibraryAndSortFilter() {
+        val filtered = when (currentSortMode) {
+            "rating" -> allSearchResults.sortedByDescending { item ->
+                when (val data = item.data) {
+                    is MovieResult -> data.voteAverage?.toDouble() ?: 0.0
+                    is TvShowResult -> data.voteAverage?.toDouble() ?: 0.0
+                    else -> 0.0
+                }
+            }
+            else -> allSearchResults
+        }
+        searchAdapter.updateItems(filtered)
+        binding.tvResultsHeader.text = getString(R.string.search_results_count, filtered.size)
+    }
+
+    private fun observeLibraryStatus() {
+        lifecycleScope.launch {
+            viewModel.libraryStatusMap.collect { statusMap ->
+                searchAdapter.updateLibraryStatus(statusMap)
+                popularAdapter.updateLibraryStatus(statusMap)
+                // Re-apply filter if we have results
+                if (allSearchResults.isNotEmpty()) {
+                    applyLibraryAndSortFilter()
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadLibraryStatus()
     }
 
     private fun loadPopularContent() {

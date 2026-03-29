@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movietime.data.model.CastMember
+import com.example.movietime.data.model.CrewMember
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.data.db.WatchedItem
@@ -22,6 +24,12 @@ class TvDetailsViewModel @Inject constructor(
     private val _watchedItem = MutableLiveData<WatchedItem?>()
     val watchedItem: LiveData<WatchedItem?> = _watchedItem
 
+    private val _cast = MutableLiveData<List<CastMember>>()
+    val cast: LiveData<List<CastMember>> = _cast
+
+    private val _crew = MutableLiveData<List<CrewMember>>()
+    val crew: LiveData<List<CrewMember>> = _crew
+
     fun loadTvShow(tvId: Int) {
         viewModelScope.launch {
             try {
@@ -36,6 +44,16 @@ class TvDetailsViewModel @Inject constructor(
             } catch (e: Exception) {
                 android.util.Log.e("TvDetailsViewModel", "Failed to load TV show: ${e.message}", e)
                 _tvShow.value = null
+            }
+        }
+        // Load credits in parallel
+        viewModelScope.launch {
+            try {
+                val credits = repository.getTvCredits(tvId)
+                _cast.value = credits?.cast?.take(20) ?: emptyList()
+                _crew.value = credits?.crew ?: emptyList()
+            } catch (e: Exception) {
+                android.util.Log.e("TvDetailsViewModel", "Error loading TV credits: ${e.message}")
             }
         }
     }

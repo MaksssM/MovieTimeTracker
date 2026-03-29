@@ -15,6 +15,9 @@ import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import android.util.Log
@@ -128,15 +131,44 @@ class SearchViewModel @Inject constructor(
     private val _activeFiltersCount = MutableLiveData<Int>(0)
     val activeFiltersCount: LiveData<Int> = _activeFiltersCount
 
+    // ============ LIBRARY STATUS ============
+    private val _libraryStatusMap = MutableStateFlow<Map<String, String>>(emptyMap())
+    val libraryStatusMap: StateFlow<Map<String, String>> = _libraryStatusMap.asStateFlow()
+
+    fun loadLibraryStatus() {
+        viewModelScope.launch {
+            try {
+                val watched = repository.getWatchedItemsSync().associate { "${it.id}_${it.mediaType}" to "watched" }
+                val planned = repository.getPlannedContentSync().associate { "${it.id}_${it.mediaType}" to "planned" }
+                val watching = repository.getWatchingContentSync().associate { "${it.id}_${it.mediaType}" to "watching" }
+                // watching > planned > watched in priority order
+                _libraryStatusMap.value = watched + planned + watching
+            } catch (e: Exception) {
+                Log.e("SearchViewModel", "Error loading library status", e)
+            }
+        }
+    }
+
     private var lastSearchQuery = ""
     private var lastSearchResults: List<Any> = emptyList()
 
     // Discovery Optimization
     private var seenItemIds = setOf<String>() // Set of "mediaType:id" strings
+    private var watchedItemIds = setOf<String>() // Set of "mediaType:id" for watched-only items
+    
+    // Hide watched items from search results (show them at the end)
+    private val _hideWatched = MutableLiveData<Boolean>(true)
+    val hideWatched: LiveData<Boolean> = _hideWatched
+    
+    fun setHideWatched(hide: Boolean) {
+        _hideWatched.value = hide
+        applyFiltersAndSort()
+    }
     
     init {
         refreshSeenItems()
         loadGenres()
+        loadLibraryStatus()
     }
 
     private fun refreshSeenItems() {
@@ -144,7 +176,12 @@ class SearchViewModel @Inject constructor(
             try {
                 val ids = repository.getAllSeenItemIds()
                 seenItemIds = ids.map { "${it.mediaType}:${it.id}" }.toSet()
-                Log.d("SearchViewModel", "Refreshed seen items: ${seenItemIds.size}")
+                
+                // Track watched items separately
+                val watched = repository.getWatchedItemsSync()
+                watchedItemIds = watched.map { "${it.mediaType}:${it.id}" }.toSet()
+                
+                Log.d("SearchViewModel", "Refreshed seen items: ${seenItemIds.size}, watched: ${watchedItemIds.size}")
             } catch (e: Exception) {
                 Log.e("SearchViewModel", "Error refreshing seen items", e)
             }
@@ -298,7 +335,7 @@ class SearchViewModel @Inject constructor(
                 if (!loadMore) _isLoading.value = true
 
                 val reqPage = if (loadMore) currentPage + 1 else 1
-                val people = repository.searchPeople(query, "uk-UA", reqPage)
+                val people = repository.searchPeople(query, reqPage)
                 
                 if (people.isEmpty()) {
                     isLastPage = true
@@ -419,11 +456,20 @@ class SearchViewModel @Inject constructor(
             scoreB.compareTo(scoreA) // Descending
         })
 
-        // Apply results limit - removed for infinite scroll support
-        // val limit = _resultsLimit.value ?: 50
-        // if (filtered.size > limit) {
-        //     filtered = filtered.take(limit).toMutableList()
-        // }
+        // Separate watched items: move them to the end or hide completely
+        val hideWatchedItems = _hideWatched.value ?: true
+        if (hideWatchedItems && watchedItemIds.isNotEmpty()) {
+            val (unwatched, watched) = filtered.partition { item ->
+                val key = when (item) {
+                    is MovieResult -> "movie:${item.id}"
+                    is TvShowResult -> "tv:${item.id}"
+                    else -> ""
+                }
+                !watchedItemIds.contains(key)
+            }
+            // Show unwatched first, then watched at the very end
+            filtered = (unwatched + watched).toMutableList()
+        }
 
         _searchResult.value = filtered
     }
@@ -444,7 +490,12 @@ class SearchViewModel @Inject constructor(
         }
 
         val isSeen = seenItemIds.contains("$mediaType:$id")
-        val penaltyFactor = if (isSeen) 0.3 else 1.0 // 70% penalty for seen items to ensure discovery
+        val isWatched = watchedItemIds.contains("$mediaType:$id")
+        val penaltyFactor = when {
+            isWatched -> 0.05 // 95% penalty for watched items
+            isSeen -> 0.3    // 70% penalty for planned/watching items
+            else -> 1.0
+        }
         
         return rawScore * penaltyFactor
     }

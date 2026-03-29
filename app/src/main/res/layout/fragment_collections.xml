@@ -20,6 +20,31 @@
             app:titleCentered="true"
             app:titleTextAppearance="@style/TextAppearance.App.Headline2" />
 
+        <!-- Quick nav to Universes -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="8dp">
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleLine="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipUniverses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Chip.Assist"
+                    android:text="🌌 Кіновсесвіти"
+                    android:textSize="13sp" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -35,7 +60,7 @@
         android:id="@+id/tvEmptyState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="У вас ще немає колекцій.\nСтворіть першу!"
+        android:text="@string/no_collections"
         android:gravity="center"
         android:textSize="16sp"
         android:textColor="?attr/colorOnSurfaceVariant"
@@ -49,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        android:text="Створити"
+        android:text="@string/create_collection"
         app:icon="@drawable/ic_add"
         android:backgroundTint="?attr/colorPrimary"
         android:textColor="?attr/colorOnPrimary"

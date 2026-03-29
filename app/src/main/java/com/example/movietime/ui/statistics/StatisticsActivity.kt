@@ -2,7 +2,9 @@ package com.example.movietime.ui.statistics
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.animation.OvershootInterpolator
@@ -24,6 +26,10 @@ class StatisticsActivity : AppCompatActivity() {
 
     private lateinit var genreAdapter: GenreStatAdapter
     private lateinit var directorAdapter: DirectorStatAdapter
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +54,10 @@ class StatisticsActivity : AppCompatActivity() {
             binding.cardWatchTime,
             binding.cardLongestMovie,
             binding.cardMostRewatched,
-            binding.cardTrends
+            binding.cardTrends,
+            binding.cardExtended,
+            binding.cardWatchTimeBreakdown,
+            binding.cardHighestRated
         )
         
         cards.forEach { card ->
@@ -62,7 +71,10 @@ class StatisticsActivity : AppCompatActivity() {
             binding.cardWatchTime,
             binding.cardLongestMovie,
             binding.cardMostRewatched,
-            binding.cardTrends
+            binding.cardTrends,
+            binding.cardExtended,
+            binding.cardWatchTimeBreakdown,
+            binding.cardHighestRated
         )
         
         cards.forEachIndexed { index, card ->
@@ -178,22 +190,48 @@ class StatisticsActivity : AppCompatActivity() {
             binding.tvNoDirectors.isVisible = true
         }
 
-        // Longest movie
+        // Runtime records card — show if any of shortest/longest exists
+        val hasRuntimeData = stats.longestMovieWatched != null ||
+                stats.shortestMovie != null || stats.longestTvShow != null
+        binding.cardLongestMovie.isVisible = hasRuntimeData
+
         stats.longestMovieWatched?.let { movie ->
-            binding.cardLongestMovie.isVisible = true
+            binding.tvLongestMovieTitle.isVisible = true
+            binding.tvLongestMovieRuntime.isVisible = true
             binding.tvLongestMovieTitle.text = movie.title
             binding.tvLongestMovieRuntime.text = getString(R.string.runtime_minutes, movie.runtimeMinutes)
         } ?: run {
-            binding.cardLongestMovie.isVisible = false
+            binding.tvLongestMovieTitle.isVisible = false
+            binding.tvLongestMovieRuntime.isVisible = false
+        }
+
+        stats.shortestMovie?.let { movie ->
+            binding.tvShortestMovieTitle.isVisible = true
+            binding.tvShortestMovieRuntime.isVisible = true
+            binding.tvShortestMovieTitle.text = movie.title
+            binding.tvShortestMovieRuntime.text = getString(R.string.runtime_minutes, movie.runtimeMinutes)
+        } ?: run {
+            binding.tvShortestMovieTitle.isVisible = false
+            binding.tvShortestMovieRuntime.isVisible = false
+        }
+
+        stats.longestTvShow?.let { tv ->
+            binding.tvLongestTvTitle.isVisible = true
+            binding.tvLongestTvRuntime.isVisible = true
+            binding.tvLongestTvTitle.text = tv.title
+            val tvHours = tv.runtimeMinutes / 60
+            val tvMins = tv.runtimeMinutes % 60
+            binding.tvLongestTvRuntime.text = if (tvHours > 0) "${tvHours}г ${tvMins}хв" else "${tvMins}хв"
+        } ?: run {
+            binding.tvLongestTvTitle.isVisible = false
+            binding.tvLongestTvRuntime.isVisible = false
         }
 
         // Most rewatched
         stats.mostRewatchedItem?.let { item ->
             binding.cardMostRewatched.isVisible = true
             binding.tvMostRewatchedTitle.text = item.title
-            binding.tvRewatchCount.text = resources.getQuantityString(
-                R.plurals.times_count, item.rewatchCount, item.rewatchCount
-            )
+            binding.tvRewatchCount.text = "${item.rewatchCount}×"
         } ?: run {
             binding.cardMostRewatched.isVisible = false
         }
@@ -237,6 +275,33 @@ class StatisticsActivity : AppCompatActivity() {
             binding.tvFirstWatchDate.text = dateFormat.format(java.util.Date(timestamp))
         } ?: run {
             binding.layoutFirstWatch.isVisible = false
+        }
+        
+        // Extended statistics
+        binding.tvTotalRewatches.text = stats.totalRewatches.toString()
+        binding.tvAvgMovieRuntime.text = getString(R.string.runtime_minutes, stats.avgMovieRuntime)
+        binding.tvAvgMoviesPerMonth.text = String.format(Locale.US, "%.1f", stats.avgMoviesPerMonth)
+        binding.tvAvgContentPerMonth.text = String.format(Locale.US, "%.1f", stats.avgContentPerMonth)
+        
+        // Most popular genre
+        if (stats.mostPopularGenre.isNotEmpty()) {
+            binding.layoutMostPopularGenre.isVisible = true
+            binding.tvMostPopularGenre.text = stats.mostPopularGenre
+        } else {
+            binding.layoutMostPopularGenre.isVisible = false
+        }
+        
+        // Watch time breakdown
+        binding.tvMovieWatchTime.text = viewModel.formatWatchTimeShort(stats.totalWatchTimeMovies)
+        binding.tvTvWatchTime.text = viewModel.formatWatchTimeShort(stats.totalWatchTimeTvShows)
+        
+        // Highest rated movie
+        stats.highestRatedMovie?.let { movie ->
+            binding.cardHighestRated.isVisible = true
+            binding.tvHighestRatedTitle.text = movie.title
+            binding.tvHighestRatedScore.text = String.format(Locale.US, "%.1f ⭐", movie.userRating)
+        } ?: run {
+            binding.cardHighestRated.isVisible = false
         }
     }
 }

@@ -95,6 +95,7 @@
     <string name="planned_tv_shows_count">Planned TV Shows: %d</string>
     <string name="planned_content_count">Planned Content: %d</string>
     <string name="total_watch_time">Total Watch Time</string>
+    <string name="watch_time_desc">since you started tracking</string>
     <string name="this_month">This Month</string>
     <string name="achievements">Achievements</string>
     <string name="days_streak">days streak</string>
@@ -104,6 +105,7 @@
     <string name="rating_short">Rating</string>
     <string name="categories">Categories</string>
     <string name="quick_actions">Quick Actions</string>
+    <string name="collections">Collections</string>
     <string name="trending">Trending</string>
     <string name="movie_premieres">Upcoming Premieres</string>
     <string name="friends">Friends</string>
@@ -160,6 +162,8 @@
     <string name="time_format_hours">%d h</string>
     <string name="time_format_minutes">%d min</string>
     <string name="time_format_hours_minutes" formatted="false">%d h %d min</string>
+    <string name="time_format_days">%d d</string>
+    <string name="time_format_days_hours" formatted="false">%d d %d h</string>
 
     <!-- Additional strings -->
     <string name="total_time">Total Time</string>
@@ -180,6 +184,8 @@
     <string name="department_directing">Director</string>
     <string name="department_writing">Writer</string>
     <string name="department_production">Producer</string>
+    <string name="person_filmography">Movies &amp; Series</string>
+    <string name="person_talk_shows">Talk Shows &amp; Reality</string>
     <string name="known_for">Known for: %s</string>
     <string name="biography">Biography</string>
     <string name="birthday">Birthday</string>
@@ -192,6 +198,10 @@
     <string name="filter_tv_shows">TV Shows</string>
     <string name="sort_by_rating">Sort by Rating</string>
     <string name="sort_by_popularity">Sort by Popularity</string>
+    <string name="sort_results">Sort Results</string>
+    <string name="library_status_watched">Watched</string>
+    <string name="library_status_planned">Planned</string>
+    <string name="library_status_watching">Watching</string>
     <string name="results_count_default">Found: 0</string>
     <string name="empty_results">Nothing Found</string>
     <string name="recent_searches">Recent Searches</string>
@@ -276,7 +286,17 @@
     <string name="all_data_local">All your data is stored locally on device</string>
     <string name="backup_location_info">Saved to:\n%s</string>
     <string name="restore_backup_confirm">All current data will be replaced with data from the backup. Continue?</string>
+    <string name="restore_backup_merge_confirm">Only records missing from your collection will be added. Current data will not be deleted. Continue?</string>
     <string name="backup_restore_error">Error restoring: %s</string>
+    <string name="backup_restore_mode_title">Restore Mode</string>
+    <string name="backup_restore_replace">Replace all (full restore)</string>
+    <string name="backup_restore_merge">Add missing (merge)</string>
+    <string name="import_backup_mode_message">Choose the restore mode for the imported file:</string>
+    <string name="backup_restore_in_progress">Restoring…</string>
+    <string name="delete_backup_confirm">Delete this backup?</string>
+    <string name="backup_auto_label">Auto</string>
+    <string name="backup_counts_format" formatted="false">%1$d watched · %2$d planned · %3$d watching</string>
+    <string name="backup_kb_unit">KB</string>
     <string name="import_backup">Import Backup</string>
     <string name="import_backup_desc">Restore data from file</string>
     
@@ -473,6 +493,27 @@
     <string name="delete_confirmation_title">Confirm deletion</string>
     <string name="delete_watched_confirmation">Delete "%1$s" from watched?</string>
     <string name="item_deleted">Deleted</string>
+    
+    <!-- Category Transfer -->
+    <string name="move_to_watched">Move to Watched</string>
+    <string name="move_to_planned">Move to Planned</string>
+    <string name="move_to_watching">Move to Watching</string>
+    <string name="moved_to_watched">Moved to Watched</string>
+    <string name="moved_to_planned">Moved to Planned</string>
+    <string name="moved_to_watching">Moved to Watching</string>
+    
+    <!-- Sort & Filter -->
+    <string name="sort">Sort</string>
+    <string name="search_in_list">Search in list…</string>
+    <string name="sort_by_name_asc">Name (A → Z)</string>
+    <string name="sort_by_name_desc">Name (Z → A)</string>
+    <string name="sort_by_date_newest">Date Added (Newest)</string>
+    <string name="sort_by_date_oldest">Date Added (Oldest)</string>
+    <string name="sort_by_rating_high">Rating (Highest)</string>
+    <string name="sort_by_rating_low">Rating (Lowest)</string>
+    <string name="sort_by_runtime_long">Runtime (Longest)</string>
+    <string name="sort_by_runtime_short">Runtime (Shortest)</string>
+    
     <string name="selected_episodes_count" formatted="false">Selected %d of %d episodes</string>
     <string name="total_runtime_format">~%s total</string>
     <string name="seasons_episodes_format" formatted="false">%d seasons • %d episodes</string>
@@ -481,6 +522,12 @@
     <string name="user_score">User Score</string>
     <string name="votes">Votes</string>
     <string name="release">Release</string>
+    <string name="cast_title">Cast</string>
+    <string name="crew_title">Crew</string>
+    <string name="crew_writer">Writer</string>
+    <string name="crew_producer">Producer</string>
+    <string name="crew_composer">Music</string>
+    <string name="as_role">as %s</string>
     <string name="additional_info">Details</string>
     <string name="director">Director</string>
     <string name="budget">Budget</string>
@@ -499,6 +546,18 @@
     <string name="movie_runtime_fmt">%d min</string>
     <string name="collection_empty">No movies in this collection</string>
     <string name="order_release">By Release Date</string>
+    <string name="new_collection">New Collection</string>
+    <string name="create_collection">Create</string>
+    <string name="edit_collection">Edit Collection</string>
+    <string name="edit">Edit</string>
+    <string name="delete_collection">Delete Collection</string>
+    <string name="no_collections">You have no collections yet.\nCreate your first!</string>
+    <string name="collection_tab_empty">This collection is empty.\nAdd movies or shows here!</string>
+    <string name="items_count">%d items</string>
+    <string name="your_progress">Your Progress</string>
+    <string name="create_new_collection">Create new collection</string>
+    <string name="delete_collection_title">Delete Collection?</string>
+    <string name="delete_collection_confirm">Are you sure you want to delete this collection? This action cannot be undone.</string>
     
     <!-- Statistics Screen -->
     <string name="statistics">Statistics</string>
@@ -586,6 +645,19 @@
     <string name="genre_diversity">Genres</string>
     <string name="you_explored_genres">You explored %d genres</string>
     
+    <!-- Extended Statistics -->
+    <string name="extended_statistics">Extended Statistics</string>
+    <string name="total_rewatches">Total Rewatches</string>
+    <string name="avg_movie_runtime">Avg. Runtime</string>
+    <string name="movies_per_month">Movies/Month</string>
+    <string name="content_per_month">Content/Month</string>
+    <string name="most_popular_genre">Favorite Genre</string>
+    <string name="watch_time_breakdown">Watch Time Breakdown</string>
+    <string name="shortest_movie">Shortest Movie</string>
+    <string name="longest_tv_show">Longest TV Show</string>
+    <string name="runtime_records">Runtime Records</string>
+    <string name="highest_rated">Highest Rated</string>
+    
     <!-- Enhanced Status Badges -->
     <string name="in_your_watchlist">In Your List</string>
     <string name="watched_on_date">Watched on %s</string>
@@ -603,4 +675,8 @@
     <string name="month_view">Month</string>
     <string name="releases_this_week">Releases This Week</string>
     <string name="no_releases_selected_day">No releases on selected day</string>
+
+    <!-- Search improvements -->
+    <string name="try_different_query">Try a different search query</string>
+    <string name="tv_shows_count_fmt">%d TV shows</string>
 </resources>

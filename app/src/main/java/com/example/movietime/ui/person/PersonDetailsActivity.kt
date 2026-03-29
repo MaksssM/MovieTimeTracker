@@ -24,26 +24,16 @@ class PersonDetailsActivity : AppCompatActivity() {
     private val viewModel: PersonDetailsViewModel by viewModels()
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(applyLocale(newBase))
-    }
-
-    private fun applyLocale(context: Context): Context {
-        val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
-        val locale = when (langPref) {
-            "uk" -> Locale("uk")
-            "ru" -> Locale("ru")
-            "en" -> Locale("en")
-            else -> Locale("uk")
-        }
-        Locale.setDefault(locale)
-        val config = Configuration(context.resources.configuration)
-        val localeList = android.os.LocaleList(locale)
-        config.setLocales(localeList)
-        return context.createConfigurationContext(config)
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
     }
 
     private val actingAdapter by lazy {
+        CombinedCreditsAdapter { id, mediaType ->
+            navigateToDetails(id, mediaType)
+        }
+    }
+
+    private val tvShowsAdapter by lazy {
         CombinedCreditsAdapter { id, mediaType ->
             navigateToDetails(id, mediaType)
         }
@@ -103,6 +93,15 @@ class PersonDetailsActivity : AppCompatActivity() {
             adapter = actingAdapter
         }
 
+        binding.rvTvShows.apply {
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+                this@PersonDetailsActivity,
+                androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            adapter = tvShowsAdapter
+        }
+
         binding.rvDirecting.apply {
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
                 this@PersonDetailsActivity,
@@ -121,9 +120,9 @@ class PersonDetailsActivity : AppCompatActivity() {
                     binding.tvName.text = it.name
 
                     // Photo
-                    val photoUrl = it.profilePath?.let { path -> "https://image.tmdb.org/t/p/w500$path" }
+                    val photoUrl = it.profilePath?.let { path -> "https://image.tmdb.org/t/p/w342$path" }
                     binding.ivPhoto.load(photoUrl) {
-                        crossfade(400)
+                        crossfade(200)
                         placeholder(R.drawable.ic_placeholder)
                         error(R.drawable.ic_placeholder)
                     }
@@ -157,14 +156,27 @@ class PersonDetailsActivity : AppCompatActivity() {
         }
         
         lifecycleScope.launch {
-            viewModel.actingCredits.collect { credits ->
-                 if (credits.isNotEmpty()) {
+            viewModel.movieCredits.collect { credits ->
+                if (credits.isNotEmpty()) {
                     binding.tvActingTitle.visibility = View.VISIBLE
                     binding.rvActing.visibility = View.VISIBLE
                     actingAdapter.submitList(credits)
                 } else {
                     binding.tvActingTitle.visibility = View.GONE
                     binding.rvActing.visibility = View.GONE
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.tvShowCredits.collect { credits ->
+                if (credits.isNotEmpty()) {
+                    binding.tvTvShowsTitle.visibility = View.VISIBLE
+                    binding.rvTvShows.visibility = View.VISIBLE
+                    tvShowsAdapter.submitList(credits)
+                } else {
+                    binding.tvTvShowsTitle.visibility = View.GONE
+                    binding.rvTvShows.visibility = View.GONE
                 }
             }
         }

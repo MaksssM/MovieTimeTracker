@@ -108,8 +108,19 @@ class CalendarFragment : Fragment() {
                 binding.layoutEmpty.visibility = View.GONE
                 binding.rvCalendarEvents.visibility = View.VISIBLE
                 eventAdapter.submitEvents(events)
-                // Trigger layout animation when events change
                 binding.rvCalendarEvents.scheduleLayoutAnimation()
+            }
+        }
+
+        viewModel.monthStats.observe(viewLifecycleOwner) { stats ->
+            if (stats.movieCount > 0 || stats.tvCount > 0) {
+                binding.layoutMonthStats.visibility = View.VISIBLE
+                binding.tvMonthMovieCount.text = resources.getQuantityString(
+                    R.plurals.movies_count, stats.movieCount, stats.movieCount
+                )
+                binding.tvMonthTvCount.text = getString(R.string.tv_shows_count_fmt, stats.tvCount)
+            } else {
+                binding.layoutMonthStats.visibility = View.GONE
             }
         }
 
@@ -156,9 +167,15 @@ class CalendarFragment : Fragment() {
     }
 
     private fun updateMonthYear(month: YearMonth) {
-        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("uk"))
+        val prefs = requireContext().getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE)
+        val locale = when (prefs.getString("pref_lang", "uk")) {
+            "ru" -> Locale("ru")
+            "en" -> Locale("en")
+            else -> Locale("uk")
+        }
+        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", locale)
         binding.tvMonthYear.text = month.format(formatter)
-            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale("uk")) else it.toString() }
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
     }
 
     override fun onDestroyView() {

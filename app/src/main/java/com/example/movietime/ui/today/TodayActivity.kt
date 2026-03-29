@@ -13,6 +13,8 @@ import com.example.movietime.databinding.ActivityTodayBinding
 import com.example.movietime.ui.details.DetailsActivity
 import com.example.movietime.ui.details.TvDetailsActivity
 import com.example.movietime.ui.today.adapters.*
+import android.content.Context
+import android.content.res.Configuration
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -20,6 +22,10 @@ import java.util.Locale
 
 @AndroidEntryPoint
 class TodayActivity : AppCompatActivity() {
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
+    }
 
     private lateinit var binding: ActivityTodayBinding
     private val viewModel: TodayViewModel by viewModels()
@@ -207,11 +213,13 @@ class TodayActivity : AppCompatActivity() {
     private fun openContent(id: Int, mediaType: String) {
         val intent = if (mediaType == "tv") {
             Intent(this, TvDetailsActivity::class.java).apply {
-                putExtra("TV_ID", id)
+                putExtra("ITEM_ID", id)
+                putExtra("MEDIA_TYPE", "tv")
             }
         } else {
             Intent(this, DetailsActivity::class.java).apply {
-                putExtra("MOVIE_ID", id)
+                putExtra("ITEM_ID", id)
+                putExtra("MEDIA_TYPE", "movie")
             }
         }
         startActivity(intent)
@@ -219,7 +227,8 @@ class TodayActivity : AppCompatActivity() {
 
     private fun openTvShow(tvShowId: Int, seasonNumber: Int = 1, episodeNumber: Int = 1) {
         val intent = Intent(this, TvDetailsActivity::class.java).apply {
-            putExtra("TV_ID", tvShowId)
+            putExtra("ITEM_ID", tvShowId)
+            putExtra("MEDIA_TYPE", "tv")
             putExtra("SEASON_NUMBER", seasonNumber)
             putExtra("EPISODE_NUMBER", episodeNumber)
         }

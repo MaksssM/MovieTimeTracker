@@ -10,9 +10,11 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.example.movietime.databinding.ActivityTvDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +43,7 @@ class TvDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTvDetailsBinding
     private val viewModel: TvDetailsViewModel by viewModels()
+    private lateinit var castAdapter: CastAdapter
 
     @Inject
     lateinit var episodeService: TvShowEpisodeService
@@ -52,31 +55,21 @@ class TvDetailsActivity : AppCompatActivity() {
     }
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(applyLocale(newBase))
-    }
-
-    private fun applyLocale(context: Context): Context {
-        val prefs = context.getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE)
-        val langPref = prefs.getString("pref_lang", "uk") ?: "uk"
-        val locale = when (langPref) {
-            "uk" -> Locale("uk")
-            "ru" -> Locale("ru")
-            "en" -> Locale("en")
-            else -> Locale("uk")
-        }
-        Locale.setDefault(locale)
-        val config = Configuration(context.resources.configuration)
-        val localeList = android.os.LocaleList(locale)
-        config.setLocales(localeList)
-        return context.createConfigurationContext(config)
+        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
+        // Enable shared element transitions
+        window.requestFeature(android.view.Window.FEATURE_CONTENT_TRANSITIONS)
+        
         // Activity transition
         @Suppress("DEPRECATION")
         overridePendingTransition(R.anim.activity_open_enter, R.anim.smooth_fade_out)
+        
+        // Postpone enter transition until poster is loaded
+        supportPostponeEnterTransition()
         
         binding = ActivityTvDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -96,8 +89,13 @@ class TvDetailsActivity : AppCompatActivity() {
         }
 
         observeViewModel()
+        setupCastRecyclerView()
+        observeCredits()
         setupClickListeners()
         animateEntranceElements()
+        
+        // Fallback: start postponed transition after timeout if poster hasn't loaded
+        binding.ivPoster.postDelayed({ supportStartPostponedEnterTransition() }, 500)
 
         // Обробник додавання в переглянуті - відкриває вибір епізодів
         binding.fabAdd.setOnClickListener { view ->
@@ -431,6 +429,89 @@ class TvDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupCastRecyclerView() {
+        castAdapter = CastAdapter()
+        binding.rvCast.apply {
+            layoutManager = LinearLayoutManager(this@TvDetailsActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = castAdapter
+            setHasFixedSize(true)
+        }
+    }
+
+    private fun observeCredits() {
+        viewModel.cast.observe(this) { castList ->
+            if (castList.isNullOrEmpty()) {
+                binding.layoutCast.visibility = View.GONE
+            } else {
+                binding.layoutCast.visibility = View.VISIBLE
+                castAdapter.submitList(castList)
+            }
+        }
+
+        viewModel.crew.observe(this) { crewList ->
+            if (crewList.isNullOrEmpty()) {
+                binding.layoutCrewInfo.visibility = View.GONE
+                return@observe
+            }
+
+            val directors = crewList.filter { it.job == "Director" || it.job == "Series Director" }
+            val creators = crewList.filter { it.job == "Executive Producer" || it.department == "Writing" }
+            val composers = crewList.filter { it.job == "Original Music Composer" }
+
+            val crewContainer = binding.layoutCrewList
+            crewContainer.removeAllViews()
+
+            var hasContent = false
+
+            if (directors.isNotEmpty()) {
+                addCrewRow(crewContainer, getString(R.string.director), directors.distinctBy { it.name }.take(3).joinToString(", ") { it.name })
+                hasContent = true
+            }
+            if (creators.isNotEmpty()) {
+                addCrewRow(crewContainer, getString(R.string.crew_producer), creators.distinctBy { it.name }.take(3).joinToString(", ") { it.name })
+                hasContent = true
+            }
+            if (composers.isNotEmpty()) {
+                addCrewRow(crewContainer, getString(R.string.crew_composer), composers.joinToString(", ") { it.name })
+                hasContent = true
+            }
+
+            binding.layoutCrewInfo.visibility = if (hasContent) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun addCrewRow(container: android.widget.LinearLayout, role: String, names: String) {
+        val row = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            if (container.childCount > 0) {
+                setPadding(0, (12 * resources.displayMetrics.density).toInt(), 0, 0)
+            }
+        }
+        val roleView = TextView(this).apply {
+            layoutParams = android.widget.LinearLayout.LayoutParams(
+                (100 * resources.displayMetrics.density).toInt(),
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            text = role
+            setTextColor(resources.getColor(R.color.text_on_dark_tertiary, theme))
+            textSize = 14f
+        }
+        val nameView = TextView(this).apply {
+            layoutParams = android.widget.LinearLayout.LayoutParams(
+                0,
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+            text = names
+            setTextColor(android.graphics.Color.WHITE)
+            textSize = 14f
+        }
+        row.addView(roleView)
+        row.addView(nameView)
+        container.addView(row)
+    }
+
     private fun observeViewModel() {
         Log.d(TAG, "Setting up tvShow observer")
         viewModel.tvShow.observe(this) { tvShow ->
@@ -448,6 +529,7 @@ class TvDetailsActivity : AppCompatActivity() {
 
                 // Poster
                 val poster = tvShow.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+                binding.ivPoster.transitionName = "poster_transition"
                 binding.ivPoster.load(poster) {
                     crossfade(true)
                     allowHardware(false)
@@ -455,10 +537,14 @@ class TvDetailsActivity : AppCompatActivity() {
                     error(R.drawable.ic_placeholder)
                     listener(
                         onSuccess = { _, result ->
+                            supportStartPostponedEnterTransition()
                             val bitmap = (result.drawable as? android.graphics.drawable.BitmapDrawable)?.bitmap
                             if (bitmap != null) {
                                 applyDynamicColors(bitmap)
                             }
+                        },
+                        onError = { _, _ ->
+                            supportStartPostponedEnterTransition()
                         }
                     )
                 }

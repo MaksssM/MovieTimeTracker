@@ -85,12 +85,14 @@
     <string name="planned_tv_shows_count">Запланированные сериалы: %d</string>
     <string name="planned_content_count">Запланированный контент: %d</string>
     <string name="total_watch_time">Общее время просмотра</string>
+    <string name="watch_time_desc">с начала ведения статистики</string>
     <string name="this_month">В этом месяце</string>
     <string name="quick_stats">Быстрая статистика</string>
     <string name="avg_rating">Средний рейтинг</string>
     <string name="rating_short">Рейтинг</string>
     <string name="categories">Категории</string>
     <string name="quick_actions">Быстрые действия</string>
+    <string name="collections">Коллекции</string>
     <string name="trending">Тренды</string>
     <string name="movie_premieres">Будущие премьеры</string>
     <string name="friends">Друзья</string>
@@ -146,6 +148,8 @@
     <string name="time_format_hours">%d ч</string>
     <string name="time_format_minutes">%d мин</string>
     <string name="time_format_hours_minutes" formatted="false">%d ч %d мин</string>
+    <string name="time_format_days">%d д</string>
+    <string name="time_format_days_hours" formatted="false">%d д %d ч</string>
 
     <!-- Additional strings -->
     <string name="total_time">Общее время</string>
@@ -165,6 +169,10 @@
     <string name="filter_tv_shows">Сериалы</string>
     <string name="sort_by_rating">Сортировать по рейтингу</string>
     <string name="sort_by_popularity">Сортировать по популярности</string>
+    <string name="sort_results">Сортировка</string>
+    <string name="library_status_watched">Просмотрено</string>
+    <string name="library_status_planned">Запланировано</string>
+    <string name="library_status_watching">Смотрю</string>
     <string name="results_count_default">Найдено: 0</string>
     <string name="empty_results">Ничего не найдено</string>
     <string name="recent_searches">Недавние поиски</string>
@@ -241,8 +249,19 @@
     <string name="all_data_local">Все ваши данные хранятся локально на устройстве</string>
     <string name="backup_location_info">Сохранено в:\n%s</string>
     <string name="restore_backup_confirm">Все текущие данные будут заменены данными из резервной копии. Продолжить?</string>
-
-    <!-- New Settings Strings -->
+    <string name="restore_backup_merge_confirm">Будут добавлены только те записи, которых нет в вашей коллекции. Текущие данные не будут удалены. Продолжить?</string>
+    <string name="backup_restore_error">Ошибка при восстановлении: %s</string>
+    <string name="backup_restore_mode_title">Режим восстановления</string>
+    <string name="backup_restore_replace">Заменить всё (полное восстановление)</string>
+    <string name="backup_restore_merge">Добавить отсутствующее (слияние)</string>
+    <string name="import_backup_mode_message">Выберите режим восстановления из файла:</string>
+    <string name="backup_restore_in_progress">Восстановление…</string>
+    <string name="delete_backup_confirm">Удалить эту резервную копию?</string>
+    <string name="backup_auto_label">Авто</string>
+    <string name="backup_counts_format" formatted="false">%1$d просм. · %2$d запл. · %3$d смотрю</string>
+    <string name="backup_kb_unit">КБ</string>
+    <string name="import_backup">Импортировать бекап</string>
+    <string name="import_backup_desc">Восстановить данные из файла</string>
     <string name="settings_appearance">Внешний вид</string>
     <string name="settings_content">Контент</string>
     <string name="tmdb_content_language">Язык контента TMDB</string>
@@ -428,6 +447,27 @@
     <string name="delete_confirmation_title">Подтверждение удаления</string>
     <string name="delete_watched_confirmation">Удалить "%1$s" из просмотренных?</string>
     <string name="item_deleted">Удалено</string>
+    
+    <!-- Category Transfer -->
+    <string name="move_to_watched">Перенести в просмотренные</string>
+    <string name="move_to_planned">Перенести в запланированные</string>
+    <string name="move_to_watching">Перенести в «смотрю»</string>
+    <string name="moved_to_watched">Перенесено в просмотренные</string>
+    <string name="moved_to_planned">Перенесено в запланированные</string>
+    <string name="moved_to_watching">Перенесено в «смотрю»</string>
+    
+    <!-- Sort & Filter -->
+    <string name="sort">Сортировка</string>
+    <string name="search_in_list">Поиск в списке…</string>
+    <string name="sort_by_name_asc">Название (А → Я)</string>
+    <string name="sort_by_name_desc">Название (Я → А)</string>
+    <string name="sort_by_date_newest">Дата добавления (Новые)</string>
+    <string name="sort_by_date_oldest">Дата добавления (Старые)</string>
+    <string name="sort_by_rating_high">Рейтинг (Высокий)</string>
+    <string name="sort_by_rating_low">Рейтинг (Низкий)</string>
+    <string name="sort_by_runtime_long">Время (Длинные)</string>
+    <string name="sort_by_runtime_short">Время (Короткие)</string>
+    
     <string name="selected_episodes_count">Выбрано %1$d из %2$d серий</string>
     <string name="total_runtime_format">~%s всего</string>
     <string name="seasons_episodes_format">%1$d сезонов • %2$d серий</string>
@@ -436,6 +476,12 @@
     <string name="user_score">Оценка</string>
     <string name="votes">Голосов</string>
     <string name="release">Релиз</string>
+    <string name="cast_title">Актёрский состав</string>
+    <string name="crew_title">Съёмочная группа</string>
+    <string name="crew_writer">Сценарист</string>
+    <string name="crew_producer">Продюсер</string>
+    <string name="crew_composer">Музыка</string>
+    <string name="as_role">в роли %s</string>
     <string name="additional_info">Подробнее</string>
     <string name="director">Режиссёр</string>
     <string name="budget">Бюджет</string>
@@ -539,6 +585,19 @@
     <string name="genre_diversity">Жанров</string>
     <string name="you_explored_genres">Вы исследовали %d жанров</string>
     
+    <!-- Extended Statistics -->
+    <string name="extended_statistics">Расширенная статистика</string>
+    <string name="total_rewatches">Всего пересмотров</string>
+    <string name="avg_movie_runtime">Сред. длительность</string>
+    <string name="movies_per_month">Фильмов/месяц</string>
+    <string name="content_per_month">Контента/месяц</string>
+    <string name="most_popular_genre">Любимый жанр</string>
+    <string name="watch_time_breakdown">Время просмотра</string>
+    <string name="shortest_movie">Самый короткий фильм</string>
+    <string name="longest_tv_show">Самый длинный сериал</string>
+    <string name="runtime_records">Рекорды хронометража</string>
+    <string name="highest_rated">Наивысшая оценка</string>
+    
     <!-- Enhanced Status Badges -->
     <string name="in_your_watchlist">В вашем списке</string>
     <string name="watched_on_date">Просмотрено %s</string>
@@ -556,4 +615,79 @@
     <string name="month_view">Месяц</string>
     <string name="releases_this_week">Релизы на этой неделе</string>
     <string name="no_releases_selected_day">Нет релизов в выбранный день</string>
+    
+    <!-- Rewatches -->
+    <string name="rewatches">Пересмотры</string>
+    <string name="add_rewatch">Добавить пересмотр</string>
+    <string name="rewatch_added">Пересмотр добавлен</string>
+    <string name="watch_count">×%d</string>
+    <string name="watch_history">История просмотров</string>
+    <string name="watch_history_description">Каждый пересмотр добавляет время к вашей общей статистике</string>
+    <string name="watched_times">Просмотрено %d раз</string>
+    <string name="watched_times_short">×%d раз</string>
+    
+    <!-- Collection -->
+    <string name="add_to_collection">Добавить в коллекцию</string>
+    
+    <!-- Achievements -->
+    <string name="achievements">Достижения</string>
+    <string name="days_streak">дн. подряд</string>
+    <string name="best_month">Лучший месяц</string>
+    
+    <!-- Advanced Filters (missing) -->
+    <string name="studio_or_company">Студия/Компания</string>
+    <string name="search_company_hint">Введите название студии или компании</string>
+    
+    <!-- People tab -->
+    <string name="people">Персоны</string>
+    <string name="person_photo_description">Фото</string>
+    <string name="biography">Биография</string>
+    <string name="birthday">Дата рождения</string>
+    <string name="birthplace">Место рождения</string>
+    <string name="known_for_title">Известен по</string>
+    <string name="known_for">Известен по: %s</string>
+    
+    <!-- Spoiler -->
+    <string name="spoiler_hidden_tap">Спойлер скрыт — нажмите для просмотра</string>
+    
+    <!-- Settings (missing) -->
+    <string name="settings_general">Общие</string>
+    <string name="settings_notifications">Уведомления</string>
+    <string name="settings_storage">Данные и хранилище</string>
+    
+    <!-- Content & Notifications (missing) -->
+    <string name="content_region">Регион контента</string>
+    <string name="notify_new_episodes">Новые эпизоды</string>
+    <string name="notify_new_episodes_desc">Получать уведомления о выходе новых серий</string>
+    <string name="notify_weekly_digest">Еженедельный дайджест</string>
+    <string name="on">Вкл</string>
+    <string name="off">Выкл</string>
+    <string name="notif_channel_episodes">Новые эпизоды</string>
+    <string name="notif_channel_releases">Новые релизы</string>
+    
+    <!-- Collection / Franchise -->
+    <string name="part_of_collection">Часть коллекции: %s</string>
+    <string name="collection_progress">Просмотрено %1$d из %2$d фильмов</string>
+    <string name="next_up">Далее</string>
+    <string name="collection_order">Хронология франшизы</string>
+    <string name="view_collection">Показать коллекцию</string>
+    <string name="movie_runtime_fmt">%d мин</string>
+    <string name="collection_empty">Нет фильмов в этой коллекции</string>
+    <string name="order_release">По дате выхода</string>
+    <string name="new_collection">Новая коллекция</string>
+    <string name="create_collection">Создать</string>
+    <string name="edit_collection">Редактировать коллекцию</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete_collection">Удалить коллекцию</string>
+    <string name="no_collections">У вас ещё нет коллекций.\nСоздайте первую!</string>
+    <string name="collection_tab_empty">Эта коллекция пуста.\nДобавьте сюда фильмы или сериалы!</string>
+    <string name="items_count">%d элементов</string>
+    <string name="your_progress">Ваш прогресс</string>
+    <string name="create_new_collection">Создать новую коллекцию</string>
+    <string name="delete_collection_title">Удалить коллекцию?</string>
+    <string name="delete_collection_confirm">Вы уверены, что хотите удалить эту коллекцию? Это действие невозможно отменить.</string>
+
+    <!-- Search improvements -->
+    <string name="try_different_query">Попробуйте другой поисковый запрос</string>
+    <string name="tv_shows_count_fmt">%d сериалов</string>
 </resources>

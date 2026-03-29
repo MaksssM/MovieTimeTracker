@@ -7,22 +7,26 @@
     android:layout_margin="4dp"
     android:checkable="true"
     app:cardCornerRadius="16dp"
-    app:cardElevation="2dp"
-    app:strokeWidth="0dp"
-    app:strokeColor="@color/accent"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/divider"
     app:cardBackgroundColor="@color/surface_variant"
-    app:checkedIcon="@null">
+    app:checkedIcon="@null"
+    app:rippleColor="@color/accent_light">
 
     <TextView
         android:id="@+id/tvGenreName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="12dp"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="12dp"
         android:textColor="@color/primary_text"
-        android:textSize="12sp"
+        android:textSize="13sp"
         android:fontFamily="sans-serif-medium"
-        android:maxLines="1"
+        android:lines="2"
+        android:minLines="1"
+        android:maxLines="2"
         android:ellipsize="end" />
 
 </com.google.android.material.card.MaterialCardView>

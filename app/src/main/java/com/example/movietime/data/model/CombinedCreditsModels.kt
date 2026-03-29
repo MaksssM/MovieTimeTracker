@@ -25,7 +25,8 @@ data class CombinedCastCredit(
     val overview: String?,
     @SerializedName("episode_count") val episodeCount: Int = 0, // TV only
     @SerializedName("credit_id") val creditId: String? = null,
-    val order: Int? = null // For movies
+    val order: Int? = null, // For movies
+    @SerializedName("genre_ids") val genreIds: List<Int> = emptyList()
 )
 
 data class CombinedCrewCredit(

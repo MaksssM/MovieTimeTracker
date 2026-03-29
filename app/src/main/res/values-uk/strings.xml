@@ -86,6 +86,7 @@
     <string name="planned_tv_shows_count">Заплановані серіали: %d</string>
     <string name="planned_content_count">Запланований контент: %d</string>
     <string name="total_watch_time">Загальний час перегляду</string>
+    <string name="watch_time_desc">з початку ведення статистики</string>
     <string name="this_month">Цього місяця</string>
     <string name="achievements">Досягнення</string>
     <string name="days_streak">днів підряд</string>
@@ -95,6 +96,7 @@
     <string name="rating_short">Рейтинг</string>
     <string name="categories">Категорії</string>
     <string name="quick_actions">Швидкі дії</string>
+    <string name="collections">Колекції</string>
     <string name="trending">Тренди</string>
     <string name="movie_premieres">Майбутні прем\'єри</string>
     <string name="friends">Друзі</string>
@@ -151,6 +153,8 @@
     <string name="time_format_hours">%d год</string>
     <string name="time_format_minutes">%d хв</string>
     <string name="time_format_hours_minutes" formatted="false">%d год %d хв</string>
+    <string name="time_format_days">%d д</string>
+    <string name="time_format_days_hours" formatted="false">%d д %d год</string>
 
     <!-- Additional missing strings -->
     <string name="total_time">Загальний час</string>
@@ -183,6 +187,10 @@
     <string name="filter_tv_shows">Серіали</string>
     <string name="sort_by_rating">Сортувати за рейтингом</string>
     <string name="sort_by_popularity">Сортувати за популярністю</string>
+    <string name="sort_results">Сортування</string>
+    <string name="library_status_watched">Переглянуто</string>
+    <string name="library_status_planned">Заплановано</string>
+    <string name="library_status_watching">Дивлюся</string>
     <string name="results_count_default">Знайдено: 0</string>
     <string name="empty_results">Нічого не знайдено</string>
     <string name="recent_searches">Недавні пошуки</string>
@@ -273,7 +281,17 @@
     <string name="all_data_local">Усі ваші дані зберігаються локально на пристрої</string>
     <string name="backup_location_info">Збережено в:\n%s</string>
     <string name="restore_backup_confirm">Усі поточні дані будуть замінені даними з резервної копії. Продовжити?</string>
+    <string name="restore_backup_merge_confirm">Будуть додані лише ті записи, яких немає у вашій колекції. Поточні дані не будуть видалені. Продовжити?</string>
     <string name="backup_restore_error">Помилка при відновленні: %s</string>
+    <string name="backup_restore_mode_title">Режим відновлення</string>
+    <string name="backup_restore_replace">Замінити все (повне відновлення)</string>
+    <string name="backup_restore_merge">Додати відсутнє (злиття)</string>
+    <string name="import_backup_mode_message">Оберіть режим відновлення з файлу:</string>
+    <string name="backup_restore_in_progress">Відновлення…</string>
+    <string name="delete_backup_confirm">Видалити цю резервну копію?</string>
+    <string name="backup_auto_label">Авто</string>
+    <string name="backup_counts_format" formatted="false">%1$d переглян. · %2$d заплан. · %3$d дивлюся</string>
+    <string name="backup_kb_unit">КБ</string>
     <string name="import_backup">Імпортувати бекап</string>
     <string name="import_backup_desc">Відновити дані з файлу</string>
     
@@ -480,6 +498,12 @@
     <string name="user_score">Оцінка</string>
     <string name="votes">Голоси</string>
     <string name="release">Реліз</string>
+    <string name="cast_title">Акторський склад</string>
+    <string name="crew_title">Знімальна група</string>
+    <string name="crew_writer">Сценарист</string>
+    <string name="crew_producer">Продюсер</string>
+    <string name="crew_composer">Музика</string>
+    <string name="as_role">в ролі %s</string>
     <string name="additional_info">Детальніше</string>
     <string name="director">Режисер</string>
     <string name="budget">Бюджет</string>
@@ -510,6 +534,9 @@
     <string name="no_genre_data">Немає даних про жанри</string>
     <string name="no_director_data">Завантаження режисерів...</string>
     <string name="longest_movie">Найдовший фільм</string>
+    <string name="shortest_movie">Найкоротший фільм</string>
+    <string name="longest_tv_show">Найдовший серіал</string>
+    <string name="runtime_records">Рекорди хронометражу</string>
     <string name="most_rewatched">Переглянутий найчастіше</string>
     <string name="content_ratio">Співвідношення контенту</string>
     <string name="runtime_minutes">%d хв</string>
@@ -610,4 +637,40 @@
     <string name="month_view">Вигляд місяця</string>
     <string name="releases_this_week">Релізи цього тижня</string>
     <string name="no_releases_selected_day">Немає релізів у вибраний день</string>
+
+    <!-- Category Transfer -->
+    <string name="move_to_watched">Перенести до переглянутих</string>
+    <string name="move_to_planned">Перенести до запланованих</string>
+    <string name="move_to_watching">Перенести до «дивлюсь»</string>
+    <string name="moved_to_watched">Перенесено до переглянутих</string>
+    <string name="moved_to_planned">Перенесено до запланованих</string>
+    <string name="moved_to_watching">Перенесено до «дивлюсь»</string>
+
+    <!-- Sort & Filter -->
+    <string name="sort">Сортування</string>
+    <string name="search_in_list">Пошук у списку…</string>
+    <string name="sort_by_name_asc">Назва (А → Я)</string>
+    <string name="sort_by_name_desc">Назва (Я → А)</string>
+    <string name="sort_by_date_newest">Дата додавання (Нові)</string>
+    <string name="sort_by_date_oldest">Дата додавання (Старі)</string>
+    <string name="sort_by_rating_high">Рейтинг (Високий)</string>
+    <string name="sort_by_rating_low">Рейтинг (Низький)</string>
+    <string name="sort_by_runtime_long">Тривалість (Довгі)</string>
+    <string name="sort_by_runtime_short">Тривалість (Короткі)</string>
+    <string name="new_collection">Нова колекція</string>
+    <string name="create_collection">Створити</string>
+    <string name="edit_collection">Редагувати колекцію</string>
+    <string name="edit">Редагувати</string>
+    <string name="delete_collection">Видалити колекцію</string>
+    <string name="no_collections">У вас ще немає колекцій.\nСтворіть першу!</string>
+    <string name="collection_tab_empty">Ця колекція порожня.\nДодайте сюди фільми або серіали!</string>
+    <string name="items_count">%d елементів</string>
+    <string name="your_progress">Ваш прогрес</string>
+    <string name="create_new_collection">Створити нову колекцію</string>
+    <string name="delete_collection_title">Видалити колекцію?</string>
+    <string name="delete_collection_confirm">Ви впевнені, що хочете видалити цю колекцію? Це дію неможливо скасувати.</string>
+
+    <!-- Search improvements -->
+    <string name="try_different_query">Спробуйте інший пошуковий запит</string>
+    <string name="tv_shows_count_fmt">%d серіалів</string>
 </resources>
