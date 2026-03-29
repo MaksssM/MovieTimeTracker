@@ -543,7 +543,7 @@
     <string name="in_your_watchlist">В вашем списке</string>
     <string name="watched_on_date">Просмотрено %s</string>
     <string name="your_rating">Ваша оценка: %.1f</string>
-    <string name="episodes_progress">%d/%d серий</string>
+    <string name="episodes_progress">%1$d/%2$d серий</string>
     <string name="fully_watched">Полностью просмотрено</string>
     <string name="partially_watched">Частично просмотрено</string>
     

@@ -590,7 +590,7 @@
     <string name="in_your_watchlist">In Your List</string>
     <string name="watched_on_date">Watched on %s</string>
     <string name="your_rating">Your Rating: %.1f</string>
-    <string name="episodes_progress">%d/%d episodes</string>
+    <string name="episodes_progress">%1$d/%2$d episodes</string>
     <string name="fully_watched">Fully Watched</string>
     <string name="partially_watched">Partially Watched</string>
     

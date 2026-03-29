@@ -15,6 +15,13 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
+// Suppress deprecated Convention API warnings
+gradle.projectsEvaluated {
+    tasks.withType<JavaCompile> {
+        options.compilerArgs.addAll(listOf("-Xlint:-deprecation"))
+    }
+}
+
 android {
     namespace = "com.example.movietime"
     compileSdk = 34
