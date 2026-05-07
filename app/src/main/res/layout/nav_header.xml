@@ -8,7 +8,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_premium_gradient" />
+        android:background="@drawable/bg_main_premium" />
 
     <!-- Decorative Glow Effect - Top Right -->
     <View
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:text="@string/app_description_short"
             android:textSize="13sp"
-            android:textColor="@color/text_on_dark"
+            android:textColor="@color/on_surface_variant"
             android:alpha="0.85"
             android:layout_marginTop="6dp"
             android:maxLines="2"
@@ -92,3 +92,4 @@
     </LinearLayout>
 
 </FrameLayout>
+

@@ -1,54 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Premium background matching Cinephile Dark Theme -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <!-- Deep dark base - premium navy-black -->
+
+    <!-- Solid Base Dark Background -->
     <item>
         <shape android:shape="rectangle">
-            <gradient
-                android:angle="160"
-                android:startColor="#0A0E14"
-                android:centerColor="#0D1117"
-                android:endColor="#0F141A"
-                android:type="linear" />
+            <solid android:color="@color/background" />
         </shape>
     </item>
-    
-    <!-- Primary blue glow at top -->
+
+    <!-- Subtle Cyan ambient glow - top left -->
     <item>
         <shape android:shape="rectangle">
-            <gradient
-                android:angle="180"
-                android:startColor="#203B82F6"
-                android:centerColor="#103B82F6"
-                android:endColor="#00000000"
-                android:type="linear" />
-        </shape>
-    </item>
-    
-    <!-- Accent glow at top-right -->
-    <item 
-        android:top="-100dp"
-        android:right="-50dp">
-        <shape android:shape="oval">
             <gradient
                 android:type="radial"
-                android:gradientRadius="200dp"
-                android:startColor="#20A78BFA"
+                android:gradientRadius="400dp"
+                android:centerX="0.04"
+                android:centerY="0.06"
+                android:startColor="#1A00E0FF"
                 android:endColor="#00000000" />
-            <size android:width="300dp" android:height="300dp" />
         </shape>
     </item>
-    
-    <!-- Additional depth layer -->
-    <item android:alpha="0.03">
+
+    <!-- Subtle Purple glow - bottom right -->
+    <item>
         <shape android:shape="rectangle">
             <gradient
-                android:angle="45"
-                android:startColor="#10FFFFFF"
-                android:centerColor="#00000000"
-                android:endColor="#10FFFFFF"
-                android:type="linear" />
+                android:type="radial"
+                android:gradientRadius="500dp"
+                android:centerX="0.95"
+                android:centerY="0.88"
+                android:startColor="#1A6E06D0"
+                android:endColor="#00000000" />
         </shape>
     </item>
-    
+
 </layer-list>

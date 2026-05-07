@@ -1,83 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_app_soft_mesh">
+    android:background="@drawable/bg_main_premium"
+    android:padding="16dp">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <TextView
+        android:id="@+id/tvDiscoverTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trending in Sci-Fi"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/on_surface"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="40dp"/>
+
+    <LinearLayout
+        android:id="@+id/heroCard"
+        android:layout_width="0dp"
+        android:layout_height="240dp"
+        android:background="@drawable/bg_glass"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvDiscoverTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PREMIERE"
+            android:textColor="@color/secondary_container"
+            android:background="#20FFFFFF"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textSize="10sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SYNTHESIS"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="In a world where memories are currency..."
+            android:textColor="@color/on_surface_variant"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"/>
+            
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Details"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:textColor="@color/primary_container"
+            android:layout_marginTop="8dp"/>
+    </LinearLayout>
+    
+    <HorizontalScrollView
+        android:id="@+id/chipScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:elevation="0dp">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="Мої Колекції"
-            app:titleCentered="true"
-            app:titleTextAppearance="@style/TextAppearance.App.Headline2" />
-
-        <!-- Quick nav to Universes -->
-        <HorizontalScrollView
-            android:layout_width="match_parent"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/heroCard"
+        android:layout_marginTop="16dp">
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="8dp">
-
-            <com.google.android.material.chip.ChipGroup
+            app:singleLine="true">
+            
+            <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:singleLine="true">
+                android:text="Action"
+                android:textColor="@color/primary_container"
+                app:chipBackgroundColor="#1A00E0FF"
+                app:chipStrokeColor="@color/primary_container"
+                app:chipStrokeWidth="1dp"/>
+                
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipUniverses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌌 іновсесвіти"
+                android:textColor="@color/secondary_container"
+                app:chipBackgroundColor="#1A6E06D0"
+                app:chipStrokeColor="@color/secondary_container"
+                app:chipStrokeWidth="1dp"/>
+                
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Neo-Noir"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/white_5"
+                app:chipStrokeColor="@color/white_10"
+                app:chipStrokeWidth="1dp"/>
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipUniverses"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:text="🌌 Кіновсесвіти"
-                    android:textSize="13sp" />
-
-            </com.google.android.material.chip.ChipGroup>
-
-        </HorizontalScrollView>
-
-    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCollections"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:clipToPadding="false"
-        android:padding="16dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/item_collection" />
+        android:paddingBottom="80dp"
+        app:layout_constraintTop_toBottomOf="@id/chipScrollView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <TextView
         android:id="@+id/tvEmptyState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no_collections"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        android:textColor="@color/on_surface_variant"
+        app:layout_constraintTop_toBottomOf="@id/chipScrollView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCreateCollection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
-        android:text="@string/create_collection"
-        app:icon="@drawable/ic_add"
-        android:backgroundTint="?attr/colorPrimary"
-        android:textColor="?attr/colorOnPrimary"
-        app:iconTint="?attr/colorOnPrimary" />
+        android:src="@android:drawable/ic_input_add"
+        android:layout_margin="16dp"
+        app:tint="@color/background"
+        app:backgroundTint="@color/primary_container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+

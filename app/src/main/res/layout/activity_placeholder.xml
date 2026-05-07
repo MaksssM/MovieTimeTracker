@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="32dp"
-    android:background="?attr/colorSurface">
+    android:background="@drawable/bg_glass">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -58,3 +58,4 @@
     </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
+

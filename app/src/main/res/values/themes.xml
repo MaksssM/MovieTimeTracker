@@ -6,29 +6,35 @@
     <!-- Uses DayNight for automatic light/dark switching -->
     <!-- ═══════════════════════════════════════════════════════════════ -->
     
-    <style name="Theme.MovieTimeTracker" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+    <style name="Theme.MovieTimeTracker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Brand Colors -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/accent</item>
+        <item name="colorPrimary">@color/primary_container</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/secondary_container</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorTertiary">@color/success</item>
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/white</item>
 
-        <!-- Surface & Background Colors - Light -->
+        <!-- Force Dark Mode Everywhere for Cinephile -->
         <item name="android:colorBackground">@color/background</item>
+        <item name="android:textColorPrimary">@color/on_surface</item>
+        <item name="android:textColorSecondary">@color/on_surface_variant</item>
+        <!-- Navigation -->
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
+
+        <!-- Keep Original Surface -->
         <item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="colorSurfaceVariant">@color/surface_variant</item>
         <item name="colorOnBackground">@color/text_primary</item>
 
-        <!-- Status Bar - Light -->
+        <!-- Status Bar - Light (Wait, it should be dark for Cinephile. Let's make it light text) -->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
         
-        <!-- App Background with Premium Effects -->
-        <item name="android:windowBackground">@drawable/bg_app_soft_mesh</item>
+        <!-- App Background with Premium Effects. Keepbg_main_premium if preferred -->
+        <item name="android:windowBackground">@drawable/bg_main_premium</item>
         
         <!-- Typography -->
         <item name="fontFamily">sans-serif</item>
@@ -39,7 +45,7 @@
         <item name="colorOnSurfaceVariant">@color/text_secondary</item>
     </style>
 
-    <!-- Light Theme Explicit Override -->
+    <!-- Light Theme Explicit Override (Force Dark) -->
     <style name="Theme.MovieTimeTracker.Light" parent="Theme.MovieTimeTracker">
         <item name="android:colorBackground">@color/background</item>
         <item name="colorSurface">@color/surface</item>
@@ -48,7 +54,7 @@
         <item name="colorOutline">@color/divider</item>
         <item name="colorOutlineVariant">@color/divider</item>
         <item name="colorOnSurfaceVariant">@color/text_secondary</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Dark Theme Explicit Override -->

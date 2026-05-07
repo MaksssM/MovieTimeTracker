@@ -51,7 +51,7 @@
         android:layout_gravity="center|start"
         android:layout_marginStart="-80dp"
         android:layout_marginTop="60dp"
-        android:background="@drawable/bg_glow_orb_orange"
+        android:background="@drawable/bg_glow_accent"
         android:alpha="0.20" />
 
     <androidx.core.widget.NestedScrollView

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.details.TvDetailsActivity"
-    android:background="@color/details_background">
+    android:background="@drawable/bg_main_premium">
 
     <!-- Animated Background Orbs -->
     <View
@@ -14,7 +14,7 @@
         android:layout_gravity="top|end"
         android:layout_marginTop="-120dp"
         android:layout_marginEnd="-120dp"
-        android:background="@drawable/bg_glow_orb_blue"
+        android:background="@drawable/bg_glow_primary"
         android:alpha="0.5" />
 
     <View
@@ -23,7 +23,7 @@
         android:layout_gravity="bottom|start"
         android:layout_marginBottom="150dp"
         android:layout_marginStart="-100dp"
-        android:background="@drawable/bg_glow_orb_purple"
+        android:background="@drawable/bg_glow_accent"
         android:alpha="0.4" />
 
     <View
@@ -31,7 +31,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center|end"
         android:layout_marginEnd="-80dp"
-        android:background="@drawable/bg_glow_orb_orange"
+        android:background="@drawable/bg_glow_accent"
         android:alpha="0.25" />
 
     <com.google.android.material.appbar.AppBarLayout
@@ -621,7 +621,7 @@
                     android:layout_marginEnd="8dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="@color/glass_surface_medium">
+                    app:cardBackgroundColor="@android:color/transparent" android:background="@drawable/bg_glass">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -677,7 +677,7 @@
                     android:layout_marginHorizontal="8dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="@color/glass_surface_medium">
+                    app:cardBackgroundColor="@android:color/transparent" android:background="@drawable/bg_glass">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -729,7 +729,7 @@
                     android:layout_marginStart="8dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="@color/glass_surface_medium">
+                    app:cardBackgroundColor="@android:color/transparent" android:background="@drawable/bg_glass">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -782,7 +782,7 @@
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/glass_surface_medium">
+                app:cardBackgroundColor="@android:color/transparent" android:background="@drawable/bg_glass">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -866,7 +866,7 @@
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/glass_surface_low">
+                app:cardBackgroundColor="@android:color/transparent" android:background="@drawable/bg_glass">
 
                 <TextView
                     android:id="@+id/tvOverview"
@@ -965,7 +965,7 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="@color/glass_surface_low">
+                    app:cardBackgroundColor="@android:color/transparent" android:background="@drawable/bg_glass">
 
                     <LinearLayout
                         android:id="@+id/layoutCrewList"
@@ -1009,7 +1009,7 @@
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/glass_surface_low">
+                app:cardBackgroundColor="@android:color/transparent" android:background="@drawable/bg_glass">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1179,3 +1179,4 @@
         android:contentDescription="@string/add_to_watched" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+

@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- NIGHT THEME OVERRIDES - Premium Deep Dark Design -->
-    <!-- Automatically applied when system is in dark mode -->
+    <!-- BASE APPLICATION THEME - Light Mode Default -->
+    <!-- Uses DayNight for automatic light/dark switching -->
     <!-- ═══════════════════════════════════════════════════════════════ -->
     
-    <style name="Theme.MovieTimeTracker" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+    <style name="Theme.MovieTimeTracker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Brand Colors -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/accent</item>
+        <item name="colorPrimary">@color/primary_container</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/secondary_container</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorTertiary">@color/success</item>
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/white</item>
-        
-        <!-- Surface & Background Colors - Dark -->
+
+        <!-- Force Dark Mode Everywhere for Cinephile -->
         <item name="android:colorBackground">@color/background</item>
+        <item name="android:textColorPrimary">@color/on_surface</item>
+        <item name="android:textColorSecondary">@color/on_surface_variant</item>
+        <!-- Navigation -->
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
+
+        <!-- Keep Original Surface -->
         <item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="colorSurfaceVariant">@color/surface_variant</item>
         <item name="colorOnBackground">@color/text_primary</item>
-        
-        <!-- Status Bar - Dark -->
+
+        <!-- Status Bar - Light (Wait, it should be dark for Cinephile. Let's make it light text) -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
         
-        <!-- App Background with Premium Effects -->
-        <item name="android:windowBackground">@drawable/bg_app_soft_mesh</item>
+        <!-- App Background with Premium Effects. Keepbg_main_premium if preferred -->
+        <item name="android:windowBackground">@drawable/bg_main_premium</item>
         
         <!-- Typography -->
         <item name="fontFamily">sans-serif</item>
@@ -36,5 +43,157 @@
         <item name="colorOutline">@color/divider</item>
         <item name="colorOutlineVariant">@color/divider</item>
         <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+    </style>
+
+    <!-- Light Theme Explicit Override (Force Dark) -->
+    <style name="Theme.MovieTimeTracker.Light" parent="Theme.MovieTimeTracker">
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorOutline">@color/divider</item>
+        <item name="colorOutlineVariant">@color/divider</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- Dark Theme Explicit Override -->
+    <style name="Theme.MovieTimeTracker.Dark" parent="Theme.MovieTimeTracker">
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorOutline">@color/divider</item>
+        <item name="colorOutlineVariant">@color/divider</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- COMPONENT STYLES -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- Card Style: Soft & Glassy -->
+    <style name="Widget.App.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardCornerRadius">24dp</item> <!-- Softer corners -->
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="contentPadding">16dp</item>
+    </style>
+
+    <!-- Text Styles -->
+    <style name="TextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/primary_text</item>
+    </style>
+
+    <style name="TextAppearance.App">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/primary_text</item>
+    </style>
+
+    <style name="TextAppearance.App.Headline1">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="TextAppearance.App.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary_text</item>
+    </style>
+
+     <style name="TextAppearance.App.Subtitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
+
+    <!-- Button Style: Pill Shape -->
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">16dp</item> <!-- Softer buttons -->
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!-- Navigation Drawer Item -->
+    <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemShapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="itemIconTint">@color/primary</item>
+        <item name="itemTextColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item> <!-- Softer small items -->
+    </style>
+
+    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item> <!-- Match cards -->
+    </style>
+    
+    <!-- Transparent Dialog Style -->
+    <style name="TransparentDialog" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+    
+    <!-- Bottom Sheet Theme for TV Progress -->
+    <style name="Theme.MovieTime.BottomSheet" parent="Theme.MaterialComponents.DayNight.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.MovieTime.BottomSheet</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <!-- Material Colors -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSurface">@color/glass_background_dark</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary_dark</item>
+        <item name="android:colorBackground">@color/glass_background_dark</item>
+        <item name="colorOnBackground">@android:color/white</item>
+        <!-- Fix Material 3 button attributes -->
+        <item name="materialButtonStyle">@style/Widget.MovieTime.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.MovieTime.Button.Outlined</item>
+    </style>
+    
+    <style name="Widget.MovieTime.BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@color/glass_background_dark</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.MovieTime.BottomSheet</item>
+    </style>
+    
+    <style name="ShapeAppearance.MovieTime.BottomSheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">24dp</item>
+        <item name="cornerSizeTopRight">24dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+    
+    <!-- Button styles for BottomSheet -->
+    <style name="Widget.MovieTime.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/primary</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="rippleColor">@color/white</item>
+        <item name="cornerRadius">16dp</item>
+    </style>
+    
+    <style name="Widget.MovieTime.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/divider_dark</item>
+        <item name="android:textColor">@color/text_secondary_dark</item>
+        <item name="rippleColor">@color/divider_dark</item>
+        <item name="cornerRadius">16dp</item>
+    </style>
+
+    <style name="TransparentText" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textColor">@android:color/transparent</item>
     </style>
 </resources>

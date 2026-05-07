@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/details_background"
+    android:background="@drawable/bg_main_premium"
     tools:context=".ui.collection.CollectionDetailsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:cardBackgroundColor="@color/glass_surface_low"
+                app:cardBackgroundColor="@android:color/transparent" android:background="@drawable/bg_glass"
                 app:cardCornerRadius="16dp"
                 app:strokeWidth="0dp"
                 app:cardElevation="0dp">
@@ -142,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:cardBackgroundColor="@color/glass_surface_medium"
+                app:cardBackgroundColor="@android:color/transparent" android:background="@drawable/bg_glass"
                 app:cardCornerRadius="16dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/accent_primary_transparent"
@@ -226,3 +226,4 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+

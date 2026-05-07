@@ -1,263 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- LIGHT THEME - Clean, Elegant & Modern -->
-    <!-- Base: White #FFFFFF / Surface: #F8FAFC -->
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-
-    <!-- Base Colors -->
+    <!-- Cinephile Dark Neon Theme Colors -->
     <color name="black">#FF000000</color>
-    <color name="black_alpha_50">#80000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
 
-    <!-- Primary Brand Colors -->
-    <color name="primary">#3B82F6</color>
-    <color name="primary_dark">#2563EB</color>
-    <color name="primary_light">#60A5FA</color>
-    <color name="accent">#8B5CF6</color>
-    <color name="accent_light">#A78BFA</color>
-    <color name="accent_dark">#7C3AED</color>
-    <color name="accent_purple_light">#C084FC</color>
-    <color name="accent_blue">#60A5FA</color>
-    <color name="success_green_light">#34D399</color>
-    <color name="error_light">#F87171</color>
-
-    <!-- App Core Background Colors - Light Theme -->
-    <color name="app_bg">#FFFFFF</color>
-    <color name="background">#FFFFFF</color>
-    <color name="background_primary_light">#F8FAFC</color>
-    <color name="background_surface_light">#FFFFFF</color>
-    <color name="background_elevated_light">#FFFFFF</color>
+    <color name="surface">#131313</color>
+    <color name="background">#131313</color>
     
-    <!-- Dark Theme Background Colors (for reference) -->
-    <color name="background_primary_dark">#0A0E14</color>
-    <color name="background_surface_dark">#0D1117</color>
-    <color name="background_elevated_dark">#151B24</color>
-
-    <!-- Card & Surface Colors - Light Theme -->
-    <color name="card_bg">#FFFFFF</color>
-    <color name="card_bg_elevated">#FFFFFF</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="surface_variant">#F1F5F9</color>
-    <color name="surface_elevated">#FFFFFF</color>
-    <color name="surface_card">#FFFFFF</color>
-    <color name="stat_card_bg">#FFFFFF</color>
-    <color name="glass_background_light">#E6FFFFFF</color>
-    <color name="glass_background_dark">#CC0D1117</color>
-
-    <!-- Text Colors - Light Theme -->
-    <color name="text_primary_light">#0F172A</color>
-    <color name="text_secondary_light">#64748B</color>
-    <color name="text_tertiary_light">#94A3B8</color>
-    <color name="primary_text">#0F172A</color>
-    <color name="secondary_text">#64748B</color>
-    <color name="text_primary">#0F172A</color>
-    <color name="text_secondary">#64748B</color>
-    <color name="text_hint">#94A3B8</color>
-    <color name="text_on_dark">#FFFFFF</color>
-    <color name="text_on_accent">#FFFFFF</color>
+    <color name="primary_container">#00E0FF</color>
+    <color name="primary">#BAF2FF</color>
+    <color name="secondary_container">#6E06D0</color>
     
-    <!-- Dark Theme Text Colors (for reference) -->
-    <color name="text_primary_dark">#F1F5F9</color>
-    <color name="text_secondary_dark">#94A3B8</color>
-    <color name="text_tertiary_dark">#64748B</color>
-
-    <!-- Dividers & Borders - Light Theme -->
-    <color name="divider_light">#E2E8F0</color>
-    <color name="divider_dark">#1E293B</color>
-    <color name="divider">#E2E8F0</color>
-    <color name="border">#E2E8F0</color>
-
-    <!-- Functional / Status Colors -->
-    <color name="success">#10B981</color>
-    <color name="success_light">#6EE7B7</color>
-    <color name="error">#EF4444</color>
-    <color name="warning">#F59E0B</color>
-    <color name="info">#3B82F6</color>
-
-    <!-- Icon Colors - Light Theme -->
-    <color name="icon_primary">#3B82F6</color>
-    <color name="icon_secondary">#64748B</color>
-    <color name="icon_accent">#8B5CF6</color>
-    <color name="icon_success">#10B981</color>
-
-    <!-- Glassmorphism - Light Theme -->
-    <color name="glass_stroke_dark">#1FFFFFFF</color>
-    <color name="glass_stroke_light">#1F000000</color>
-    <color name="glass_overlay">#F8FAFC</color>
-    <color name="glass_border">#E2E8F0</color>
+    <color name="on_surface">#E5E2E1</color>
+    <color name="on_surface_variant">#BAC9CD</color>
+    <color name="outline">#859397</color>
+    <color name="outline_variant">#3B494C</color>
     
-    <!-- Soft Gradient Colors -->
-    <color name="soft_gradient_start_dark">#0A0E14</color>
-    <color name="soft_gradient_mid_dark">#0D1117</color>
-    <color name="soft_gradient_end_dark">#0F141A</color>
-    <color name="soft_gradient_start_light">#FFFFFF</color>
-    <color name="soft_gradient_mid_light">#F1F5F9</color>
-    <color name="soft_gradient_end_light">#F8FAFC</color>
-
-    <!-- Gradient Colors for Premium Effects -->
-    <color name="gradient_start">#F8FAFC</color>
-    <color name="gradient_end">#FFFFFF</color>
-    <color name="gradient_hero_start">#00000000</color>
-    <color name="gradient_hero_end">#0A0E14</color>
-    <color name="gradient_hero_end_light">#F8FAFC</color>
-    <color name="gradient_primary_start">#EFF6FF</color>
-    <color name="gradient_primary_middle">#DBEAFE</color>
-    <color name="gradient_primary_end">#3B82F6</color>
-    <color name="gradient_card_start">#FFFFFF</color>
-    <color name="gradient_card_end">#F8FAFC</color>
-    <color name="gradient_accent_start">#F5F3FF</color>
-    <color name="gradient_accent_end">#8B5CF6</color>
+    <!-- Alphas (Glassmorphism) -->
+    <color name="white_5">#0CFFFFFF</color>
+    <color name="white_10">#1AFFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="black_40">#66000000</color>
+    <color name="black_60">#99000000</color>
     
-    <color name="overlay_dark">#99000000</color>
-    <color name="overlay_light">#40000000</color>
+    <!-- Keeping compatibility with old names where needed -->
+    <color name="primary_dark">#004E5A</color>
+    <color name="primary_light">#00DAF8</color>
+    <color name="accent">#00E0FF</color>
+    <color name="accent_light">#A5EEFF</color>
+    <color name="accent_dark">#006877</color>
+    <color name="error">#FFB4AB</color>
+    <color name="error_light">#FFDAD6</color>
+    <color name="success">#34D399</color>
+    <color name="card_bg">#1AFFFFFF</color>
+    <color name="app_bg">#131313</color>
+    <color name="text_primary">#E5E2E1</color>
+    <color name="text_secondary">#BAC9CD</color>
+    <color name="icon_tint">#E5E2E1</color>
+    <color name="icon_tint_active">#00E0FF</color>
+    <color name="divider">#1AFFFFFF</color>
 
-    <!-- Badges & Tags -->
-    <color name="badge_movie">#3B82F6</color>
-    <color name="badge_tv">#F59E0B</color>
-    <color name="badge_rating">#FBBF24</color>
-    <color name="movie_badge">@color/badge_movie</color>
-    <color name="tv_badge">@color/badge_tv</color>
-
-    <!-- Action Button Colors -->
-    <color name="action_planned">#F59E0B</color>
-    <color name="action_planned_bg">#15F59E0B</color>
-    <color name="action_planned_stroke">#40F59E0B</color>
-
-    <color name="action_watched">#60A5FA</color>
-    <color name="action_watched_bg">#1560A5FA</color>
-    <color name="action_watched_stroke">#4060A5FA</color>
-
-    <color name="action_watching">#22C55E</color>
-    <color name="action_watching_bg">#1522C55E</color>
-    <color name="action_watching_stroke">#4022C55E</color>
-
-    <color name="action_rate">#FBBF24</color>
-    <color name="action_rate_bg">#15FBBF24</color>
-    <color name="action_rate_stroke">#40FBBF24</color>
-    <color name="action_rate_track">#30FBBF24</color>
-
-    <color name="action_collection">#8B5CF6</color>
-    <color name="action_collection_bg">#158B5CF6</color>
-    <color name="action_collection_stroke">#408B5CF6</color>
-
-    <color name="action_share">#A78BFA</color>
-    <color name="action_share_bg">#15A78BFA</color>
-    <color name="action_share_stroke">#40A78BFA</color>
-
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <!-- Material 3 Token Mapping - Light Theme -->
-    <!-- ═══════════════════════════════════════════════════════════════ -->
-    <color name="md_theme_light_primary">#3B82F6</color>
-    <color name="md_theme_light_onPrimary">#FFFFFF</color>
-    <color name="md_theme_light_primaryContainer">#DBEAFE</color>
-    <color name="md_theme_light_onPrimaryContainer">#1E3A8A</color>
-    <color name="md_theme_light_secondary">#8B5CF6</color>
-    <color name="md_theme_light_onSecondary">#FFFFFF</color>
-    <color name="md_theme_light_secondaryContainer">#EDE9FE</color>
-    <color name="md_theme_light_onSecondaryContainer">#4C1D95</color>
-    <color name="md_theme_light_background">#FFFFFF</color>
-    <color name="md_theme_light_onBackground">#0F172A</color>
-    <color name="md_theme_light_surface">#FFFFFF</color>
-    <color name="md_theme_light_onSurface">#0F172A</color>
-
-    <!-- Material 3 Token Mapping - Dark Theme (for reference) -->
-    <color name="md_theme_dark_primary">#5DA0FF</color>
-    <color name="md_theme_dark_onPrimary">#0B1220</color>
-    <color name="md_theme_dark_primaryContainer">#0D1B32</color>
-    <color name="md_theme_dark_onPrimaryContainer">#D7E6FF</color>
-    <color name="md_theme_dark_secondary">#A78BFA</color>
-    <color name="md_theme_dark_onSecondary">#0B1220</color>
-    <color name="md_theme_dark_background">#0A0E14</color>
-    <color name="md_theme_dark_onBackground">#F1F5F9</color>
-    <color name="md_theme_dark_surface">#0D1117</color>
-    <color name="md_theme_dark_onSurface">#F1F5F9</color>
-
-    <!-- Additional UI Colors -->
-    <color name="primary_alpha_15">#263B82F6</color>
-    <color name="primary_light_alpha_stroke">#3060A5FA</color>
-    <color name="primary_light_alpha_bg">#2060A5FA</color>
-    <color name="primaryContainer">@color/md_theme_light_primaryContainer</color>
-    <color name="surface_light_alpha_05">#0DFFFFFF</color>
+    <!-- Compatibility colors for drawables missing them after redesign -->
+    <color name="md_theme_light_primaryContainer">@color/primary_container</color>
+    <color name="primaryContainer">@color/primary_container</color>
+    <color name="primary_variant">@color/primary_dark</color>
+    <color name="movie_badge">#00E0FF</color>
+    <color name="tv_badge">#6E06D0</color>
     <color name="surface_light_alpha_08">#14FFFFFF</color>
-    <color name="rose">#E11D48</color>
-    <color name="error_alpha_15">#26EF4444</color>
+    <color name="surface_light_alpha_05">#0CFFFFFF</color>
+    <color name="calendar_badge_end">@color/secondary_container</color>
+    <color name="calendar_badge_start">@color/primary_container</color>
+    <color name="calendar_badge_stroke">@color/divider</color>
+    <color name="error_alpha_15">#26FFB4AB</color>
+    <color name="success_light">#6EE7B7</color>
+    <color name="calendar_dot_end">@color/secondary_container</color>
+    <color name="calendar_dot_start">@color/primary_container</color>
     <color name="gold">#FFD700</color>
-    <color name="rating_gold">#FFD700</color>
-    <color name="rating_star">@color/gold</color>
-    <color name="primary_variant">#1D4ED8</color>
-    <color name="card_background">#FFFFFF</color>
-
-    <!-- Shimmer Colors - Light Theme -->
-    <color name="shimmer_base">#E2E8F0</color>
-    <color name="shimmer_highlight">#F1F5F9</color>
-
-    <!-- Calendar accents -->
-    <color name="calendar_selected_start">#DBEAFE</color>
-    <color name="calendar_selected_end">#BFDBFE</color>
-    <color name="calendar_selected_stroke">#93C5FD</color>
-    <color name="calendar_today_ring">#803B82F6</color>
-    <color name="calendar_dot_start">#3B82F6</color>
-    <color name="calendar_dot_end">#2563EB</color>
-    <color name="calendar_badge_start">#F472B6</color>
-    <color name="calendar_badge_end">#E11D48</color>
-    <color name="calendar_badge_stroke">#FFF1F5</color>
-
-    <!-- Genre Chip Colors -->
-    <color name="chip_genre_bg">#F1F5F9</color>
-    <color name="chip_genre_text">#64748B</color>
-    <color name="chip_stroke_color">#E2E8F0</color>
-
-    <!-- Calendar Release Type Colors -->
-    <color name="chip_movie_bg">#3060A5FA</color>
-    <color name="chip_tv_bg">#3022C55E</color>
+    <color name="primary_alpha_15">#2600E0FF</color>
+    <color name="text_secondary_light">@color/text_secondary</color>
     
-    <!-- Theme-aware UI Element Colors - LIGHT THEME -->
-    <color name="bg_recent_activity_card">#FFFFFF</color>
-    <color name="card_background_alpha">#FFFFFF</color>
-    <color name="card_background_glass">#F8FAFC</color>
-    <color name="input_background">#FFFFFF</color>
-    <color name="input_stroke">#CBD5E1</color>
-    <color name="input_hint">#94A3B8</color>
-    <color name="tab_text_inactive">#64748B</color>
-    <color name="icon_tint_inactive">#94A3B8</color>
-    <color name="separator">#E2E8F0</color>
-    <color name="tab_indicator">#3B82F6</color>
-    <color name="ripple_color">#1F3B82F6</color>
-    <color name="track_inactive">#E2E8F0</color>
-    <color name="button_stroke">#E2E8F0</color>
+    <!-- Night theme compatibility -> we copied base -> so map missing dark ones here -->
+    <color name="primary_text">@color/on_surface</color>
+    <color name="secondary_text">@color/on_surface_variant</color>
+    <color name="text_secondary_dark">@color/on_surface_variant</color>
+    <color name="glass_background_dark">#CC131313</color>
+    <color name="surface_variant">@color/on_surface_variant</color>
+    <color name="border">@color/outline_variant</color>
+    <color name="divider_dark">#1AFFFFFF</color>
 
-    <!-- Semantic Colors for Details & Glassmorphism (Added for consistency) -->
-    <color name="details_background">@color/background_primary_dark</color>
-    <color name="details_surface_transparent">#99000000</color>
-    <color name="poster_placeholder_dark">#1F2937</color>
+    <!-- Details & Layout specific colors -> mapped to Cinephile theme -->
+    <color name="details_background">@color/background</color>
+    <color name="accent_primary">@color/primary_container</color>
+    <color name="accent_primary_transparent">@color/primary_alpha_15</color>
+    <color name="poster_placeholder_dark">@color/outline_variant</color>
+    <color name="details_surface_transparent">#CC131313</color>
+    <color name="badge_rating">@color/gold</color>
+    
+    <color name="action_planned">@color/primary_container</color>
+    <color name="action_planned_bg">#1A00E0FF</color>
+    <color name="action_planned_stroke">@color/primary_container</color>
+    
+    <color name="action_watched">@color/secondary_container</color>
+    <color name="action_watched_bg">#1A6E06D0</color>
+    <color name="action_watched_stroke">@color/secondary_container</color>
 
-    <!-- Activity Status Colors -->
-    <color name="status_watched">#22C55E</color>
-    <color name="status_planned">#8B5CF6</color>
-    <color name="status_watching">#3B82F6</color>
-    <color name="status_search">#F59E0B</color>
+    <!-- Missing colors fixed to resolve build errors -->
+    <color name="action_watching">#FF9800</color>
+    <color name="action_watching_bg">#1AFF9800</color>
+    <color name="action_watching_stroke">#FF9800</color>
 
-    <!-- text_on_dark_* used as semantic subtitle colors — theme-aware in values/ -->
-    <color name="text_on_dark_secondary">#64748B</color>
-    <color name="text_on_dark_tertiary">#94A3B8</color>
-    <color name="divider_on_dark">#E2E8F0</color>
+    <color name="action_collection">#4CAF50</color>
+    <color name="action_collection_bg">#1A4CAF50</color>
+    <color name="action_collection_stroke">#4CAF50</color>
 
-    <!-- Glass surfaces: light-mode solid values; night/ overrides with semi-transparent white -->
-    <color name="glass_surface_high">#EAEFF8</color>
-    <color name="glass_surface_medium">#EFF3FA</color>
-    <color name="glass_surface_low">#F5F8FC</color>
+    <color name="action_share">#2196F3</color>
+    <color name="action_share_bg">#1A2196F3</color>
+    <color name="action_share_stroke">#2196F3</color>
 
-    <color name="social_accent">#A855F7</color>
-    <color name="social_accent_alpha_stroke">#30A855F7</color>
-    <color name="social_accent_alpha_bg">#18A855F7</color>
-    <color name="social_accent_alpha_icon">#20A855F7</color>
+    <color name="action_rate_stroke">#FFD700</color>
+    <color name="action_rate_bg">#1AFFD700</color>
+    <color name="action_rate_track">#33FFD700</color>
 
-    <!-- UI Tokens for Settings -->
-    <color name="background_primary">@color/background_primary_light</color>
-    <color name="accent_primary">@color/primary</color>
-    <color name="glass_stroke">#CBD5E1</color>
-    <color name="accent_primary_transparent">#333B82F6</color>
+    <color name="black_alpha_50">#80000000</color>
+
+    <color name="action_rate">#FFD700</color>
+    <color name="success_green_light">#81C784</color>
+    <color name="accent_purple_light">#BA68C8</color>
+    <color name="rating_gold">#FFD700</color>
+    <color name="primary_light_alpha_stroke">#3300DAF8</color>
+    <color name="primary_light_alpha_bg">#1A00DAF8</color>
+    <color name="accent_blue">#42A5F5</color>
+    <color name="social_accent">#FF4081</color>
+    <color name="social_accent_alpha_stroke">#33FF4081</color>
+    <color name="social_accent_alpha_bg">#1AFF4081</color>
+    <color name="social_accent_alpha_icon">#80FF4081</color>
+    <color name="rating_star">#FFD700</color>
+
+    <!-- Missing Chip Colors -->
+    <color name="chip_movie_bg">#1A60A5FA</color>
+    <color name="chip_tv_bg">#1A22C55E</color>
+    <color name="chip_genre_bg">#1AFFFFFF</color>
+    <color name="chip_genre_text">#FFFFFF</color>
+    <color name="chip_stroke_color">#33FFFFFF</color>
+
+    <!-- Fix AAPT errors -->
+    <color name="divider_on_dark">#1AFFFFFF</color>
+    <color name="card_background">#1AFFFFFF</color>
+    <color name="surface_elevated">#1AFFFFFF</color>
+    <color name="card_bg_elevated">#33FFFFFF</color>
+    <color name="text_hint">#859397</color>
+    <color name="glass_overlay">#1AFFFFFF</color>
+    <color name="glass_border">#33FFFFFF</color>
+    <color name="surface_card">#1AFFFFFF</color>
+    <color name="gradient_accent_end">#00E0FF</color>
+    <color name="gradient_accent_start">#6E06D0</color>
+    <color name="gradient_card_end">#131313</color>
+    <color name="gradient_card_start">#1AFFFFFF</color>
+    
+    <!-- Even more AAPT errors -->
+    <color name="shimmer_base">#33FFFFFF</color>
+    <color name="text_on_dark_secondary">@color/on_surface_variant</color>
+    <color name="glass_surface_high">#33FFFFFF</color>
+    <color name="text_on_dark_tertiary">#859397</color>
+    <color name="card_background_alpha">#1AFFFFFF</color>
+    <color name="tab_text_inactive">#859397</color>
+
+    <!-- Final batch of AAPT errors -->
+    <color name="ripple_color">#33FFFFFF</color>
+    <color name="card_background_glass">#1AFFFFFF</color>
+    <color name="tertiary_text">#859397</color>
+    <color name="glass_surface_low">#0CFFFFFF</color>
+    <color name="text_on_dark">#E5E2E1</color>
+    <color name="background_primary">#131313</color>
+    <color name="glass_stroke">#33FFFFFF</color>
+    
+    <!-- Adapter Status Colors -->
+    <color name="status_watched">#1A6E06D0</color>
+    <color name="status_planned">#1A00E0FF</color>
+    <color name="status_watching">#1AFF9800</color>
+    <color name="status_search">#1A22C55E</color>
+
 </resources>

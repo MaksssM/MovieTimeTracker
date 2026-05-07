@@ -1,106 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Premium gradient background for main screen - LIGHT THEME -->
+<!-- Premium background matching Cinephile Dark Theme -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Soft light base -->
+    <!-- Solid Base Dark Background -->
     <item>
         <shape android:shape="rectangle">
-            <gradient
-                android:angle="160"
-                android:startColor="#F8F0FF"
-                android:centerColor="#FFFFFF"
-                android:endColor="#EEF2FF"
-                android:type="linear" />
+            <solid android:color="@color/background" />
         </shape>
     </item>
 
-    <!-- Blue ambient glow - top left -->
+    <!-- Subtle Cyan ambient glow - top left -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:type="radial"
-                android:gradientRadius="1000dp"
+                android:gradientRadius="400dp"
                 android:centerX="0.04"
                 android:centerY="0.06"
-                android:startColor="#503B82F6"
+                android:startColor="#1A00E0FF"
                 android:endColor="#00000000" />
         </shape>
     </item>
 
-    <!-- Rose/pink glow - center -->
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:type="radial"
-                android:gradientRadius="700dp"
-                android:centerX="0.42"
-                android:centerY="0.32"
-                android:startColor="#38EC4899"
-                android:endColor="#00000000" />
-        </shape>
-    </item>
-
-    <!-- Violet/purple glow - bottom right -->
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:type="radial"
-                android:gradientRadius="800dp"
-                android:centerX="0.95"
-                android:centerY="0.88"
-                android:startColor="#408B5CF6"
-                android:endColor="#00000000" />
-        </shape>
-    </item>
-
-    <!-- Cyan accent - center right -->
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:type="radial"
-                android:gradientRadius="560dp"
-                android:centerX="0.88"
-                android:centerY="0.42"
-                android:startColor="#3006B6D4"
-                android:endColor="#00000000" />
-        </shape>
-    </item>
-
-    <!-- Warm green-lime glow - bottom left -->
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:type="radial"
-                android:gradientRadius="650dp"
-                android:centerX="0.06"
-                android:centerY="0.92"
-                android:startColor="#2810B981"
-                android:endColor="#00000000" />
-        </shape>
-    </item>
-
-    <!-- Indigo - top right corner -->
+    <!-- Subtle Purple glow - bottom right -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:type="radial"
                 android:gradientRadius="500dp"
-                android:centerX="0.92"
-                android:centerY="0.05"
-                android:startColor="#286366F1"
+                android:centerX="0.95"
+                android:centerY="0.88"
+                android:startColor="#1A6E06D0"
                 android:endColor="#00000000" />
-        </shape>
-    </item>
-
-    <!-- Diagonal shimmer shimmer overlay -->
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:type="linear"
-                android:angle="45"
-                android:startColor="#00FFFFFF"
-                android:centerColor="#0AFFFFFF"
-                android:endColor="#00FFFFFF" />
         </shape>
     </item>
 
