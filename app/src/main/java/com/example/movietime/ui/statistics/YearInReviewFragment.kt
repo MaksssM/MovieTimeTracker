@@ -40,7 +40,7 @@ class YearInReviewFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.selectedYear.observe(viewLifecycleOwner) { year ->
-            binding.tvYearTitle.text = "$year Wrapped"
+            binding.tvYearTitle.text = getString(R.string.wrapped_year_title, year)
         }
 
         viewModel.yearlyStats.observe(viewLifecycleOwner) { stats ->
@@ -63,8 +63,8 @@ class YearInReviewFragment : Fragment() {
     private fun updateUI(stats: com.example.movietime.data.db.YearlyStats) {
         with(binding) {
             // Total watch time
-            tvTotalWatchTime.text = viewModel.formatWatchTime(stats.totalWatchTimeMinutes)
-            tvWatchTimeEquivalent.text = viewModel.formatWatchTimeEquivalent(stats.totalWatchTimeMinutes)
+            tvTotalWatchTime.text = viewModel.formatWatchTime(requireContext(), stats.totalWatchTimeMinutes)
+            tvWatchTimeEquivalent.text = viewModel.formatWatchTimeEquivalent(requireContext(), stats.totalWatchTimeMinutes)
 
             // Totals
             tvTotalMovies.text = stats.totalMovies.toString()
@@ -83,7 +83,11 @@ class YearInReviewFragment : Fragment() {
             if (stats.mostRewatchedItemTitle != null && stats.mostRewatchedCount > 1) {
                 cardMostRewatched.isVisible = true
                 tvMostRewatchedTitle.text = stats.mostRewatchedItemTitle
-                tvRewatchCount.text = "${stats.mostRewatchedCount} разів"
+                tvRewatchCount.text = resources.getQuantityString(
+                    R.plurals.times_count,
+                    stats.mostRewatchedCount,
+                    stats.mostRewatchedCount
+                )
             } else {
                 cardMostRewatched.isVisible = false
             }
@@ -92,7 +96,7 @@ class YearInReviewFragment : Fragment() {
             if (stats.longestMovieTitle != null) {
                 cardLongestMovie.isVisible = true
                 tvLongestMovieTitle.text = stats.longestMovieTitle
-                tvLongestMovieRuntime.text = "${stats.longestMovieRuntime} хв"
+                tvLongestMovieRuntime.text = getString(R.string.time_format_minutes, stats.longestMovieRuntime)
             } else {
                 cardLongestMovie.isVisible = false
             }
@@ -117,7 +121,7 @@ class YearInReviewFragment : Fragment() {
             com.github.mikephil.charting.data.Entry(index.toFloat(), (stat.totalWatchTimeMinutes / 60f))
         }
 
-        val dataSet = com.github.mikephil.charting.data.LineDataSet(entries, "Годин перегляду")
+        val dataSet = com.github.mikephil.charting.data.LineDataSet(entries, getString(R.string.total_time))
         val primaryColor = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.primary)
         val onSurface = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.white)
 
@@ -159,7 +163,7 @@ class YearInReviewFragment : Fragment() {
         leftAxis.axisMinimum = 0f
         leftAxis.granularity = 1f
         leftAxis.valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
-            override fun getFormattedValue(value: Float): String = "${value.toInt()} год"
+            override fun getFormattedValue(value: Float): String = getString(R.string.time_format_hours, value.toInt())
         }
 
         chart.animateY(900)
@@ -173,7 +177,8 @@ class YearInReviewFragment : Fragment() {
         val chart = binding.monthlyChart
         try {
             val jsonArray = JSONArray(breakdownJson)
-            val monthNames = listOf("Січ", "Лют", "Бер", "Кві", "Тра", "Чер", "Лип", "Сер", "Вер", "Жов", "Лис", "Гру")
+            val symbols = java.text.DateFormatSymbols.getInstance(java.util.Locale.getDefault())
+            val monthNames = symbols.shortMonths.take(12)
             val entries = ArrayList<com.github.mikephil.charting.data.BarEntry>()
             
             for (i in 0 until 12) {
@@ -181,7 +186,7 @@ class YearInReviewFragment : Fragment() {
                 entries.add(com.github.mikephil.charting.data.BarEntry(i.toFloat(), value.toFloat()))
             }
 
-            val dataSet = com.github.mikephil.charting.data.BarDataSet(entries, "Час перегляду (хв)")
+            val dataSet = com.github.mikephil.charting.data.BarDataSet(entries, getString(R.string.total_time))
             
             // Styling
             val primaryColor = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.primary)
@@ -228,7 +233,7 @@ class YearInReviewFragment : Fragment() {
 
     private fun showEmptyState() {
         with(binding) {
-            tvTotalWatchTime.text = "0 ${getString(R.string.hours_short)}"
+            tvTotalWatchTime.text = viewModel.formatWatchTime(requireContext(), 0)
             tvWatchTimeEquivalent.text = getString(R.string.start_watching_movies)
             tvTotalMovies.text = "0"
             tvTotalEpisodes.text = "0"
@@ -248,18 +253,25 @@ class YearInReviewFragment : Fragment() {
     private fun shareResults() {
         val stats = viewModel.yearlyStats.value ?: return
         val year = viewModel.selectedYear.value ?: Calendar.getInstance().get(Calendar.YEAR)
+        val watchTimeFormatted = viewModel.formatWatchTime(requireContext(), stats.totalWatchTimeMinutes)
 
-        val shareText = buildString {
-            appendLine("🎬 Мій Кінорік $year 🎬")
-            appendLine()
-            appendLine("⏱️ Переглянув: ${viewModel.formatWatchTime(stats.totalWatchTimeMinutes)}")
-            appendLine("🎬 Фільмів: ${stats.totalMovies}")
-            appendLine("📺 Епізодів: ${stats.totalTvEpisodes}")
-            stats.topRatedItemTitle?.let {
-                appendLine("⭐ Фаворит: $it")
-            }
-            appendLine()
-            appendLine("#MovieTimeWrapped #КіноРік$year")
+        val shareText = if (stats.topRatedItemTitle != null) {
+            getString(
+                R.string.share_wrapped_template,
+                year,
+                watchTimeFormatted,
+                stats.totalMovies,
+                stats.totalTvEpisodes,
+                stats.topRatedItemTitle
+            )
+        } else {
+            getString(
+                R.string.share_wrapped_template_no_favorite,
+                year,
+                watchTimeFormatted,
+                stats.totalMovies,
+                stats.totalTvEpisodes
+            )
         }
 
         val sendIntent = Intent().apply {
@@ -268,7 +280,7 @@ class YearInReviewFragment : Fragment() {
             type = "text/plain"
         }
 
-        val shareIntent = Intent.createChooser(sendIntent, "Поділитися результатами")
+        val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share_via))
         startActivity(shareIntent)
     }
 

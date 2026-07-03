@@ -29,7 +29,11 @@ class UniversesAdapter(
             b.tvUniverseName.text = item.universe.name
             b.tvUniverseDescription.text = item.universe.description ?: ""
             b.tvUniverseProgress.text = item.progressText
-            b.tvSagaCount.text = "${item.sagaCount} сag${sagaSuffix(item.sagaCount)}"
+            b.tvSagaCount.text = b.root.context.resources.getQuantityString(
+                com.example.movietime.R.plurals.sagas_count,
+                item.sagaCount,
+                item.sagaCount
+            )
             b.progressUniverse.max = if (item.totalMovies > 0) item.totalMovies else 1
             b.progressUniverse.progress = item.watchedMovies
 
@@ -42,12 +46,6 @@ class UniversesAdapter(
                     b.progressUniverse.setIndicatorColor(color)
                 } catch (_: Exception) { /* ignore invalid color */ }
             }
-        }
-
-        private fun sagaSuffix(n: Int): String = when {
-            n % 10 == 1 && n % 100 != 11 -> "а"
-            n % 10 in 2..4 && n % 100 !in 12..14 -> "и"
-            else -> ""
         }
     }
 

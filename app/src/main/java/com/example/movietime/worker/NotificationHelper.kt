@@ -57,8 +57,8 @@ object NotificationHelper {
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID_EPISODES)
             .setSmallIcon(R.drawable.ic_tv)
-            .setContentTitle("$showTitle")
-            .setContentText("Нова серія: S${seasonNumber}E${episodeNumber} - $episodeTitle")
+            .setContentTitle(showTitle)
+            .setContentText(context.getString(R.string.notif_new_episode_text, seasonNumber, episodeNumber, episodeTitle))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -69,7 +69,7 @@ object NotificationHelper {
     }
 
     fun createReleaseNotification(context: Context, title: String, releaseDate: String, mediaType: String) {
-        createNotificationChannel(context, CHANNEL_ID_RELEASES, "Нові релізи") // Consider moving string to strings.xml
+        createNotificationChannel(context, CHANNEL_ID_RELEASES, context.getString(R.string.notif_channel_releases))
 
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -80,12 +80,13 @@ object NotificationHelper {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val typeText = if (mediaType == "movie") "Фільм" else "Серіал"
+        val typeText = if (mediaType == "movie") context.getString(R.string.notif_type_movie)
+                       else context.getString(R.string.notif_type_tv)
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID_RELEASES)
             .setSmallIcon(R.drawable.ic_movie)
-            .setContentTitle("$typeText: $title")
-            .setContentText("Вийшов: $releaseDate")
+            .setContentTitle(context.getString(R.string.notif_type_prefix, typeText, title))
+            .setContentText(context.getString(R.string.notif_release_text, releaseDate))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

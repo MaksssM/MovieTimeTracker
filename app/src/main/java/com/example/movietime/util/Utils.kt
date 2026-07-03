@@ -7,18 +7,21 @@ import com.example.movietime.data.db.WatchedItem
 object Utils {
     private const val TAG = "Utils"
 
-    fun formatMinutesToHoursAndMinutes(minutes: Int?): String {
+    fun formatMinutesToHoursAndMinutes(context: Context, minutes: Int?): String {
         val mins = minutes ?: 0
         Log.d(TAG, "formatMinutesToHoursAndMinutes: input=$minutes, mins=$mins")
 
         if (mins <= 0) {
-            return "0 год 0 хв"
+            return context.getString(com.example.movietime.R.string.time_format_hours_minutes, 0, 0)
         }
         val hours = mins / 60
         val remainingMinutes = mins % 60
 
-        // Use short Ukrainian labels (abbreviations) for compactness
-        val formatted = "${hours} год ${remainingMinutes} хв"
+        val formatted = if (remainingMinutes == 0) {
+            context.getString(com.example.movietime.R.string.time_format_hours, hours)
+        } else {
+            context.getString(com.example.movietime.R.string.time_format_hours_minutes, hours, remainingMinutes)
+        }
         Log.d(TAG, "formatMinutesToHoursAndMinutes: formatted='$formatted'")
         return formatted
     }

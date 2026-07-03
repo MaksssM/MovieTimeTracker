@@ -1,5 +1,6 @@
 package com.example.movietime.ui.statistics
 
+import android.content.Context
 import androidx.lifecycle.*
 import com.example.movietime.data.db.YearlyStats
 import com.example.movietime.data.repository.LifetimeStats
@@ -97,26 +98,34 @@ class YearInReviewViewModel @Inject constructor(
         }
     }
 
-    fun formatWatchTime(minutes: Long): String {
+    fun formatWatchTime(context: Context, minutes: Long): String {
         return when {
-            minutes < 60 -> "$minutes хв"
-            minutes < 1440 -> "${minutes / 60} год ${minutes % 60} хв"
+            minutes < 60 -> context.getString(com.example.movietime.R.string.time_format_minutes, minutes.toInt())
+            minutes < 1440 -> context.getString(
+                com.example.movietime.R.string.time_format_hours_minutes,
+                (minutes / 60).toInt(),
+                (minutes % 60).toInt()
+            )
             else -> {
                 val days = minutes / 1440
                 val hours = (minutes % 1440) / 60
-                "$days днів $hours год"
+                context.getString(
+                    com.example.movietime.R.string.time_format_days_hours,
+                    days.toInt(),
+                    hours.toInt()
+                )
             }
         }
     }
 
-    fun formatWatchTimeEquivalent(minutes: Long): String {
+    fun formatWatchTimeEquivalent(context: Context, minutes: Long): String {
         val hours = minutes / 60.0
         val days = hours / 24.0
         
         return when {
-            days >= 1 -> "Це %.1f днів без перерви!".format(days)
-            hours >= 1 -> "Це %.1f годин без перерви!".format(hours)
-            else -> "Це $minutes хвилин!"
+            days >= 1 -> context.getString(com.example.movietime.R.string.wrapped_days_equivalent, days)
+            hours >= 1 -> context.getString(com.example.movietime.R.string.wrapped_hours_equivalent, hours)
+            else -> context.getString(com.example.movietime.R.string.wrapped_minutes_equivalent, minutes.toInt())
         }
     }
 }

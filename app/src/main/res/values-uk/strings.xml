@@ -306,7 +306,12 @@
     <string name="off">Вимкнено</string>
     <string name="notif_channel_episodes">Нові епізоди</string>
     <string name="notif_channel_releases">Нові релізи</string>
-    
+    <string name="notif_new_episode_text">Нова серія: S%1$dE%2$d - %3$s</string>
+    <string name="notif_release_text">Вийшов: %s</string>
+    <string name="notif_type_movie">Фільм</string>
+    <string name="notif_type_tv">Серіал</string>
+    <string name="notif_type_prefix">%1$s: %2$s</string>
+
     <string name="show_ratings">Показувати рейтинги</string>
     <string name="show_ratings_desc">Відображати рейтинг на картках</string>
     <string name="autoplay_trailers">Автовідтворення трейлерів</string>
@@ -673,4 +678,63 @@
     <!-- Search improvements -->
     <string name="try_different_query">Спробуйте інший пошуковий запит</string>
     <string name="tv_shows_count_fmt">%d серіалів</string>
+
+    <!-- Localization improvements -->
+    <string name="wrapped_subtitle">Ваш кінематографічний рік у цифрах</string>
+    <string name="wrapped_total_watch_time">⏱️ Загальний час перегляду</string>
+    <string name="wrapped_yearly_activity">📈 Активність за роками</string>
+    <string name="wrapped_movies_label">Фільми</string>
+    <string name="wrapped_episodes_label">Серії</string>
+    <string name="wrapped_favorite_year">⭐ Ваш фаворит року</string>
+    <string name="wrapped_most_rewatched">🔁 Дивилися найчастіше</string>
+    <string name="wrapped_longest_movie">🎞️ Найдовший фільм</string>
+    <string name="wrapped_monthly_activity">📊 Щомісячна активність</string>
+    <string name="wrapped_share_results">📤 Поділитися результатами</string>
+    <string name="your_rating_label">Ваша оцінка:</string>
+    <string name="wrapped_year_title">%d Підсумки</string>
+    <string name="wrapped_rewatch_count_format">%d разів</string>
+    <string name="wrapped_days_equivalent">Це %.1f днів без зупинки!</string>
+    <string name="wrapped_hours_equivalent">Це %.1f годин без зупинки!</string>
+    <string name="wrapped_minutes_equivalent">Це %d хвилин!</string>
+
+    <string name="time_ago_minutes">%d хв тому</string>
+    <string name="time_ago_hours">%d год тому</string>
+    <string name="time_ago_days">%d дн тому</string>
+    <string name="time_ago_weeks">%d тиж тому</string>
+
+    <string name="notif_new_episode_format">Новий епізод: S%1$dE%2$d - %3$s</string>
+    <string name="notif_channel_releases">Нові релізи</string>
+    <string name="notif_media_movie">Фільм</string>
+    <string name="notif_media_tv">Серіал</string>
+    <string name="notif_released_on">Випущено: %s</string>
+
+    <string name="my_collections">Мої колекції</string>
+    <string name="cinematic_universes_chip">🌌 Кіновсесвіти</string>
+    <string name="fallback_universe_name">Кіновсесвіт</string>
+    <string name="universe_related">Пов\'язане</string>
+    <string name="universe_spin_off">Спін-офф</string>
+
+    <string name="filter_sorted_by_rating">Відсортовано за рейтингом</string>
+    <string name="filter_sorted_by_popularity">Відсортовано за популярністю</string>
+    <string name="filter_rating_prefix">Рейтинг ≥ %s</string>
+    <string name="filter_studio_prefix">Студія: %s</string>
+    <string name="filter_active_none">Фільтри: немає</string>
+    <string name="filter_active_prefix">Фільтри: %s</string>
+
+    <plurals name="sagas_count">
+        <item quantity="one">%d saga</item>
+        <item quantity="few">%d саги</item>
+        <item quantity="many">%d саг</item>
+        <item quantity="other">%d саг</item>
+    </plurals>
+
+    <string name="share_wrapped_template">🎬 Мій Кінорік %1$d 🎬\n\n⏱️ Переглянув: %2$s\n🎬 Фільмів: %3$d\n📺 Епізодів: %4$d\n⭐ Фаворит: %5$s\n\n#MovieTimeWrapped #КіноРік%1$d</string>
+    <string name="share_wrapped_template_no_favorite">🎬 Мій Кінорік %1$d 🎬\n\n⏱️ Переглянув: %2$s\n🎬 Фільмів: %3$d\n📺 Епізодів: %4$d\n\n#MovieTimeWrapped #КіноРік%1$d</string>
+
+    <plurals name="episodes_count">
+        <item quantity="one">%d серія</item>
+        <item quantity="few">%d серії</item>
+        <item quantity="many">%d серій</item>
+        <item quantity="other">%d серій</item>
+    </plurals>
 </resources>

@@ -83,6 +83,13 @@
     <string name="hours_short">hours</string>
     <string name="minutes_short">min</string>
 
+    <!-- Time formatting -->
+    <string name="time_format_hours">%d h</string>
+    <string name="time_format_minutes">%d min</string>
+    <string name="time_format_hours_minutes">%d h %d min</string>
+    <string name="time_format_days">%d d</string>
+    <string name="time_format_days_hours">%d d %d h</string>
+
     <!-- Category buttons -->
     <string name="watched">Watched</string>
     <string name="watching">Watching</string>
@@ -311,7 +318,12 @@
     <string name="off">Off</string>
     <string name="notif_channel_episodes">New Episodes</string>
     <string name="notif_channel_releases">New Releases</string>
-    
+    <string name="notif_new_episode_text">New episode: S%1$dE%2$d - %3$s</string>
+    <string name="notif_release_text">Released: %s</string>
+    <string name="notif_type_movie">Movie</string>
+    <string name="notif_type_tv">TV Show</string>
+    <string name="notif_type_prefix">%1$s: %2$s</string>
+
     <string name="show_ratings">Show Ratings</string>
     <string name="show_ratings_desc">Display ratings on cards</string>
     <string name="compact_mode">Compact Mode</string>
@@ -679,4 +691,79 @@
     <!-- Search improvements -->
     <string name="try_different_query">Try a different search query</string>
     <string name="tv_shows_count_fmt">%d TV shows</string>
+
+    <!-- Localization improvements -->
+    <string name="wrapped_subtitle">Your cinematic year in numbers</string>
+    <string name="wrapped_total_watch_time">⏱️ Total Watch Time</string>
+    <string name="wrapped_yearly_activity">📈 Activity by Years</string>
+    <string name="wrapped_movies_label">Movies</string>
+    <string name="wrapped_episodes_label">Episodes</string>
+    <string name="wrapped_favorite_year">⭐ Your Favorite of the Year</string>
+    <string name="wrapped_most_rewatched">🔁 Most Rewatched</string>
+    <string name="wrapped_longest_movie">🎞️ Longest Movie</string>
+    <string name="wrapped_monthly_activity">📊 Monthly Activity</string>
+    <string name="wrapped_share_results">📤 Share Results</string>
+    <string name="your_rating_label">Your Rating:</string>
+    <string name="wrapped_year_title">%d Wrapped</string>
+    <string name="wrapped_rewatch_count_format">%d times</string>
+    <string name="wrapped_days_equivalent">That is %.1f days non-stop!</string>
+    <string name="wrapped_hours_equivalent">That is %.1f hours non-stop!</string>
+    <string name="wrapped_minutes_equivalent">That is %d minutes!</string>
+
+    <string name="time_ago_minutes">%d min ago</string>
+    <string name="time_ago_hours">%d h ago</string>
+    <string name="time_ago_days">%d d ago</string>
+    <string name="time_ago_weeks">%d w ago</string>
+
+    <string name="notif_new_episode_format">New episode: S%1$dE%2$d - %3$s</string>
+    <string name="notif_channel_releases">New Releases</string>
+    <string name="notif_media_movie">Movie</string>
+    <string name="notif_media_tv">TV Show</string>
+    <string name="notif_released_on">Released: %s</string>
+
+    <string name="my_collections">My Collections</string>
+    <string name="cinematic_universes_chip">🌌 Cinematic Universes</string>
+    <string name="fallback_universe_name">Cinematic Universe</string>
+    <string name="universe_related">Related</string>
+    <string name="universe_spin_off">Spin-off</string>
+
+    <string name="filter_sorted_by_rating">Sorted by Rating</string>
+    <string name="filter_sorted_by_popularity">Sorted by Popularity</string>
+    <string name="filter_rating_prefix">Rating ≥ %s</string>
+    <string name="filter_studio_prefix">Studio: %s</string>
+    <string name="filter_active_none">Filters: none</string>
+    <string name="filter_active_prefix">Filters: %s</string>
+
+    <plurals name="sagas_count">
+        <item quantity="one">%d saga</item>
+        <item quantity="other">%d sagas</item>
+    </plurals>
+
+    <plurals name="movies_count">
+        <item quantity="one">%d movie</item>
+        <item quantity="other">%d movies</item>
+    </plurals>
+
+    <plurals name="times_count">
+        <item quantity="one">%d time</item>
+        <item quantity="other">%d times</item>
+    </plurals>
+
+    <plurals name="new_items_count">
+        <item quantity="one">%d new</item>
+        <item quantity="other">%d new</item>
+    </plurals>
+
+    <plurals name="releases_count_plurals">
+        <item quantity="one">%d release</item>
+        <item quantity="other">%d releases</item>
+    </plurals>
+
+    <plurals name="episodes_count">
+        <item quantity="one">%d episode</item>
+        <item quantity="other">%d episodes</item>
+    </plurals>
+
+    <string name="share_wrapped_template">🎬 My Cinematic Year %1$d 🎬\n\n⏱️ Total Watch Time: %2$s\n🎬 Movies: %3$d\n📺 Episodes: %4$d\n⭐ Favorite: %5$s\n\n#MovieTimeWrapped #CinematicYear%1$d</string>
+    <string name="share_wrapped_template_no_favorite">🎬 My Cinematic Year %1$d 🎬\n\n⏱️ Total Watch Time: %2$s\n🎬 Movies: %3$d\n📺 Episodes: %4$d\n\n#MovieTimeWrapped #CinematicYear%1$d</string>
 </resources>

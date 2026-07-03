@@ -32,7 +32,6 @@
                 android:id="@+id/tvYearTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2025 Wrapped"
                 android:textSize="32sp"
                 android:textStyle="bold"
                 android:textColor="?attr/colorOnBackground"
@@ -41,7 +40,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ваш кінорік у цифрах"
+                android:text="@string/wrapped_subtitle"
                 android:textSize="16sp"
                 android:textColor="?attr/colorOnSurfaceVariant"
                 android:layout_marginTop="4dp" />
@@ -64,7 +63,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="⏱️ Загальний час перегляду"
+                    android:text="@string/wrapped_total_watch_time"
                     android:textSize="14sp"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -72,7 +71,6 @@
                     android:id="@+id/tvTotalWatchTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0 годин"
                     android:textSize="36sp"
                     android:textStyle="bold"
                     android:textColor="?attr/colorPrimary"
@@ -83,7 +81,6 @@
                     android:id="@+id/tvWatchTimeEquivalent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Це 6.5 днів без перерви!"
                     android:textSize="14sp"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:layout_marginTop="4dp"
@@ -109,7 +106,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="📈 Активність по роках"
+                    android:text="@string/wrapped_yearly_activity"
                     android:textSize="14sp"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -171,7 +168,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Фільмів"
+                        android:text="@string/wrapped_movies_label"
                         android:textSize="14sp"
                         android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
@@ -210,7 +207,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Епізодів"
+                        android:text="@string/wrapped_episodes_label"
                         android:textSize="14sp"
                         android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
@@ -233,7 +230,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="⭐ Ваш фаворит року"
+                    android:text="@string/wrapped_favorite_year"
                     android:textSize="14sp"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -280,7 +277,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Ваша оцінка: "
+                                android:text="@string/your_rating_label"
                                 android:textSize="14sp"
                                 android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -318,7 +315,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🔁 Найчастіше переглядали"
+                    android:text="@string/wrapped_most_rewatched"
                     android:textSize="14sp"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -344,7 +341,6 @@
                         android:id="@+id/tvRewatchCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5 разів"
                         android:textSize="14sp"
                         android:textColor="?attr/colorPrimary"
                         tools:text="12 разів" />
@@ -371,7 +367,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🎞️ Найдовший фільм"
+                    android:text="@string/wrapped_longest_movie"
                     android:textSize="14sp"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -397,7 +393,6 @@
                         android:id="@+id/tvLongestMovieRuntime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="180 хв"
                         android:textSize="14sp"
                         android:textColor="?attr/colorPrimary"
                         tools:text="180 хв" />
@@ -421,7 +416,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="📊 Активність по місяцях"
+                    android:text="@string/wrapped_monthly_activity"
                     android:textSize="14sp"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -446,7 +441,7 @@
             android:id="@+id/btnShare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="📤 Поділитися результатами"
+            android:text="@string/wrapped_share_results"
             android:textSize="16sp"
             style="@style/Widget.App.Button"
             android:layout_marginTop="8dp"

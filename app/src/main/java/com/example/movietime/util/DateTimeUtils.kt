@@ -1,31 +1,38 @@
 package com.example.movietime.util
 
+import android.content.Context
+import com.example.movietime.R
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 object DateTimeUtils {
 
-    private val dateTimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    private fun getDateTimeFormat(): SimpleDateFormat {
+        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    }
+
+    private fun getDateFormat(): SimpleDateFormat {
+        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    }
 
     fun getCurrentDateTime(): String {
-        return dateTimeFormat.format(Date())
+        return getDateTimeFormat().format(Date())
     }
 
     fun getCurrentDate(): String {
-        return dateFormat.format(Date())
+        return getDateFormat().format(Date())
     }
 
     fun parseDateTime(dateTimeString: String): Date? {
         return try {
-            dateTimeFormat.parse(dateTimeString)
+            getDateTimeFormat().parse(dateTimeString)
         } catch (e: Exception) {
             null
         }
     }
 
-    fun formatTimeAgo(dateTimeString: String): String {
+    fun formatTimeAgo(context: Context, dateTimeString: String): String {
         val date = parseDateTime(dateTimeString) ?: return ""
         val now = Date()
         val diff = now.time - date.time
@@ -36,20 +43,20 @@ object DateTimeUtils {
         val weeks = days / 7
 
         return when {
-            minutes < 60 -> "${minutes}хв тому"
-            hours < 24 -> "${hours}год тому"
-            days < 7 -> "${days}д тому"
-            else -> "${weeks}тиж тому"
+            minutes < 60 -> context.getString(R.string.time_ago_minutes, minutes)
+            hours < 24 -> context.getString(R.string.time_ago_hours, hours)
+            days < 7 -> context.getString(R.string.time_ago_days, days)
+            else -> context.getString(R.string.time_ago_weeks, weeks)
         }
     }
 
-    fun formatDuration(minutes: Int): String {
+    fun formatDuration(context: Context, minutes: Int): String {
         val hours = minutes / 60
         val mins = minutes % 60
         return when {
-            hours == 0 -> "${mins} хв"
-            mins == 0 -> "${hours} год"
-            else -> "${hours} год ${mins} хв"
+            hours == 0 -> context.getString(R.string.time_format_minutes, mins)
+            mins == 0 -> context.getString(R.string.time_format_hours, hours)
+            else -> context.getString(R.string.time_format_hours_minutes, hours, mins)
         }
     }
 }

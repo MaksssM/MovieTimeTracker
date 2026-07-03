@@ -236,10 +236,11 @@ class WatchingAdapter(
         }
 
         private fun formatRuntime(item: WatchedItem): String {
+            val context = binding.root.context
             if (item.mediaType == "tv") {
                 val episodes = item.totalEpisodes ?: 0
                 return if (episodes > 0) {
-                    "$episodes ${binding.root.context.getString(R.string.episodes).lowercase()}"
+                    context.resources.getQuantityString(R.plurals.episodes_count, episodes, episodes)
                 } else {
                     "TV"
                 }
@@ -249,9 +250,9 @@ class WatchingAdapter(
             val hours = minutes / 60
             val rem = minutes % 60
             return when {
-                hours > 0 && rem > 0 -> "${hours}ч ${rem}мин"
-                hours > 0 -> "${hours}ч"
-                else -> "${minutes}мин"
+                hours > 0 && rem > 0 -> context.getString(R.string.time_format_hours_minutes, hours, rem)
+                hours > 0 -> context.getString(R.string.time_format_hours, hours)
+                else -> context.getString(R.string.time_format_minutes, minutes)
             }
         }
     }

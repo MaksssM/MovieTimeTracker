@@ -108,7 +108,7 @@ class ActivityAdapter(
         }
 
         private fun formatTimeAgo(dateTime: String): String {
-            return DateTimeUtils.formatTimeAgo(dateTime)
+            return DateTimeUtils.formatTimeAgo(binding.root.context, dateTime)
         }
     }
 

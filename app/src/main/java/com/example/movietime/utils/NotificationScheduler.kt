@@ -58,7 +58,7 @@ object NotificationScheduler {
     }
     
     fun createEpisodeNotification(context: Context, showTitle: String, episodeTitle: String, seasonNumber: Int, episodeNumber: Int) {
-        createNotificationChannel(context, CHANNEL_ID_EPISODES, "Нові епізоди")
+        createNotificationChannel(context, CHANNEL_ID_EPISODES, context.getString(R.string.notif_channel_episodes))
         
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -83,7 +83,7 @@ object NotificationScheduler {
     }
     
     fun createReleaseNotification(context: Context, title: String, releaseDate: String, mediaType: String) {
-        createNotificationChannel(context, CHANNEL_ID_RELEASES, "Нові релізи")
+        createNotificationChannel(context, CHANNEL_ID_RELEASES, context.getString(R.string.notif_channel_releases))
         
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -94,12 +94,13 @@ object NotificationScheduler {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         
-        val typeText = if (mediaType == "movie") "Фільм" else "Серіал"
+        val typeText = if (mediaType == "movie") context.getString(R.string.notif_type_movie)
+                       else context.getString(R.string.notif_type_tv)
         
         val notification = NotificationCompat.Builder(context, CHANNEL_ID_RELEASES)
             .setSmallIcon(R.drawable.ic_movie)
-            .setContentTitle("$typeText: $title")
-            .setContentText("Вийшов: $releaseDate")
+            .setContentTitle(context.getString(R.string.notif_type_prefix, typeText, title))
+            .setContentText(context.getString(R.string.notif_release_text, releaseDate))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
