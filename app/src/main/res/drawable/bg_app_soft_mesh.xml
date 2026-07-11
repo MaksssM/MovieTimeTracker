@@ -1,51 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Dark Premium Mesh Background for modern theme consistency -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <!-- Base deep obsidian dark background -->
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="#0D0D14" />
-        </shape>
-    </item>
-    
-    <!-- Soft teal ambient glow - top left -->
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:type="radial"
-                android:gradientRadius="700dp"
-                android:centerX="0.05"
-                android:centerY="0.1"
-                android:startColor="#1A00E5CC"
-                android:endColor="@android:color/transparent" />
-        </shape>
-    </item>
-    
-    <!-- Soft electric purple glow - bottom right -->
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:type="radial"
-                android:gradientRadius="800dp"
-                android:centerX="0.95"
-                android:centerY="0.85"
-                android:startColor="#1F7B2FFF"
-                android:endColor="@android:color/transparent" />
-        </shape>
-    </item>
-    
-    <!-- Soft ambient indigo/violet glow - center left -->
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:type="radial"
-                android:gradientRadius="600dp"
-                android:centerX="0.1"
-                android:centerY="0.5"
-                android:startColor="#0D8B5CF6"
-                android:endColor="@android:color/transparent" />
-        </shape>
-    </item>
-    
+    <item><shape android:shape="rectangle"><solid android:color="@color/background" /></shape></item>
+    <item><shape android:shape="rectangle"><gradient android:type="radial" android:gradientRadius="520dp" android:centerX="0" android:centerY="0.1" android:startColor="#127566E8" android:endColor="#00000000" /></shape></item>
+    <item><shape android:shape="rectangle"><gradient android:type="radial" android:gradientRadius="420dp" android:centerX="1" android:centerY="0.9" android:startColor="#0B58D6C9" android:endColor="#00000000" /></shape></item>
 </layer-list>

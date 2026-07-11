@@ -12,7 +12,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/colorBackground">
+        android:background="@drawable/bg_main_premium">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@android:color/transparent"
+                android:background="@color/background"
                 app:titleTextColor="?attr/colorOnSurface"
                 app:navigationIconTint="?attr/colorOnSurface"
                 app:titleCentered="true"
@@ -48,13 +48,13 @@
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#1C1C1C"
+        android:background="@drawable/bg_drawer_modern"
         android:paddingBottom="16dp"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu"
-        app:itemIconTint="@color/on_surface"
-        app:itemTextColor="@color/on_surface"
-        app:itemBackground="@drawable/bg_glass"
+        app:itemIconTint="@color/nav_drawer_icon_color"
+        app:itemTextColor="@color/nav_drawer_text_color"
+        app:itemBackground="@color/nav_drawer_item_bg"
         android:elevation="0dp"
         app:itemTextAppearance="@style/TextAppearance.App.Body2"
         app:itemHorizontalPadding="16dp"
