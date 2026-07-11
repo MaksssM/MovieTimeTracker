@@ -1,66 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Dark Premium Mesh Background for modern theme consistency -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <!-- Clean light base with subtle warmth -->
+    <!-- Base deep obsidian dark background -->
     <item>
         <shape android:shape="rectangle">
-            <gradient
-                android:type="linear"
-                android:angle="160"
-                android:startColor="#FFF8FAFC"
-                android:centerColor="#FFFFFFFF"
-                android:endColor="#FFF1F5F9" />
+            <solid android:color="#0D0D14" />
         </shape>
     </item>
     
-    <!-- Soft blue ambient glow - top left -->
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:type="radial"
-                android:gradientRadius="900dp"
-                android:centerX="0.05"
-                android:centerY="0.1"
-                android:startColor="#183B82F6"
-                android:endColor="@android:color/transparent" />
-        </shape>
-    </item>
-    
-    <!-- Soft purple/violet glow - bottom right -->
+    <!-- Soft teal ambient glow - top left -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:type="radial"
                 android:gradientRadius="700dp"
-                android:centerX="0.95"
-                android:centerY="0.85"
-                android:startColor="#148B5CF6"
+                android:centerX="0.05"
+                android:centerY="0.1"
+                android:startColor="#1A00E5CC"
                 android:endColor="@android:color/transparent" />
         </shape>
     </item>
     
-    <!-- Soft cyan accent - center right -->
+    <!-- Soft electric purple glow - bottom right -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:type="radial"
-                android:gradientRadius="500dp"
-                android:centerX="0.85"
-                android:centerY="0.4"
-                android:startColor="#0A06B6D4"
+                android:gradientRadius="800dp"
+                android:centerX="0.95"
+                android:centerY="0.85"
+                android:startColor="#1F7B2FFF"
                 android:endColor="@android:color/transparent" />
         </shape>
     </item>
     
-    <!-- Very subtle warm accent - bottom left for balance -->
+    <!-- Soft ambient indigo/violet glow - center left -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:type="radial"
                 android:gradientRadius="600dp"
                 android:centerX="0.1"
-                android:centerY="0.9"
-                android:startColor="#08F59E0B"
+                android:centerY="0.5"
+                android:startColor="#0D8B5CF6"
                 android:endColor="@android:color/transparent" />
         </shape>
     </item>

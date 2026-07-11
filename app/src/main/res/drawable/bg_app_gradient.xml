@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <!-- Clean light base -->
+    <!-- Clean dark base -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:type="linear"
-                android:startColor="#FFF8FAFC"
-                android:centerColor="#FFFFFFFF"
-                android:endColor="#FFF1F5F9"
+                android:startColor="#0D0D14"
+                android:centerColor="#0F0F19"
+                android:endColor="#0C0C14"
                 android:angle="160" />
         </shape>
     </item>
     
-    <!-- Soft blue glow overlay -->
+    <!-- Soft teal glow overlay -->
     <item>
         <shape android:shape="rectangle">
             <gradient
@@ -21,7 +21,7 @@
                 android:gradientRadius="70%p"
                 android:centerX="85%"
                 android:centerY="15%"
-                android:startColor="#103B82F6"
+                android:startColor="#1A00E5CC"
                 android:endColor="#00000000" />
         </shape>
     </item>
@@ -34,7 +34,7 @@
                 android:gradientRadius="60%p"
                 android:centerX="15%"
                 android:centerY="85%"
-                android:startColor="#108B5CF6"
+                android:startColor="#1F7B2FFF"
                 android:endColor="#00000000" />
         </shape>
     </item>
