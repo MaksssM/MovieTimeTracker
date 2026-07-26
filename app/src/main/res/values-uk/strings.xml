@@ -703,7 +703,6 @@
     <string name="time_ago_weeks">%d тиж тому</string>
 
     <string name="notif_new_episode_format">Новий епізод: S%1$dE%2$d - %3$s</string>
-    <string name="notif_channel_releases">Нові релізи</string>
     <string name="notif_media_movie">Фільм</string>
     <string name="notif_media_tv">Серіал</string>
     <string name="notif_released_on">Випущено: %s</string>

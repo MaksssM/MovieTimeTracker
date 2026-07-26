@@ -720,7 +720,6 @@
     <string name="time_ago_weeks">%d нед назад</string>
 
     <string name="notif_new_episode_format">Новый эпизод: S%1$dE%2$d - %3$s</string>
-    <string name="notif_channel_releases">Новые выпуски</string>
     <string name="notif_media_movie">Фильм</string>
     <string name="notif_media_tv">Сериал</string>
     <string name="notif_released_on">Выпущен: %s</string>

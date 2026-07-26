@@ -35,7 +35,7 @@
     <style name="Theme.MovieTimeTracker.Dark" parent="Theme.MovieTimeTracker" />
 
     <style name="Widget.App.CardView" parent="Widget.MaterialComponents.CardView">
-        <item name="cardBackgroundColor">@color/surface_card</item>
+        <item name="cardBackgroundColor">@color/card_background</item>
         <item name="cardCornerRadius">20dp</item>
         <item name="cardElevation">0dp</item>
         <item name="strokeWidth">1dp</item>

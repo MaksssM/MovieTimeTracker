@@ -25,13 +25,14 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * Вызывается при смене языка ПЕРЕД перезапуском приложения.
-     * Ставит флаг «нужен refresh», при следующем запуске init-блок
-     * AppRepository обновит все тайтлы в БД.
+     * Викликається при зміні мови.
+     * Негайно запускає фонове оновлення назв та описів у базі даних
+     * відповідно до нової мови, а також очищає кеш.
      */
     fun onLanguageChanged() {
         languageManager.setLibraryRefreshNeeded()
         repository.clearAllCaches()
+        repository.triggerLibraryRefresh()
     }
 
     fun clearAllData() {

@@ -165,13 +165,6 @@
     <string name="delete">Delete</string>
     <string name="undo">Undo</string>
 
-    <!-- Time formatting -->
-    <string name="time_format_hours">%d h</string>
-    <string name="time_format_minutes">%d min</string>
-    <string name="time_format_hours_minutes" formatted="false">%d h %d min</string>
-    <string name="time_format_days">%d d</string>
-    <string name="time_format_days_hours" formatted="false">%d d %d h</string>
-
     <!-- Additional strings -->
     <string name="total_time">Total Time</string>
     <string name="total_time_default">0 h 0 min</string>
@@ -716,7 +709,6 @@
     <string name="time_ago_weeks">%d w ago</string>
 
     <string name="notif_new_episode_format">New episode: S%1$dE%2$d - %3$s</string>
-    <string name="notif_channel_releases">New Releases</string>
     <string name="notif_media_movie">Movie</string>
     <string name="notif_media_tv">TV Show</string>
     <string name="notif_released_on">Released: %s</string>
@@ -737,26 +729,6 @@
     <plurals name="sagas_count">
         <item quantity="one">%d saga</item>
         <item quantity="other">%d sagas</item>
-    </plurals>
-
-    <plurals name="movies_count">
-        <item quantity="one">%d movie</item>
-        <item quantity="other">%d movies</item>
-    </plurals>
-
-    <plurals name="times_count">
-        <item quantity="one">%d time</item>
-        <item quantity="other">%d times</item>
-    </plurals>
-
-    <plurals name="new_items_count">
-        <item quantity="one">%d new</item>
-        <item quantity="other">%d new</item>
-    </plurals>
-
-    <plurals name="releases_count_plurals">
-        <item quantity="one">%d release</item>
-        <item quantity="other">%d releases</item>
     </plurals>
 
     <plurals name="episodes_count">

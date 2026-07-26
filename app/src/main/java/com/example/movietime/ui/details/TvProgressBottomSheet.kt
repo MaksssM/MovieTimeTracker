@@ -295,7 +295,7 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
             val avgEpisodeRuntime = show.episodeRunTime?.firstOrNull() ?: 45
             val totalMinutes = episodesCount * avgEpisodeRuntime
             tvTotalRuntime.text = getString(R.string.total_runtime_format, 
-                Utils.formatMinutesToHoursAndMinutes(totalMinutes))
+                Utils.formatMinutesToHoursAndMinutes(requireContext(), totalMinutes))
             
             val posterUrl = show.posterPath?.let { "https://image.tmdb.org/t/p/w200$it" }
             ivShowPoster.load(posterUrl) {
@@ -340,7 +340,7 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                 // Partial progress
                 else -> getString(R.string.watched_episodes_format, watchedEpisodes, totalEpisodes)
             }
-            "$progressText • ${Utils.formatMinutesToHoursAndMinutes(watchedRuntime)}"
+            "$progressText • ${Utils.formatMinutesToHoursAndMinutes(requireContext(), watchedRuntime)}"
         } else {
             tvShow?.let { show ->
                 val seasonsCount = show.seasons?.size ?: 0

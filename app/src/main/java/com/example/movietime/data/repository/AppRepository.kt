@@ -1023,4 +1023,19 @@ class AppRepository @Inject constructor(
             e("refreshLibraryTitles failed: ${ex.message}", ex)
         }
     }
+
+    /**
+     * Запускає фонове оновлення бібліотеки на рівні Singleton-скоупу додатка,
+     * щоб процес оновлення не переривався при перезапуску Activity.
+     */
+    fun triggerLibraryRefresh() {
+        appScope.launch {
+            try {
+                refreshLibraryTitles()
+                languageManager.clearLibraryRefreshFlag()
+            } catch (ex: Exception) {
+                e("triggerLibraryRefresh failed: ${ex.message}", ex)
+            }
+        }
+    }
 }

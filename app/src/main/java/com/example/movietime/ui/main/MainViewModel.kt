@@ -49,13 +49,6 @@ class MainViewModel @Inject constructor(
         sum
     }
 
-    // New: formatted total time for display (e.g. "2 год 30 хв")
-    val totalTimeFormatted: LiveData<String> = totalMinutes.map { minutes ->
-        val formatted = Utils.formatMinutesToHoursAndMinutes(minutes)
-        Log.d("MainViewModel", "totalTimeFormatted = $formatted")
-        formatted
-    }
-
     // Add watched item (used for undo)
     fun addWatchedItem(item: WatchedItem) {
         viewModelScope.launch {

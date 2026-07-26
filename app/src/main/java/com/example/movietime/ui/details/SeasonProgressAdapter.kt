@@ -67,7 +67,7 @@ class SeasonProgressAdapter(
                 tvSeasonInfo.text = "${season.watchedCount} / ${season.totalCount} серій"
                 
                 // Season time
-                val watchedTime = Utils.formatMinutesToHoursAndMinutes(season.watchedRuntime)
+                val watchedTime = Utils.formatMinutesToHoursAndMinutes(context, season.watchedRuntime)
                 tvSeasonTime.text = watchedTime
                 
                 // Circular progress & percent text
@@ -150,7 +150,8 @@ class SeasonProgressAdapter(
         }
 
         private fun updateSeasonInfo(season: SeasonUiModel) {
-            val watchedTime = Utils.formatMinutesToHoursAndMinutes(season.watchedRuntime)
+            val context = binding.root.context
+            val watchedTime = Utils.formatMinutesToHoursAndMinutes(context, season.watchedRuntime)
             binding.tvSeasonInfo.text = "${season.watchedCount} / ${season.totalCount} серій"
             binding.tvSeasonTime.text = watchedTime
             binding.tvProgressPercent.text = "${season.progressPercent}%"

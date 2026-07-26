@@ -124,7 +124,7 @@ class TvDetailsActivity : AppCompatActivity() {
             runOnUiThread {
                 if (watchedRuntime > 0) {
                     binding.fabAdd.text = getString(R.string.edit_progress)
-                    binding.tvTotalWatchTime.text = Utils.formatMinutesToHoursAndMinutes(watchedRuntime)
+                    binding.tvTotalWatchTime.text = Utils.formatMinutesToHoursAndMinutes(this@TvDetailsActivity, watchedRuntime)
                 } else {
                     binding.fabAdd.text = getString(R.string.track_progress)
                 }
@@ -399,11 +399,11 @@ class TvDetailsActivity : AppCompatActivity() {
                             Log.d(TAG, "Успішно додано серіал до переглянутих")
                             Toast.makeText(
                                 this@TvDetailsActivity,
-                                "Додано: ${item.title} (${Utils.formatMinutesToHoursAndMinutes(item.runtime)})",
+                                "Додано: ${item.title} (${Utils.formatMinutesToHoursAndMinutes(this@TvDetailsActivity, item.runtime)})",
                                 Toast.LENGTH_SHORT
                             ).show()
                             binding.fabAdd.text = getString(R.string.added)
-                            binding.tvTotalWatchTime.text = Utils.formatMinutesToHoursAndMinutes(item.runtime)
+                            binding.tvTotalWatchTime.text = Utils.formatMinutesToHoursAndMinutes(this@TvDetailsActivity, item.runtime)
                         } else {
                             Log.e(TAG, "Не вдалося додати серіал")
                             Toast.makeText(
@@ -682,7 +682,7 @@ class TvDetailsActivity : AppCompatActivity() {
         if (watchedItem != null && watchedItem.runtime != null && watchedItem.runtime > 0) {
             // Priority: Use the time from the database (user input)
             Log.d(TAG, "Using runtime from DB: ${watchedItem.runtime}")
-            val formattedTime = Utils.formatMinutesToHoursAndMinutes(watchedItem.runtime)
+            val formattedTime = Utils.formatMinutesToHoursAndMinutes(this, watchedItem.runtime)
             
             binding.tvTotalWatchTime.text = formattedTime
             binding.tvTotalWatchTime.visibility = View.VISIBLE
@@ -706,7 +706,7 @@ class TvDetailsActivity : AppCompatActivity() {
 
         // Спочатку показуємо швидку оцінку (без "Завантаження...")
         val fallbackRuntimeInfo = Utils.autoComputeTvShowRuntime(tvShow)
-        val fallbackTime = Utils.formatMinutesToHoursAndMinutes(fallbackRuntimeInfo.totalMinutes)
+        val fallbackTime = Utils.formatMinutesToHoursAndMinutes(this, fallbackRuntimeInfo.totalMinutes)
 
         binding.tvTotalWatchTime.text = fallbackTime
         binding.tvTotalWatchTime.visibility = View.VISIBLE
