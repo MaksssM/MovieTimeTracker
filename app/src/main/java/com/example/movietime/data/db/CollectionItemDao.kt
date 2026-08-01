@@ -19,19 +19,19 @@ interface CollectionItemDao {
     suspend fun getCollectionsForItem(itemId: Int, mediaType: String): List<UserCollection>
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(item: CollectionItem)
+    suspend fun insert(item: CollectionItem): Unit
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(items: List<CollectionItem>)
+    suspend fun insertAll(items: List<CollectionItem>): Unit
     
     @Delete
-    suspend fun delete(item: CollectionItem)
+    suspend fun delete(item: CollectionItem): Unit
     
     @Query("DELETE FROM collection_items WHERE collectionId = :collectionId AND itemId = :itemId AND mediaType = :mediaType")
-    suspend fun deleteFromCollection(collectionId: Long, itemId: Int, mediaType: String)
+    suspend fun deleteFromCollection(collectionId: Long, itemId: Int, mediaType: String): Unit
     
     @Query("DELETE FROM collection_items WHERE collectionId = :collectionId")
-    suspend fun deleteAllFromCollection(collectionId: Long)
+    suspend fun deleteAllFromCollection(collectionId: Long): Unit
     
     @Query("SELECT COUNT(*) FROM collection_items WHERE collectionId = :collectionId")
     suspend fun getCountForCollection(collectionId: Long): Int

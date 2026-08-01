@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface SearchHistoryDao {
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(item: SearchHistoryItem)
+    suspend fun insert(item: SearchHistoryItem): Unit
     
     @Query("SELECT * FROM search_history ORDER BY timestamp DESC")
     fun getAllFlow(): Flow<List<SearchHistoryItem>>
@@ -22,10 +22,10 @@ interface SearchHistoryDao {
     suspend fun getRecent(limit: Int): List<SearchHistoryItem>
     
     @Query("DELETE FROM search_history WHERE id = :id AND mediaType = :mediaType")
-    suspend fun delete(id: Int, mediaType: String)
+    suspend fun delete(id: Int, mediaType: String): Unit
     
     @Query("DELETE FROM search_history")
-    suspend fun deleteAll()
+    suspend fun deleteAll(): Unit
     
     @Query("SELECT COUNT(*) FROM search_history")
     suspend fun getCount(): Int

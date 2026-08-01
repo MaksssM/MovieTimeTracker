@@ -18,16 +18,16 @@ interface WatchingDao {
     suspend fun getByMediaType(mediaType: String): List<WatchingItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(item: WatchingItem)
+    suspend fun insert(item: WatchingItem): Unit
 
     @Query("DELETE FROM watching_items WHERE id = :id AND mediaType = :mediaType")
-    suspend fun deleteById(id: Int, mediaType: String)
+    suspend fun deleteById(id: Int, mediaType: String): Unit
 
     @Delete
-    suspend fun delete(item: WatchingItem)
+    suspend fun delete(item: WatchingItem): Unit
 
     @Query("DELETE FROM watching_items")
-    suspend fun deleteAll()
+    suspend fun deleteAll(): Unit
 
     @Query("SELECT COUNT(*) FROM watching_items")
     suspend fun getCount(): Int

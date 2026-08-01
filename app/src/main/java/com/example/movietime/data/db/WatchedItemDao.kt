@@ -17,16 +17,16 @@ interface WatchedItemDao {
     suspend fun getAllSync(): List<WatchedItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(item: WatchedItem)
+    suspend fun insert(item: WatchedItem): Unit
 
     @Update
-    suspend fun update(item: WatchedItem)
+    suspend fun update(item: WatchedItem): Unit
 
     @Query("DELETE FROM watched_items WHERE id = :id AND mediaType = :mediaType")
-    suspend fun deleteById(id: Int, mediaType: String)
+    suspend fun deleteById(id: Int, mediaType: String): Unit
 
     @Query("DELETE FROM watched_items")
-    suspend fun deleteAll()
+    suspend fun deleteAll(): Unit
 
     @Query("SELECT * FROM watched_items WHERE id = :id AND mediaType = :mediaType")
     suspend fun getById(id: Int, mediaType: String): WatchedItem?
@@ -38,7 +38,7 @@ interface WatchedItemDao {
     suspend fun getCount(): Int
 
     @Query("UPDATE watched_items SET watchCount = watchCount + 1 WHERE id = :id AND mediaType = :mediaType")
-    suspend fun incrementWatchCount(id: Int, mediaType: String)
+    suspend fun incrementWatchCount(id: Int, mediaType: String): Unit
 
     @Query("SELECT watchCount FROM watched_items WHERE id = :id AND mediaType = :mediaType")
     suspend fun getWatchCount(id: Int, mediaType: String): Int

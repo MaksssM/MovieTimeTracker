@@ -22,13 +22,13 @@ interface YearlyStatsDao {
     suspend fun getAvailableYears(): List<Int>
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(stats: YearlyStats)
+    suspend fun insert(stats: YearlyStats): Unit
     
     @Update
-    suspend fun update(stats: YearlyStats)
+    suspend fun update(stats: YearlyStats): Unit
     
     @Query("DELETE FROM yearly_stats WHERE year = :year")
-    suspend fun deleteForYear(year: Int)
+    suspend fun deleteForYear(year: Int): Unit
     
     @Query("SELECT EXISTS(SELECT 1 FROM yearly_stats WHERE year = :year)")
     suspend fun hasStatsForYear(year: Int): Boolean

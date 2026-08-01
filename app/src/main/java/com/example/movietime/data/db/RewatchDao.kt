@@ -28,13 +28,13 @@ interface RewatchDao {
     suspend fun insert(entry: RewatchEntry): Long
     
     @Delete
-    suspend fun delete(entry: RewatchEntry)
+    suspend fun delete(entry: RewatchEntry): Unit
     
     @Query("DELETE FROM rewatch_entries WHERE id = :id")
-    suspend fun deleteById(id: Long)
+    suspend fun deleteById(id: Long): Unit
     
     @Query("DELETE FROM rewatch_entries WHERE itemId = :itemId AND mediaType = :mediaType")
-    suspend fun deleteAllForItem(itemId: Int, mediaType: String)
+    suspend fun deleteAllForItem(itemId: Int, mediaType: String): Unit
     
     // Statistics queries
     @Query("SELECT SUM(watchTimeMinutes) FROM rewatch_entries WHERE watchedAt BETWEEN :startTime AND :endTime")

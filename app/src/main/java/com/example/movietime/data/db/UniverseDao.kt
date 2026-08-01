@@ -14,7 +14,7 @@ interface UniverseDao {
     suspend fun getSeededCount(): Int
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUniverses(universes: List<CinematicUniverse>)
+    suspend fun insertUniverses(universes: List<CinematicUniverse>): Unit
 
     // ── Sagas ────────────────────────────────────────────────────────────────
 
@@ -22,7 +22,7 @@ interface UniverseDao {
     suspend fun getSagasForUniverse(universeId: Long): List<FranchiseSaga>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertSagas(sagas: List<FranchiseSaga>)
+    suspend fun insertSagas(sagas: List<FranchiseSaga>): Unit
 
     // ── Entries ──────────────────────────────────────────────────────────────
 
@@ -40,7 +40,7 @@ interface UniverseDao {
     suspend fun getAllEntriesForUniverse(universeId: Long): List<FranchiseEntry>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertEntries(entries: List<FranchiseEntry>)
+    suspend fun insertEntries(entries: List<FranchiseEntry>): Unit
 
     // ── Progress ─────────────────────────────────────────────────────────────
 

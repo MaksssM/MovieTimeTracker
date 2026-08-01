@@ -25,16 +25,16 @@ interface FollowedPersonDao {
     fun isFollowingLive(personId: Int): LiveData<Boolean>
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(person: FollowedPerson)
+    suspend fun insert(person: FollowedPerson): Unit
     
     @Delete
-    suspend fun delete(person: FollowedPerson)
+    suspend fun delete(person: FollowedPerson): Unit
     
     @Query("DELETE FROM followed_people WHERE personId = :personId")
-    suspend fun deleteById(personId: Int)
+    suspend fun deleteById(personId: Int): Unit
     
     @Query("UPDATE followed_people SET notificationsEnabled = :enabled WHERE personId = :personId")
-    suspend fun setNotificationsEnabled(personId: Int, enabled: Boolean)
+    suspend fun setNotificationsEnabled(personId: Int, enabled: Boolean): Unit
     
     @Query("SELECT COUNT(*) FROM followed_people")
     suspend fun getCount(): Int

@@ -100,6 +100,12 @@
             android:theme="@style/Theme.MovieTimeTracker" />
 
         <activity
+            android:name=".ui.statistics.YearInReviewActivity"
+            android:exported="false"
+            android:label="@string/wrapped_subtitle"
+            android:theme="@style/Theme.MovieTimeTracker" />
+
+        <activity
             android:name=".ui.today.TodayActivity"
             android:exported="false"
             android:label="@string/today"

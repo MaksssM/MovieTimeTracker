@@ -5,17 +5,34 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.OvershootInterpolator
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movietime.R
+import com.example.movietime.data.model.DetailedStatistics
+import com.example.movietime.data.model.TopRatedItem
 import com.example.movietime.databinding.ActivityStatisticsBinding
+import com.example.movietime.ui.details.DetailsActivity
+import com.example.movietime.ui.details.TvDetailsActivity
 import com.example.movietime.ui.person.PersonDetailsActivity
+import com.example.movietime.util.LocaleHelper
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.DateFormatSymbols
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -26,9 +43,10 @@ class StatisticsActivity : AppCompatActivity() {
 
     private lateinit var genreAdapter: GenreStatAdapter
     private lateinit var directorAdapter: DirectorStatAdapter
+    private lateinit var topRatedAdapter: TopRatedAdapter
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
+        super.attachBaseContext(LocaleHelper.wrap(newBase))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +56,7 @@ class StatisticsActivity : AppCompatActivity() {
 
         setupToolbar()
         setupAdapters()
+        setupClickListeners()
         observeViewModel()
         prepareAnimations()
     }
@@ -47,11 +66,20 @@ class StatisticsActivity : AppCompatActivity() {
             finish()
         }
     }
-    
+
+    private fun setupClickListeners() {
+        binding.btnOpenWrapped.setOnClickListener {
+            startActivity(Intent(this, YearInReviewActivity::class.java))
+        }
+    }
+
     private fun prepareAnimations() {
-        // Prepare stat cards for animation (only cards with IDs)
         val cards = listOf(
+            binding.cardWrappedBanner,
             binding.cardWatchTime,
+            binding.cardMonthlyChart,
+            binding.cardTopRated,
+            binding.cardDecades,
             binding.cardLongestMovie,
             binding.cardMostRewatched,
             binding.cardTrends,
@@ -59,16 +87,20 @@ class StatisticsActivity : AppCompatActivity() {
             binding.cardWatchTimeBreakdown,
             binding.cardHighestRated
         )
-        
+
         cards.forEach { card ->
             card.alpha = 0f
             card.translationY = 50f
         }
     }
-    
+
     private fun animateStatsAppearance() {
         val cards = listOf(
+            binding.cardWrappedBanner,
             binding.cardWatchTime,
+            binding.cardMonthlyChart,
+            binding.cardTopRated,
+            binding.cardDecades,
             binding.cardLongestMovie,
             binding.cardMostRewatched,
             binding.cardTrends,
@@ -76,19 +108,21 @@ class StatisticsActivity : AppCompatActivity() {
             binding.cardWatchTimeBreakdown,
             binding.cardHighestRated
         )
-        
+
         cards.forEachIndexed { index, card ->
-            card.animate()
-                .alpha(1f)
-                .translationY(0f)
-                .setStartDelay((index * 60).toLong())
-                .setDuration(400)
-                .setInterpolator(OvershootInterpolator(0.8f))
-                .start()
+            if (card.isVisible) {
+                card.animate()
+                    .alpha(1f)
+                    .translationY(0f)
+                    .setStartDelay((index * 50).toLong())
+                    .setDuration(400)
+                    .setInterpolator(OvershootInterpolator(0.8f))
+                    .start()
+            }
         }
     }
-    
-    private fun animateCounterValue(textView: android.widget.TextView, value: String) {
+
+    private fun animateCounterValue(textView: TextView, value: String) {
         textView.animate()
             .scaleX(1.1f)
             .scaleY(1.1f)
@@ -114,7 +148,6 @@ class StatisticsActivity : AppCompatActivity() {
         }
 
         directorAdapter = DirectorStatAdapter { director ->
-            // Open person details
             val intent = Intent(this, PersonDetailsActivity::class.java).apply {
                 putExtra("PERSON_ID", director.directorId)
                 putExtra("PERSON_NAME", director.directorName)
@@ -125,6 +158,25 @@ class StatisticsActivity : AppCompatActivity() {
             adapter = directorAdapter
             layoutManager = LinearLayoutManager(this@StatisticsActivity)
             setHasFixedSize(false)
+        }
+
+        topRatedAdapter = TopRatedAdapter { item ->
+            if (item.mediaType == "movie") {
+                val intent = Intent(this, DetailsActivity::class.java).apply {
+                    putExtra("MOVIE_ID", item.id)
+                }
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, TvDetailsActivity::class.java).apply {
+                    putExtra("TV_SHOW_ID", item.id)
+                }
+                startActivity(intent)
+            }
+        }
+        binding.rvTopRated.apply {
+            adapter = topRatedAdapter
+            layoutManager = LinearLayoutManager(this@StatisticsActivity, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
         }
     }
 
@@ -142,17 +194,16 @@ class StatisticsActivity : AppCompatActivity() {
         }
 
         viewModel.error.observe(this) { error ->
-            // Could show error UI here
+            // Handle error UI if needed
         }
     }
 
-    private fun updateUI(stats: com.example.movietime.data.model.DetailedStatistics) {
-        // Trigger card animations
+    private fun updateUI(stats: DetailedStatistics) {
         animateStatsAppearance()
-        
+
         // Total watch time
         binding.tvTotalWatchTime.text = viewModel.formatWatchTime(stats.totalWatchTimeMinutes)
-        
+
         val days = stats.totalWatchTimeMinutes / 1440.0
         binding.tvWatchTimeEquivalent.text = if (days >= 1) {
             getString(R.string.watch_time_equivalent_days, days)
@@ -169,6 +220,24 @@ class StatisticsActivity : AppCompatActivity() {
         // Average ratings
         binding.tvAvgMovieRating.text = String.format(Locale.US, "%.1f", stats.averageMovieRating)
         binding.tvAvgTvRating.text = String.format(Locale.US, "%.1f", stats.averageTvRating)
+
+        // Monthly Activity Chart
+        updateMonthlyChart(stats.watchedByMonth)
+
+        // Top Rated items horizontal carousel
+        val allTopRated = (stats.topRatedMovies + stats.topRatedTvShows)
+            .sortedByDescending { it.userRating }
+            .take(10)
+
+        if (allTopRated.isNotEmpty()) {
+            binding.cardTopRated.isVisible = true
+            topRatedAdapter.submitList(allTopRated)
+        } else {
+            binding.cardTopRated.isVisible = false
+        }
+
+        // Decades distribution
+        updateDecadesUI(stats.decadeDistribution)
 
         // Favorite genres
         if (stats.favoriteGenres.isNotEmpty()) {
@@ -190,7 +259,7 @@ class StatisticsActivity : AppCompatActivity() {
             binding.tvNoDirectors.isVisible = true
         }
 
-        // Runtime records card — show if any of shortest/longest exists
+        // Runtime records card
         val hasRuntimeData = stats.longestMovieWatched != null ||
                 stats.shortestMovie != null || stats.longestTvShow != null
         binding.cardLongestMovie.isVisible = hasRuntimeData
@@ -221,7 +290,7 @@ class StatisticsActivity : AppCompatActivity() {
             binding.tvLongestTvTitle.text = tv.title
             val tvHours = tv.runtimeMinutes / 60
             val tvMins = tv.runtimeMinutes % 60
-            binding.tvLongestTvRuntime.text = if (tvHours > 0) "${tvHours}г ${tvMins}хв" else "${tvMins}хв"
+            binding.tvLongestTvRuntime.text = if (tvHours > 0) "${tvHours}h ${tvMins}m" else "${tvMins}m"
         } ?: run {
             binding.tvLongestTvTitle.isVisible = false
             binding.tvLongestTvRuntime.isVisible = false
@@ -262,12 +331,12 @@ class StatisticsActivity : AppCompatActivity() {
             binding.tvBestMonth.text = "—"
             binding.tvBestMonthCount.text = ""
         }
-        
+
         // Enhanced stats - viewing trends
         binding.tvAvgDailyTime.text = viewModel.formatWatchTimeShort(stats.avgDailyWatchMinutes)
         binding.tvUniqueGenres.text = stats.totalUniqueGenres.toString()
         binding.tvCompletedShows.text = stats.completedTvShows.toString()
-        
+
         // First watch date
         stats.firstWatchDate?.let { timestamp ->
             binding.layoutFirstWatch.isVisible = true
@@ -276,13 +345,13 @@ class StatisticsActivity : AppCompatActivity() {
         } ?: run {
             binding.layoutFirstWatch.isVisible = false
         }
-        
+
         // Extended statistics
         binding.tvTotalRewatches.text = stats.totalRewatches.toString()
         binding.tvAvgMovieRuntime.text = getString(R.string.runtime_minutes, stats.avgMovieRuntime)
         binding.tvAvgMoviesPerMonth.text = String.format(Locale.US, "%.1f", stats.avgMoviesPerMonth)
         binding.tvAvgContentPerMonth.text = String.format(Locale.US, "%.1f", stats.avgContentPerMonth)
-        
+
         // Most popular genre
         if (stats.mostPopularGenre.isNotEmpty()) {
             binding.layoutMostPopularGenre.isVisible = true
@@ -290,18 +359,109 @@ class StatisticsActivity : AppCompatActivity() {
         } else {
             binding.layoutMostPopularGenre.isVisible = false
         }
-        
+
         // Watch time breakdown
         binding.tvMovieWatchTime.text = viewModel.formatWatchTimeShort(stats.totalWatchTimeMovies)
         binding.tvTvWatchTime.text = viewModel.formatWatchTimeShort(stats.totalWatchTimeTvShows)
-        
-        // Highest rated movie
-        stats.highestRatedMovie?.let { movie ->
+
+        // Highest rated item
+        val highestRated = stats.highestRatedMovie ?: stats.highestRatedTvShow
+        highestRated?.let { item ->
             binding.cardHighestRated.isVisible = true
-            binding.tvHighestRatedTitle.text = movie.title
-            binding.tvHighestRatedScore.text = String.format(Locale.US, "%.1f ⭐", movie.userRating)
+            binding.tvHighestRatedTitle.text = item.title
+            binding.tvHighestRatedScore.text = String.format(Locale.US, "%.1f ⭐", item.userRating)
         } ?: run {
             binding.cardHighestRated.isVisible = false
+        }
+    }
+
+    private fun updateMonthlyChart(watchedByMonth: Map<Int, Int>) {
+        val chart = binding.monthlyBarChart
+        val monthNames = DateFormatSymbols.getInstance(Locale.getDefault()).shortMonths.take(12)
+        val entries = ArrayList<BarEntry>()
+
+        for (i in 0 until 12) {
+            val count = watchedByMonth[i] ?: 0
+            entries.add(BarEntry(i.toFloat(), count.toFloat()))
+        }
+
+        val primaryColor = ContextCompat.getColor(this, R.color.primary)
+        val onSurfaceColor = ContextCompat.getColor(this, R.color.white)
+
+        val dataSet = BarDataSet(entries, getString(R.string.total_time)).apply {
+            color = primaryColor
+            valueTextColor = onSurfaceColor
+            valueTextSize = 10f
+            setDrawValues(false)
+        }
+
+        val barData = BarData(dataSet).apply {
+            barWidth = 0.55f
+        }
+
+        chart.apply {
+            data = barData
+            description.isEnabled = false
+            legend.isEnabled = false
+            setDrawGridBackground(false)
+            axisRight.isEnabled = false
+
+            xAxis.apply {
+                position = XAxis.XAxisPosition.BOTTOM
+                setDrawGridLines(false)
+                textColor = onSurfaceColor
+                valueFormatter = IndexAxisValueFormatter(monthNames)
+                granularity = 1f
+            }
+
+            axisLeft.apply {
+                textColor = onSurfaceColor
+                setDrawGridLines(true)
+                gridColor = Color.parseColor("#22FFFFFF")
+                axisLineColor = Color.parseColor("#44FFFFFF")
+                axisMinimum = 0f
+                granularity = 1f
+            }
+
+            animateY(800)
+            invalidate()
+        }
+    }
+
+    private fun updateDecadesUI(decadeMap: Map<String, Int>) {
+        val container = binding.containerDecades
+        container.removeAllViews()
+
+        if (decadeMap.isEmpty()) {
+            binding.cardDecades.isVisible = false
+            return
+        }
+
+        binding.cardDecades.isVisible = true
+        val maxCount = decadeMap.values.maxOrNull()?.coerceAtLeast(1) ?: 1
+
+        val sortedDecades = decadeMap.entries.sortedByDescending { it.key }
+
+        sortedDecades.forEach { (decade, count) ->
+            val itemView = LayoutInflater.from(this).inflate(
+                R.layout.item_genre_stat, container, false
+            )
+
+            val tvRank = itemView.findViewById<TextView>(R.id.tvRank)
+            val tvGenreName = itemView.findViewById<TextView>(R.id.tvGenreName)
+            val tvCount = itemView.findViewById<TextView>(R.id.tvCount)
+            val progressGenre = itemView.findViewById<com.google.android.material.progressindicator.LinearProgressIndicator>(R.id.progressGenre)
+            val tvWatchTime = itemView.findViewById<TextView>(R.id.tvWatchTime)
+            val tvAvgRating = itemView.findViewById<TextView>(R.id.tvAvgRating)
+
+            tvRank.text = "📜"
+            tvGenreName.text = decade
+            tvCount.text = resources.getQuantityString(R.plurals.movies_count, count, count)
+            progressGenre.progress = ((count.toFloat() / maxCount) * 100).toInt()
+            tvWatchTime.text = ""
+            tvAvgRating.text = ""
+
+            container.addView(itemView)
         }
     }
 }

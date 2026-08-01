@@ -18,16 +18,16 @@ interface PlannedDao {
     suspend fun getByMediaType(mediaType: String): List<PlannedItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(item: PlannedItem)
+    suspend fun insert(item: PlannedItem): Unit
 
     @Query("DELETE FROM planned_items WHERE id = :id AND mediaType = :mediaType")
-    suspend fun deleteById(id: Int, mediaType: String)
+    suspend fun deleteById(id: Int, mediaType: String): Unit
 
     @Delete
-    suspend fun delete(item: PlannedItem)
+    suspend fun delete(item: PlannedItem): Unit
 
     @Query("DELETE FROM planned_items")
-    suspend fun deleteAll()
+    suspend fun deleteAll(): Unit
 
     @Query("SELECT COUNT(*) FROM planned_items")
     suspend fun getCount(): Int

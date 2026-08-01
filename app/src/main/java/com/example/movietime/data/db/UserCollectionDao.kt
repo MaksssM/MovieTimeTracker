@@ -22,17 +22,17 @@ interface UserCollectionDao {
     suspend fun insert(collection: UserCollection): Long
     
     @Update
-    suspend fun update(collection: UserCollection)
+    suspend fun update(collection: UserCollection): Unit
     
     @Delete
-    suspend fun delete(collection: UserCollection)
+    suspend fun delete(collection: UserCollection): Unit
     
     @Query("DELETE FROM user_collections WHERE id = :id")
-    suspend fun deleteById(id: Long)
+    suspend fun deleteById(id: Long): Unit
     
     @Query("SELECT COUNT(*) FROM user_collections")
     suspend fun getCount(): Int
     
     @Query("UPDATE user_collections SET updatedAt = :timestamp WHERE id = :id")
-    suspend fun updateTimestamp(id: Long, timestamp: Long = System.currentTimeMillis())
+    suspend fun updateTimestamp(id: Long, timestamp: Long = System.currentTimeMillis()): Unit
 }

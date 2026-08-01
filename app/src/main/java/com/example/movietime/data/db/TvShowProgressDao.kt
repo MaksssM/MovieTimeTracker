@@ -50,31 +50,31 @@ interface TvShowProgressDao {
     
     // Вставити/оновити серію
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertEpisode(episode: TvShowProgress)
+    suspend fun insertEpisode(episode: TvShowProgress): Unit
     
     // Вставити/оновити список серій
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertEpisodes(episodes: List<TvShowProgress>)
+    suspend fun insertEpisodes(episodes: List<TvShowProgress>): Unit
     
     // Позначити серію як переглянуту/непереглянуту
     @Query("UPDATE tv_show_progress SET watched = :watched, watchedAt = :watchedAt WHERE tvShowId = :tvShowId AND seasonNumber = :seasonNumber AND episodeNumber = :episodeNumber")
-    suspend fun setEpisodeWatched(tvShowId: Int, seasonNumber: Int, episodeNumber: Int, watched: Boolean, watchedAt: Long?)
+    suspend fun setEpisodeWatched(tvShowId: Int, seasonNumber: Int, episodeNumber: Int, watched: Boolean, watchedAt: Long?): Unit
     
     // Позначити весь сезон як переглянутий
     @Query("UPDATE tv_show_progress SET watched = :watched, watchedAt = :watchedAt WHERE tvShowId = :tvShowId AND seasonNumber = :seasonNumber")
-    suspend fun setSeasonWatched(tvShowId: Int, seasonNumber: Int, watched: Boolean, watchedAt: Long?)
+    suspend fun setSeasonWatched(tvShowId: Int, seasonNumber: Int, watched: Boolean, watchedAt: Long?): Unit
     
     // Позначити весь серіал як переглянутий
     @Query("UPDATE tv_show_progress SET watched = :watched, watchedAt = :watchedAt WHERE tvShowId = :tvShowId")
-    suspend fun setAllWatched(tvShowId: Int, watched: Boolean, watchedAt: Long?)
+    suspend fun setAllWatched(tvShowId: Int, watched: Boolean, watchedAt: Long?): Unit
     
     // Видалити прогрес серіалу
     @Query("DELETE FROM tv_show_progress WHERE tvShowId = :tvShowId")
-    suspend fun deleteProgressForShow(tvShowId: Int)
+    suspend fun deleteProgressForShow(tvShowId: Int): Unit
     
     // Видалити прогрес сезону
     @Query("DELETE FROM tv_show_progress WHERE tvShowId = :tvShowId AND seasonNumber = :seasonNumber")
-    suspend fun deleteProgressForSeason(tvShowId: Int, seasonNumber: Int)
+    suspend fun deleteProgressForSeason(tvShowId: Int, seasonNumber: Int): Unit
     
     // Перевірити чи є якийсь прогрес для серіалу
     @Query("SELECT EXISTS(SELECT 1 FROM tv_show_progress WHERE tvShowId = :tvShowId LIMIT 1)")

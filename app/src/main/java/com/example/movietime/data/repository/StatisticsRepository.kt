@@ -468,6 +468,17 @@ class StatisticsRepository @Inject constructor(
         val currentYear = currentCalendar.get(Calendar.YEAR)
         val currentMonth = currentCalendar.get(Calendar.MONTH)
         
+        val watchedByMonth = mutableMapOf<Int, Int>()
+        allWatched.forEach { item ->
+            item.lastUpdated?.let { timestamp ->
+                calendar.timeInMillis = timestamp
+                if (calendar.get(Calendar.YEAR) == currentYear) {
+                    val m = calendar.get(Calendar.MONTH)
+                    watchedByMonth[m] = watchedByMonth.getOrDefault(m, 0) + 1
+                }
+            }
+        }
+        
         val thisMonthMovies = movies.count { movie ->
             movie.lastUpdated?.let { timestamp ->
                 calendar.timeInMillis = timestamp
@@ -610,6 +621,7 @@ class StatisticsRepository @Inject constructor(
             completedTvShows = completedTvShows,
             avgEpisodesPerDay = avgEpisodesPerDay,
             decadeDistribution = decadeDistribution,
+            watchedByMonth = watchedByMonth,
             totalRewatches = totalRewatches,
             avgMovieRuntime = avgMovieRuntime,
             avgMoviesPerMonth = avgMoviesPerMonth,
