@@ -87,6 +87,13 @@ class EnhancedMainFragment : Fragment() {
             }
         }
 
+        // Header quick search
+        binding.btnHeaderSearch.setOnClickListener {
+            handleClickWithDebounce {
+                startActivity(Intent(requireActivity(), EnhancedSearchActivity::class.java))
+            }
+        }
+
         // Quick action buttons
         binding.btnSearchMovies.setOnClickListener {
             handleClickWithDebounce {
@@ -333,14 +340,15 @@ class EnhancedMainFragment : Fragment() {
     private fun animateEntranceElements() {
         // Initial state - hide elements
         val elementsToAnimate = listOf(
+            binding.heroSpotlightCard,
             binding.cardWatched,
             binding.cardPlanned,
             binding.cardWatching,
-            binding.btnSearchMovies,
             binding.btnTrending,
             binding.btnUpcomingReleases,
             binding.btnCollections,
-            binding.btnFriends
+            binding.btnFriends,
+            binding.btnSearchMovies
         )
 
         elementsToAnimate.forEach { view ->

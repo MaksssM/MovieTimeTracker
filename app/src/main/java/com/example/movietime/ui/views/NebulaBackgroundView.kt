@@ -1,4 +1,4 @@
-﻿package com.example.movietime.ui.views
+package com.example.movietime.ui.views
 
 import android.content.Context
 import android.content.res.Configuration
@@ -84,30 +84,30 @@ class NebulaBackgroundView @JvmOverloads constructor(
 
     // ── Init helpers ──────────────────────────────────────────────────────
     private fun buildOrbs(dark: Boolean): List<Orb> = if (dark) listOf(
-        Orb(0.05f, 0.08f, 1.15f, 0x503B82F6.toInt(), phaseOffset = 0f,   speedX =  0.006f, speedY =  0.004f, pulsePeriod = 7f,  pulseAmp = 0.12f),
-        Orb(0.95f, 0.87f, 0.95f, 0x408B5CF6.toInt(), phaseOffset = 1.1f, speedX = -0.005f, speedY = -0.003f, pulsePeriod = 9f,  pulseAmp = 0.10f),
-        Orb(0.18f, 0.50f, 0.65f, 0x30EC4899.toInt(), phaseOffset = 2.3f, speedX =  0.004f, speedY = -0.005f, pulsePeriod = 6f,  pulseAmp = 0.15f),
-        Orb(0.62f, 0.55f, 0.60f, 0x2810B981.toInt(), phaseOffset = 3.7f, speedX = -0.003f, speedY =  0.006f, pulsePeriod = 11f, pulseAmp = 0.08f),
-        Orb(0.90f, 0.08f, 0.55f, 0x207C3AED.toInt(), phaseOffset = 5.1f, speedX =  0.002f, speedY =  0.003f, pulsePeriod = 8f,  pulseAmp = 0.10f),
+        Orb(0.05f, 0.08f, 1.30f, 0x705B66E8.toInt(), phaseOffset = 0f,   speedX =  0.006f, speedY =  0.004f, pulsePeriod = 7f,  pulseAmp = 0.16f),
+        Orb(0.95f, 0.87f, 1.15f, 0x658B5CF6.toInt(), phaseOffset = 1.1f, speedX = -0.005f, speedY = -0.003f, pulsePeriod = 9f,  pulseAmp = 0.14f),
+        Orb(0.18f, 0.45f, 0.90f, 0x55EC4899.toInt(), phaseOffset = 2.3f, speedX =  0.004f, speedY = -0.005f, pulsePeriod = 6f,  pulseAmp = 0.18f),
+        Orb(0.70f, 0.60f, 0.80f, 0x4810B981.toInt(), phaseOffset = 3.7f, speedX = -0.003f, speedY =  0.006f, pulsePeriod = 11f, pulseAmp = 0.12f),
+        Orb(0.85f, 0.12f, 0.75f, 0x407C3AED.toInt(), phaseOffset = 5.1f, speedX =  0.002f, speedY =  0.003f, pulsePeriod = 8f,  pulseAmp = 0.14f),
     ) else listOf(
-        Orb(0.05f, 0.08f, 1.10f, 0x283B82F6.toInt(), phaseOffset = 0f,   speedX =  0.005f, speedY =  0.003f, pulsePeriod = 8f,  pulseAmp = 0.12f),
-        Orb(0.95f, 0.87f, 0.85f, 0x228B5CF6.toInt(), phaseOffset = 1.4f, speedX = -0.004f, speedY = -0.003f, pulsePeriod = 10f, pulseAmp = 0.10f),
-        Orb(0.42f, 0.35f, 0.60f, 0x20EC4899.toInt(), phaseOffset = 2.6f, speedX =  0.003f, speedY = -0.004f, pulsePeriod = 7f,  pulseAmp = 0.14f),
-        Orb(0.88f, 0.42f, 0.55f, 0x1806B6D4.toInt(), phaseOffset = 4.0f, speedX = -0.003f, speedY =  0.005f, pulsePeriod = 12f, pulseAmp = 0.08f),
-        Orb(0.92f, 0.06f, 0.50f, 0x166366F1.toInt(), phaseOffset = 5.5f, speedX =  0.002f, speedY =  0.003f, pulsePeriod = 9f,  pulseAmp = 0.10f),
+        Orb(0.05f, 0.08f, 1.10f, 0x353B82F6.toInt(), phaseOffset = 0f,   speedX =  0.005f, speedY =  0.003f, pulsePeriod = 8f,  pulseAmp = 0.12f),
+        Orb(0.95f, 0.87f, 0.85f, 0x308B5CF6.toInt(), phaseOffset = 1.4f, speedX = -0.004f, speedY = -0.003f, pulsePeriod = 10f, pulseAmp = 0.10f),
+        Orb(0.42f, 0.35f, 0.60f, 0x28EC4899.toInt(), phaseOffset = 2.6f, speedX =  0.003f, speedY = -0.004f, pulsePeriod = 7f,  pulseAmp = 0.14f),
+        Orb(0.88f, 0.42f, 0.55f, 0x2206B6D4.toInt(), phaseOffset = 4.0f, speedX = -0.003f, speedY =  0.005f, pulsePeriod = 12f, pulseAmp = 0.08f),
+        Orb(0.92f, 0.06f, 0.50f, 0x206366F1.toInt(), phaseOffset = 5.5f, speedX =  0.002f, speedY =  0.003f, pulsePeriod = 9f,  pulseAmp = 0.10f),
     )
 
     private fun initParticles(w: Float, h: Float, dark: Boolean) {
         particles.clear()
-        val count = if (dark) 60 else 35
+        val count = if (dark) 80 else 45
         val rnd = Random.Default
         repeat(count) {
             particles += Particle(
                 x = rnd.nextFloat() * w, y = rnd.nextFloat() * h,
-                radius = rnd.nextFloat() * 2.2f + 0.8f,
+                radius = rnd.nextFloat() * 2.5f + 0.8f,
                 speedX = (rnd.nextFloat() - 0.5f) * 18f,
                 speedY = (rnd.nextFloat() - 0.5f) * 18f,
-                alpha = rnd.nextFloat() * 0.35f + (if (dark) 0.25f else 0.12f),
+                alpha = rnd.nextFloat() * 0.45f + (if (dark) 0.30f else 0.15f),
                 twinklePeriod = rnd.nextFloat() * 3f + 2f,
                 twinklePhase  = rnd.nextFloat() * PI.toFloat() * 2f
             )

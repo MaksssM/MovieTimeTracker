@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cinema Spotlight Banner Glass Background with Gradient Mesh & Neon Rim -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Drop Shadow -->
+    <item android:top="4dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="28dp" />
+            <solid android:color="#50000000" />
+        </shape>
+    </item>
+
+    <!-- Main Rich Gradient Fill -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="28dp" />
+            <gradient
+                android:angle="135"
+                android:startColor="#2A1B4E"
+                android:centerColor="#181333"
+                android:endColor="#0C0A1D"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <!-- Glowing Accent Stroke -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="28dp" />
+            <stroke
+                android:width="1.5dp"
+                android:color="#557C4DFF" />
+            <solid android:color="#00000000" />
+        </shape>
+    </item>
+
+</layer-list>

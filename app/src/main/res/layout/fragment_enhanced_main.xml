@@ -4,55 +4,55 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
-    <!-- Animated nebula background — replaces static drawable -->
+    <!-- Atmospheric Animated Nebula Canvas -->
     <com.example.movietime.ui.views.NebulaBackgroundView
         android:id="@+id/nebulaBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Floating orb decorations for parallax effect -->
+    <!-- Ambient Floating Orbs for Deep Dynamic Ambiance -->
     <View
         android:id="@+id/floatingOrb1"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="420dp"
+        android:layout_height="420dp"
         android:layout_gravity="top|end"
-        android:layout_marginTop="-100dp"
-        android:layout_marginEnd="-100dp"
+        android:layout_marginTop="-120dp"
+        android:layout_marginEnd="-120dp"
         android:background="@drawable/bg_floating_orb_primary"
-        android:alpha="0.4" />
+        android:alpha="0.75" />
 
     <View
         android:id="@+id/floatingOrb2"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:layout_gravity="top|start"
-        android:layout_marginTop="150dp"
-        android:layout_marginStart="-100dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginStart="-120dp"
         android:background="@drawable/bg_floating_orb_accent"
-        android:alpha="0.3" />
+        android:alpha="0.65" />
 
     <View
         android:id="@+id/floatingOrb3"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="250dp"
-        android:layout_marginEnd="-60dp"
+        android:layout_marginBottom="220dp"
+        android:layout_marginEnd="-80dp"
         android:background="@drawable/bg_floating_orb_success"
-        android:alpha="0.25" />
+        android:alpha="0.55" />
 
-    <!-- 4th orb: warm rose glow - center left -->
     <View
         android:id="@+id/floatingOrb4"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_gravity="center|start"
-        android:layout_marginStart="-80dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="-100dp"
+        android:layout_marginTop="80dp"
         android:background="@drawable/bg_glow_accent"
-        android:alpha="0.20" />
+        android:alpha="0.50" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Modern Header - transparent, blends with background -->
+            <!-- 1. TOP HEADER (GREETING & USER RANK) -->
             <FrameLayout
                 android:id="@+id/headerContainer"
                 android:layout_width="match_parent"
@@ -79,601 +79,593 @@
                     android:orientation="vertical"
                     android:paddingHorizontal="20dp"
                     android:paddingTop="24dp"
-                    android:paddingBottom="32dp">
+                    android:paddingBottom="16dp">
 
-                    <!-- Greeting Section -->
-                    <TextView
-                        android:id="@+id/tvGreeting"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/welcome_back"
-                        android:textColor="@color/text_primary"
-                        android:textSize="14sp"
-                        android:alpha="0.85"
-                        android:fontFamily="sans-serif"
-                        android:maxLines="1"
-                        android:ellipsize="end" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/tvUserName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="@string/user_rank_movie_buff"
-                        android:textColor="@color/text_primary"
-                        android:textSize="26sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium"
-                        android:maxLines="1"
-                        android:ellipsize="end" />
-
-                    <!-- Total Time Card - Premium Widget -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="28dp"
-                        app:cardCornerRadius="28dp"
-                        app:cardElevation="0dp"
-                        app:cardBackgroundColor="@android:color/transparent"
-                        app:strokeWidth="0dp">
-
+                        <!-- Avatar Glass Ring -->
                         <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_stats_widget_premium">
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:background="@drawable/bg_icon_glow_primary"
+                            android:padding="2dp">
 
-                            <!-- Rainbow top accent strip -->
-                            <View
+                            <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="4dp"
-                                android:layout_gravity="top"
-                                android:background="@drawable/bg_stats_top_strip"
-                                android:alpha="0.85" />
-
-                            <!-- Decorative orb top-right -->
-                            <View
-                                android:layout_width="160dp"
-                                android:layout_height="160dp"
-                                android:layout_gravity="top|end"
-                                android:layout_marginTop="-50dp"
-                                android:layout_marginEnd="-50dp"
-                                android:background="@drawable/bg_floating_orb_primary"
-                                android:alpha="0.10" />
-
-                            <!-- Decorative orb bottom-left -->
-                            <View
-                                android:layout_width="90dp"
-                                android:layout_height="90dp"
-                                android:layout_gravity="bottom|start"
-                                android:layout_marginBottom="-20dp"
-                                android:layout_marginStart="-20dp"
-                                android:background="@drawable/bg_glow_accent"
-                                android:alpha="0.08" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:paddingStart="22dp"
-                                android:paddingEnd="22dp"
-                                android:paddingTop="22dp"
-                                android:paddingBottom="18dp">
-
-                                <!-- Top row: icon badge + label -->
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:gravity="center_vertical"
-                                    android:layout_marginBottom="14dp">
-
-                                    <FrameLayout
-                                        android:layout_width="42dp"
-                                        android:layout_height="42dp"
-                                        android:background="@drawable/bg_icon_glow_primary">
-
-                                        <ImageView
-                                            android:layout_width="22dp"
-                                            android:layout_height="22dp"
-                                            android:layout_gravity="center"
-                                            android:src="@drawable/ic_play_circle_24"
-                                            app:tint="@android:color/white" />
-
-                                    </FrameLayout>
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:layout_marginStart="12dp"
-                                        android:text="@string/total_watch_time"
-                                        android:textColor="@color/text_secondary"
-                                        android:textSize="11sp"
-                                        android:textStyle="bold"
-                                        android:textAllCaps="true"
-                                        android:letterSpacing="0.10"
-                                        android:fontFamily="sans-serif-medium" />
-
-                                    <!-- Small star/sparkle -->
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="✦"
-                                        android:textSize="12sp"
-                                        android:textColor="@color/primary"
-                                        android:alpha="0.5" />
-
-                                </LinearLayout>
-
-                                <!-- HERO: large time number centered -->
-                                <TextView
-                                    android:id="@+id/tvTotalTime"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:textColor="@color/text_primary"
-                                    android:textSize="44sp"
-                                    android:textStyle="bold"
-                                    android:fontFamily="sans-serif-medium"
-                                    android:maxLines="1"
-                                    android:autoSizeTextType="uniform"
-                                    android:autoSizeMinTextSize="18sp"
-                                    android:autoSizeMaxTextSize="44sp"
-                                    android:letterSpacing="-0.02"
-                                    tools:text="125 год 30 хв" />
-
-                                <!-- Subtitle -->
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/watch_time_desc"
-                                    android:textColor="@color/text_secondary"
-                                    android:textSize="12sp"
-                                    android:alpha="0.75" />
-
-                                <!-- Rainbow gradient separator line -->
-                                <FrameLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="3dp"
-                                    android:layout_marginTop="18dp"
-                                    android:layout_marginBottom="16dp">
-
-                                    <View
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:background="@drawable/bg_gradient_accent_line"
-                                        android:alpha="0.6" />
-
-                                </FrameLayout>
-
-                                <!-- Stats row — three glowing tiles, equal height -->
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:weightSum="3"
-                                    android:baselineAligned="false">
-
-                                    <!-- This Month tile -->
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical"
-                                        android:gravity="center"
-                                        android:padding="14dp"
-                                        android:layout_marginEnd="5dp"
-                                        android:background="@drawable/bg_stat_card_accent"
-                                        android:minHeight="90dp">
-
-                                        <FrameLayout
-                                            android:layout_width="36dp"
-                                            android:layout_height="36dp"
-                                            android:background="@drawable/bg_icon_small_circle_accent">
-
-                                            <ImageView
-                                                android:layout_width="20dp"
-                                                android:layout_height="20dp"
-                                                android:layout_gravity="center"
-                                                android:src="@drawable/ic_calendar_24"
-                                                app:tint="@android:color/white" />
-
-                                        </FrameLayout>
-
-                                        <TextView
-                                            android:id="@+id/tvThisMonthCount"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="8dp"
-                                            android:textColor="@color/text_primary"
-                                            android:textSize="26sp"
-                                            android:textStyle="bold"
-                                            android:fontFamily="sans-serif-medium"
-                                            android:maxLines="1"
-                                            tools:text="8" />
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="2dp"
-                                            android:text="@string/this_month"
-                                            android:textColor="@color/text_secondary"
-                                            android:textSize="10sp"
-                                            android:gravity="center"
-                                            android:maxLines="1" />
-
-                                    </LinearLayout>
-
-                                    <!-- Movies tile -->
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical"
-                                        android:gravity="center"
-                                        android:padding="14dp"
-                                        android:layout_marginHorizontal="3dp"
-                                        android:background="@drawable/bg_stat_card_primary"
-                                        android:minHeight="90dp">
-
-                                        <FrameLayout
-                                            android:layout_width="36dp"
-                                            android:layout_height="36dp"
-                                            android:background="@drawable/bg_icon_small_circle_primary">
-
-                                            <ImageView
-                                                android:layout_width="20dp"
-                                                android:layout_height="20dp"
-                                                android:layout_gravity="center"
-                                                android:src="@drawable/ic_movie_24"
-                                                app:tint="@android:color/white" />
-
-                                        </FrameLayout>
-
-                                        <TextView
-                                            android:id="@+id/tvMoviesCountWidget"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="8dp"
-                                            android:textColor="@color/text_primary"
-                                            android:textSize="26sp"
-                                            android:textStyle="bold"
-                                            android:fontFamily="sans-serif-medium"
-                                            android:maxLines="1"
-                                            tools:text="45" />
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="2dp"
-                                            android:text="@string/movies"
-                                            android:textColor="@color/text_secondary"
-                                            android:textSize="10sp"
-                                            android:gravity="center"
-                                            android:maxLines="1" />
-
-                                    </LinearLayout>
-
-                                    <!-- TV Shows tile -->
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical"
-                                        android:gravity="center"
-                                        android:padding="14dp"
-                                        android:layout_marginStart="5dp"
-                                        android:background="@drawable/bg_stat_card_success"
-                                        android:minHeight="90dp">
-
-                                        <FrameLayout
-                                            android:layout_width="36dp"
-                                            android:layout_height="36dp"
-                                            android:background="@drawable/bg_icon_small_circle_success">
-
-                                            <ImageView
-                                                android:layout_width="20dp"
-                                                android:layout_height="20dp"
-                                                android:layout_gravity="center"
-                                                android:src="@drawable/ic_tv_24"
-                                                app:tint="@android:color/white" />
-
-                                        </FrameLayout>
-
-                                        <TextView
-                                            android:id="@+id/tvTvShowsCountWidget"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="8dp"
-                                            android:textColor="@color/text_primary"
-                                            android:textSize="26sp"
-                                            android:textStyle="bold"
-                                            android:fontFamily="sans-serif-medium"
-                                            android:maxLines="1"
-                                            tools:text="12" />
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="2dp"
-                                            android:text="@string/tv_shows"
-                                            android:textColor="@color/text_secondary"
-                                            android:textSize="10sp"
-                                            android:gravity="center"
-                                            android:maxLines="1" />
-
-                                    </LinearLayout>
-
-                                </LinearLayout>
-
-                            </LinearLayout>
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="🎬"
+                                android:textSize="24sp" />
 
                         </FrameLayout>
 
-                    </com.google.android.material.card.MaterialCardView>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="14dp">
+
+                            <TextView
+                                android:id="@+id/tvGreeting"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/welcome_back"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp"
+                                android:fontFamily="sans-serif" />
+
+                            <TextView
+                                android:id="@+id/tvUserName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="@string/user_rank_movie_buff"
+                                android:textColor="@color/text_primary"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:fontFamily="sans-serif-medium" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </FrameLayout>
 
-            <!-- Main Content -->
+            <!-- Hidden view placeholder for ViewBinding compatibility -->
+            <FrameLayout android:id="@+id/btnHeaderSearch" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+
+            <!-- 2. TOTAL WATCH TIME HERO CARD (MAIN BANNER) -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:layout_marginBottom="24dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/heroSpotlightCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp"
+                    app:cardBackgroundColor="@android:color/transparent">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_stats_widget_premium">
+
+                        <!-- Rainbow Top Accent Strip -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp"
+                            android:layout_gravity="top"
+                            android:background="@drawable/bg_stats_top_strip"
+                            android:alpha="0.9" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="22dp">
+
+                            <!-- Header label -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginBottom="16dp">
+
+                                <FrameLayout
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/bg_icon_glow_primary">
+
+                                    <ImageView
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_play_circle_24"
+                                        app:tint="@android:color/white"
+                                        android:contentDescription="@null" />
+
+                                </FrameLayout>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginStart="12dp"
+                                    android:text="@string/total_watch_time"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.12"
+                                    android:fontFamily="sans-serif-medium" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="✦"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/primary"
+                                    android:alpha="0.7" />
+
+                            </LinearLayout>
+
+                            <!-- Hero Time Counter -->
+                            <TextView
+                                android:id="@+id/tvTotalTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:textColor="@color/text_primary"
+                                android:textSize="44sp"
+                                android:textStyle="bold"
+                                android:fontFamily="sans-serif-medium"
+                                android:maxLines="1"
+                                android:autoSizeTextType="uniform"
+                                android:autoSizeMinTextSize="18sp"
+                                android:autoSizeMaxTextSize="44sp"
+                                tools:text="125 год 30 хв" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/watch_time_desc"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="12sp"
+                                android:alpha="0.8" />
+
+                            <!-- Separator line -->
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="18dp"
+                                android:layout_marginBottom="16dp">
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/bg_gradient_accent_line"
+                                    android:alpha="0.6" />
+
+                            </FrameLayout>
+
+                            <!-- Stat Tiles: Month, Movies, TV Shows -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="3">
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="12dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:background="@drawable/bg_stat_card_accent">
+
+                                    <TextView
+                                        android:id="@+id/tvThisMonthCount"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/text_primary"
+                                        android:textSize="22sp"
+                                        android:textStyle="bold"
+                                        tools:text="8" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:text="@string/this_month"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="10sp"
+                                        android:gravity="center" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="12dp"
+                                    android:layout_marginHorizontal="2dp"
+                                    android:background="@drawable/bg_stat_card_primary">
+
+                                    <TextView
+                                        android:id="@+id/tvMoviesCountWidget"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/text_primary"
+                                        android:textSize="22sp"
+                                        android:textStyle="bold"
+                                        tools:text="45" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:text="@string/movies"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="10sp"
+                                        android:gravity="center" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="12dp"
+                                    android:layout_marginStart="4dp"
+                                    android:background="@drawable/bg_stat_card_success">
+
+                                    <TextView
+                                        android:id="@+id/tvTvShowsCountWidget"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/text_primary"
+                                        android:textSize="22sp"
+                                        android:textStyle="bold"
+                                        tools:text="12" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:text="@string/tv_shows"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="10sp"
+                                        android:gravity="center" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </FrameLayout>
+
+            <!-- 3. LARGER HORIZONTAL QUICK NAVIGATION PANEL (BELOW HERO BANNER) -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:clipToPadding="false"
+                android:paddingHorizontal="20dp"
+                android:layout_marginBottom="28dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Trending Pill (Larger) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnTrending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:cardCornerRadius="22dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@android:color/transparent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="20dp"
+                            android:paddingVertical="14dp"
+                            android:background="@drawable/bg_quick_action_glass">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/ic_trending_up_24"
+                                app:tint="@color/success_green_light"
+                                android:contentDescription="@null" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@string/trending"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Premieres Pill (Larger) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnUpcomingReleases"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:cardCornerRadius="22dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@android:color/transparent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="20dp"
+                            android:paddingVertical="14dp"
+                            android:background="@drawable/bg_quick_action_glass">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/ic_calendar_24"
+                                app:tint="@color/accent_purple_light"
+                                android:contentDescription="@null" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@string/new_releases"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Collections Pill (Larger) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnCollections"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:cardCornerRadius="22dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@android:color/transparent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="20dp"
+                            android:paddingVertical="14dp"
+                            android:background="@drawable/bg_quick_action_glass">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/ic_folder"
+                                app:tint="#3B82F6"
+                                android:contentDescription="@null" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@string/collections"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Friends Pill (Larger) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnFriends"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:cardCornerRadius="22dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@android:color/transparent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="20dp"
+                            android:paddingVertical="14dp"
+                            android:background="@drawable/bg_quick_action_glass">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/ic_people_24"
+                                app:tint="#FBBF24"
+                                android:contentDescription="@null" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@string/friends"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Statistics Pill (Larger) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnStatistics"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:cardCornerRadius="22dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@android:color/transparent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="20dp"
+                            android:paddingVertical="14dp"
+                            android:background="@drawable/bg_quick_action_glass">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/ic_bar_chart_24"
+                                app:tint="#22C55E"
+                                android:contentDescription="@null" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@string/statistics"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Search Pill (Larger) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnSearchMovies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="22dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@android:color/transparent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="20dp"
+                            android:paddingVertical="14dp"
+                            android:background="@drawable/bg_quick_action_glass">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/ic_search_24"
+                                app:tint="@color/primary_light"
+                                android:contentDescription="@null" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@string/search"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <!-- 4. MAIN CONTENT CONTAINER -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="20dp"
-                android:paddingTop="12dp"
                 android:paddingBottom="100dp">
 
-                <!-- Quick Stats Section -->
+                <!-- Hidden views preserved for ViewBinding compatibility -->
+                <TextView android:id="@+id/tvWatchedMoviesCount" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+                <TextView android:id="@+id/tvWatchedTvShowsCount" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+                <TextView android:id="@+id/tvAverageRating" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+
+                <!-- 5. CATEGORIES SECTION TITLE -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
-                    
+                    android:layout_marginBottom="14dp">
+
                     <View
                         android:layout_width="4dp"
-                        android:layout_height="20dp"
+                        android:layout_height="18dp"
                         android:background="@drawable/bg_section_title_underline"
-                        android:layout_marginEnd="12dp" />
-                    
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/quick_stats"
-                        android:textColor="@color/text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium" />
-                        
-                </LinearLayout>
+                        android:layout_marginEnd="10dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="24dp"
-                    android:layoutAnimation="@anim/layout_animation_stagger">
-
-                    <!-- Movies Stat Card -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="0dp"
-                        app:cardBackgroundColor="@android:color/transparent">
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_stat_card_primary">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="16dp"
-                                android:gravity="center">
-
-                                <FrameLayout
-                                    android:layout_width="44dp"
-                                    android:layout_height="44dp"
-                                    android:background="@drawable/bg_icon_glow_primary">
-
-                                    <ImageView
-                                        android:layout_width="22dp"
-                                        android:layout_height="22dp"
-                                        android:layout_gravity="center"
-                                        android:src="@drawable/ic_movie_24"
-                                        app:tint="@android:color/white"
-                                        android:contentDescription="@string/movies" />
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:id="@+id/tvWatchedMoviesCount"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
-                                    android:textColor="@color/text_primary"
-                                    android:textSize="22sp"
-                                    android:textStyle="bold"
-                                    android:fontFamily="sans-serif-medium"
-                                    tools:text="15" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/movies"
-                                    android:textColor="@color/text_secondary"
-                                    android:textSize="12sp"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:ellipsize="end" />
-
-                            </LinearLayout>
-
-                        </FrameLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- TV Shows Stat Card -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginHorizontal="6dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="0dp"
-                        app:cardBackgroundColor="@android:color/transparent">
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_stat_card_accent">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="16dp"
-                                android:gravity="center">
-
-                                <FrameLayout
-                                    android:layout_width="44dp"
-                                    android:layout_height="44dp"
-                                    android:background="@drawable/bg_icon_glow_accent">
-
-                                    <ImageView
-                                        android:layout_width="22dp"
-                                        android:layout_height="22dp"
-                                        android:layout_gravity="center"
-                                        android:src="@drawable/ic_tv_24"
-                                        app:tint="@android:color/white"
-                                        android:contentDescription="@string/tv_shows" />
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:id="@+id/tvWatchedTvShowsCount"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
-                                    android:textColor="@color/text_primary"
-                                    android:textSize="22sp"
-                                    android:textStyle="bold"
-                                    android:fontFamily="sans-serif-medium"
-                                    tools:text="8" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/tv_shows"
-                                    android:textColor="@color/text_secondary"
-                                    android:textSize="12sp"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:ellipsize="end" />
-
-                            </LinearLayout>
-
-                        </FrameLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- Rating Stat Card -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="0dp"
-                        app:cardBackgroundColor="@android:color/transparent">
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_stat_card_success">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="16dp"
-                                android:gravity="center">
-
-                                <FrameLayout
-                                    android:layout_width="44dp"
-                                    android:layout_height="44dp"
-                                    android:background="@drawable/bg_icon_glow_success">
-
-                                    <ImageView
-                                        android:layout_width="22dp"
-                                        android:layout_height="22dp"
-                                        android:layout_gravity="center"
-                                        android:src="@drawable/ic_star_filled_24"
-                                        app:tint="@android:color/white"
-                                        android:contentDescription="@string/avg_rating" />
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:id="@+id/tvAverageRating"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
-                                    android:textColor="@color/text_primary"
-                                    android:textSize="22sp"
-                                    android:textStyle="bold"
-                                    android:fontFamily="sans-serif-medium"
-                                    tools:text="8.2" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="@string/rating_short"
-                                    android:textColor="@color/text_secondary"
-                                    android:textSize="12sp"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:ellipsize="end" />
-
-                            </LinearLayout>
-
-                        </FrameLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                </LinearLayout>
-
-                <!-- Categories Section -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp">
-                    
-                    <View
-                        android:layout_width="4dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/bg_section_title_underline"
-                        android:layout_marginEnd="12dp" />
-                    
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -682,16 +674,16 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
-                        
+
                 </LinearLayout>
 
-                <!-- Categories Grid -->
+                <!-- 6. CATEGORIES CARDS GRID -->
+                <!-- Watched + Planned Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="14dp"
-                    android:layoutAnimation="@anim/layout_animation_stagger">
+                    android:layout_marginBottom="12dp">
 
                     <!-- Watched Card -->
                     <com.google.android.material.card.MaterialCardView
@@ -699,7 +691,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="6dp"
                         app:cardCornerRadius="24dp"
                         app:cardElevation="0dp"
                         app:strokeWidth="0dp"
@@ -716,18 +708,17 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:padding="20dp"
+                                android:padding="18dp"
                                 android:gravity="center">
 
                                 <FrameLayout
-                                    android:layout_width="56dp"
-                                    android:layout_height="56dp"
-                                    android:background="@drawable/bg_icon_glow_primary"
-                                    android:alpha="0.85">
+                                    android:layout_width="52dp"
+                                    android:layout_height="52dp"
+                                    android:background="@drawable/bg_icon_glow_primary">
 
                                     <ImageView
-                                        android:layout_width="28dp"
-                                        android:layout_height="28dp"
+                                        android:layout_width="26dp"
+                                        android:layout_height="26dp"
                                         android:layout_gravity="center"
                                         android:src="@drawable/ic_check_24"
                                         android:contentDescription="@string/nav_watched"
@@ -738,7 +729,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
+                                    android:layout_marginTop="14dp"
                                     android:text="@string/nav_watched"
                                     android:textColor="#FFFFFF"
                                     android:textSize="14sp"
@@ -749,11 +740,10 @@
                                     android:id="@+id/tvWatchedCount"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
+                                    android:layout_marginTop="4dp"
                                     android:textColor="#FFFFFF"
                                     android:textSize="28sp"
                                     android:textStyle="bold"
-                                    android:fontFamily="sans-serif-medium"
                                     tools:text="23" />
 
                             </LinearLayout>
@@ -768,7 +758,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="6dp"
                         app:cardCornerRadius="24dp"
                         app:cardElevation="0dp"
                         app:strokeWidth="0dp"
@@ -785,18 +775,17 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:padding="20dp"
+                                android:padding="18dp"
                                 android:gravity="center">
 
                                 <FrameLayout
-                                    android:layout_width="56dp"
-                                    android:layout_height="56dp"
-                                    android:background="@drawable/bg_icon_glow_accent"
-                                    android:alpha="0.85">
+                                    android:layout_width="52dp"
+                                    android:layout_height="52dp"
+                                    android:background="@drawable/bg_icon_glow_accent">
 
                                     <ImageView
-                                        android:layout_width="28dp"
-                                        android:layout_height="28dp"
+                                        android:layout_width="26dp"
+                                        android:layout_height="26dp"
                                         android:layout_gravity="center"
                                         android:src="@drawable/ic_bookmark_filled_24"
                                         android:contentDescription="@string/nav_planned"
@@ -807,7 +796,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
+                                    android:layout_marginTop="14dp"
                                     android:text="@string/nav_planned"
                                     android:textColor="#FFFFFF"
                                     android:textSize="14sp"
@@ -818,11 +807,10 @@
                                     android:id="@+id/tvPlannedCount"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
+                                    android:layout_marginTop="4dp"
                                     android:textColor="#FFFFFF"
                                     android:textSize="28sp"
                                     android:textStyle="bold"
-                                    android:fontFamily="sans-serif-medium"
                                     tools:text="8" />
 
                             </LinearLayout>
@@ -833,7 +821,7 @@
 
                 </LinearLayout>
 
-                <!-- Watching Card - Full Width Premium -->
+                <!-- Watching Card (Full Width Hero) -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardWatching"
                     android:layout_width="match_parent"
@@ -855,18 +843,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:padding="24dp"
+                            android:padding="22dp"
                             android:gravity="center_vertical">
 
                             <FrameLayout
-                                android:layout_width="56dp"
-                                android:layout_height="56dp"
-                                android:background="@drawable/bg_icon_glow_success"
-                                android:alpha="0.85">
+                                android:layout_width="52dp"
+                                android:layout_height="52dp"
+                                android:background="@drawable/bg_icon_glow_success">
 
                                 <ImageView
-                                    android:layout_width="28dp"
-                                    android:layout_height="28dp"
+                                    android:layout_width="26dp"
+                                    android:layout_height="26dp"
                                     android:layout_gravity="center"
                                     android:src="@drawable/ic_play_circle_24"
                                     android:contentDescription="@string/nav_watching"
@@ -893,12 +880,11 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
+                                    android:layout_marginTop="2dp"
                                     android:text="@string/currently_in_progress"
                                     android:textColor="#FFFFFF"
                                     android:textSize="12sp"
-                                    android:alpha="0.8"
-                                    android:fontFamily="sans-serif" />
+                                    android:alpha="0.8" />
 
                             </LinearLayout>
 
@@ -907,9 +893,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#FFFFFF"
-                                android:textSize="36sp"
+                                android:textSize="34sp"
                                 android:textStyle="bold"
-                                android:fontFamily="sans-serif-medium"
                                 tools:text="3" />
 
                         </LinearLayout>
@@ -918,331 +903,23 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Quick Actions Section -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
-                    
-                    <View
-                        android:layout_width="4dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/bg_section_title_underline"
-                        android:layout_marginEnd="12dp" />
-                    
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/quick_actions"
-                        android:textColor="@color/text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium" />
-                        
-                </LinearLayout>
-
-                <!-- Quick Actions Grid - 3x2 -->
-                <GridLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:columnCount="3"
-                    android:layout_marginBottom="16dp"
-                    android:useDefaultMargins="false">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/btnSearchMovies"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="0dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="@drawable/ripple_rounded_20dp"
-                        app:cardBackgroundColor="@android:color/transparent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingTop="18dp" android:paddingBottom="18dp"
-                            android:paddingHorizontal="8dp"
-                            android:gravity="center"
-                            android:background="@drawable/bg_quick_action_glass">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_search_24"
-                                app:tint="@color/primary_light"
-                                android:contentDescription="@string/search" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/search"
-                                android:textColor="@color/text_primary"
-                                android:textSize="12sp"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:ellipsize="none" />
-
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/btnTrending"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="0dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="@drawable/ripple_rounded_20dp"
-                        app:cardBackgroundColor="@android:color/transparent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingTop="18dp" android:paddingBottom="18dp"
-                            android:paddingHorizontal="8dp"
-                            android:gravity="center"
-                            android:background="@drawable/bg_quick_action_glass">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_trending_up_24"
-                                app:tint="@color/success_green_light"
-                                android:contentDescription="@string/trending" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/trending"
-                                android:textColor="@color/text_primary"
-                                android:textSize="12sp"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:ellipsize="none" />
-
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/btnUpcomingReleases"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="0dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="@drawable/ripple_rounded_20dp"
-                        app:cardBackgroundColor="@android:color/transparent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingTop="18dp" android:paddingBottom="18dp"
-                            android:paddingHorizontal="8dp"
-                            android:gravity="center"
-                            android:background="@drawable/bg_quick_action_glass">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_calendar_24"
-                                app:tint="@color/accent_purple_light"
-                                android:contentDescription="@string/movie_premieres" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/new_releases"
-                                android:textColor="@color/text_primary"
-                                android:textSize="12sp"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:ellipsize="none" />
-
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/btnCollections"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="0dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="@drawable/ripple_rounded_20dp"
-                        app:cardBackgroundColor="@android:color/transparent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingTop="18dp" android:paddingBottom="18dp"
-                            android:paddingHorizontal="8dp"
-                            android:gravity="center"
-                            android:background="@drawable/bg_quick_action_glass">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_folder"
-                                app:tint="#3B82F6"
-                                android:contentDescription="@string/collections" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/collections"
-                                android:textColor="@color/text_primary"
-                                android:textSize="12sp"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:ellipsize="none" />
-
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/btnFriends"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="0dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="@drawable/ripple_rounded_20dp"
-                        app:cardBackgroundColor="@android:color/transparent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingTop="18dp" android:paddingBottom="18dp"
-                            android:paddingHorizontal="8dp"
-                            android:gravity="center"
-                            android:background="@drawable/bg_quick_action_glass">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_people_24"
-                                app:tint="#FBBF24"
-                                android:contentDescription="@string/friends" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/friends"
-                                android:textColor="@color/text_primary"
-                                android:textSize="12sp"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:ellipsize="none" />
-
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- Statistics Button -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/btnStatistics"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="0dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="@drawable/ripple_rounded_20dp"
-                        app:cardBackgroundColor="@android:color/transparent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingTop="18dp" android:paddingBottom="18dp"
-                            android:paddingHorizontal="8dp"
-                            android:gravity="center"
-                            android:background="@drawable/bg_quick_action_glass">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_bar_chart_24"
-                                app:tint="#22C55E"
-                                android:contentDescription="@string/statistics" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/statistics"
-                                android:textColor="@color/text_primary"
-                                android:textSize="12sp"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:ellipsize="none" />
-
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                </GridLayout>
-
-
-                <!-- Recommendations Section -->
+                <!-- 7. RECOMMENDATIONS SECTION -->
                 <LinearLayout
                     android:id="@+id/recommendationsTitleContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="14dp"
                     android:visibility="gone"
                     tools:visibility="visible">
-                    
+
                     <View
                         android:layout_width="4dp"
-                        android:layout_height="20dp"
+                        android:layout_height="18dp"
                         android:background="@drawable/bg_section_title_underline"
-                        android:layout_marginEnd="12dp" />
-                    
+                        android:layout_marginEnd="10dp" />
+
                     <TextView
                         android:id="@+id/tvRecommendationsTitle"
                         android:layout_width="wrap_content"
@@ -1252,7 +929,7 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
-                        
+
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -1262,32 +939,31 @@
                     android:orientation="horizontal"
                     android:clipToPadding="false"
                     android:paddingEnd="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="24dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:nestedScrollingEnabled="false"
                     android:visibility="gone"
                     tools:visibility="visible"
                     tools:listitem="@layout/item_content_poster" />
 
-                <!-- Recent Activity Section -->
+                <!-- 8. RECENT ACTIVITY SECTION -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="24dp">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
+                        android:layout_marginBottom="14dp">
 
                         <View
                             android:layout_width="4dp"
-                            android:layout_height="20dp"
+                            android:layout_height="18dp"
                             android:background="@drawable/bg_section_title_underline"
-                            android:layout_marginEnd="12dp" />
+                            android:layout_marginEnd="10dp" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -1310,11 +986,10 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:background="?attr/selectableItemBackground"
-                            android:padding="8dp" />
+                            android:padding="6dp" />
 
                     </LinearLayout>
 
-                    <!-- Recent Activity List with frosted glass styling -->
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1327,8 +1002,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_glass_card_premium"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp">
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rvRecentActivity"
@@ -1340,33 +1015,31 @@
                                 android:nestedScrollingEnabled="false"
                                 android:minHeight="100dp" />
 
-                            <!-- Empty state for recent activity -->
                             <LinearLayout
                                 android:id="@+id/emptyRecentActivity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 android:gravity="center"
-                                android:padding="32dp"
+                                android:padding="28dp"
                                 android:visibility="visible"
                                 tools:visibility="visible">
 
                                 <ImageView
-                                    android:layout_width="64dp"
-                                    android:layout_height="64dp"
+                                    android:layout_width="56dp"
+                                    android:layout_height="56dp"
                                     android:src="@drawable/ic_history_24"
-                                    android:alpha="0.5"
+                                    android:alpha="0.4"
                                     app:tint="@android:color/white"
                                     android:contentDescription="@null" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
+                                    android:layout_marginTop="10dp"
                                     android:text="@string/no_recent_activity"
-                                    android:textColor="@color/text_primary"
-                                    android:textSize="14sp"
-                                    android:alpha="0.7" />
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="14sp" />
 
                             </LinearLayout>
 
@@ -1382,7 +1055,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- FAB for quick add -->
+    <!-- FAB for Quick Add -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAdd"
         android:layout_width="wrap_content"

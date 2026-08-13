@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Floating orb - Accent Purple - LIGHT THEME (more subtle) -->
+<!-- Very subtle ambient wash - teal -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
     <gradient
         android:type="radial"
-        android:gradientRadius="120dp"
-        android:startColor="#188B5CF6"
-        android:centerColor="#0C8B5CF6"
+        android:gradientRadius="180dp"
+        android:startColor="#1206B6D4"
+        android:centerColor="#08047A8F"
         android:endColor="#00000000" />
-    <size android:width="240dp" android:height="240dp" />
 </shape>
