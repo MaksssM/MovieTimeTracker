@@ -2,59 +2,54 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="220dp">
+    android:layout_height="200dp"
+    android:background="#08090D">
 
-    <!-- Gradient Background -->
+    <!-- Ambient glowing nebula spots -->
     <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_main_premium" />
-
-    <!-- Decorative Glow Effect - Top Right -->
-    <View
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_gravity="top|end"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="-30dp"
+        android:layout_marginEnd="-30dp"
         android:background="@drawable/bg_glow_accent"
-        android:alpha="0.2" />
+        android:alpha="0.25" />
 
-    <!-- Decorative Glow Effect - Bottom Left -->
     <View
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="bottom|start"
-        android:layout_marginBottom="60dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="-20dp"
         android:background="@drawable/bg_glow_primary"
-        android:alpha="0.15" />
+        android:alpha="0.2" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="bottom"
-        android:padding="28dp">
+        android:paddingHorizontal="24dp"
+        android:paddingBottom="22dp"
+        android:paddingTop="36dp">
 
-        <!-- App Icon with Glass Effect -->
+        <!-- App Icon Card with Glassmorphic Border -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginBottom="18dp"
-            app:cardCornerRadius="18dp"
-            app:cardElevation="8dp"
-            app:strokeWidth="0dp"
-            app:cardBackgroundColor="@android:color/transparent">
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#252854"
+            app:cardBackgroundColor="#0F111E">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_glass_card">
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
                     android:layout_gravity="center"
                     android:src="@mipmap/ic_launcher_round"
                     android:contentDescription="@string/app_name" />
@@ -63,33 +58,57 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- App Title -->
-        <TextView
-            android:layout_width="match_parent"
+        <!-- Brand Title & Badge Row -->
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textSize="26sp"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-medium"
-            android:letterSpacing="-0.02"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textSize="22sp"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="-0.01" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TRACKER"
+                android:textSize="9sp"
+                android:textStyle="bold"
+                android:textColor="#A855F7"
+                android:background="@drawable/bg_quick_action_glass"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:layout_marginStart="8dp"
+                android:letterSpacing="0.08" />
+
+        </LinearLayout>
+
+        <!-- Tagline -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_description_short"
+            android:textSize="12sp"
+            android:textColor="#64748B"
+            android:layout_marginTop="3dp"
             android:maxLines="1"
             android:ellipsize="end" />
 
-        <!-- App Subtitle with slight spacing -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/app_description_short"
-            android:textSize="13sp"
-            android:textColor="@color/on_surface_variant"
-            android:alpha="0.85"
-            android:layout_marginTop="6dp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:lineSpacingMultiplier="1.15" />
-
     </LinearLayout>
 
-</FrameLayout>
+    <!-- Bottom Hairline Gradient Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:background="#161822" />
 
+</FrameLayout>

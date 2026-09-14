@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Progress bar for watching items -->
+<!-- Light variant: watching progress with light alpha track -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
@@ -11,8 +11,8 @@
         <clip>
             <shape android:shape="rectangle">
                 <gradient android:type="linear" android:angle="0"
-                    android:startColor="#10B981"
-                    android:endColor="#34D399" />
+                    android:startColor="#00A86B"
+                    android:endColor="#00C853" />
                 <corners android:radius="4dp" />
             </shape>
         </clip>

@@ -11,6 +11,7 @@ import com.example.movietime.data.model.Person
 import com.example.movietime.data.model.PersonRole
 import com.example.movietime.data.model.SortOption
 import com.example.movietime.data.model.CompanyResult
+import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.BuildConfig
@@ -139,8 +140,8 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val watched = repository.getWatchedItemsSync().associate { "${it.id}_${it.mediaType}" to "watched" }
-                val planned = repository.getPlannedContentSync().associate { "${it.id}_${it.mediaType}" to "planned" }
-                val watching = repository.getWatchingContentSync().associate { "${it.id}_${it.mediaType}" to "watching" }
+                val planned = repository.getPlannedItemsSync().associate { "${it.id}_${it.mediaType}" to "planned" }
+                val watching = repository.getWatchingItemsSync().associate { "${it.id}_${it.mediaType}" to "watching" }
                 // watching > planned > watched in priority order
                 _libraryStatusMap.value = watched + planned + watching
             } catch (e: Exception) {

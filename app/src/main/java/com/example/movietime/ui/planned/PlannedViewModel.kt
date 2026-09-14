@@ -29,7 +29,7 @@ class PlannedViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                val content = repository.getPlannedContentSync()
+                val content = repository.getPlannedItemsSync()
                 _plannedContent.value = content
                 _errorMessage.value = null
                 Log.d("PlannedViewModel", "Loaded ${content.size} planned items")

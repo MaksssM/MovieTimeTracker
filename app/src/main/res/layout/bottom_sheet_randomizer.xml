@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="24dp">
+
+        <!-- Top Drag Handle -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_handle_bar"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <FrameLayout
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_icon_3d_accent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="🎲"
+                    android:textSize="22sp" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/what_to_watch"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/randomizer_subtitle"
+                    android:textSize="12sp"
+                    android:textColor="#64748B"
+                    android:layout_marginTop="2dp" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnClose"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_quick_action_glass"
+                android:src="@drawable/ic_close"
+                android:padding="8dp"
+                app:tint="#94A3B8"
+                android:contentDescription="@null" />
+
+        </LinearLayout>
+
+        <!-- Source Selector Chips -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupSource"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipPlanned"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/source_planned"
+                    android:checked="true"
+                    app:chipBackgroundColor="@color/bg_chip_selector"
+                    app:chipStrokeWidth="1dp"
+                    app:chipStrokeColor="#252854"
+                    app:checkedIconVisible="false"
+                    android:textColor="@color/text_primary" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipRecommendations"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/source_recommendations"
+                    app:chipBackgroundColor="@color/bg_chip_selector"
+                    app:chipStrokeWidth="1dp"
+                    app:chipStrokeColor="#252854"
+                    app:checkedIconVisible="false"
+                    android:textColor="@color/text_primary" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTopRated"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/source_top_rated"
+                    app:chipBackgroundColor="@color/bg_chip_selector"
+                    app:chipStrokeWidth="1dp"
+                    app:chipStrokeColor="#252854"
+                    app:checkedIconVisible="false"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
+
+        <!-- Result / Roulette Display Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#1E2235"
+            app:cardBackgroundColor="#08090D">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <!-- Placeholder state before spin -->
+                <LinearLayout
+                    android:id="@+id/layoutPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="✨"
+                        android:textSize="36sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Натисніть кнопку нижче, щоб обрати фільм"
+                        android:textSize="14sp"
+                        android:textColor="#94A3B8"
+                        android:layout_marginTop="8dp" />
+
+                </LinearLayout>
+
+                <!-- Chosen Movie State -->
+                <LinearLayout
+                    android:id="@+id/layoutMovieResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="86dp"
+                        android:layout_height="128dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#252854"
+                        app:cardBackgroundColor="#0D0E17">
+
+                        <ImageView
+                            android:id="@+id/ivPoster"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@null"
+                            tools:src="@tools:sample/backgrounds/scenic" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="14dp">
+
+                        <!-- Badge Row -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tvMediaTypeBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_type_badge_movie"
+                                android:paddingHorizontal="7dp"
+                                android:paddingVertical="2dp"
+                                android:textSize="9sp"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold"
+                                tools:text="ФІЛЬМ" />
+
+                            <LinearLayout
+                                android:id="@+id/layoutRatingBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:background="@drawable/bg_rating_badge_gold"
+                                android:paddingHorizontal="6dp"
+                                android:paddingVertical="2dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp"
+                                    android:src="@drawable/ic_star_filled_24"
+                                    app:tint="#FBBF24"
+                                    android:contentDescription="@null" />
+
+                                <TextView
+                                    android:id="@+id/tvRating"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="3dp"
+                                    android:textSize="10sp"
+                                    android:textColor="#FBBF24"
+                                    android:textStyle="bold"
+                                    tools:text="8.6" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!-- Title -->
+                        <TextView
+                            android:id="@+id/tvTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="sans-serif-medium"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:layout_marginTop="6dp"
+                            tools:text="Інтерстеллар" />
+
+                        <!-- Release Year & Runtime -->
+                        <TextView
+                            android:id="@+id/tvSubtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="#64748B"
+                            android:layout_marginTop="4dp"
+                            tools:text="2014 • 2 год 49 хв" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Actions -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <!-- Primary Spin / Randomize Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSpin"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="@string/spin_wheel"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_refresh_24"
+                app:iconGravity="textStart"
+                app:backgroundTint="#7C3AED"
+                android:textColor="@color/text_primary"
+                app:cornerRadius="18dp" />
+
+            <!-- View Details Button (when movie selected) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewDetails"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="@string/overview"
+                android:textSize="14sp"
+                android:textColor="#A5B4FC"
+                app:strokeColor="#252854"
+                app:cornerRadius="16dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

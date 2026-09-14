@@ -217,15 +217,16 @@ class ContentAdapter(
 
         private fun formatRuntime(runtime: Int?): String {
             val minutes = runtime ?: 0
-            if (minutes <= 0) return "N/A"
+            if (minutes <= 0) return "—"
 
             val hours = minutes / 60
             val remainingMinutes = minutes % 60
+            val context = binding.root.context
 
             return when {
-                hours > 0 && remainingMinutes > 0 -> "$hours год $remainingMinutes хв"
-                hours > 0 -> "$hours год"
-                else -> "$minutes хв"
+                hours > 0 && remainingMinutes > 0 -> context.getString(R.string.time_format_hours_minutes, hours, remainingMinutes)
+                hours > 0 -> context.getString(R.string.time_format_hours, hours)
+                else -> context.getString(R.string.time_format_minutes, minutes)
             }
         }
     }

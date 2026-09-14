@@ -31,9 +31,7 @@ class WatchingViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                val content = withContext(Dispatchers.IO) {
-                    repository.getWatchingContentSync()
-                }
+                val content = repository.getWatchingItemsSync()
                 _watchingContent.value = content
                 _errorMessage.value = null
                 Log.d("WatchingViewModel", "Loaded ${content.size} watching items")
@@ -50,9 +48,7 @@ class WatchingViewModel @Inject constructor(
     fun addToWatching(item: WatchedItem) {
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO) {
-                    repository.addToWatching(item)
-                }
+                repository.addToWatching(item)
                 loadWatchingContent() // Reload to update the list
                 Log.d("WatchingViewModel", "Added item to watching: ${item.title}")
             } catch (e: Exception) {
@@ -65,9 +61,7 @@ class WatchingViewModel @Inject constructor(
     fun removeFromWatching(item: WatchedItem) {
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO) {
-                    repository.removeFromWatching(item.id, item.mediaType)
-                }
+                repository.removeFromWatching(item.id, item.mediaType)
                 loadWatchingContent() // Reload to update the list
                 Log.d("WatchingViewModel", "Removed item from watching: ${item.title}")
             } catch (e: Exception) {
@@ -80,11 +74,9 @@ class WatchingViewModel @Inject constructor(
     fun moveToWatched(item: WatchedItem) {
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO) {
-                    // Remove from watching and add to watched
-                    repository.removeFromWatching(item.id, item.mediaType)
-                    repository.addWatchedItem(item)
-                }
+                // Remove from watching and add to watched
+                repository.removeFromWatching(item.id, item.mediaType)
+                repository.addWatchedItem(item)
                 loadWatchingContent() // Reload to update the list
                 Log.d("WatchingViewModel", "Moved item to watched: ${item.title}")
             } catch (e: Exception) {
@@ -97,10 +89,8 @@ class WatchingViewModel @Inject constructor(
     fun moveToPlanned(item: WatchedItem) {
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO) {
-                    repository.removeFromWatching(item.id, item.mediaType)
-                    repository.addToPlanned(item)
-                }
+                repository.removeFromWatching(item.id, item.mediaType)
+                repository.addToPlanned(item)
                 loadWatchingContent()
                 Log.d("WatchingViewModel", "Moved item to planned: ${item.title}")
             } catch (e: Exception) {

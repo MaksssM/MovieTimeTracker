@@ -72,7 +72,13 @@ class MainActivity : AppCompatActivity() {
         // Визначаємо top-level destinations - на них буде іконка меню замість стрілки назад
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.enhancedMainFragment, R.id.watchedFragment, R.id.trendingFragment, R.id.settingsFragment, R.id.calendarFragment
+                R.id.enhancedMainFragment,
+                R.id.watchedFragment,
+                R.id.plannedFragment,
+                R.id.watchingFragment,
+                R.id.trendingFragment,
+                R.id.settingsFragment,
+                R.id.calendarFragment
             ), binding.drawerLayout
         )
 
@@ -82,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         // Налаштовуємо NavigationView з навігацією
         binding.navView.setupWithNavController(navController)
 
-        // Додаємо обробник для Activity (не Fragment)
+        // Додаємо обробник для меню
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             Log.d(TAG, "Menu item clicked: ${menuItem.itemId}, title: ${menuItem.title}")
             when (menuItem.itemId) {
@@ -90,18 +96,6 @@ class MainActivity : AppCompatActivity() {
                     Log.d(TAG, "Opening TodayActivity")
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                     startActivity(android.content.Intent(this, TodayActivity::class.java))
-                    true
-                }
-                R.id.nav_planned -> {
-                    Log.d(TAG, "Opening PlannedActivity")
-                    binding.drawerLayout.closeDrawer(GravityCompat.START)
-                    startActivity(android.content.Intent(this, com.example.movietime.ui.planned.PlannedActivity::class.java))
-                    true
-                }
-                R.id.nav_watching -> {
-                    Log.d(TAG, "Opening WatchingActivity")
-                    binding.drawerLayout.closeDrawer(GravityCompat.START)
-                    startActivity(android.content.Intent(this, com.example.movietime.ui.watching.WatchingActivity::class.java))
                     true
                 }
                 R.id.enhancedMainFragment -> {

@@ -1,39 +1,39 @@
-package com.example.movietime.ui.planned
+package com.example.movietime.ui.watching
 
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movietime.R
 import com.example.movietime.data.db.WatchedItem
-import com.example.movietime.databinding.ActivityPlannedBinding
+import com.example.movietime.databinding.FragmentWatchingBinding
+import com.example.movietime.ui.details.DetailsActivity
+import com.example.movietime.ui.details.TvDetailsActivity
 import com.example.movietime.ui.search.EnhancedSearchActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
-import android.widget.Toast
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 
 @AndroidEntryPoint
-class PlannedActivity : AppCompatActivity() {
+class WatchingFragment : Fragment() {
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
+    private var _binding: FragmentWatchingBinding? = null
+    private val binding get() = _binding!!
 
-    private lateinit var binding: ActivityPlannedBinding
-    private val viewModel: PlannedViewModel by viewModels()
+    private val viewModel: WatchingViewModel by viewModels()
 
-    private lateinit var plannedAdapter: PlannedAdapter
+    private lateinit var watchingAdapter: WatchingAdapter
     private var currentFilter = "all"
     private var currentSort = SortType.DATE_NEWEST
     private var searchQuery = ""
@@ -44,34 +44,37 @@ class PlannedActivity : AppCompatActivity() {
         RATING_HIGH, RATING_LOW
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityPlannedBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        
-        // Activity transition
-        @Suppress("DEPRECATION")
-        overridePendingTransition(R.anim.activity_open_enter, R.anim.smooth_fade_out)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentWatchingBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        val isMovie = intent.getBooleanExtra("isMovie", true)
-        val title = if (isMovie) getString(R.string.planned_movies) else getString(R.string.planned_tv_shows)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        setupToolbar(title)
         setupRecyclerView()
         setupTabs()
         setupSortAndSearch()
         setupClickListeners()
         observeViewModel()
-        loadPlannedContent()
+        loadWatchingContent()
         animateEntrance()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun animateEntrance() {
-        // Animate FAB with bounce
-        binding.fabAddPlanned.alpha = 0f
-        binding.fabAddPlanned.scaleX = 0f
-        binding.fabAddPlanned.scaleY = 0f
-        binding.fabAddPlanned.animate()
+        binding.fabAddWatching.alpha = 0f
+        binding.fabAddWatching.scaleX = 0f
+        binding.fabAddWatching.scaleY = 0f
+        binding.fabAddWatching.animate()
             .alpha(1f)
             .scaleX(1f)
             .scaleY(1f)
@@ -80,8 +83,7 @@ class PlannedActivity : AppCompatActivity() {
             .setInterpolator(OvershootInterpolator(2.5f))
             .start()
 
-        // Animate search bar
-        binding.etSearch?.let { search ->
+        binding.etSearch.let { search ->
             search.alpha = 0f
             search.translationY = 30f
             search.animate()
@@ -93,8 +95,7 @@ class PlannedActivity : AppCompatActivity() {
                 .start()
         }
 
-        // Animate sort button
-        binding.btnSort?.let { sort ->
+        binding.btnSort.let { sort ->
             sort.alpha = 0f
             sort.scaleX = 0f
             sort.scaleY = 0f
@@ -107,84 +108,63 @@ class PlannedActivity : AppCompatActivity() {
                 .setInterpolator(OvershootInterpolator(2f))
                 .start()
         }
-
-        // Animate toolbar
-        binding.toolbar.alpha = 0f
-        binding.toolbar.translationY = -20f
-        binding.toolbar.animate()
-            .alpha(1f)
-            .translationY(0f)
-            .setDuration(350)
-            .setInterpolator(DecelerateInterpolator())
-            .start()
-    }
-    
-    @Suppress("DEPRECATION")
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(R.anim.smooth_fade_in, R.anim.activity_close_exit)
-    }
-
-    private fun setupToolbar(title: String) {
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = title
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.setNavigationOnClickListener { finish() }
     }
 
     private fun setupRecyclerView() {
-        plannedAdapter = PlannedAdapter(
+        watchingAdapter = WatchingAdapter(
             onItemClick = { item ->
-                val intent = if (item.mediaType == "tv") {
-                    Intent(this, com.example.movietime.ui.details.TvDetailsActivity::class.java).apply {
-                        putExtra("ITEM_ID", item.id)
-                        putExtra("MEDIA_TYPE", "tv")
-                    }
+                val targetActivity = if (item.mediaType == "tv") {
+                    TvDetailsActivity::class.java
                 } else {
-                    Intent(this, com.example.movietime.ui.details.DetailsActivity::class.java).apply {
-                        putExtra("ITEM_ID", item.id)
-                        putExtra("MEDIA_TYPE", "movie")
-                    }
+                    DetailsActivity::class.java
+                }
+                val intent = Intent(requireContext(), targetActivity).apply {
+                    putExtra("ITEM_ID", item.id)
+                    putExtra("MEDIA_TYPE", item.mediaType)
                 }
                 startActivity(intent)
             },
             onDeleteClick = { item ->
                 showDeleteConfirmDialog(item)
             },
-            onMoveToWatchingClick = { item ->
-                viewModel.moveToWatching(item)
-                Toast.makeText(this, getString(R.string.moved_to_watching), Toast.LENGTH_SHORT).show()
+            onMoveToWatchedClick = { item ->
+                viewModel.moveToWatched(item)
+                Toast.makeText(requireContext(), getString(R.string.moved_to_watched), Toast.LENGTH_SHORT).show()
             }
         )
 
-        binding.rvPlanned.apply {
-            adapter = plannedAdapter
-            layoutManager = LinearLayoutManager(this@PlannedActivity)
+        binding.rvWatching.apply {
+            adapter = watchingAdapter
+            layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             setItemViewCacheSize(15)
             layoutAnimation = AnimationUtils.loadLayoutAnimation(
                 context,
-                R.anim.layout_animation_flip_in
+                R.anim.layout_animation_slide_in_right
             )
         }
     }
 
-    private fun showDeleteConfirmDialog(item: com.example.movietime.data.db.WatchedItem) {
+    private fun showDeleteConfirmDialog(item: WatchedItem) {
         val options = arrayOf(
-            getString(R.string.move_to_watched),
+            getString(R.string.move_to_planned),
             getString(R.string.delete)
         )
-        MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(item.title)
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> {
-                        viewModel.moveToWatched(item)
-                        Toast.makeText(this, getString(R.string.moved_to_watched), Toast.LENGTH_SHORT).show()
+                        viewModel.moveToPlanned(item)
+                        Toast.makeText(requireContext(), getString(R.string.moved_to_planned), Toast.LENGTH_SHORT).show()
                     }
-                    1 -> viewModel.removeFromPlanned(item)
+                    1 -> {
+                        viewModel.removeFromWatching(item)
+                        Toast.makeText(requireContext(), getString(R.string.item_deleted), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
@@ -193,8 +173,8 @@ class PlannedActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 currentFilter = when (tab?.position) {
                     0 -> "all"
-                    1 -> "movie"
-                    2 -> "tv"
+                    1 -> "tv"
+                    2 -> "movie"
                     else -> "all"
                 }
                 filterContent()
@@ -206,12 +186,12 @@ class PlannedActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        binding.fabAddPlanned.setOnClickListener {
-            startActivity(Intent(this, EnhancedSearchActivity::class.java))
+        binding.fabAddWatching.setOnClickListener {
+            startActivity(Intent(requireContext(), EnhancedSearchActivity::class.java))
         }
 
         binding.btnBrowseContent.setOnClickListener {
-            startActivity(Intent(this, EnhancedSearchActivity::class.java))
+            startActivity(Intent(requireContext(), EnhancedSearchActivity::class.java))
         }
     }
 
@@ -249,7 +229,7 @@ class PlannedActivity : AppCompatActivity() {
             SortType.RATING_LOW -> 5
         }
 
-        MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.sort)
             .setSingleChoiceItems(sortOptions, currentIndex) { dialog, which ->
                 currentSort = when (which) {
@@ -280,30 +260,36 @@ class PlannedActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.plannedContent.observe(this) { content ->
+        viewModel.watchingContent.observe(viewLifecycleOwner) { content ->
             binding.layoutLoading.isVisible = false
+
+            val moviesCount = content.count { it.mediaType == "movie" }
+            val tvCount = content.count { it.mediaType == "tv" }
+            binding.tvWatchingTotalCount.text = content.size.toString()
+            binding.tvWatchingMoviesCount.text = moviesCount.toString()
+            binding.tvWatchingTvCount.text = tvCount.toString()
 
             if (content.isEmpty()) {
                 showEmptyState()
             } else {
-                showContent(content)
+                showContent()
                 filterContent()
             }
         }
 
-        viewModel.isLoading.observe(this) { isLoading ->
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.layoutLoading.isVisible = isLoading
-            binding.rvPlanned.isVisible = !isLoading && (viewModel.plannedContent.value?.isNotEmpty() == true)
-            binding.layoutEmpty.isVisible = !isLoading && (viewModel.plannedContent.value?.isEmpty() == true)
+            binding.rvWatching.isVisible = !isLoading && (viewModel.watchingContent.value?.isNotEmpty() == true)
+            binding.layoutEmpty.isVisible = !isLoading && (viewModel.watchingContent.value?.isEmpty() == true)
         }
     }
 
-    private fun loadPlannedContent() {
-        viewModel.loadPlannedContent()
+    private fun loadWatchingContent() {
+        viewModel.loadWatchingContent()
     }
 
     private fun filterContent() {
-        val allContent = viewModel.plannedContent.value ?: emptyList()
+        val allContent = viewModel.watchingContent.value ?: emptyList()
 
         var filteredContent = when (currentFilter) {
             "movie" -> allContent.filter { it.mediaType == "movie" }
@@ -311,43 +297,32 @@ class PlannedActivity : AppCompatActivity() {
             else -> allContent
         }
 
-        // Apply search
         if (searchQuery.isNotEmpty()) {
             filteredContent = filteredContent.filter {
                 it.title.contains(searchQuery, ignoreCase = true)
             }
         }
 
-        // Apply sort
         filteredContent = applySorting(filteredContent)
-
-        plannedAdapter.updateItems(filteredContent)
+        watchingAdapter.updateItems(filteredContent)
 
         if (filteredContent.isEmpty()) {
-            binding.rvPlanned.isVisible = false
+            binding.rvWatching.isVisible = false
             binding.layoutEmpty.isVisible = true
         } else {
-            binding.rvPlanned.isVisible = true
+            binding.rvWatching.isVisible = true
             binding.layoutEmpty.isVisible = false
-            // Re-run layout animation when filter changes
-            binding.rvPlanned.scheduleLayoutAnimation()
-        }
-        
-        // Header text logic removed as it was part of the old card layout header which is now replaced by toolbar/tabs
-        supportActionBar?.subtitle = when (currentFilter) {
-            "movie" -> getString(R.string.planned_movies_count, filteredContent.size)
-            "tv" -> getString(R.string.planned_tv_shows_count, filteredContent.size)
-            else -> getString(R.string.planned_content_count, filteredContent.size)
+            binding.rvWatching.scheduleLayoutAnimation()
         }
     }
 
     private fun showEmptyState() {
-        binding.rvPlanned.isVisible = false
+        binding.rvWatching.isVisible = false
         binding.layoutEmpty.isVisible = true
     }
 
-    private fun showContent(@Suppress("UNUSED_PARAMETER") content: List<Any>) {
-        binding.rvPlanned.isVisible = true
+    private fun showContent() {
+        binding.rvWatching.isVisible = true
         binding.layoutEmpty.isVisible = false
     }
 }

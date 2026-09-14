@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources />
+<resources>
+    <!-- Night/Dark overrides for the main theme -->
+    <style name="Theme.MovieTimeTracker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_container</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/secondary_container</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorTertiary">@color/success</item>
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/black</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
+        <item name="colorOnBackground">@color/on_surface</item>
+        <item name="colorOutline">@color/outline</item>
+        <item name="colorOutlineVariant">@color/outline_variant</item>
+        <item name="android:textColorPrimary">@color/on_surface</item>
+        <item name="android:textColorSecondary">@color/on_surface_variant</item>
+        <!-- Dark mode: use the dark cosmic premium background -->
+        <item name="android:windowBackground">@drawable/bg_main_premium</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="materialButtonStyle">@style/Widget.MovieTime.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.MovieTime.Button.Outlined</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.MovieTime.BottomSheet</item>
+    </style>
+</resources>

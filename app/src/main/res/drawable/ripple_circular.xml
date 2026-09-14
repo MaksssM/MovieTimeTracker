@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Light variant: circular ripple with dark-alpha effect -->
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#20FFFFFF">
+    android:color="#206366F1">
     <item android:id="@android:id/mask">
         <shape android:shape="oval">
             <solid android:color="#FFFFFF"/>

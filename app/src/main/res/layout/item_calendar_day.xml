@@ -104,7 +104,7 @@
         android:minHeight="16dp"
         android:paddingHorizontal="3dp"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/text_primary"
         android:textSize="9sp"
         android:textStyle="bold"
         android:visibility="gone"

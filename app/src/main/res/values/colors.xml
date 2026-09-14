@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Calm, cinematic dark system. Semantic aliases below keep legacy screens consistent. -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- LIGHT PALETTE — Elegant Lavender Light Theme                  -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- Constants (same in all themes) -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
-    <color name="background">#000000</color>
-    <color name="app_bg">@color/background</color>
-    <color name="background_primary">@color/background</color>
-    <color name="surface">#000000</color>
-    <color name="surface_variant">#FF1A2130</color>
-    <color name="surface_elevated">#FF202838</color>
-    <color name="surface_card">#FF161C28</color>
-    <color name="primary">#FFA99CFF</color>
-    <color name="primary_container">#FF7566E8</color>
-    <color name="primary_dark">#FF4F43B2</color>
-    <color name="primary_light">#FFC9C2FF</color>
-    <color name="secondary_container">#FF58D6C9</color>
-    <color name="accent">#FF58D6C9</color>
-    <color name="accent_light">#FF9AECE3</color>
+
+    <!-- Core Backgrounds — soft lavender-white -->
+    <color name="background">#F5F3FA</color>
+    <color name="app_bg">#F5F3FA</color>
+    <color name="background_primary">#F5F3FA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#F0EDF6</color>
+    <color name="surface_elevated">#FFFFFF</color>
+    <color name="surface_card">#FFFFFF</color>
+
+    <!-- Primary brand colors (same in both themes) -->
+    <color name="primary">#FF7C5CE7</color>
+    <color name="primary_container">#FF6366F1</color>
+    <color name="primary_dark">#FF4338CA</color>
+    <color name="primary_light">#FFC7D2FE</color>
+    <color name="secondary_container">#FF00B8D4</color>
+    <color name="accent">#FF00B8D4</color>
+    <color name="accent_light">#FF80F5FF</color>
     <color name="accent_dark">#FF177B73</color>
-    <color name="success">#FF4DD4A2</color>
+
+    <!-- Semantic colors (same in both themes) -->
+    <color name="success">#FF00C853</color>
     <color name="success_light">#FF92E7C5</color>
-    <color name="error">#FFFFB4AB</color>
+    <color name="error">#FFD32F2F</color>
     <color name="error_light">#FFFFDAD6</color>
-    <color name="on_surface">#FFF3F1FA</color>
-    <color name="on_surface_variant">#FFBFC5D4</color>
+
+    <!-- Text / Content on Surface — dark text on light backgrounds -->
+    <color name="on_surface">#FF1B1B1F</color>
+    <color name="on_surface_variant">#FF49454F</color>
     <color name="text_primary">@color/on_surface</color>
     <color name="text_secondary">@color/on_surface_variant</color>
     <color name="primary_text">@color/on_surface</color>
@@ -33,99 +45,141 @@
     <color name="text_secondary_light">@color/on_surface_variant</color>
     <color name="text_on_dark">@color/on_surface</color>
     <color name="text_on_dark_secondary">@color/on_surface_variant</color>
-    <color name="text_on_dark_tertiary">#FF8D94A5</color>
-    <color name="tertiary_text">#FF8D94A5</color>
-    <color name="text_hint">#FF8D94A5</color>
+    <color name="text_on_dark_tertiary">#FF6E6B7B</color>
+    <color name="tertiary_text">#FF6E6B7B</color>
+    <color name="text_hint">#FF6E6B7B</color>
+
+    <!-- Icons -->
     <color name="icon_tint">@color/on_surface</color>
     <color name="icon_tint_active">@color/primary</color>
-    <color name="outline">#FF8D94A5</color>
-    <color name="outline_variant">#FF30394A</color>
+
+    <!-- Outline / Border / Divider -->
+    <color name="outline">#FF79747E</color>
+    <color name="outline_variant">#FFCAC4D0</color>
     <color name="border">@color/outline_variant</color>
-    <color name="divider">#1FFFFFFF</color>
+    <color name="divider">#1F1B1B1F</color>
     <color name="divider_dark">@color/divider</color>
     <color name="divider_on_dark">@color/divider</color>
-    <color name="white_5">#0DFFFFFF</color>
-    <color name="white_10">#1AFFFFFF</color>
-    <color name="white_20">#33FFFFFF</color>
+
+    <!-- Alpha overlays (dark on light) -->
+    <color name="white_5">#0D000000</color>
+    <color name="white_10">#1A000000</color>
+    <color name="white_20">#33000000</color>
     <color name="black_40">#66000000</color>
     <color name="black_60">#99000000</color>
     <color name="black_alpha_50">#80000000</color>
-    <color name="glass_background_dark">#E60A0A0C</color>
-    <color name="glass_surface_low">#0DFFFFFF</color>
-    <color name="glass_surface_high">#1AFFFFFF</color>
-    <color name="glass_overlay">#14FFFFFF</color>
-    <color name="glass_border">#24FFFFFF</color>
-    <color name="glass_stroke">#24FFFFFF</color>
-    <color name="card_bg">#121214</color>
-    <color name="card_background">#121214</color>
-    <color name="card_background_alpha">#CC121214</color>
-    <color name="card_background_glass">#CC121214</color>
-    <color name="card_bg_elevated">#1A1A1E</color>
-    <color name="md_theme_light_primaryContainer">#FF332D72</color>
+
+    <!-- Glass / Frosted (light variant) -->
+    <color name="glass_background_dark">#F0FFFFFF</color>
+    <color name="glass_surface_low">#0A6366F1</color>
+    <color name="glass_surface_high">#146366F1</color>
+    <color name="glass_overlay">#0F6366F1</color>
+    <color name="glass_border">#22CAC4D0</color>
+    <color name="glass_stroke">#22CAC4D0</color>
+
+    <!-- Cards -->
+    <color name="card_bg">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_background_alpha">#F0FFFFFF</color>
+    <color name="card_background_glass">#F0FFFFFF</color>
+    <color name="card_bg_elevated">#FFFFFF</color>
+
+    <!-- Theme-specific references -->
+    <color name="md_theme_light_primaryContainer">#FFE8DEF8</color>
     <color name="primaryContainer">@color/primary_container</color>
     <color name="primary_variant">@color/primary_dark</color>
-    <color name="movie_badge">#FF7CA8FF</color>
-    <color name="tv_badge">#FFB39CFF</color>
-    <color name="surface_light_alpha_08">#14FFFFFF</color>
-    <color name="surface_light_alpha_05">#0DFFFFFF</color>
+
+    <!-- Badges -->
+    <color name="movie_badge">#FF4A7FD4</color>
+    <color name="tv_badge">#FF8B6FCC</color>
+
+    <!-- Surface alpha overlays -->
+    <color name="surface_light_alpha_08">#14000000</color>
+    <color name="surface_light_alpha_05">#0D000000</color>
+
+    <!-- Calendar -->
     <color name="calendar_badge_end">@color/secondary_container</color>
     <color name="calendar_badge_start">@color/primary_container</color>
     <color name="calendar_badge_stroke">@color/divider</color>
     <color name="calendar_dot_end">@color/secondary_container</color>
     <color name="calendar_dot_start">@color/primary_container</color>
+
+    <!-- Primary alpha overlays -->
     <color name="primary_alpha_15">#267566E8</color>
     <color name="primary_light_alpha_stroke">#33A99CFF</color>
     <color name="primary_light_alpha_bg">#1AA99CFF</color>
-    <color name="error_alpha_15">#26FFB4AB</color>
-    <color name="gold">#FFFFD166</color>
+    <color name="error_alpha_15">#26D32F2F</color>
+
+    <!-- Gold / Rating -->
+    <color name="gold">#FFE5A800</color>
     <color name="rating_gold">@color/gold</color>
     <color name="rating_star">@color/gold</color>
     <color name="badge_rating">@color/gold</color>
+
+    <!-- Details -->
     <color name="details_background">@color/background</color>
     <color name="accent_primary">@color/primary</color>
     <color name="accent_primary_transparent">@color/primary_alpha_15</color>
-    <color name="poster_placeholder_dark">#FF252D3C</color>
-    <color name="details_surface_transparent">#E60A0A0C</color>
+    <color name="poster_placeholder_dark">#FFE0D8EB</color>
+    <color name="details_surface_transparent">#E6F5F3FA</color>
+
+    <!-- Action colors -->
     <color name="action_planned">@color/primary</color>
     <color name="action_planned_bg">#267566E8</color>
     <color name="action_planned_stroke">@color/primary</color>
     <color name="action_watched">@color/success</color>
-    <color name="action_watched_bg">#264DD4A2</color>
+    <color name="action_watched_bg">#2600C853</color>
     <color name="action_watched_stroke">@color/success</color>
-    <color name="action_watching">#FF7CA8FF</color>
-    <color name="action_watching_bg">#267CA8FF</color>
+    <color name="action_watching">#FF4A7FD4</color>
+    <color name="action_watching_bg">#264A7FD4</color>
     <color name="action_watching_stroke">@color/action_watching</color>
     <color name="action_collection">@color/secondary_container</color>
-    <color name="action_collection_bg">#2658D6C9</color>
+    <color name="action_collection_bg">#2600B8D4</color>
     <color name="action_collection_stroke">@color/action_collection</color>
-    <color name="action_share">#FF79B8FF</color>
-    <color name="action_share_bg">#2679B8FF</color>
+    <color name="action_share">#FF4A7FD4</color>
+    <color name="action_share_bg">#264A7FD4</color>
     <color name="action_share_stroke">@color/action_share</color>
     <color name="action_rate">@color/gold</color>
     <color name="action_rate_stroke">@color/gold</color>
-    <color name="action_rate_bg">#26FFD166</color>
-    <color name="action_rate_track">#33FFD166</color>
+    <color name="action_rate_bg">#26E5A800</color>
+    <color name="action_rate_track">#33E5A800</color>
+
+    <!-- Named accent colors -->
     <color name="success_green_light">@color/success_light</color>
     <color name="accent_purple_light">@color/primary_light</color>
-    <color name="accent_blue">#FF7CA8FF</color>
-    <color name="social_accent">#FFFF7AA8</color>
-    <color name="social_accent_alpha_stroke">#33FF7AA8</color>
-    <color name="social_accent_alpha_bg">#1AFF7AA8</color>
-    <color name="social_accent_alpha_icon">#80FF7AA8</color>
-    <color name="chip_movie_bg">#267CA8FF</color>
-    <color name="chip_tv_bg">#2658D6C9</color>
-    <color name="chip_genre_bg">#1AFFFFFF</color>
+    <color name="accent_blue">#FF4A7FD4</color>
+
+    <!-- Social -->
+    <color name="social_accent">#FFE84080</color>
+    <color name="social_accent_alpha_stroke">#33E84080</color>
+    <color name="social_accent_alpha_bg">#1AE84080</color>
+    <color name="social_accent_alpha_icon">#80E84080</color>
+
+    <!-- Chip backgrounds (alpha on light) -->
+    <color name="chip_movie_bg">#264A7FD4</color>
+    <color name="chip_tv_bg">#2600B8D4</color>
+    <color name="chip_genre_bg">#1A49454F</color>
     <color name="chip_genre_text">@color/on_surface</color>
-    <color name="chip_stroke_color">#33FFFFFF</color>
+    <color name="chip_stroke_color">#33000000</color>
+
+    <!-- Gradients -->
     <color name="gradient_accent_end">@color/secondary_container</color>
     <color name="gradient_accent_start">@color/primary_container</color>
     <color name="gradient_card_start">@color/surface_elevated</color>
     <color name="gradient_card_end">@color/surface</color>
-    <color name="shimmer_base">#14FFFFFF</color>
-    <color name="tab_text_inactive">#FF8D94A5</color>
-    <color name="ripple_color">#33A99CFF</color>
-    <color name="status_watched">#264DD4A2</color>
+
+    <!-- Shimmer -->
+    <color name="shimmer_base">#14000000</color>
+
+    <!-- Tab text -->
+    <color name="tab_text_inactive">#FF6E6B7B</color>
+
+    <!-- Ripple -->
+    <color name="ripple_color">#336366F1</color>
+
+    <!-- Status badges -->
+    <color name="status_watched">#2600C853</color>
     <color name="status_planned">#267566E8</color>
-    <color name="status_watching">#267CA8FF</color>
-    <color name="status_search">#2658D6C9</color>
+    <color name="status_watching">#264A7FD4</color>
+    <color name="status_search">#2600B8D4</color>
 </resources>

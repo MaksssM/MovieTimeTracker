@@ -24,6 +24,7 @@
     <string name="main_menu_title">Main Menu</string>
     <string name="movies_category">Movies</string>
     <string name="tv_shows_category">TV Shows</string>
+    <string name="total">Total</string>
     <string name="total_time_spent">Total Time</string>
     <string name="watched_movies">Watched Movies</string>
     <string name="watched_tv_shows">Watched TV Shows</string>
@@ -84,11 +85,11 @@
     <string name="minutes_short">min</string>
 
     <!-- Time formatting -->
-    <string name="time_format_hours">%d h</string>
-    <string name="time_format_minutes">%d min</string>
-    <string name="time_format_hours_minutes">%d h %d min</string>
-    <string name="time_format_days">%d d</string>
-    <string name="time_format_days_hours">%d d %d h</string>
+    <string name="time_format_hours">%1$d h</string>
+    <string name="time_format_minutes">%1$d min</string>
+    <string name="time_format_hours_minutes">%1$d h %2$d min</string>
+    <string name="time_format_days">%1$d d</string>
+    <string name="time_format_days_hours">%1$d d %2$d h</string>
 
     <!-- Category buttons -->
     <string name="watched">Watched</string>
@@ -111,6 +112,15 @@
     <string name="avg_rating">Avg Rating</string>
     <string name="rating_short">Rating</string>
     <string name="categories">Categories</string>
+    <string name="categories_subtitle">Your personal lists and media library</string>
+    <string name="recommendations_subtitle">Based on your viewing preferences</string>
+    <string name="recent_activity_subtitle">Latest watched and added titles</string>
+    <string name="watched_content_desc">Watched content</string>
+    <string name="planned_content_desc">In your watchlist</string>
+    <string name="category_breakdown_format">%1$d movies • %2$d TV</string>
+    <string name="this_year_streak_format">✨ %d this year</string>
+    <string name="streak_days_format">🔥 %d days streak</string>
+    <string name="tracker_badge">🎬 TRACKER</string>
     <string name="quick_actions">Quick Actions</string>
     <string name="collections">Collections</string>
     <string name="trending">Trending</string>
@@ -295,7 +305,7 @@
     <string name="backup_restore_in_progress">Restoring…</string>
     <string name="delete_backup_confirm">Delete this backup?</string>
     <string name="backup_auto_label">Auto</string>
-    <string name="backup_counts_format" formatted="false">%1$d watched · %2$d planned · %3$d watching</string>
+    <string name="backup_counts_format">%1$d watched · %2$d planned · %3$d watching</string>
     <string name="backup_kb_unit">KB</string>
     <string name="import_backup">Import Backup</string>
     <string name="import_backup_desc">Restore data from file</string>
@@ -475,9 +485,9 @@
     <string name="specials">Specials</string>
     <string name="episode_format">E%d</string>
     <string name="episode_full_format">Episode %d</string>
-    <string name="season_progress_format" formatted="false">%d/%d watched • %s</string>
+    <string name="season_progress_format">%1$d/%2$d watched • %3$s</string>
     <string name="total_episodes_format">%d episodes</string>
-    <string name="watched_episodes_format" formatted="false">%d/%d watched</string>
+    <string name="watched_episodes_format">%1$d/%2$d watched</string>
     <string name="episode_runtime_format">%d min</string>
     <string name="save">Save</string>
     <string name="save_progress">Save Progress</string>
@@ -519,9 +529,9 @@
     <string name="sort_by_runtime_long">Runtime (Longest)</string>
     <string name="sort_by_runtime_short">Runtime (Shortest)</string>
     
-    <string name="selected_episodes_count" formatted="false">Selected %d of %d episodes</string>
+    <string name="selected_episodes_count">Selected %1$d of %2$d episodes</string>
     <string name="total_runtime_format">~%s total</string>
-    <string name="seasons_episodes_format" formatted="false">%d seasons • %d episodes</string>
+    <string name="seasons_episodes_format">%1$d seasons • %2$d episodes</string>
     
     <!-- Details Screen -->
     <string name="user_score">User Score</string>
@@ -570,10 +580,34 @@
     <string name="watch_time_equivalent_hours">≈ %.1f hours of continuous viewing</string>
     <string name="avg_movie_rating">Avg Movie Rating</string>
     <string name="avg_tv_rating">Avg TV Rating</string>
-    <string name="favorite_genres">Favorite Genres</string>
     <string name="favorite_directors">Favorite Directors</string>
+    <string name="favorite_actors">Favorite Actors</string>
+    <string name="favorite_genres">Favorite Genres</string>
     <string name="no_genre_data">No genre data available</string>
     <string name="no_director_data">Loading directors...</string>
+    <string name="no_actor_data">Loading actors...</string>
+
+    <!-- Randomizer Strings -->
+
+    <string name="what_to_watch">What to Watch?</string>
+    <string name="randomizer_subtitle">Let smart recommendations pick the perfect movie for tonight</string>
+    <string name="spin_wheel">Pick Random</string>
+    <string name="spin_again">Pick Another</string>
+    <string name="source_planned">From Planned</string>
+    <string name="source_recommendations">Smart AI Picks</string>
+    <string name="source_top_rated">Top Rated</string>
+    <string name="no_random_items">No content found for selected filters</string>
+    
+    <!-- Next Episode Widget -->
+    <string name="next_episode">Next Episode</string>
+    <string name="mark_episode_watched">Watched +1</string>
+    <string name="season_episode_format">S%1$02dE%2$02d</string>
+    <string name="episode_marked_toast">Episode marked as watched!</string>
+    
+    <!-- Countdown Badges -->
+    <string name="countdown_today">🔥 Today</string>
+    <string name="countdown_tomorrow">⚡ Tomorrow</string>
+    <string name="countdown_days">In %d days</string>
     <string name="longest_movie">Longest Movie</string>
     <string name="most_rewatched">Most Rewatched</string>
     <string name="content_ratio">Content Ratio</string>
@@ -601,6 +635,8 @@
     <string name="personal_tips">Tips for You</string>
     <string name="refresh">Refresh</string>
     <string name="back">Back</string>
+    <string name="coming_soon">Coming soon!</string>
+    <string name="feature_in_development">This feature is currently in development</string>
     <string name="play">Watch</string>
     <string name="open">Open</string>
     <string name="tomorrow">Tomorrow</string>

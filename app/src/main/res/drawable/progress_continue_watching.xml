@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Light variant: progress bar with dark alpha track -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape>
-            <solid android:color="#22FFFFFF" />
+            <solid android:color="#20000000" />
             <corners android:radius="3dp" />
         </shape>
     </item>

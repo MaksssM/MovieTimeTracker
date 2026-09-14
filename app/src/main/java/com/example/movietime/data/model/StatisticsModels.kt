@@ -21,6 +21,9 @@ data class DetailedStatistics(
     // Favorite directors (sorted by count)
     val favoriteDirectors: List<DirectorStatItem> = emptyList(),
     
+    // Favorite actors (sorted by count)
+    val favoriteActors: List<ActorStatItem> = emptyList(),
+    
     // Watch patterns
     val watchedByYear: Map<Int, Int> = emptyMap(),
     val watchedByMonth: Map<Int, Int> = emptyMap(),
@@ -90,6 +93,20 @@ data class DirectorStatItem(
     val directorId: Int,
     val directorName: String,
     val profilePath: String? = null,
+    val moviesWatched: Int = 0,
+    val totalWatchTimeMinutes: Long = 0,
+    val averageRating: Float = 0f,
+    val movieTitles: List<String> = emptyList()
+)
+
+/**
+ * Actor statistics item
+ */
+data class ActorStatItem(
+    val actorId: Int,
+    val actorName: String,
+    val profilePath: String? = null,
+    val characterName: String? = null,
     val moviesWatched: Int = 0,
     val totalWatchTimeMinutes: Long = 0,
     val averageRating: Float = 0f,

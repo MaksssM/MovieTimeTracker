@@ -21,11 +21,11 @@
                 android:icon="@drawable/ic_check_24"
                 android:title="@string/nav_watched" />
             <item
-                android:id="@+id/nav_planned"
+                android:id="@+id/plannedFragment"
                 android:icon="@drawable/ic_bookmark_filled_24"
                 android:title="@string/nav_planned" />
             <item
-                android:id="@+id/nav_watching"
+                android:id="@+id/watchingFragment"
                 android:icon="@drawable/ic_play_circle_24"
                 android:title="@string/nav_watching" />
         </menu>

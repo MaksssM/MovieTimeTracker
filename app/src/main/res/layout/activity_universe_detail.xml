@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     tools:text="Marvel Cinematic Universe" />
 
                 <LinearLayout
@@ -74,7 +74,7 @@
                         android:layout_weight="1"
                         app:trackCornerRadius="3dp"
                         app:trackThickness="6dp"
-                        app:indicatorColor="#FFFFFF"
+                        app:indicatorColor="@color/text_primary"
                         app:trackColor="#55FFFFFF"
                         tools:progress="45" />
 
@@ -83,7 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/text_primary"
                         android:textStyle="bold"
                         android:layout_marginStart="10dp"
                         tools:text="23 / 51" />

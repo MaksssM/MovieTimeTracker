@@ -25,16 +25,7 @@ class SimpleEnhancedRepository @Inject constructor(
 
                 // Calculate watch time from runtime, multiplying by watchCount for rewatches
                 val totalWatchTimeMinutes = watchedItems.sumOf { (it.runtime ?: 0) * it.watchCount }
-                android.util.Log.d("SimpleEnhancedRepository", "Calculated totalWatchTimeMinutes: $totalWatchTimeMinutes from ${watchedItems.size} items")
-                watchedItems.forEach { item ->
-                    android.util.Log.d("SimpleEnhancedRepository", "  - ${item.title}: runtime=${item.runtime}, watchCount=${item.watchCount}, total=${(item.runtime ?: 0) * item.watchCount}, mediaType=${item.mediaType}, episodes=${item.totalEpisodes}, episodeRuntime=${item.episodeRuntime}")
 
-                    // Перевірка: якщо runtime null або 0 для серіалу, спробуємо перерахувати
-                    if (item.mediaType == "tv" && (item.runtime == null || item.runtime == 0)) {
-                        val calculatedRuntime = (item.totalEpisodes ?: 0) * (item.episodeRuntime ?: 45)
-                        android.util.Log.w("SimpleEnhancedRepository", "  ⚠️ TV show '${item.title}' has null/zero runtime! Calculated: $calculatedRuntime (${item.totalEpisodes} eps × ${item.episodeRuntime} min)")
-                    }
-                }
 
                 // Calculate average user rating from items with ratings
                 val itemsWithRatings = watchedItems.filter { it.userRating != null && it.userRating > 0 }

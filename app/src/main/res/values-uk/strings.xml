@@ -23,6 +23,7 @@
     <string name="main_menu_title">Головне меню</string>
     <string name="movies_category">Фільми</string>
     <string name="tv_shows_category">Серіали</string>
+    <string name="total">Всього</string>
     <string name="total_time_spent">Загальний час</string>
     <string name="watched_movies">Переглянуті фільми</string>
     <string name="watched_tv_shows">Переглянуті серіали</string>
@@ -95,6 +96,15 @@
     <string name="avg_rating">Середній рейтинг</string>
     <string name="rating_short">Рейтинг</string>
     <string name="categories">Категорії</string>
+    <string name="categories_subtitle">Ваші персональні списки та медіатека</string>
+    <string name="recommendations_subtitle">Підібрано на основі ваших вподобань</string>
+    <string name="recent_activity_subtitle">Останні переглянуті та додані фільми</string>
+    <string name="watched_content_desc">Переглянутий контент</string>
+    <string name="planned_content_desc">У списку очікування</string>
+    <string name="category_breakdown_format">%1$d фільм. • %2$d сер.</string>
+    <string name="this_year_streak_format">✨ %d цього року</string>
+    <string name="streak_days_format">🔥 %d дн. поспіль</string>
+    <string name="tracker_badge">🎬 ТРЕКЕР</string>
     <string name="quick_actions">Швидкі дії</string>
     <string name="collections">Колекції</string>
     <string name="trending">Тренди</string>
@@ -150,11 +160,11 @@
     <string name="undo">Скасувати</string>
 
     <!-- Time formatting -->
-    <string name="time_format_hours">%d год</string>
-    <string name="time_format_minutes">%d хв</string>
-    <string name="time_format_hours_minutes" formatted="false">%d год %d хв</string>
-    <string name="time_format_days">%d д</string>
-    <string name="time_format_days_hours" formatted="false">%d д %d год</string>
+    <string name="time_format_hours">%1$d год</string>
+    <string name="time_format_minutes">%1$d хв</string>
+    <string name="time_format_hours_minutes">%1$d год %2$d хв</string>
+    <string name="time_format_days">%1$d д</string>
+    <string name="time_format_days_hours">%1$d д %2$d год</string>
 
     <!-- Additional missing strings -->
     <string name="total_time">Загальний час</string>
@@ -290,7 +300,7 @@
     <string name="backup_restore_in_progress">Відновлення…</string>
     <string name="delete_backup_confirm">Видалити цю резервну копію?</string>
     <string name="backup_auto_label">Авто</string>
-    <string name="backup_counts_format" formatted="false">%1$d переглян. · %2$d заплан. · %3$d дивлюся</string>
+    <string name="backup_counts_format">%1$d переглян. · %2$d заплан. · %3$d дивлюся</string>
     <string name="backup_kb_unit">КБ</string>
     <string name="import_backup">Імпортувати бекап</string>
     <string name="import_backup_desc">Відновити дані з файлу</string>
@@ -472,9 +482,9 @@
     <string name="specials">Спеціальні випуски</string>
     <string name="episode_format">Е%d</string>
     <string name="episode_full_format">Епізод %d</string>
-    <string name="season_progress_format" formatted="false">%d/%d переглянуто • %s</string>
+    <string name="season_progress_format">%1$d/%2$d переглянуто • %3$s</string>
     <string name="total_episodes_format">%d епізодів</string>
-    <string name="watched_episodes_format" formatted="false">%d/%d переглянуто</string>
+    <string name="watched_episodes_format">%1$d/%2$d переглянуто</string>
     <string name="episode_runtime_format">%d хв</string>
     <string name="save">Зберегти</string>
     <string name="save_progress">Зберегти прогрес</string>
@@ -495,9 +505,9 @@
     <string name="delete_confirmation_title">Підтвердження видалення</string>
     <string name="delete_watched_confirmation">Видалити "%1$s" з переглянутих?</string>
     <string name="item_deleted">Видалено</string>
-    <string name="selected_episodes_count" formatted="false">Обрано %d з %d серій</string>
+    <string name="selected_episodes_count">Обрано %1$d з %2$d серій</string>
     <string name="total_runtime_format">~%s загалом</string>
-    <string name="seasons_episodes_format" formatted="false">%d сезонів • %d серій</string>
+    <string name="seasons_episodes_format">%1$d сезонів • %2$d серій</string>
     
     <!-- Details Screen -->
     <string name="user_score">Оцінка</string>
@@ -572,6 +582,8 @@
     <string name="personal_tips">Підказки для вас</string>
     <string name="refresh">Оновити</string>
     <string name="back">Назад</string>
+    <string name="coming_soon">Скоро буде!</string>
+    <string name="feature_in_development">Ця функція знаходиться в розробці</string>
     <string name="play">Дивитися</string>
     <string name="open">Відкрити</string>
     <string name="tomorrow">Завтра</string>
@@ -730,10 +742,21 @@
     <string name="share_wrapped_template">🎬 Мій Кінорік %1$d 🎬\n\n⏱️ Переглянув: %2$s\n🎬 Фільмів: %3$d\n📺 Епізодів: %4$d\n⭐ Фаворит: %5$s\n\n#MovieTimeWrapped #КіноРік%1$d</string>
     <string name="share_wrapped_template_no_favorite">🎬 Мій Кінорік %1$d 🎬\n\n⏱️ Переглянув: %2$s\n🎬 Фільмів: %3$d\n📺 Епізодів: %4$d\n\n#MovieTimeWrapped #КіноРік%1$d</string>
 
-    <plurals name="episodes_count">
-        <item quantity="one">%d серія</item>
-        <item quantity="few">%d серії</item>
-        <item quantity="many">%d серій</item>
-        <item quantity="other">%d серій</item>
-    </plurals>
+    <string name="favorite_actors">Улюблені актори</string>
+    <string name="no_actor_data">Завантаження акторів...</string>
+    <string name="what_to_watch">Що подивитися?</string>
+    <string name="randomizer_subtitle">Дозвольте розумному підбору обрати ідеальний фільм на вечір</string>
+    <string name="spin_wheel">Обрати випадковий</string>
+    <string name="spin_again">Обрати інший</string>
+    <string name="source_planned">Зі списку запланованих</string>
+    <string name="source_recommendations">Розумні AI-підбірки</string>
+    <string name="source_top_rated">Топ рейтинг</string>
+    <string name="no_random_items">Не знайдено контенту за обраними фільтрами</string>
+    <string name="next_episode">Наступна серія</string>
+    <string name="mark_episode_watched">Переглянуто +1</string>
+    <string name="season_episode_format">S%1$02dE%2$02d</string>
+    <string name="episode_marked_toast">Серію відзначено як переглянуту!</string>
+    <string name="countdown_today">🔥 Сьогодні</string>
+    <string name="countdown_tomorrow">⚡ Завтра</string>
+    <string name="countdown_days">Через %d дн.</string>
 </resources>

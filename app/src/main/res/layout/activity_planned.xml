@@ -4,38 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_main_premium">
+    android:background="#000000">
 
-    <!-- Floating orbs -->
-    <View
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:layout_gravity="top|end"
-        android:translationX="80dp"
-        android:translationY="-80dp"
-        android:background="@drawable/bg_floating_orb_accent"
-        android:alpha="0.35" />
-
-    <View
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="bottom|start"
-        android:translationX="-60dp"
-        android:translationY="-150dp"
-        android:background="@drawable/bg_floating_orb_primary"
-        android:alpha="0.25" />
+    <!-- Ambient nebula background view -->
+    <com.example.movietime.ui.views.NebulaBackgroundView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Custom Gradient Header -->
+        <!-- Top AppBar with Navigation -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="0dp"
+            app:elevation="0dp"
             android:background="@android:color/transparent">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -44,31 +31,32 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/transparent"
                 app:navigationIcon="@drawable/ic_arrow_back_24"
-                app:navigationIconTint="@color/text_primary" />
+                app:navigationIconTint="@color/icon_tint"
+                app:titleTextColor="@color/text_primary" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- Header Banner -->
+        <!-- Header Banner & Stats -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:paddingHorizontal="20dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="16dp">
+            android:paddingTop="2dp"
+            android:paddingBottom="12dp">
 
             <FrameLayout
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@drawable/bg_icon_glow_accent">
+                android:background="@drawable/bg_icon_3d_accent">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_bookmark_24"
-                    app:tint="@android:color/white"
+                    app:tint="#C084FC"
                     android:contentDescription="@null" />
 
             </FrameLayout>
@@ -92,245 +80,375 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/your_planned_content"
-                    android:textSize="13sp"
-                    android:textColor="@color/text_secondary" />
+                    android:text="@string/planned_content_desc"
+                    android:textSize="12sp"
+                    android:textColor="#64748B"
+                    android:layout_marginTop="2dp" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <!-- Hero Stats Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardHeroStats"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#141622"
+            app:cardBackgroundColor="#08090D">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="8dp"
-                android:paddingBottom="80dp">
+                android:orientation="horizontal"
+                android:paddingVertical="14dp"
+                android:paddingHorizontal="12dp"
+                android:gravity="center_vertical">
 
-                <!-- Filter Tabs - Premium Glass Style -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginBottom="24dp"
-                    app:cardCornerRadius="18dp"
-                    app:cardElevation="0dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="@color/divider"
-                    app:cardBackgroundColor="@color/card_background_alpha">
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tabLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        app:tabMode="fixed"
-                        app:tabGravity="fill"
-                        app:tabIndicator="@drawable/bg_tab_indicator_gradient"
-                        app:tabIndicatorHeight="3dp"
-                        app:tabIndicatorGravity="bottom"
-                        app:tabSelectedTextColor="@color/text_primary"
-                        app:tabTextColor="@color/tab_text_inactive"
-                        app:tabRippleColor="@color/ripple_color"
-                        app:tabIndicatorFullWidth="false">
-
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/all" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/movies" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/tv_shows" />
-
-                    </com.google.android.material.tabs.TabLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Sort & Search controls -->
+                <!-- Total Stat -->
                 <LinearLayout
-                    android:id="@+id/layoutSortControls"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="4dp">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="1dp"
-                        app:strokeColor="@color/divider"
-                        app:cardBackgroundColor="@color/card_background_glass">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="12dp">
-
-                            <ImageView
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:src="@drawable/ic_search"
-                                app:tint="@color/text_secondary"
-                                android:contentDescription="@string/search_hint" />
-
-                            <EditText
-                                android:id="@+id/etSearch"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginStart="8dp"
-                                android:background="@android:color/transparent"
-                                android:hint="@string/search_in_list"
-                                android:textSize="13sp"
-                                android:textColor="@color/text_primary"
-                                android:textColorHint="@color/text_hint"
-                                android:inputType="text"
-                                android:imeOptions="actionSearch"
-                                android:maxLines="1"
-                                android:singleLine="true" />
-
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <ImageButton
-                        android:id="@+id/btnSort"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="8dp"
-                        android:src="@drawable/ic_sort"
-                        android:background="@drawable/bg_quick_action_glass"
-                        android:padding="8dp"
-                        app:tint="@color/text_secondary"
-                        android:contentDescription="@string/sort" />
-
-                </LinearLayout>
-
-                <!-- Planned Content List -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvPlanned"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    android:clipToPadding="false"
-                    android:paddingHorizontal="16dp"
-                    tools:listitem="@layout/item_planned" />
-
-                <!-- Empty State -->
-                <LinearLayout
-                    android:id="@+id/layoutEmpty"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center"
-                    android:visibility="gone">
-
-                    <FrameLayout
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:background="@drawable/bg_icon_glow_accent"
-                        android:layout_marginBottom="20dp">
-
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_bookmark_24"
-                            app:tint="@android:color/white" />
-
-                    </FrameLayout>
+                    android:gravity="center">
 
                     <TextView
+                        android:id="@+id/tvPlannedTotalCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/no_planned_content"
+                        android:text="0"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
-                        android:layout_marginBottom="8dp" />
+                        android:fontFamily="sans-serif-medium"
+                        tools:text="14" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_content_to_planned"
-                        android:textColor="@color/text_secondary"
-                        android:gravity="center"
-                        android:layout_marginBottom="24dp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnBrowseContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/browse_content"
-                        app:icon="@drawable/ic_search_24"
-                        app:backgroundTint="#60A5FA"
-                        android:textColor="@color/text_primary"
-                        app:iconTint="@android:color/white"
-                        app:cornerRadius="16dp" />
+                        android:text="@string/total"
+                        android:textSize="10sp"
+                        android:textColor="#64748B"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.06"
+                        android:layout_marginTop="2dp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
-                <!-- Loading Indicator -->
-                <LinearLayout
-                    android:id="@+id/layoutLoading"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:visibility="gone">
+                <!-- Hairline Divider -->
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="32dp"
+                    android:background="#161822" />
 
-                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                <!-- Movies Stat -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tvPlannedMoviesCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        app:indicatorColor="#C084FC"
-                        app:trackColor="#30C084FC" />
+                        android:text="0"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="#7CA8FF"
+                        android:fontFamily="sans-serif-medium"
+                        tools:text="8" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/loading"
-                        android:textColor="@color/text_secondary" />
+                        android:text="@string/movies"
+                        android:textSize="10sp"
+                        android:textColor="#64748B"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.06"
+                        android:layout_marginTop="2dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <!-- Hairline Divider -->
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="32dp"
+                    android:background="#161822" />
+
+                <!-- TV Series Stat -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tvPlannedTvCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="#C084FC"
+                        android:fontFamily="sans-serif-medium"
+                        tools:text="6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tv_shows"
+                        android:textSize="10sp"
+                        android:textColor="#64748B"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.06"
+                        android:layout_marginTop="2dp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </androidx.core.widget.NestedScrollView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <!-- Floating Action Button -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabAddPlanned"
-            android:layout_width="wrap_content"
+        <!-- Modern Segmented Filter Tabs -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="24dp"
-            android:contentDescription="@string/add_to_planned"
-            android:src="@drawable/ic_add_24"
-            app:tint="@android:color/white"
-            app:backgroundTint="#C084FC"
-            app:elevation="12dp"
-            app:borderWidth="0dp"
-            app:fabCustomSize="56dp" />
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#161822"
+            app:cardBackgroundColor="#08090D">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="@android:color/transparent"
+                app:tabMode="fixed"
+                app:tabGravity="fill"
+                app:tabIndicator="@drawable/bg_tab_indicator_gradient"
+                app:tabIndicatorHeight="3dp"
+                app:tabIndicatorGravity="bottom"
+                app:tabSelectedTextColor="@color/text_primary"
+                app:tabTextColor="#64748B"
+                app:tabRippleColor="#15A855F7"
+                app:tabIndicatorFullWidth="false">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/movies" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tv_shows" />
+
+            </com.google.android.material.tabs.TabLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Search & Sort Controls -->
+        <LinearLayout
+            android:id="@+id/layoutSortControls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="8dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#161822"
+                app:cardBackgroundColor="#08090D">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="14dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_search"
+                        app:tint="#A855F7"
+                        android:contentDescription="@string/search_hint" />
+
+                    <EditText
+                        android:id="@+id/etSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/search_in_list"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="#475569"
+                        android:inputType="text"
+                        android:imeOptions="actionSearch"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <ImageButton
+                android:id="@+id/btnSort"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_sort"
+                android:background="@drawable/bg_quick_action_glass"
+                android:padding="10dp"
+                app:tint="#A855F7"
+                android:contentDescription="@string/sort" />
+
+        </LinearLayout>
+
+        <!-- Main Content Area -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Planned Content RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPlanned"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="4dp"
+                android:paddingBottom="84dp"
+                tools:listitem="@layout/item_planned" />
+
+            <!-- Empty State -->
+            <LinearLayout
+                android:id="@+id/layoutEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="32dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <FrameLayout
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:background="@drawable/bg_icon_3d_accent"
+                    android:layout_marginBottom="20dp">
+
+                    <ImageView
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_bookmark_24"
+                        app:tint="#C084FC"
+                        android:contentDescription="@null" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_planned_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_content_to_planned"
+                    android:textColor="#64748B"
+                    android:textSize="13sp"
+                    android:gravity="center"
+                    android:layout_marginBottom="24dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBrowseContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="@string/browse_content"
+                    app:icon="@drawable/ic_search_24"
+                    app:backgroundTint="#7C3AED"
+                    android:textColor="@color/text_primary"
+                    app:iconTint="@color/icon_tint"
+                    app:cornerRadius="16dp" />
+
+            </LinearLayout>
+
+            <!-- Loading Indicator -->
+            <LinearLayout
+                android:id="@+id/layoutLoading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:indicatorColor="#A855F7"
+                    app:trackColor="#30A855F7" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loading"
+                    android:textColor="#64748B" />
+
+            </LinearLayout>
+
+            <!-- Floating Action Button -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabAddPlanned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="24dp"
+                android:contentDescription="@string/add_to_planned"
+                android:src="@drawable/ic_add_24"
+                app:tint="@color/icon_tint"
+                app:backgroundTint="#7C3AED"
+                app:elevation="8dp"
+                app:borderWidth="0dp"
+                app:fabCustomSize="56dp" />
+
+        </FrameLayout>
 
     </LinearLayout>
 

@@ -135,17 +135,23 @@ class AppRepository @Inject constructor(
             d("Fallback en-US results: movies=${enMovies.size} tv=${enTv.size}")
 
             if (enMovies.isNotEmpty() || enTv.isNotEmpty()) {
-                // Пере-запрашиваем найденные элементы на текущем языке
-                val translatedMovies = enMovies.mapNotNull { movie ->
-                    try {
-                        api.getMovieDetails(movie.id, apiKey, currentLanguage)
-                    } catch (_: Exception) { movie }
+                // Пере-запрашиваем найденные элементы на текущем языке параллельно з кешуванням
+                val translatedMoviesDeferred = enMovies.map { movie ->
+                    async {
+                        try {
+                            getMovieDetails(movie.id)
+                        } catch (_: Exception) { movie }
+                    }
                 }
-                val translatedTv = enTv.mapNotNull { tv ->
-                    try {
-                        api.getTvShowDetails(tv.id, apiKey, currentLanguage)
-                    } catch (_: Exception) { tv }
+                val translatedTvDeferred = enTv.map { tv ->
+                    async {
+                        try {
+                            getTvShowDetails(tv.id)
+                        } catch (_: Exception) { tv }
+                    }
                 }
+                val translatedMovies = translatedMoviesDeferred.awaitAll()
+                val translatedTv = translatedTvDeferred.awaitAll()
                 val result = (translatedMovies + translatedTv) as List<Any>
                 d("Translated fallback results: ${result.size}")
                 return@coroutineScope result
@@ -304,11 +310,11 @@ class AppRepository @Inject constructor(
 
     // --- Planned Content Methods ---
     @Suppress("unused")
-    fun getPlannedContent(): LiveData<List<PlannedItem>> {
+    fun getPlannedItems(): LiveData<List<PlannedItem>> {
         return plannedDao.getAll()
     }
 
-    suspend fun getPlannedContentSync(): List<WatchedItem> {
+    suspend fun getPlannedItemsSync(): List<WatchedItem> {
         return plannedDao.getAllSync().map { plannedItem ->
             WatchedItem(
                 id = plannedItem.id,
@@ -370,11 +376,11 @@ class AppRepository @Inject constructor(
 
     // --- Watching Content Methods ---
     @Suppress("unused")
-    fun getWatchingContent(): LiveData<List<WatchingItem>> {
+    fun getWatchingItems(): LiveData<List<WatchingItem>> {
         return watchingDao.getAll()
     }
 
-    suspend fun getWatchingContentSync(): List<WatchedItem> {
+    suspend fun getWatchingItemsSync(): List<WatchedItem> {
         return watchingDao.getAllSync().map { watchingItem ->
             WatchedItem(
                 id = watchingItem.id,
@@ -385,6 +391,29 @@ class AppRepository @Inject constructor(
                 mediaType = watchingItem.mediaType
             )
         }
+    }
+
+    /**
+     * Returns the original watching rows, including season and episode pointers.
+     * UI that tracks individual episodes must not use the WatchedItem projection,
+     * because that projection intentionally has no episode-progress fields.
+     */
+    suspend fun getWatchingItemsRawSync(): List<WatchingItem> = watchingDao.getAllSync()
+
+    /** Saves the lightweight episode pointer used before detailed episode data is loaded. */
+    suspend fun updateWatchingEpisodePosition(
+        id: Int,
+        mediaType: String,
+        seasonNumber: Int,
+        episodeNumber: Int
+    ) {
+        val item = watchingDao.getById(id, mediaType) ?: return
+        watchingDao.insert(
+            item.copy(
+                currentSeason = seasonNumber,
+                currentEpisode = episodeNumber
+            )
+        )
     }
 
     suspend fun addToWatching(item: WatchedItem) {

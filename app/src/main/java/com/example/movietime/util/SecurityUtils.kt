@@ -166,11 +166,11 @@ object SecurityUtils {
      */
     fun sanitizeInput(input: String): String {
         return input
+            .replace("&", "&amp;")
             .replace("<", "&lt;")
             .replace(">", "&gt;")
             .replace("\"", "&quot;")
             .replace("'", "&#x27;")
-            .replace("&", "&amp;")
             .trim()
     }
 

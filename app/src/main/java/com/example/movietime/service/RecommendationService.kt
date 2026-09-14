@@ -196,7 +196,18 @@ class RecommendationService @Inject constructor(
             .sortedByDescending { it.popularity }
             .take(MAX_RESULTS_PER_TYPE)
 
-        val result = PersonalizedRecommendations(finalMovies, finalTv)
+        val result = if (finalMovies.isEmpty() && finalTv.isEmpty()) {
+            getPopularFallback()
+        } else {
+            PersonalizedRecommendations(
+                movies = finalMovies.ifEmpty {
+                    try { repository.getPopularMovies().results.take(10) } catch (_: Exception) { emptyList() }
+                },
+                tvShows = finalTv.ifEmpty {
+                    try { repository.getPopularTvShows().results.take(10) } catch (_: Exception) { emptyList() }
+                }
+            )
+        }
         cachedRecommendations = result
         lastRefreshTime = System.currentTimeMillis()
         result

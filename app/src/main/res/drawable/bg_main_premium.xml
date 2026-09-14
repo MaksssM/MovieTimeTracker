@@ -1,11 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Premium solid pure black background matching Transparent Lists -->
+<!-- Premium Cosmic Nebula Glow Background -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Solid Base Dark Background -->
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/background" />
+        </shape>
+    </item>
+
+    <!-- Glowing Spot 1 (Top-Right): Neon Magenta/Rose -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="450dp"
+                android:centerX="0.85"
+                android:centerY="0.1"
+                android:startColor="#14FF2E7A"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+
+    <!-- Glowing Spot 2 (Middle-Left): Amethyst Violet -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="550dp"
+                android:centerX="0.15"
+                android:centerY="0.45"
+                android:startColor="#1B8F3CFF"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+
+    <!-- Glowing Spot 3 (Bottom-Right): Cyber Cyan -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="650dp"
+                android:centerX="0.8"
+                android:centerY="0.8"
+                android:startColor="#1600D1FF"
+                android:endColor="#00000000" />
         </shape>
     </item>
 

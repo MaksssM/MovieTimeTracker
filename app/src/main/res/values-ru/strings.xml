@@ -24,6 +24,7 @@
     <string name="main_menu_title">Главное меню</string>
     <string name="movies_category">Фильмы</string>
     <string name="tv_shows_category">Сериалы</string>
+    <string name="total">Всего</string>
     <string name="total_time_spent">Общее время</string>
     <string name="watched_movies">Просмотренные фильмы</string>
     <string name="watched_tv_shows">Просмотренные сериалы</string>
@@ -76,21 +77,16 @@
     <!-- Category buttons -->
     <string name="watched">Просмотрено</string>
     <string name="watching">Смотрю</string>
-    <string name="added_to_planned">Добавлено в запланированные</string>
-    <string name="added_to_watching">Добавлено в «Смотрю»</string>
-    <string name="already_planned">Уже в запланированных</string>
-    <string name="already_watching">Уже в «Смотрю»</string>
-
-    <string name="planned_movies_count">Запланированные фильмы: %d</string>
-    <string name="planned_tv_shows_count">Запланированные сериалы: %d</string>
-    <string name="planned_content_count">Запланированный контент: %d</string>
-    <string name="total_watch_time">Общее время просмотра</string>
-    <string name="watch_time_desc">с начала ведения статистики</string>
-    <string name="this_month">В этом месяце</string>
-    <string name="quick_stats">Быстрая статистика</string>
-    <string name="avg_rating">Средний рейтинг</string>
-    <string name="rating_short">Рейтинг</string>
     <string name="categories">Категории</string>
+    <string name="categories_subtitle">Ваши личные списки и медиатека</string>
+    <string name="recommendations_subtitle">Подобрано на основе ваших предпочтений</string>
+    <string name="recent_activity_subtitle">Недавно просмотренные и добавленные фильмы</string>
+    <string name="watched_content_desc">Просмотренный контент</string>
+    <string name="planned_content_desc">В списке ожидания</string>
+    <string name="category_breakdown_format">%1$d фильм. • %2$d сер.</string>
+    <string name="this_year_streak_format">✨ %d в этом году</string>
+    <string name="streak_days_format">🔥 %d дн. подряд</string>
+    <string name="tracker_badge">🎬 ТРЕКЕР</string>
     <string name="quick_actions">Быстрые действия</string>
     <string name="collections">Коллекции</string>
     <string name="trending">Тренды</string>
@@ -145,11 +141,11 @@
     <string name="undo">Отменить</string>
 
     <!-- Time formatting -->
-    <string name="time_format_hours">%d ч</string>
-    <string name="time_format_minutes">%d мин</string>
-    <string name="time_format_hours_minutes" formatted="false">%d ч %d мин</string>
-    <string name="time_format_days">%d д</string>
-    <string name="time_format_days_hours" formatted="false">%d д %d ч</string>
+    <string name="time_format_hours">%1$d ч</string>
+    <string name="time_format_minutes">%1$d мин</string>
+    <string name="time_format_hours_minutes">%1$d ч %2$d мин</string>
+    <string name="time_format_days">%1$d д</string>
+    <string name="time_format_days_hours">%1$d д %2$d ч</string>
 
     <!-- Additional strings -->
     <string name="total_time">Общее время</string>
@@ -258,7 +254,7 @@
     <string name="backup_restore_in_progress">Восстановление…</string>
     <string name="delete_backup_confirm">Удалить эту резервную копию?</string>
     <string name="backup_auto_label">Авто</string>
-    <string name="backup_counts_format" formatted="false">%1$d просм. · %2$d запл. · %3$d смотрю</string>
+    <string name="backup_counts_format">%1$d просм. · %2$d запл. · %3$d смотрю</string>
     <string name="backup_kb_unit">КБ</string>
     <string name="import_backup">Импортировать бекап</string>
     <string name="import_backup_desc">Восстановить данные из файла</string>
@@ -532,6 +528,8 @@
     <string name="personal_tips">Подсказки для вас</string>
     <string name="refresh">Обновить</string>
     <string name="back">Назад</string>
+    <string name="coming_soon">Скоро будет!</string>
+    <string name="feature_in_development">Эта функция находится в разработке</string>
     <string name="play">Смотреть</string>
     <string name="open">Открыть</string>
     <string name="tomorrow">Завтра</string>
@@ -753,4 +751,21 @@
         <item quantity="many">%d серий</item>
         <item quantity="other">%d серий</item>
     </plurals>
+    <string name="favorite_actors">Любимые актеры</string>
+    <string name="no_actor_data">Загрузка актеров...</string>
+    <string name="what_to_watch">Что посмотреть?</string>
+    <string name="randomizer_subtitle">Позвольте умному подбору выбрать идеальный фильм на вечер</string>
+    <string name="spin_wheel">Выбрать случайный</string>
+    <string name="spin_again">Выбрать другой</string>
+    <string name="source_planned">Из запланированных</string>
+    <string name="source_recommendations">Умные AI-подборки</string>
+    <string name="source_top_rated">Топ рейтинг</string>
+    <string name="no_random_items">Не найдено контента по выбранным фильтрам</string>
+    <string name="next_episode">Следующая серия</string>
+    <string name="mark_episode_watched">Просмотрено +1</string>
+    <string name="season_episode_format">S%1$02dE%2$02d</string>
+    <string name="episode_marked_toast">Серия отмечена как просмотренная!</string>
+    <string name="countdown_today">🔥 Сегодня</string>
+    <string name="countdown_tomorrow">⚡ Завтра</string>
+    <string name="countdown_days">Через %d дн.</string>
 </resources>

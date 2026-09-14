@@ -45,19 +45,24 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="320dp"
+        android:layout_width="310dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@drawable/bg_drawer_modern"
-        android:paddingBottom="16dp"
+        android:paddingBottom="20dp"
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu"
         app:itemIconTint="@color/nav_drawer_icon_color"
         app:itemTextColor="@color/nav_drawer_text_color"
-        app:itemBackground="@color/nav_drawer_item_bg"
+        app:itemBackground="@drawable/selector_nav_item_premium"
         android:elevation="0dp"
-        app:itemTextAppearance="@style/TextAppearance.App.Body2"
+        app:itemShapeInsetStart="12dp"
+        app:itemShapeInsetEnd="12dp"
         app:itemHorizontalPadding="16dp"
-        app:itemIconPadding="16dp" />
+        app:itemIconPadding="14dp"
+        app:itemMaxLines="1"
+        app:dividerInsetStart="20dp"
+        app:dividerInsetEnd="20dp" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

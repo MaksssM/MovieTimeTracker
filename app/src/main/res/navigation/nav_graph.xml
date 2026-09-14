@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/watchedFragment"
         android:name="com.example.movietime.ui.main.WatchedFragment"
+        android:label="@string/nav_watched"
         tools:layout="@layout/fragment_watched">
         <action
             android:id="@+id/action_watched_to_main"
@@ -51,6 +52,50 @@
             app:exitAnim="@anim/smooth_fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out_bottom" />
+
+        <action
+            android:id="@+id/action_main_to_planned"
+            app:destination="@id/plannedFragment"
+            app:enterAnim="@anim/fragment_enter"
+            app:exitAnim="@anim/fragment_exit"
+            app:popEnterAnim="@anim/fragment_enter_backwards"
+            app:popExitAnim="@anim/fragment_exit_backwards" />
+
+        <action
+            android:id="@+id/action_main_to_watching"
+            app:destination="@id/watchingFragment"
+            app:enterAnim="@anim/fragment_enter"
+            app:exitAnim="@anim/fragment_exit"
+            app:popEnterAnim="@anim/fragment_enter_backwards"
+            app:popExitAnim="@anim/fragment_exit_backwards" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/plannedFragment"
+        android:name="com.example.movietime.ui.planned.PlannedFragment"
+        android:label="@string/nav_planned"
+        tools:layout="@layout/fragment_planned">
+        <action
+            android:id="@+id/action_planned_to_main"
+            app:destination="@id/enhancedMainFragment"
+            app:enterAnim="@anim/fragment_enter_backwards"
+            app:exitAnim="@anim/fragment_exit_backwards"
+            app:popEnterAnim="@anim/fragment_enter_backwards"
+            app:popExitAnim="@anim/fragment_exit_backwards" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/watchingFragment"
+        android:name="com.example.movietime.ui.watching.WatchingFragment"
+        android:label="@string/nav_watching"
+        tools:layout="@layout/fragment_watching">
+        <action
+            android:id="@+id/action_watching_to_main"
+            app:destination="@id/enhancedMainFragment"
+            app:enterAnim="@anim/fragment_enter_backwards"
+            app:exitAnim="@anim/fragment_exit_backwards"
+            app:popEnterAnim="@anim/fragment_enter_backwards"
+            app:popExitAnim="@anim/fragment_exit_backwards" />
     </fragment>
 
     <fragment

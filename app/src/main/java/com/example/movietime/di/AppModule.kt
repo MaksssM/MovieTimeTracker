@@ -20,23 +20,82 @@ import retrofit2.converter.gson.GsonConverterFactory
 import com.example.movietime.util.LanguageManager
 import javax.inject.Singleton
 
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import okhttp3.Cache
+import okhttp3.CacheControl
+import okhttp3.ConnectionPool
+import okhttp3.Interceptor
+import java.io.File
+import java.util.concurrent.TimeUnit
+
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    private fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        val network = connectivityManager?.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
-        val logging = HttpLoggingInterceptor()
-        logging.level = if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor.Level.BODY
-        } else {
-            HttpLoggingInterceptor.Level.NONE
+    fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
+        val logging = HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
         }
-        val client = OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .build()
 
+        val cacheDir = File(context.cacheDir, "tmdb_http_cache")
+        val cacheSize = 50L * 1024 * 1024 // 50 MB
+        val cache = Cache(cacheDir, cacheSize)
+
+        // Cache successful responses for 30 minutes
+        val onlineCacheInterceptor = Interceptor { chain ->
+            val response = chain.proceed(chain.request())
+            val cacheControl = CacheControl.Builder()
+                .maxAge(30, TimeUnit.MINUTES)
+                .build()
+            response.newBuilder()
+                .removeHeader("Pragma")
+                .header("Cache-Control", cacheControl.toString())
+                .build()
+        }
+
+        // If offline, serve from cache up to 7 days
+        val offlineCacheInterceptor = Interceptor { chain ->
+            var request = chain.request()
+            if (!isNetworkAvailable(context)) {
+                val cacheControl = CacheControl.Builder()
+                    .maxStale(7, TimeUnit.DAYS)
+                    .onlyIfCached()
+                    .build()
+                request = request.newBuilder()
+                    .cacheControl(cacheControl)
+                    .build()
+            }
+            chain.proceed(request)
+        }
+
+        return OkHttpClient.Builder()
+            .cache(cache)
+            .addInterceptor(offlineCacheInterceptor)
+            .addNetworkInterceptor(onlineCacheInterceptor)
+            .addInterceptor(logging)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
+            .connectionPool(ConnectionPool(8, 5, TimeUnit.MINUTES))
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(GsonConverterFactory.create())

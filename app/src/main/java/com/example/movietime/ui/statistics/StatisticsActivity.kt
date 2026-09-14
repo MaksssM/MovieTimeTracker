@@ -43,6 +43,7 @@ class StatisticsActivity : AppCompatActivity() {
 
     private lateinit var genreAdapter: GenreStatAdapter
     private lateinit var directorAdapter: DirectorStatAdapter
+    private lateinit var actorAdapter: ActorStatAdapter
     private lateinit var topRatedAdapter: TopRatedAdapter
 
     override fun attachBaseContext(newBase: Context) {
@@ -85,7 +86,8 @@ class StatisticsActivity : AppCompatActivity() {
             binding.cardTrends,
             binding.cardExtended,
             binding.cardWatchTimeBreakdown,
-            binding.cardHighestRated
+            binding.cardHighestRated,
+            binding.cardActors
         )
 
         cards.forEach { card ->
@@ -106,7 +108,8 @@ class StatisticsActivity : AppCompatActivity() {
             binding.cardTrends,
             binding.cardExtended,
             binding.cardWatchTimeBreakdown,
-            binding.cardHighestRated
+            binding.cardHighestRated,
+            binding.cardActors
         )
 
         cards.forEachIndexed { index, card ->
@@ -160,6 +163,19 @@ class StatisticsActivity : AppCompatActivity() {
             setHasFixedSize(false)
         }
 
+        actorAdapter = ActorStatAdapter { actor ->
+            val intent = Intent(this, PersonDetailsActivity::class.java).apply {
+                putExtra("PERSON_ID", actor.actorId)
+                putExtra("PERSON_NAME", actor.actorName)
+            }
+            startActivity(intent)
+        }
+        binding.rvActors.apply {
+            adapter = actorAdapter
+            layoutManager = LinearLayoutManager(this@StatisticsActivity)
+            setHasFixedSize(false)
+        }
+
         topRatedAdapter = TopRatedAdapter { item ->
             if (item.mediaType == "movie") {
                 val intent = Intent(this, DetailsActivity::class.java).apply {
@@ -191,6 +207,10 @@ class StatisticsActivity : AppCompatActivity() {
 
         viewModel.directorsLoading.observe(this) { isLoading ->
             binding.progressDirectors.isVisible = isLoading
+        }
+
+        viewModel.actorsLoading.observe(this) { isLoading ->
+            binding.progressActors.isVisible = isLoading
         }
 
         viewModel.error.observe(this) { error ->
@@ -257,6 +277,16 @@ class StatisticsActivity : AppCompatActivity() {
         } else {
             binding.rvDirectors.isVisible = false
             binding.tvNoDirectors.isVisible = true
+        }
+
+        // Favorite actors
+        if (stats.favoriteActors.isNotEmpty()) {
+            binding.rvActors.isVisible = true
+            binding.tvNoActors.isVisible = false
+            actorAdapter.submitList(stats.favoriteActors)
+        } else {
+            binding.rvActors.isVisible = false
+            binding.tvNoActors.isVisible = true
         }
 
         // Runtime records card

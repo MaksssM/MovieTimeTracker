@@ -101,23 +101,16 @@ class SettingsFragment : Fragment() {
         btnImportBackup.setOnClickListener { importBackup() }
 
         
-        val switchCompactMode = view.findViewById<SwitchMaterial>(R.id.switchCompactMode)
         val switchShowRatings = view.findViewById<SwitchMaterial>(R.id.switchShowRatings)
         val switchNewEpisodes = view.findViewById<SwitchMaterial>(R.id.switchNewEpisodes)
         val switchNotifyDigest = view.findViewById<SwitchMaterial>(R.id.switchNotifyDigest)
 
         // Initialize Switches
-        switchCompactMode.isChecked = prefs.getBoolean("pref_compact_mode", false)
         switchShowRatings.isChecked = prefs.getBoolean("pref_show_ratings", true)
         switchNewEpisodes?.isChecked = prefs.getBoolean("pref_notify_episodes", true)
         switchNotifyDigest?.isChecked = prefs.getBoolean("pref_notify_digest", false)
 
         // Set Listeners
-        switchCompactMode.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit { putBoolean("pref_compact_mode", isChecked) }
-            Toast.makeText(requireContext(), getString(R.string.theme_changed), Toast.LENGTH_SHORT).show()
-        }
-
         switchShowRatings.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit { putBoolean("pref_show_ratings", isChecked) }
         }

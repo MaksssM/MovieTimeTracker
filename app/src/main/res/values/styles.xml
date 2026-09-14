@@ -7,9 +7,9 @@
     </style>
 
     <style name="Widget.App.Card" parent="Widget.MaterialComponents.CardView">
-        <item name="cardCornerRadius">20dp</item>
+        <item name="cardCornerRadius">24dp</item>
         <item name="cardElevation">0dp</item>
-        <item name="strokeWidth">1dp</item>
+        <item name="strokeWidth">1.2dp</item>
         <item name="strokeColor">@color/outline_variant</item>
         <item name="cardBackgroundColor">@color/surface_card</item>
     </style>
@@ -31,8 +31,8 @@
 
     <!-- Search Result Card -->
     <style name="Widget.App.SearchResultCard" parent="Widget.MaterialComponents.CardView">
-        <item name="cardCornerRadius">20dp</item>
-        <item name="cardElevation">12dp</item>
+        <item name="cardCornerRadius">24dp</item>
+        <item name="cardElevation">8dp</item>
         <item name="android:background">@drawable/bg_card_modern</item>
         <item name="strokeWidth">0dp</item>
     </style>
@@ -42,7 +42,7 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">0.03</item>
-        <item name="cornerRadius">14dp</item>
+        <item name="cornerRadius">18dp</item>
         <item name="android:elevation">0dp</item>
         <item name="android:textSize">16sp</item>
     </style>
@@ -78,10 +78,10 @@
     <!-- Additional unique styles (non-duplicated) -->
     <style name="Widget.App.SearchBar" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="boxBackgroundColor">@color/surface_variant</item>
-        <item name="boxCornerRadiusTopStart">14dp</item>
-        <item name="boxCornerRadiusTopEnd">14dp</item>
-        <item name="boxCornerRadiusBottomStart">14dp</item>
-        <item name="boxCornerRadiusBottomEnd">14dp</item>
+        <item name="boxCornerRadiusTopStart">20dp</item>
+        <item name="boxCornerRadiusTopEnd">20dp</item>
+        <item name="boxCornerRadiusBottomStart">20dp</item>
+        <item name="boxCornerRadiusBottomEnd">20dp</item>
         <item name="boxStrokeColor">@color/primary</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="hintTextColor">@color/secondary_text</item>

@@ -4,32 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_main_premium">
+    android:background="#000000">
 
-    <!-- Floating decorative orbs - positioned absolutely -->
-    <View
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:layout_gravity="top|end"
-        android:translationX="100dp"
-        android:translationY="-60dp"
-        android:background="@drawable/bg_floating_orb_accent"
-        android:alpha="0.4" />
-
-    <View
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="bottom|start"
-        android:translationX="-60dp"
-        android:translationY="60dp"
-        android:background="@drawable/bg_floating_orb_primary"
-        android:alpha="0.3" />
+    <!-- Ambient background view -->
+    <com.example.movietime.ui.views.NebulaBackgroundView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!-- Top Header & Filter Controls -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
@@ -42,146 +29,150 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="16dp"
-                android:paddingBottom="10dp"
-                android:paddingHorizontal="20dp">
+                android:paddingTop="12dp"
+                android:paddingBottom="6dp"
+                android:paddingHorizontal="16dp">
 
-                <!-- Header with stats - Premium Glass Card Style -->
+                <!-- Hero Stats Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    app:cardCornerRadius="28dp"
+                    android:layout_marginBottom="14dp"
+                    app:cardCornerRadius="24dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="1dp"
-                    app:strokeColor="#15FFFFFF"
-                    app:cardBackgroundColor="@android:color/transparent">
+                    app:strokeColor="#141622"
+                    app:cardBackgroundColor="#08090D">
 
-                    <FrameLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_stat_card_premium">
+                        android:orientation="horizontal"
+                        android:paddingVertical="18dp"
+                        android:paddingHorizontal="16dp"
+                        android:gravity="center_vertical">
 
+                        <!-- Total Time Stat -->
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="24dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
                             android:gravity="center">
 
-                            <!-- Total Time Stat -->
-                            <LinearLayout
-                                android:layout_width="0dp"
+                            <FrameLayout
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:background="@drawable/bg_icon_3d_accent"
+                                android:layout_marginBottom="8dp">
+
+                                <ImageView
+                                    android:layout_width="22dp"
+                                    android:layout_height="22dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_time"
+                                    app:tint="#A5B4FC"
+                                    android:contentDescription="@string/total_time_spent" />
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/tvTotalTime"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:gravity="center">
+                                android:text="@string/total_time_default"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:fontFamily="sans-serif-medium"
+                                tools:text="42 год 15 хв" />
 
-                                <FrameLayout
-                                    android:layout_width="52dp"
-                                    android:layout_height="52dp"
-                                    android:background="@drawable/bg_icon_glow_accent"
-                                    android:layout_marginBottom="14dp">
-
-                                    <ImageView
-                                        android:layout_width="26dp"
-                                        android:layout_height="26dp"
-                                        android:layout_gravity="center"
-                                        android:src="@drawable/ic_time"
-                                        app:tint="@android:color/white"
-                                        android:contentDescription="@string/total_time_spent" />
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:id="@+id/tvTotalTime"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/total_time_default"
-                                    android:textSize="20sp"
-                                    android:textStyle="bold"
-                                    android:textColor="#C084FC"
-                                    android:fontFamily="sans-serif-medium"
-                                    tools:text="42 год 15 хв" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/total_time_spent"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/text_secondary"
-                                    android:layout_marginTop="6dp" />
-                            </LinearLayout>
-
-                            <!-- Divider with gradient -->
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="80dp"
-                                android:background="@drawable/bg_section_title_underline"
-                                android:layout_marginHorizontal="16dp" />
-
-                            <!-- Watched Count Stat -->
-                            <LinearLayout
-                                android:layout_width="0dp"
+                            <TextView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:gravity="center">
+                                android:text="@string/total_time_spent"
+                                android:textSize="10sp"
+                                android:textColor="#64748B"
+                                android:textAllCaps="true"
+                                android:letterSpacing="0.08"
+                                android:layout_marginTop="3dp"
+                                android:textStyle="bold" />
 
-                                <FrameLayout
-                                    android:layout_width="52dp"
-                                    android:layout_height="52dp"
-                                    android:background="@drawable/bg_icon_glow_primary"
-                                    android:layout_marginBottom="14dp">
-
-                                    <ImageView
-                                        android:layout_width="26dp"
-                                        android:layout_height="26dp"
-                                        android:layout_gravity="center"
-                                        android:src="@drawable/ic_movie"
-                                        app:tint="@android:color/white"
-                                        android:contentDescription="@string/watched_label" />
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:id="@+id/tvTotalCount"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="0"
-                                    android:textSize="26sp"
-                                    android:textStyle="bold"
-                                    android:textColor="#60A5FA"
-                                    android:fontFamily="sans-serif-medium"
-                                    tools:text="127" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/watched_label"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/text_secondary"
-                                    android:layout_marginTop="6dp" />
-                            </LinearLayout>
                         </LinearLayout>
-                    </FrameLayout>
+
+                        <!-- Hairline Divider -->
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="56dp"
+                            android:background="#161822"
+                            android:layout_marginHorizontal="8dp" />
+
+                        <!-- Watched Count Stat -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <FrameLayout
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:background="@drawable/bg_icon_3d_success"
+                                android:layout_marginBottom="8dp">
+
+                                <ImageView
+                                    android:layout_width="22dp"
+                                    android:layout_height="22dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_movie"
+                                    app:tint="#86EFAC"
+                                    android:contentDescription="@string/watched" />
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/tvTotalCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="22sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:fontFamily="sans-serif-medium"
+                                tools:text="127" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/watched"
+                                android:textSize="10sp"
+                                android:textColor="#64748B"
+                                android:textAllCaps="true"
+                                android:letterSpacing="0.08"
+                                android:layout_marginTop="3dp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Tabs for filtering - Premium Style -->
+                <!-- Modern Segmented Filter Tabs -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="18dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="1dp"
-                    app:strokeColor="@color/divider"
-                    app:cardBackgroundColor="@color/card_background_glass">
+                    app:strokeColor="#161822"
+                    app:cardBackgroundColor="#08090D">
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="42dp"
                         android:background="@android:color/transparent"
                         app:tabMode="fixed"
                         app:tabGravity="fill"
@@ -189,47 +180,49 @@
                         app:tabIndicatorHeight="3dp"
                         app:tabIndicatorGravity="bottom"
                         app:tabSelectedTextColor="@color/text_primary"
-                        app:tabTextColor="@color/text_secondary" />
+                        app:tabTextColor="#64748B"
+                        app:tabRippleColor="#15818CF8" />
 
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- Sort & Search controls -->
+        <!-- Search & Sort Controls -->
         <LinearLayout
             android:id="@+id/layoutSortControls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingHorizontal="20dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="4dp">
+            android:paddingHorizontal="16dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
 
-            <!-- Search field -->
+            <!-- Search Field -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="44dp"
                 android:layout_weight="1"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="22dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="@color/divider"
-                app:cardBackgroundColor="@color/card_background_glass">
+                app:strokeColor="#161822"
+                app:cardBackgroundColor="#08090D">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:paddingHorizontal="12dp">
+                    android:paddingHorizontal="14dp">
 
                     <ImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/ic_search"
-                        app:tint="@color/text_secondary"
+                        app:tint="#818CF8"
                         android:contentDescription="@string/search_hint" />
 
                     <EditText
@@ -241,7 +234,7 @@
                         android:hint="@string/search_in_list"
                         android:textSize="13sp"
                         android:textColor="@color/text_primary"
-                        android:textColorHint="@color/text_hint"
+                        android:textColorHint="#475569"
                         android:inputType="text"
                         android:imeOptions="actionSearch"
                         android:maxLines="1"
@@ -251,87 +244,93 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Sort button -->
+            <!-- Sort Button -->
             <ImageButton
                 android:id="@+id/btnSort"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="10dp"
                 android:src="@drawable/ic_sort"
                 android:background="@drawable/bg_quick_action_glass"
-                android:padding="8dp"
-                app:tint="@color/text_secondary"
+                android:padding="10dp"
+                app:tint="#818CF8"
                 android:contentDescription="@string/sort" />
 
         </LinearLayout>
 
-        <!-- Content -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvWatchedItems"
+        <!-- Main Content Area -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingHorizontal="20dp"
-            android:paddingBottom="16dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/item_watched" />
+            android:layout_height="match_parent">
 
-        <!-- Empty state -->
-        <LinearLayout
-            android:id="@+id/layoutEmpty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="48dp"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:visibility="gone"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:visibility="visible">
+            <!-- RecyclerView of Watched Items -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvWatchedItems"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="4dp"
+                android:paddingBottom="24dp"
+                tools:listitem="@layout/item_watched" />
 
-            <FrameLayout
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/bg_icon_glow_primary">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_movie"
-                    app:tint="@android:color/white"
-                    android:contentDescription="@string/app_name" />
-
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Empty State -->
+            <LinearLayout
+                android:id="@+id/layoutEmpty"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/no_watched_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:layout_marginTop="24dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/start_watching_hint"
-                android:textSize="14sp"
-                android:textColor="@color/text_hint"
+                android:layout_gravity="center"
+                android:orientation="vertical"
                 android:gravity="center"
-                android:paddingHorizontal="32dp"
-                android:layout_marginTop="8dp" />
-        </LinearLayout>
+                android:padding="32dp"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-        <!-- Loading indicator -->
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:indicatorColor="#60A5FA"
-            app:trackColor="#2060A5FA" />
+                <FrameLayout
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:background="@drawable/bg_icon_3d_primary">
+
+                    <ImageView
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_movie"
+                        app:tint="#818CF8"
+                        android:contentDescription="@string/app_name" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_watched_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginTop="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_watching_hint"
+                    android:textSize="13sp"
+                    android:textColor="#64748B"
+                    android:gravity="center"
+                    android:layout_marginTop="6dp" />
+
+            </LinearLayout>
+
+            <!-- Loading Indicator -->
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:indicatorColor="#818CF8"
+                app:trackColor="#20818CF8" />
+
+        </FrameLayout>
 
     </LinearLayout>
 

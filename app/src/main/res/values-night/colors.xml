@@ -1,4 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Intentionally empty: the base palette is dark in every mode for a consistent cinematic UI. -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- DARK / OLED PALETTE (Night Mode) — Cinematic Deep Dark        -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- Core Backgrounds -->
+    <color name="background">#000000</color>
+    <color name="app_bg">#000000</color>
+    <color name="background_primary">#000000</color>
+    <color name="surface">#08090D</color>
+    <color name="surface_variant">#0F1118</color>
+    <color name="surface_elevated">#141622</color>
+    <color name="surface_card">#0A0B10</color>
+
+    <!-- Text / Content on Surface -->
+    <color name="on_surface">#FFF3F1FA</color>
+    <color name="on_surface_variant">#FFBFC5D4</color>
+    <color name="text_on_dark_tertiary">#FF8D94A5</color>
+    <color name="tertiary_text">#FF8D94A5</color>
+    <color name="text_hint">#FF8D94A5</color>
+
+    <!-- Outline / Border / Divider -->
+    <color name="outline">#FF8D94A5</color>
+    <color name="outline_variant">#161822</color>
+    <color name="divider">#14FFFFFF</color>
+
+    <!-- Alpha overlays (white on dark) -->
+    <color name="white_5">#0DFFFFFF</color>
+    <color name="white_10">#1AFFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="black_40">#66000000</color>
+    <color name="black_60">#99000000</color>
+    <color name="black_alpha_50">#80000000</color>
+
+    <!-- Glass / Frosted -->
+    <color name="glass_background_dark">#F0050608</color>
+    <color name="glass_surface_low">#08FFFFFF</color>
+    <color name="glass_surface_high">#12FFFFFF</color>
+    <color name="glass_overlay">#0FFFFFFF</color>
+    <color name="glass_border">#18FFFFFF</color>
+    <color name="glass_stroke">#18FFFFFF</color>
+
+    <!-- Cards -->
+    <color name="card_bg">#090A0E</color>
+    <color name="card_background">#090A0E</color>
+    <color name="card_background_alpha">#E6090A0E</color>
+    <color name="card_background_glass">#E6090A0E</color>
+    <color name="card_bg_elevated">#0F1017</color>
+
+    <!-- Surface alpha overlays -->
+    <color name="surface_light_alpha_08">#14FFFFFF</color>
+    <color name="surface_light_alpha_05">#0DFFFFFF</color>
+
+    <!-- Poster & Details -->
+    <color name="poster_placeholder_dark">#FF252D3C</color>
+    <color name="details_surface_transparent">#E60A0A0C</color>
+
+    <!-- Chip backgrounds (alpha on dark) -->
+    <color name="chip_movie_bg">#267CA8FF</color>
+    <color name="chip_tv_bg">#2658D6C9</color>
+    <color name="chip_genre_bg">#1AFFFFFF</color>
+    <color name="chip_stroke_color">#33FFFFFF</color>
+
+    <!-- Shimmer -->
+    <color name="shimmer_base">#14FFFFFF</color>
+
+    <!-- Tab text -->
+    <color name="tab_text_inactive">#FF8D94A5</color>
+
+    <!-- md_theme reference -->
+    <color name="md_theme_light_primaryContainer">#FF332D72</color>
 </resources>

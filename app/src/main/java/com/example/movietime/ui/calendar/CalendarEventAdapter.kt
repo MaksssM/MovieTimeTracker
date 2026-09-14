@@ -84,6 +84,30 @@ class CalendarEventAdapter(
             // Show releases count
             binding.tvReleasesCount.text = context.getString(R.string.releases_count, eventData.releases.size)
 
+            // Countdown Badge Calculation
+            val today = LocalDate.now()
+            val daysUntil = java.time.temporal.ChronoUnit.DAYS.between(today, eventData.date)
+            when {
+                daysUntil == 0L -> {
+                    binding.tvCountdownBadge.visibility = android.view.View.VISIBLE
+                    binding.tvCountdownBadge.text = context.getString(R.string.countdown_today)
+                    binding.tvCountdownBadge.setTextColor(android.graphics.Color.parseColor("#F59E0B"))
+                }
+                daysUntil == 1L -> {
+                    binding.tvCountdownBadge.visibility = android.view.View.VISIBLE
+                    binding.tvCountdownBadge.text = context.getString(R.string.countdown_tomorrow)
+                    binding.tvCountdownBadge.setTextColor(android.graphics.Color.parseColor("#C084FC"))
+                }
+                daysUntil in 2L..30L -> {
+                    binding.tvCountdownBadge.visibility = android.view.View.VISIBLE
+                    binding.tvCountdownBadge.text = context.getString(R.string.countdown_days, daysUntil.toInt())
+                    binding.tvCountdownBadge.setTextColor(android.graphics.Color.parseColor("#818CF8"))
+                }
+                else -> {
+                    binding.tvCountdownBadge.visibility = android.view.View.GONE
+                }
+            }
+
             binding.eventsContainer.removeAllViews()
 
             eventData.releases.forEach { release ->

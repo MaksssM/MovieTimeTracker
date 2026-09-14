@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/add"
                 android:backgroundTint="@color/accent"
-                android:textColor="@color/white"/>
+                android:textColor="@color/text_primary"/>
         </LinearLayout>
 
     </LinearLayout>

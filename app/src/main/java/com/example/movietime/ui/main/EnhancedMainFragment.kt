@@ -18,10 +18,7 @@ import com.example.movietime.R
 import com.example.movietime.databinding.FragmentEnhancedMainBinding
 import com.example.movietime.data.model.BasicStatistics
 import com.example.movietime.ui.search.EnhancedSearchActivity
-import com.example.movietime.ui.upcoming.UpcomingReleasesActivity
 import com.example.movietime.ui.friends.FriendsActivity
-import com.example.movietime.ui.planned.PlannedActivity
-import com.example.movietime.ui.watching.WatchingActivity
 import com.example.movietime.ui.details.DetailsActivity
 import com.example.movietime.ui.details.TvDetailsActivity
 import com.example.movietime.data.model.RecentActivityItem
@@ -77,13 +74,13 @@ class EnhancedMainFragment : Fragment() {
 
         binding.cardPlanned.setOnClickListener {
             handleClickWithDebounce {
-                startActivity(Intent(requireActivity(), PlannedActivity::class.java))
+                findNavController().navigate(R.id.plannedFragment)
             }
         }
 
         binding.cardWatching.setOnClickListener {
             handleClickWithDebounce {
-                startActivity(Intent(requireActivity(), WatchingActivity::class.java))
+                findNavController().navigate(R.id.watchingFragment)
             }
         }
 
@@ -518,10 +515,7 @@ class EnhancedMainFragment : Fragment() {
     }
 
     private fun navigateToPlannedList(isMovie: Boolean) {
-        val intent = Intent(requireActivity(), PlannedActivity::class.java).apply {
-            putExtra("isMovie", isMovie)
-        }
-        startActivity(intent)
+        findNavController().navigate(R.id.plannedFragment)
     }
 
     private fun showQuickAddDialog() {
