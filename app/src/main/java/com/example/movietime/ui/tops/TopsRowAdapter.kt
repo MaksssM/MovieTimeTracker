@@ -13,7 +13,7 @@ import com.example.movietime.databinding.ItemTopRowBinding
 import java.util.Locale
 
 class TopsRowAdapter(
-    private val onItemClick: (TopItem) -> Unit
+    private val onItemClick: (TopItem, android.view.View) -> Unit
 ) : ListAdapter<TopRow, TopsRowAdapter.RowViewHolder>(RowDiffCallback) {
 
     companion object {
@@ -59,7 +59,7 @@ class TopsRowAdapter(
 }
 
 private class TopCardAdapter(
-    private val onItemClick: (TopItem) -> Unit
+    private val onItemClick: (TopItem, android.view.View) -> Unit
 ) : ListAdapter<TopItem, TopCardAdapter.CardViewHolder>(CardDiffCallback) {
 
     companion object {
@@ -99,7 +99,7 @@ private class TopCardAdapter(
             } else {
                 binding.ivPoster.setImageResource(R.color.poster_placeholder_dark)
             }
-            binding.root.setOnClickListener { onItemClick(item) }
+            binding.root.setOnClickListener { onItemClick(item, binding.ivPoster) }
         }
     }
 }

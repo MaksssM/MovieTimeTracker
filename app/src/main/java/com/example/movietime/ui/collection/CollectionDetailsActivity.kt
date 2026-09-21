@@ -44,12 +44,15 @@ class CollectionDetailsActivity : AppCompatActivity() {
     }
 
     private val adapter = CollectionAdapter(
-        onItemClick = { movie ->
+        onItemClick = { movie, sharedView ->
             val intent = Intent(this, DetailsActivity::class.java).apply {
                 putExtra("ITEM_ID", movie.id)
                 putExtra("MEDIA_TYPE", "movie")
             }
-            startActivity(intent)
+            val options = androidx.core.app.ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this, sharedView, "poster_transition"
+            )
+            startActivity(intent, options.toBundle())
         }
     )
 
@@ -180,7 +183,7 @@ data class CollectionMovieItem(
 )
 
 class CollectionAdapter(
-    private val onItemClick: (MovieResult) -> Unit
+    private val onItemClick: (MovieResult, android.view.View) -> Unit
 ) : ListAdapter<CollectionMovieItem, CollectionAdapter.ViewHolder>(DiffCallback) {
 
     companion object {
@@ -219,7 +222,7 @@ class CollectionAdapter(
             // Dim watched items slightly
             binding.root.alpha = if (item.isWatched) 0.7f else 1.0f
 
-            binding.root.setOnClickListener { onItemClick(movie) }
+            binding.root.setOnClickListener { onItemClick(movie, binding.ivPoster) }
         }
     }
 

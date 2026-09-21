@@ -28,6 +28,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/poster_description"
+                android:transitionName="poster_transition"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
         </com.google.android.material.card.MaterialCardView>

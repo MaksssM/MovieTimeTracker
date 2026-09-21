@@ -24,6 +24,7 @@
             android:layout_height="75dp"
             android:scaleType="centerCrop"
             android:background="@color/poster_placeholder_dark"
+            android:transitionName="poster_transition"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent" 
             tools:src="@color/poster_placeholder_dark"/>
 

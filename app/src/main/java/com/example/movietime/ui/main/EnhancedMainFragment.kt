@@ -35,6 +35,7 @@ class EnhancedMainFragment : Fragment() {
     private val viewModel: EnhancedMainViewModel by viewModels()
     private lateinit var recentActivityAdapter: RecentActivityAdapter
     private lateinit var recommendationsAdapter: com.example.movietime.ui.adapters.RecommendationsAdapter
+    private lateinit var continueWatchingAdapter: com.example.movietime.ui.today.adapters.ContinueWatchingAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +56,7 @@ class EnhancedMainFragment : Fragment() {
         setupCardPressEffects()
         setupRecentActivity()
         setupRecommendations()
+        setupContinueWatching()
         setupParallaxEffect()
         observeViewModel()
         loadData()
@@ -248,6 +250,18 @@ class EnhancedMainFragment : Fragment() {
                 } else {
                     binding.recommendationsTitleContainer.visibility = View.GONE
                     binding.rvRecommendations.visibility = View.GONE
+                }
+            }
+        }
+
+        // Observe continue watching carousel
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.continueWatching.collect { items ->
+                if (items.isNotEmpty()) {
+                    binding.layoutContinueWatching.visibility = View.VISIBLE
+                    continueWatchingAdapter.submitList(items)
+                } else {
+                    binding.layoutContinueWatching.visibility = View.GONE
                 }
             }
         }
@@ -556,12 +570,37 @@ class EnhancedMainFragment : Fragment() {
         viewModel.loadStatistics()
         viewModel.loadRecommendations()
         viewModel.loadTrendingForBackground()
+        viewModel.loadContinueWatching()
     }
 
     override fun onResume() {
         super.onResume()
         // Refresh data when returning to fragment
         loadData()
+    }
+
+    private fun setupContinueWatching() {
+        continueWatchingAdapter = com.example.movietime.ui.today.adapters.ContinueWatchingAdapter { item ->
+            val intent = if (item.mediaType == "tv") {
+                Intent(requireContext(), TvDetailsActivity::class.java).apply {
+                    putExtra("ITEM_ID", item.id)
+                    putExtra("MEDIA_TYPE", "tv")
+                }
+            } else {
+                Intent(requireContext(), DetailsActivity::class.java).apply {
+                    putExtra("ITEM_ID", item.id)
+                    putExtra("MEDIA_TYPE", "movie")
+                }
+            }
+            startActivity(intent)
+        }
+
+        binding.rvContinueWatching.apply {
+            adapter = continueWatchingAdapter
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(), androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            setItemViewCacheSize(10)
+        }
     }
 
     private fun setupRecentActivity() {

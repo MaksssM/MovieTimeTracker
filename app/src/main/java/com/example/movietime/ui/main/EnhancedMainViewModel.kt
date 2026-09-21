@@ -12,7 +12,8 @@ import javax.inject.Inject
 @HiltViewModel
 class EnhancedMainViewModel @Inject constructor(
     private val repository: SimpleEnhancedRepository,
-    private val recommendationService: com.example.movietime.service.RecommendationService
+    private val recommendationService: com.example.movietime.service.RecommendationService,
+    private val todayRepository: com.example.movietime.data.repository.TodayRepository
 ) : ViewModel() {
 
     private val _backgroundImage = MutableStateFlow<String?>(null)
@@ -110,5 +111,20 @@ class EnhancedMainViewModel @Inject constructor(
 
     fun clearError() {
         _error.value = null
+    }
+
+    private val _continueWatching =
+        MutableStateFlow<List<com.example.movietime.data.model.ContinueWatchingItem>>(emptyList())
+    val continueWatching: StateFlow<List<com.example.movietime.data.model.ContinueWatchingItem>> =
+        _continueWatching.asStateFlow()
+
+    fun loadContinueWatching() {
+        viewModelScope.launch {
+            try {
+                _continueWatching.value = todayRepository.getContinueWatchingPreview()
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
     }
 }

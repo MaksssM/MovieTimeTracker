@@ -26,10 +26,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:text="@string/tops_title"
-                android:textColor="@color/text_primary"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-medium" />
+                style="@style/TextAppearance.MovieTime.Display" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -39,8 +36,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/top_rated_content"
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp" />
+                style="@style/TextAppearance.MovieTime.SectionSubtitle" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTops"

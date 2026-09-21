@@ -284,7 +284,16 @@ class TodayRepository @Inject constructor(
     /**
      * Get shows/movies user should continue watching
      */
+    /**
+     * Continue-watching preview for the home carousel.
+     * Public read-only view of the same computation the Today screen uses.
+     */
+    suspend fun getContinueWatchingPreview(): List<ContinueWatchingItem> =
+        getContinueWatching()
+
     private suspend fun getContinueWatching(): List<ContinueWatchingItem> {
+    suspend fun getContinueWatchingPreview(): List<ContinueWatchingItem> =
+        getContinueWatching()
         val items = mutableListOf<ContinueWatchingItem>()
         
         try {

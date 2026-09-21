@@ -36,7 +36,7 @@ class TopsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        rowAdapter = TopsRowAdapter { item ->
+        rowAdapter = TopsRowAdapter { item, sharedView ->
             val now = System.currentTimeMillis()
             if (now - lastNavTime > 500L) {
                 lastNavTime = now
@@ -49,7 +49,10 @@ class TopsFragment : Fragment() {
                     putExtra("ITEM_ID", item.id)
                     putExtra("MEDIA_TYPE", item.mediaType)
                 }
-                startActivity(intent)
+                val options = androidx.core.app.ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    requireActivity(), sharedView, "poster_transition"
+                )
+                startActivity(intent, options.toBundle())
             }
         }
         binding.rvTops.apply {
