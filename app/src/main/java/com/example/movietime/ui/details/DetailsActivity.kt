@@ -254,7 +254,7 @@ class DetailsActivity : AppCompatActivity() {
                             Toast.makeText(this, getString(R.string.rated_toast, rating.toInt()), Toast.LENGTH_SHORT).show()
                         } else {
                             // Item not in watched list yet - show hint
-                            Toast.makeText(this, "Спочатку додайте до переглянутих", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getString(R.string.rate_requires_watched), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

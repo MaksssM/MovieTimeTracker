@@ -292,8 +292,6 @@ class TodayRepository @Inject constructor(
         getContinueWatching()
 
     private suspend fun getContinueWatching(): List<ContinueWatchingItem> {
-    suspend fun getContinueWatchingPreview(): List<ContinueWatchingItem> =
-        getContinueWatching()
         val items = mutableListOf<ContinueWatchingItem>()
         
         try {

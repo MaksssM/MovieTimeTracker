@@ -93,7 +93,7 @@
                                 android:textColor="@color/text_primary"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
-                                android:fontFamily="sans-serif-medium"
+                                android:fontFamily="@font/montserrat_semibold"
                                 tools:text="Декабрь 2025" />
 
                             <com.google.android.material.button.MaterialButton
@@ -161,7 +161,7 @@
                                 android:layout_marginStart="8dp"
                                 android:textColor="#60A5FA"
                                 android:textSize="12sp"
-                                android:fontFamily="sans-serif-medium"
+                                android:fontFamily="@font/montserrat_semibold"
                                 tools:text="5 фильмов" />
 
                         </LinearLayout>
@@ -190,7 +190,7 @@
                                 android:layout_marginStart="8dp"
                                 android:textColor="#22C55E"
                                 android:textSize="12sp"
-                                android:fontFamily="sans-serif-medium"
+                                android:fontFamily="@font/montserrat_semibold"
                                 tools:text="3 сериала" />
 
                         </LinearLayout>
@@ -217,7 +217,7 @@
                     android:gravity="center"
                     android:textSize="11sp"
                     android:textColor="@color/text_hint"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="@font/montserrat_semibold" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -227,7 +227,7 @@
                     android:gravity="center"
                     android:textSize="11sp"
                     android:textColor="@color/text_hint"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="@font/montserrat_semibold" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -237,7 +237,7 @@
                     android:gravity="center"
                     android:textSize="11sp"
                     android:textColor="@color/text_hint"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="@font/montserrat_semibold" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -247,7 +247,7 @@
                     android:gravity="center"
                     android:textSize="11sp"
                     android:textColor="@color/text_hint"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="@font/montserrat_semibold" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -257,7 +257,7 @@
                     android:gravity="center"
                     android:textSize="11sp"
                     android:textColor="@color/text_hint"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="@font/montserrat_semibold" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -267,7 +267,7 @@
                     android:gravity="center"
                     android:textSize="11sp"
                     android:textColor="#60A5FA"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="@font/montserrat_semibold" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -277,7 +277,7 @@
                     android:gravity="center"
                     android:textSize="11sp"
                     android:textColor="#F87171"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="@font/montserrat_semibold" />
 
             </LinearLayout>
 
@@ -332,7 +332,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="@font/montserrat_semibold" />
 
             </LinearLayout>
 

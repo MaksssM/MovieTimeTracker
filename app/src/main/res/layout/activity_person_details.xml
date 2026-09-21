@@ -79,7 +79,7 @@
                 android:paddingVertical="8dp"
                 android:textSize="14sp"
                 android:textColor="#60A5FA"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/montserrat_semibold"
                 android:layout_marginBottom="20dp"
                 tools:text="Актор" />
 

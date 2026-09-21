@@ -1,9 +1,11 @@
 package com.example.movietime.ui.friends
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movietime.R
 import com.example.movietime.data.firebase.*
 import com.example.movietime.ui.adapters.FriendRequestWithUser
 import com.example.movietime.ui.adapters.RecommendationWithUser
@@ -17,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FriendsViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: FirebaseRepository,
+    @dagger.hilt.android.qualifiers.ApplicationContext private val appContext: Context
 ) : ViewModel() {
 
     // Auth state
@@ -145,7 +148,7 @@ class FriendsViewModel @Inject constructor(
             try {
                 _friends.value = firebaseRepository.getFriends()
             } catch (e: Exception) {
-                _error.postValue("Помилка завантаження друзів: ${e.message}")
+                _error.postValue(appContext.getString(R.string.friends_load_error_format, e.message))
             }
         }
     }
@@ -222,7 +225,7 @@ class FriendsViewModel @Inject constructor(
                 val results = firebaseRepository.searchUsers(query)
                 _searchResults.value = results
             } catch (e: Exception) {
-                _error.postValue("Помилка пошуку: ${e.message}")
+                _error.postValue(appContext.getString(R.string.friends_search_error_format, e.message))
             } finally {
                 _isSearching.value = false
             }
@@ -239,7 +242,7 @@ class FriendsViewModel @Inject constructor(
             _isLoading.value = true
             val result = firebaseRepository.sendFriendRequest(userId, message)
             result.onSuccess {
-                _message.postValue("Запит на дружбу надіслано!")
+                _message.postValue(appContext.getString(R.string.request_sent))
                 _sentRequests.value = _sentRequests.value + userId
             }.onFailure {
                 _error.postValue(it.message)
@@ -252,7 +255,7 @@ class FriendsViewModel @Inject constructor(
         viewModelScope.launch {
             val result = firebaseRepository.acceptFriendRequest(requestId)
             result.onSuccess {
-                _message.postValue("Запит прийнято!")
+                _message.postValue(appContext.getString(R.string.friend_request_accepted))
                 loadFriends()
             }.onFailure {
                 _error.postValue(it.message)
@@ -264,7 +267,7 @@ class FriendsViewModel @Inject constructor(
         viewModelScope.launch {
             val result = firebaseRepository.declineFriendRequest(requestId)
             result.onSuccess {
-                _message.postValue("Запит відхилено")
+                _message.postValue(appContext.getString(R.string.friend_request_declined))
             }.onFailure {
                 _error.postValue(it.message)
             }
@@ -275,7 +278,7 @@ class FriendsViewModel @Inject constructor(
         viewModelScope.launch {
             val result = firebaseRepository.removeFriend(userId)
             result.onSuccess {
-                _message.postValue("Друга видалено")
+                _message.postValue(appContext.getString(R.string.friend_removed))
                 loadFriends()
             }.onFailure {
                 _error.postValue(it.message)
@@ -311,7 +314,7 @@ class FriendsViewModel @Inject constructor(
         viewModelScope.launch {
             val result = firebaseRepository.commentOnActivity(activityId, text)
             result.onFailure {
-                _error.postValue("Помилка: ${it.message}")
+                _error.postValue(appContext.getString(R.string.error_with_message_format, it.message))
             }
         }
     }
@@ -331,7 +334,7 @@ class FriendsViewModel @Inject constructor(
                 toUserId, contentId, contentTitle, contentPoster, mediaType, message
             )
             result.onSuccess {
-                _message.postValue("Рекомендацію надіслано!")
+                _message.postValue(appContext.getString(R.string.recommendation_sent))
             }.onFailure {
                 _error.postValue(it.message)
             }
@@ -364,7 +367,7 @@ class FriendsViewModel @Inject constructor(
                 )
             )
             result.onSuccess {
-                _message.postValue("Профіль оновлено!")
+                _message.postValue(appContext.getString(R.string.profile_updated))
                 _currentUser.value = firebaseRepository.getCurrentUserProfile()
             }.onFailure {
                 _error.postValue(it.message)

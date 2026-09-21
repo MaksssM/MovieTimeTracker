@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.movietime.R
 import com.example.movietime.data.repository.EntryProgress
 import com.example.movietime.data.repository.SagaWithEntries
 import com.example.movietime.databinding.ActivityUniverseDetailBinding
@@ -91,7 +92,7 @@ class UniverseDetailActivity : AppCompatActivity() {
             saga.entries.forEach { items.add(UniverseDetailItem.EntryItem(it)) }
         }
         if (uncategorized.isNotEmpty()) {
-            items.add(UniverseDetailItem.UncategorizedHeader("Пов'язане"))
+            items.add(UniverseDetailItem.UncategorizedHeader(getString(R.string.related_header)))
             uncategorized.forEach { items.add(UniverseDetailItem.EntryItem(it)) }
         }
         adapter?.submitList(items)

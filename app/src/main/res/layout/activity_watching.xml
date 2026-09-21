@@ -75,7 +75,7 @@
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="@font/montserrat_semibold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -126,7 +126,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
-                        android:fontFamily="sans-serif-medium"
+                        android:fontFamily="@font/montserrat_semibold"
                         tools:text="5" />
 
                     <TextView
@@ -164,7 +164,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="#34D399"
-                        android:fontFamily="sans-serif-medium"
+                        android:fontFamily="@font/montserrat_semibold"
                         tools:text="3" />
 
                     <TextView
@@ -202,7 +202,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="#7CA8FF"
-                        android:fontFamily="sans-serif-medium"
+                        android:fontFamily="@font/montserrat_semibold"
                         tools:text="2" />
 
                     <TextView
@@ -384,7 +384,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/montserrat_semibold"
                     android:gravity="center" />
 
                 <TextView
@@ -407,7 +407,7 @@
                     app:backgroundTint="#10B981"
                     android:textColor="@color/text_on_dark"
                     android:textSize="13sp"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/montserrat_semibold"
                     app:cornerRadius="22dp" />
 
             </LinearLayout>

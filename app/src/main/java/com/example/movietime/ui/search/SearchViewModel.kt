@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movietime.R
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.data.model.Genre
@@ -29,7 +30,8 @@ import com.example.movietime.util.LanguageManager
 class SearchViewModel @Inject constructor(
     private val repository: AppRepository,
     private val api: TmdbApi,
-    private val languageManager: LanguageManager
+    private val languageManager: LanguageManager,
+    @dagger.hilt.android.qualifiers.ApplicationContext private val appContext: android.content.Context
 ) : ViewModel() {
 
     private val apiKey = BuildConfig.TMDB_API_KEY
@@ -704,35 +706,18 @@ class SearchViewModel @Inject constructor(
     fun loadPopularContent() {
         viewModelScope.launch {
             try {
-                // Generate random page (1-20) for more variety
-                val randomPage = (1..20).random()
-                
-                // Use discover API instead of popular for random content
-                val discoverMoviesResponse = api.discoverMovies(
-                    apiKey = apiKey,
-                    language = languageManager.getApiLanguage(),
-                    page = randomPage,
-                    sortBy = "vote_count.desc"
-                )
-                val discoverTvShowsResponse = api.discoverTvShows(
-                    apiKey = apiKey,
-                    language = languageManager.getApiLanguage(),
-                    page = randomPage,
-                    sortBy = "vote_count.desc"
-                )
+                // Parallel fetch + in-memory cache (see AppRepository): reopening search is instant
+                val combined = repository.getPopularDiscoverContent()
+                if (combined.isEmpty()) {
+                    _popularContent.value = emptyList()
+                    return@launch
+                }
 
-                val randomMovies = discoverMoviesResponse.results.shuffled()
-                val randomTvShows = discoverTvShowsResponse.results.shuffled()
-
-                val combined = mutableListOf<Any>()
-                combined.addAll(randomMovies)
-                combined.addAll(randomTvShows)
-                
                 // Sort combined list by discovery score to prioritize new items
                 val sortedCombined = combined.sortedByDescending { item ->
                     calculateDiscoveryScore(item, SortOption.POPULARITY_DESC)
                 }
-                
+
                 // Shuffle the final selection a bit for extra variety
                 _popularContent.value = sortedCombined.shuffled()
             } catch (e: Exception) {
@@ -960,28 +945,42 @@ class SearchViewModel @Inject constructor(
         }
         
         _selectedPerson.value?.let { person ->
-            val roleText = when (_selectedPersonRole.value) {
-                PersonRole.ACTOR -> "(актор)"
-                PersonRole.DIRECTOR -> "(режисер)"
-                PersonRole.WRITER -> "(сценарист)"
-                PersonRole.PRODUCER -> "(продюсер)"
-                else -> ""
+            val roleRes = when (_selectedPersonRole.value) {
+                PersonRole.ACTOR -> R.string.role_actor
+                PersonRole.DIRECTOR -> R.string.role_director
+                PersonRole.WRITER -> R.string.role_writer
+                PersonRole.PRODUCER -> R.string.role_producer
+                else -> null
             }
-            parts.add("${person.name} $roleText")
+            val name = if (roleRes != null) {
+                appContext.getString(
+                    R.string.filter_person_role_format,
+                    person.name,
+                    appContext.getString(roleRes)
+                )
+            } else {
+                person.name
+            }
+            parts.add(name)
         }
 
         _selectedCompany.value?.let { company ->
-            parts.add("Студія: ${company.name ?: "—"}")
+            parts.add(appContext.getString(R.string.filter_studio_format, company.name ?: "—"))
         }
-        
+
         _selectedYear.value?.let { year ->
-            parts.add("Рік: $year")
+            parts.add(appContext.getString(R.string.filter_year_format, year))
         }
-        
+
         _minRating.value?.takeIf { it > 0 }?.let { rating ->
-            parts.add("Рейтинг ≥ ${"%.1f".format(rating)}")
+            parts.add(
+                appContext.getString(
+                    R.string.filter_rating_format,
+                    String.format(java.util.Locale.US, "%.1f", rating)
+                )
+            )
         }
-        
-        return if (parts.isEmpty()) "Фільтри не вибрані" else parts.joinToString(" • ")
+
+        return if (parts.isEmpty()) appContext.getString(R.string.filters_none_selected) else parts.joinToString(" • ")
     }
 }

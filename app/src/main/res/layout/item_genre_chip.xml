@@ -23,7 +23,7 @@
         android:paddingVertical="12dp"
         android:textColor="@color/primary_text"
         android:textSize="13sp"
-        android:fontFamily="sans-serif-medium"
+        android:fontFamily="@font/montserrat_semibold"
         android:lines="2"
         android:minLines="1"
         android:maxLines="2"

@@ -64,7 +64,7 @@
                 tools:text="Inception"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="15sp"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/montserrat_semibold"
                 android:textStyle="bold"
                 android:ellipsize="end"
                 android:maxLines="1" />

@@ -864,6 +864,56 @@ class AppRepository @Inject constructor(
         }
     }
 
+    /**
+     * Popular discover content for the search entry screen.
+     * Two discover calls run in PARALLEL and the result is cached in memory
+     * (repository is a singleton, so reopening search within TTL is instant).
+     */
+    private var popularDiscoverCache: List<Any>? = null
+    private var popularDiscoverCacheAt = 0L
+
+    suspend fun getPopularDiscoverContent(ttlMs: Long = 15 * 60 * 1000L): List<Any> = coroutineScope {
+        val now = System.currentTimeMillis()
+        popularDiscoverCache?.let { cached ->
+            if (now - popularDiscoverCacheAt < ttlMs) return@coroutineScope cached
+        }
+        // Random deep page for variety, both media types at once
+        val randomPage = (1..20).random()
+        val moviesDeferred = async {
+            try {
+                api.discoverMovies(
+                    apiKey = apiKey,
+                    language = languageManager.getApiLanguage(),
+                    page = randomPage,
+                    sortBy = "vote_count.desc"
+                ).results
+            } catch (e: Exception) {
+                e("getPopularDiscoverContent movies failed: ${e.message}", e)
+                emptyList()
+            }
+        }
+        val tvDeferred = async {
+            try {
+                api.discoverTvShows(
+                    apiKey = apiKey,
+                    language = languageManager.getApiLanguage(),
+                    page = randomPage,
+                    sortBy = "vote_count.desc"
+                ).results
+            } catch (e: Exception) {
+                e("getPopularDiscoverContent tv failed: ${e.message}", e)
+                emptyList()
+            }
+        }
+        val combined = mutableListOf<Any>().apply {
+            addAll(moviesDeferred.await())
+            addAll(tvDeferred.await())
+        }
+        popularDiscoverCache = combined
+        popularDiscoverCacheAt = now
+        combined
+    }
+
     suspend fun discoverByFilters(
         mediaType: String, // "movie", "tv", or "all"
         genreIds: List<Int>? = null,

@@ -25,7 +25,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowActionModeOverlay">true</item>
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/montserrat_medium</item>
         <item name="materialButtonStyle">@style/Widget.MovieTime.Button</item>
         <item name="materialButtonOutlinedStyle">@style/Widget.MovieTime.Button.Outlined</item>
         <item name="bottomSheetDialogTheme">@style/Theme.MovieTime.BottomSheet</item>
@@ -112,7 +112,7 @@
     </style>
     <style name="Widget.MovieTime.Button" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">@color/primary</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/text_on_dark</item>
         <item name="rippleColor">@color/ripple_color</item>
         <item name="cornerRadius">18dp</item>
         <item name="android:minHeight">48dp</item>

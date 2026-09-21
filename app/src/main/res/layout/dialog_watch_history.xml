@@ -45,7 +45,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="@font/montserrat_semibold" />
 
                 <ImageView
                     android:id="@+id/btnClose"
@@ -84,7 +84,7 @@
                     android:layout_marginStart="12dp"
                     android:textSize="16sp"
                     android:textColor="@color/text_primary"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/montserrat_semibold"
                     tools:text="Переглянуто 3 рази" />
 
                 <View
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/add_rewatch"
                     android:textAllCaps="false"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/montserrat_semibold"
                     app:cornerRadius="16dp"
                     app:icon="@drawable/ic_replay_24"
                     app:iconTint="@android:color/white"

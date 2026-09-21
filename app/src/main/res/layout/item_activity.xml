@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="14sp"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/montserrat_semibold"
                     android:textColor="@color/primary"
                     android:textStyle="bold"
                     android:maxLines="1"
@@ -75,7 +75,7 @@
                     android:background="@drawable/bg_time_badge"
                     android:textSize="10sp"
                     android:textColor="@color/text_hint"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/montserrat_semibold"
                     tools:text="2 год тому" />
 
             </LinearLayout>
@@ -87,7 +87,7 @@
                 android:layout_marginTop="4dp"
                 android:textSize="12sp"
                 android:textColor="@color/accent"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/montserrat_semibold"
                 tools:text="подивився фільм" />
 
             <TextView
@@ -98,7 +98,7 @@
                 android:textSize="15sp"
                 android:textColor="@color/text_primary"
                 android:textStyle="bold"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/montserrat_semibold"
                 android:maxLines="2"
                 android:ellipsize="end"
                 tools:text="@tools:sample/lorem" />
@@ -129,7 +129,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/text_primary"
                     android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/montserrat_semibold"
                     tools:text="8.5" />
 
             </LinearLayout>

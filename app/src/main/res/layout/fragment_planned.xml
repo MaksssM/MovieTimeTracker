@@ -55,7 +55,7 @@
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="@font/montserrat_semibold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
-                        android:fontFamily="sans-serif-medium"
+                        android:fontFamily="@font/montserrat_semibold"
                         tools:text="14" />
 
                     <TextView
@@ -144,7 +144,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="#7CA8FF"
-                        android:fontFamily="sans-serif-medium"
+                        android:fontFamily="@font/montserrat_semibold"
                         tools:text="8" />
 
                     <TextView
@@ -182,7 +182,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="#C084FC"
-                        android:fontFamily="sans-serif-medium"
+                        android:fontFamily="@font/montserrat_semibold"
                         tools:text="6" />
 
                     <TextView

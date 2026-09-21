@@ -23,7 +23,7 @@
             android:textColor="@color/text_primary"
             android:textSize="32sp"
             android:textStyle="bold"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/montserrat_semibold"
             android:layout_marginBottom="24dp" />
 
         <!-- ═══════════════════════════════════════════════════════════════ -->
@@ -88,7 +88,7 @@
                             android:text="@string/language_title"
                             android:textColor="@color/text_primary"
                             android:textSize="16sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:fontFamily="@font/montserrat_semibold" />
 
                         <TextView
                             android:id="@+id/tvCurrentLanguage"
@@ -145,7 +145,7 @@
                             android:text="@string/content_region"
                             android:textColor="@color/text_primary"
                             android:textSize="16sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:fontFamily="@font/montserrat_semibold" />
 
                         <TextView
                             android:id="@+id/tvCurrentContentLanguage"
@@ -235,7 +235,7 @@
                             android:text="@string/theme_title"
                             android:textColor="@color/text_primary"
                             android:textSize="16sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:fontFamily="@font/montserrat_semibold" />
 
                         <TextView
                             android:id="@+id/tvCurrentTheme"
@@ -286,7 +286,7 @@
                             android:text="@string/show_ratings"
                             android:textColor="@color/text_primary"
                             android:textSize="16sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:fontFamily="@font/montserrat_semibold" />
                     </LinearLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -357,7 +357,7 @@
                             android:text="@string/notify_new_episodes"
                             android:textColor="@color/text_primary"
                             android:textSize="16sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:fontFamily="@font/montserrat_semibold" />
                     </LinearLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -401,7 +401,7 @@
                             android:text="@string/notify_weekly_digest"
                             android:textColor="@color/text_primary"
                             android:textSize="16sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:fontFamily="@font/montserrat_semibold" />
                     </LinearLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -477,7 +477,7 @@
                             android:text="@string/clear_cache"
                             android:textColor="@color/error"
                             android:textSize="16sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:fontFamily="@font/montserrat_semibold" />
 
                         <TextView
                             android:id="@+id/tvCacheSize"
@@ -554,7 +554,7 @@
                             android:text="@string/create_backup"
                             android:textColor="@color/text_primary"
                             android:textSize="16sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:fontFamily="@font/montserrat_semibold" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -602,7 +602,7 @@
                             android:text="@string/manage_backups"
                             android:textColor="@color/text_primary"
                             android:textSize="16sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:fontFamily="@font/montserrat_semibold" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -650,7 +650,7 @@
                             android:text="@string/import_backup"
                             android:textColor="@color/text_primary"
                             android:textSize="16sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:fontFamily="@font/montserrat_semibold" />
 
                         <TextView
                             android:layout_width="wrap_content"

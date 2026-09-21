@@ -37,8 +37,8 @@
             <!-- Poster with rounded corners -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/posterCard"
-                android:layout_width="86dp"
-                android:layout_height="128dp"
+                android:layout_width="96dp"
+                android:layout_height="140dp"
                 app:cardCornerRadius="14dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
@@ -80,7 +80,7 @@
                         android:paddingVertical="2dp"
                         android:textSize="9sp"
                         android:textColor="#34D399"
-                        android:fontFamily="sans-serif-medium"
+                        android:fontFamily="@font/montserrat_semibold"
                         android:textAllCaps="true"
                         tools:text="TV" />
 
@@ -111,7 +111,7 @@
                             android:layout_marginStart="2dp"
                             android:textSize="10sp"
                             android:textColor="#FBBF24"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/montserrat_semibold"
                             android:textStyle="bold"
                             tools:text="8.5" />
 
@@ -152,7 +152,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/montserrat_semibold"
                     android:maxLines="2"
                     android:ellipsize="end"
                     android:lineSpacingMultiplier="1.15"
@@ -210,7 +210,7 @@
                         android:layout_marginStart="4dp"
                         android:textSize="11sp"
                         android:textColor="#34D399"
-                        android:fontFamily="sans-serif-medium"
+                        android:fontFamily="@font/montserrat_semibold"
                         tools:text="62 серії" />
 
                 </LinearLayout>
@@ -246,7 +246,7 @@
                             android:layout_marginStart="4dp"
                             android:textSize="10sp"
                             android:textColor="#34D399"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/montserrat_semibold"
                             tools:text="24/62 серій" />
 
                         <TextView
@@ -255,7 +255,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="10sp"
                             android:textColor="#10B981"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/montserrat_semibold"
                             android:textStyle="bold"
                             tools:text="39%" />
 

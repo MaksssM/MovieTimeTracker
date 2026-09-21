@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movietime.R
 import com.example.movietime.data.firebase.FirebaseRepository
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -23,7 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: FirebaseRepository,
+    @dagger.hilt.android.qualifiers.ApplicationContext private val appContext: Context
 ) : ViewModel() {
     
     companion object {
@@ -84,7 +86,7 @@ class AuthViewModel @Inject constructor(
             handleSignInResult(result)
         } catch (e: Exception) {
             Log.e(TAG, "Google sign in failed", e)
-            _error.postValue("Помилка входу: ${e.localizedMessage}")
+            _error.postValue(appContext.getString(R.string.auth_login_failed_format, e.localizedMessage))
             _isLoading.value = false
             Result.failure(e)
         }
@@ -128,7 +130,7 @@ class AuthViewModel @Inject constructor(
     // Email/Password Sign In
     fun signInWithEmail(email: String, password: String) {
         if (email.isBlank() || password.isBlank()) {
-            _error.postValue("Заповніть всі поля")
+            _error.postValue(appContext.getString(R.string.auth_fill_all_fields))
             return
         }
         
@@ -147,12 +149,12 @@ class AuthViewModel @Inject constructor(
     // Email/Password Sign Up
     fun signUpWithEmail(email: String, password: String, displayName: String) {
         if (email.isBlank() || password.isBlank() || displayName.isBlank()) {
-            _error.postValue("Заповніть всі поля")
+            _error.postValue(appContext.getString(R.string.auth_fill_all_fields))
             return
         }
-        
+
         if (password.length < 6) {
-            _error.postValue("Пароль повинен містити мінімум 6 символів")
+            _error.postValue(appContext.getString(R.string.auth_password_min))
             return
         }
         
@@ -175,11 +177,11 @@ class AuthViewModel @Inject constructor(
     
     private fun getErrorMessage(exception: Throwable): String {
         return when {
-            exception.message?.contains("email") == true -> "Невірний email"
-            exception.message?.contains("password") == true -> "Невірний пароль"
-            exception.message?.contains("network") == true -> "Перевірте інтернет-з'єднання"
-            exception.message?.contains("already") == true -> "Цей email вже зареєстровано"
-            else -> exception.localizedMessage ?: "Невідома помилка"
+            exception.message?.contains("email") == true -> appContext.getString(R.string.auth_error_email)
+            exception.message?.contains("password") == true -> appContext.getString(R.string.auth_error_password)
+            exception.message?.contains("network") == true -> appContext.getString(R.string.auth_error_network)
+            exception.message?.contains("already") == true -> appContext.getString(R.string.auth_error_registered)
+            else -> exception.localizedMessage ?: appContext.getString(R.string.auth_error_unknown)
         }
     }
     

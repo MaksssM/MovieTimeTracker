@@ -377,7 +377,7 @@ class TvDetailsActivity : AppCompatActivity() {
                         progressDialog.dismiss()
                         Toast.makeText(
                             this@TvDetailsActivity,
-                            "Не вдалося отримати дані про серіал. Спробуйте пізніше.",
+                            getString(R.string.load_show_failed_retry),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -417,7 +417,11 @@ class TvDetailsActivity : AppCompatActivity() {
                             Log.d(TAG, "Успішно додано серіал до переглянутих")
                             Toast.makeText(
                                 this@TvDetailsActivity,
-                                "Додано: ${item.title} (${Utils.formatMinutesToHoursAndMinutes(this@TvDetailsActivity, item.runtime)})",
+                                getString(
+                                    R.string.added_with_runtime,
+                                    item.title,
+                                    Utils.formatMinutesToHoursAndMinutes(this@TvDetailsActivity, item.runtime)
+                                ),
                                 Toast.LENGTH_SHORT
                             ).show()
                             binding.fabAdd.text = getString(R.string.added)

@@ -39,6 +39,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var watchedItemDao: WatchedItemDao
 
+    @Inject
+    lateinit var appRepository: com.example.movietime.data.repository.AppRepository
+
     companion object {
         private const val TAG = "MainActivity"
         private var toolbarClickCount = 0
@@ -121,6 +124,14 @@ class MainActivity : AppCompatActivity() {
 
         // Запускаємо оновлення серіалів у фоновому режимі
         startTvShowUpdates()
+
+        // Прогріваємо кеш популярного для пошуку, щоб перше відкриття було миттєвим
+        lifecycleScope.launch {
+            try {
+                appRepository.getPopularDiscoverContent()
+            } catch (_: Exception) {
+            }
+        }
         
         // Handle back button for drawer
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {

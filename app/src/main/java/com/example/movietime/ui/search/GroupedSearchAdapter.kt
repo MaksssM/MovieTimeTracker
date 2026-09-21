@@ -141,7 +141,8 @@ class GroupedSearchAdapter(
                 is MovieResult -> {
                     lastBoundTitle = item.title ?: binding.root.context.getString(R.string.no_title)
                     binding.tvTitle.text = lastBoundTitle
-                    val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w342$it" }
+                    // w185 is plenty for ~80dp list thumbs and ~4x lighter than w342
+                    val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w185$it" }
                     binding.ivPoster.load(posterUrl) {
                         crossfade(200)
                         placeholder(R.drawable.ic_placeholder)
@@ -169,7 +170,7 @@ class GroupedSearchAdapter(
                 is TvShowResult -> {
                     lastBoundTitle = item.name ?: binding.root.context.getString(R.string.no_title)
                     binding.tvTitle.text = lastBoundTitle
-                    val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w342$it" }
+                    val posterUrl = item.posterPath?.let { "https://image.tmdb.org/t/p/w185$it" }
                     binding.ivPoster.load(posterUrl) {
                         crossfade(200)
                         placeholder(R.drawable.ic_placeholder)

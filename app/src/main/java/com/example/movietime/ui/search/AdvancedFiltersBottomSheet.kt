@@ -155,8 +155,9 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
 
     private fun setupYearSpinner() {
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        val anyYearLabel = getString(R.string.any_year)
         val years = mutableListOf<String>()
-        years.add("Будь-який рік")
+        years.add(anyYearLabel)
         for (year in currentYear downTo 1900) {
             years.add(year.toString())
         }
@@ -186,7 +187,7 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
 
     private fun setupSortSpinner() {
         val sortOptions = SortOption.values()
-        val sortDisplayNames = sortOptions.map { it.displayName }
+        val sortDisplayNames = sortOptions.map { sortOptionLabel(it) }
         val adapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, sortDisplayNames)
         binding.spinnerSort.setAdapter(adapter)
         
@@ -221,6 +222,20 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
+    private fun sortOptionLabel(option: SortOption): String {
+        val resId = when (option) {
+            SortOption.POPULARITY_DESC -> R.string.sort_opt_popularity_desc
+            SortOption.POPULARITY_ASC -> R.string.sort_opt_popularity_asc
+            SortOption.VOTE_AVERAGE_DESC -> R.string.sort_opt_rating_desc
+            SortOption.VOTE_AVERAGE_ASC -> R.string.sort_opt_rating_asc
+            SortOption.RELEASE_DATE_DESC -> R.string.sort_opt_release_desc
+            SortOption.RELEASE_DATE_ASC -> R.string.sort_opt_release_asc
+            SortOption.TITLE_ASC -> R.string.sort_opt_title_asc
+            SortOption.TITLE_DESC -> R.string.sort_opt_title_desc
+        }
+        return getString(resId)
+    }
+
     private fun setupButtons() {
         binding.btnApplyFilters.setOnClickListener {
             onApplyFilters?.invoke()
@@ -231,8 +246,8 @@ class AdvancedFiltersBottomSheet : BottomSheetDialogFragment() {
             viewModel.resetAdvancedFilters()
             binding.etSearchPerson.text?.clear()
             binding.etSearchCompany.text?.clear()
-            binding.spinnerYear.setText("Будь-який рік", false)
-            val firstSort = SortOption.values().firstOrNull()?.displayName ?: ""
+            binding.spinnerYear.setText(getString(R.string.any_year), false)
+            val firstSort = sortOptionLabel(SortOption.values().firstOrNull() ?: SortOption.POPULARITY_DESC)
             binding.spinnerSort.setText(firstSort, false)
             genreAdapter.notifyDataSetChanged()
             updateSelectedPersonUI()
