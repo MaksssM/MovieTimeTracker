@@ -8,6 +8,7 @@ import com.example.movietime.BuildConfig
 import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.data.db.PlannedItem
 import com.example.movietime.data.db.WatchingItem
+import com.example.movietime.data.db.TvShowProgress
 import com.example.movietime.data.repository.AppRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -17,7 +18,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-const val CURRENT_BACKUP_VERSION = 2
+const val CURRENT_BACKUP_VERSION = 3
 const val MAX_AUTO_BACKUPS = 3
 
 @Serializable
@@ -31,7 +32,10 @@ data class BackupData(
     val watchingCount: Int = 0,
     val watched: List<WatchedItemData> = emptyList(),
     val planned: List<PlannedItemData> = emptyList(),
-    val watching: List<WatchingItemData> = emptyList()
+    val watching: List<WatchingItemData> = emptyList(),
+    // v3: per-episode progress of TV shows (absent in older backups -> empty)
+    val progressCount: Int = 0,
+    val progress: List<EpisodeProgressData> = emptyList()
 )
 
 /** Lightweight class to parse only the header fields from a backup file. */
@@ -90,6 +94,17 @@ data class WatchingItemData(
     val currentSeason: Int? = null
 )
 
+@Serializable
+data class EpisodeProgressData(
+    val tvShowId: Int,
+    val seasonNumber: Int,
+    val episodeNumber: Int,
+    val episodeName: String? = null,
+    val episodeRuntime: Int? = null,
+    val watched: Boolean = false,
+    val watchedAt: Long? = null
+)
+
 class BackupManager(
     private val context: Context,
     private val repository: AppRepository
@@ -115,6 +130,7 @@ class BackupManager(
         val watchedItems = repository.getWatchedItemsForBackup()
         val plannedItems = repository.getPlannedItemsForBackup()
         val watchingItems = repository.getWatchingItemsForBackup()
+        val progressItems = repository.getEpisodeProgressForBackup()
 
         val watchedData = watchedItems.map { item ->
             WatchedItemData(
@@ -141,6 +157,14 @@ class BackupManager(
                 currentEpisode = item.currentEpisode, currentSeason = item.currentSeason
             )
         }
+        val progressData = progressItems.map { ep ->
+            EpisodeProgressData(
+                tvShowId = ep.tvShowId, seasonNumber = ep.seasonNumber,
+                episodeNumber = ep.episodeNumber, episodeName = ep.episodeName,
+                episodeRuntime = ep.episodeRuntime, watched = ep.watched,
+                watchedAt = ep.watchedAt
+            )
+        }
 
         return BackupData(
             version = CURRENT_BACKUP_VERSION,
@@ -152,7 +176,9 @@ class BackupManager(
             watchingCount = watchingData.size,
             watched = watchedData,
             planned = plannedData,
-            watching = watchingData
+            watching = watchingData,
+            progressCount = progressData.size,
+            progress = progressData
         )
     }
 
@@ -161,13 +187,16 @@ class BackupManager(
             repository.deleteAllWatched()
             repository.deleteAllPlanned()
             repository.deleteAllWatching()
+            repository.deleteAllEpisodeProgress()
             backup.watched.forEach { repository.addWatchedItem(watchedItemFromData(it)) }
             backup.planned.forEach { repository.insertPlannedDirect(plannedItemFromData(it)) }
             backup.watching.forEach { repository.insertWatchingDirect(watchingItemFromData(it)) }
+            backup.progress.forEach { repository.insertEpisodeProgressDirect(progressFromData(it)) }
         } else {
             val existingWatched = repository.getWatchedItemIds()
             val existingPlanned = repository.getPlannedItemIds()
             val existingWatching = repository.getWatchingItemIds()
+            val existingProgress = repository.getEpisodeProgressKeys()
             backup.watched
                 .filter { (it.id to it.mediaType) !in existingWatched }
                 .forEach { repository.addWatchedItem(watchedItemFromData(it)) }
@@ -177,6 +206,9 @@ class BackupManager(
             backup.watching
                 .filter { (it.id to it.mediaType) !in existingWatching }
                 .forEach { repository.insertWatchingDirect(watchingItemFromData(it)) }
+            backup.progress
+                .filter { Triple(it.tvShowId, it.seasonNumber, it.episodeNumber) !in existingProgress }
+                .forEach { repository.insertEpisodeProgressDirect(progressFromData(it)) }
         }
     }
 
@@ -202,6 +234,13 @@ class BackupManager(
         releaseDate = data.releaseDate, runtime = data.runtime,
         mediaType = data.mediaType, dateAdded = data.dateAdded,
         currentEpisode = data.currentEpisode, currentSeason = data.currentSeason
+    )
+
+    private fun progressFromData(data: EpisodeProgressData) = TvShowProgress(
+        tvShowId = data.tvShowId, seasonNumber = data.seasonNumber,
+        episodeNumber = data.episodeNumber, episodeName = data.episodeName,
+        episodeRuntime = data.episodeRuntime, watched = data.watched,
+        watchedAt = data.watchedAt
     )
 
     // ── Auto-backup cleanup ──────────────────────────────────────────────────

@@ -57,7 +57,8 @@ class EnhancedMainViewModel @Inject constructor(
         }
     }
 
-    fun loadTrendingForBackground() {
+    fun loadTrendingForBackground(forceRefresh: Boolean = false) {
+        if (!forceRefresh && _backgroundImage.value != null) return
         viewModelScope.launch {
             try {
                 val result = repository.getTrendingContent("week")
@@ -77,11 +78,15 @@ class EnhancedMainViewModel @Inject constructor(
     private val _recommendations = MutableStateFlow<List<Any>>(emptyList())
     val recommendations: StateFlow<List<Any>> = _recommendations.asStateFlow()
 
-    fun loadRecommendations() {
+    fun loadRecommendations(forceRefresh: Boolean = false) {
+        if (!forceRefresh && _recommendations.value.isNotEmpty()) {
+            return
+        }
         viewModelScope.launch {
             try {
-                // Invalidate cache to get fresh recommendations on each load
-                recommendationService.invalidateCache()
+                if (forceRefresh) {
+                    recommendationService.invalidateCache()
+                }
                 val recs = recommendationService.getPersonalizedRecommendations()
 
                 // Чергуємо фільми і серіали для різноманітності стрічки
@@ -96,7 +101,9 @@ class EnhancedMainViewModel @Inject constructor(
 
                 _recommendations.value = allRecs
             } catch (_: Exception) {
-                _recommendations.value = emptyList()
+                if (_recommendations.value.isEmpty()) {
+                    _recommendations.value = emptyList()
+                }
             }
         }
     }

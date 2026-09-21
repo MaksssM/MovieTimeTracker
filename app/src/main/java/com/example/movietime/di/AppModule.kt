@@ -178,13 +178,14 @@ object AppModule {
         dao: WatchedItemDao, 
         plannedDao: PlannedDao, 
         watchingDao: WatchingDao,
+        tvShowProgressDao: TvShowProgressDao,
         searchHistoryDao: SearchHistoryDao,
         languageManager: LanguageManager
     ): AppRepository {
         if (BuildConfig.TMDB_API_KEY.isBlank() || BuildConfig.TMDB_API_KEY.contains("YOUR_DEFAULT_KEY")) {
             android.util.Log.e("AppModule", "WARNING: TMDB API key is not configured properly!")
         }
-        return AppRepository(api, dao, plannedDao, watchingDao, searchHistoryDao, languageManager, BuildConfig.TMDB_API_KEY)
+        return AppRepository(api, dao, plannedDao, watchingDao, tvShowProgressDao, searchHistoryDao, languageManager, BuildConfig.TMDB_API_KEY)
     }
 
     @Provides

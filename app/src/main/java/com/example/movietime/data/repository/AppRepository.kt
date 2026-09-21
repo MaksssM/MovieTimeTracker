@@ -11,6 +11,8 @@ import com.example.movietime.data.db.PlannedItem
 import com.example.movietime.data.db.PlannedDao
 import com.example.movietime.data.db.WatchingItem
 import com.example.movietime.data.db.WatchingDao
+import com.example.movietime.data.db.TvShowProgress
+import com.example.movietime.data.db.TvShowProgressDao
 import com.example.movietime.data.db.SearchHistoryItem
 import com.example.movietime.data.db.SearchHistoryDao
 import com.example.movietime.data.model.MovieResult
@@ -38,6 +40,7 @@ class AppRepository @Inject constructor(
     private val dao: WatchedItemDao,
     private val plannedDao: PlannedDao,
     private val watchingDao: WatchingDao,
+    private val tvShowProgressDao: TvShowProgressDao,
     private val searchHistoryDao: SearchHistoryDao,
     private val languageManager: LanguageManager,
     private val apiKey: String
@@ -243,23 +246,24 @@ class AppRepository @Inject constructor(
     /**
      * Отримує детальну інформацію про всі сезони серіалу з епізодами
      */
-    suspend fun getAllSeasonsDetails(tvId: Int, totalSeasons: Int): List<TvSeasonDetails> {
+    suspend fun getAllSeasonsDetails(tvId: Int, totalSeasons: Int): List<TvSeasonDetails> = coroutineScope {
         Log.d("AppRepo", "getAllSeasonsDetails: tvId=$tvId, totalSeasons=$totalSeasons")
-        val seasons = mutableListOf<TvSeasonDetails>()
-
-        for (seasonNumber in 1..totalSeasons) {
-            try {
-                val seasonDetails = getTvSeasonDetails(tvId, seasonNumber) // Call the updated function
-                seasons.add(seasonDetails)
-                Log.d("AppRepo", "Loaded season $seasonNumber with ${seasonDetails.episodes?.size} episodes")
-            } catch (e: Exception) {
-                Log.e("AppRepo", "Failed to load season $seasonNumber: ${e.message}")
-                // Continue loading other seasons even if one fails
+        val deferreds = (1..totalSeasons).map { seasonNumber ->
+            async {
+                try {
+                    val seasonDetails = getTvSeasonDetails(tvId, seasonNumber)
+                    Log.d("AppRepo", "Loaded season $seasonNumber with ${seasonDetails.episodes?.size} episodes")
+                    seasonDetails
+                } catch (e: Exception) {
+                    Log.e("AppRepo", "Failed to load season $seasonNumber: ${e.message}")
+                    null
+                }
             }
         }
 
-        Log.d("AppRepo", "getAllSeasonsDetails completed: loaded ${seasons.size} seasons")
-        return seasons
+        val seasons = deferreds.awaitAll().filterNotNull()
+        Log.d("AppRepo", "getAllSeasonsDetails completed: loaded ${seasons.size} seasons in parallel")
+        seasons
     }
 
     suspend fun addWatchedItem(item: WatchedItem) {
@@ -820,6 +824,46 @@ class AppRepository @Inject constructor(
         }
     }
 
+    /**
+     * Top lists: highest-rated titles with a minimum vote count,
+     * optionally filtered by a single genre. Page 1 only (20 titles).
+     */
+    suspend fun discoverTopMovies(genreId: Int? = null, minVotes: Int = 300): List<MovieResult> {
+        return try {
+            val response = api.discoverMovies(
+                apiKey = apiKey,
+                language = languageManager.getApiLanguage(),
+                page = 1,
+                sortBy = "vote_average.desc",
+                withGenres = genreId?.toString(),
+                voteAverageGte = 7.0f,
+                voteCountGte = minVotes
+            )
+            response.results
+        } catch (e: Exception) {
+            e("discoverTopMovies failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    suspend fun discoverTopTvShows(genreId: Int? = null, minVotes: Int = 150): List<TvShowResult> {
+        return try {
+            val response = api.discoverTvShows(
+                apiKey = apiKey,
+                language = languageManager.getApiLanguage(),
+                page = 1,
+                sortBy = "vote_average.desc",
+                withGenres = genreId?.toString(),
+                voteAverageGte = 7.0f,
+                voteCountGte = minVotes
+            )
+            response.results
+        } catch (e: Exception) {
+            e("discoverTopTvShows failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
     suspend fun discoverByFilters(
         mediaType: String, // "movie", "tv", or "all"
         genreIds: List<Int>? = null,
@@ -973,6 +1017,44 @@ class AppRepository @Inject constructor(
             d("Watching item inserted directly: ${item.title}")
         } catch (e: Exception) {
             e("insertWatchingDirect failed: ${e.message}", e)
+        }
+    }
+
+    suspend fun deleteAllEpisodeProgress() {
+        try {
+            tvShowProgressDao.deleteAll()
+            d("All episode progress deleted")
+        } catch (e: Exception) {
+            e("deleteAllEpisodeProgress failed: ${e.message}", e)
+        }
+    }
+
+    suspend fun getEpisodeProgressForBackup(): List<TvShowProgress> {
+        return try {
+            tvShowProgressDao.getAllSync()
+        } catch (e: Exception) {
+            e("getEpisodeProgressForBackup failed: ${e.message}", e)
+            emptyList()
+        }
+    }
+
+    /** Returns Set of (tvShowId, season, episode) triples for merge-mode backup restore. */
+    suspend fun getEpisodeProgressKeys(): Set<Triple<Int, Int, Int>> =
+        try {
+            tvShowProgressDao.getAllSync()
+                .map { Triple(it.tvShowId, it.seasonNumber, it.episodeNumber) }
+                .toSet()
+        } catch (e: Exception) {
+            e("getEpisodeProgressKeys failed: ${e.message}", e)
+            emptySet()
+        }
+
+    suspend fun insertEpisodeProgressDirect(item: TvShowProgress) {
+        try {
+            tvShowProgressDao.insertEpisode(item)
+            d("Episode progress inserted directly: show=${item.tvShowId} S${item.seasonNumber}E${item.episodeNumber}")
+        } catch (e: Exception) {
+            e("insertEpisodeProgressDirect failed: ${e.message}", e)
         }
     }
 

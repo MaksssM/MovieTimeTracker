@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/recommend_movie"
-        android:textColor="@android:color/white"
+        android:textColor="@color/text_primary"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="16dp" />
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="14dp"
         app:cardElevation="0dp"
-        app:cardBackgroundColor="#15FFFFFF">
+        app:cardBackgroundColor="@color/surface_variant">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:background="#20FFFFFF"
+                    android:background="@color/poster_placeholder_dark"
                     android:contentDescription="@null" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -57,7 +57,7 @@
                     android:id="@+id/txtMovieTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:maxLines="2"
@@ -68,7 +68,7 @@
                     android:id="@+id/txtMovieYear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#80FFFFFF"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:layout_marginTop="2dp"
                     tools:text="2023 • Фільм" />
@@ -81,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select_friend"
-        android:textColor="#B0FFFFFF"
+        android:textColor="@color/text_secondary"
         android:textSize="14sp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp" />
@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_friends_to_recommend"
-            android:textColor="#60FFFFFF"
+            android:textColor="@color/text_secondary"
             android:textSize="13sp"
             android:gravity="center" />
     </LinearLayout>
@@ -120,19 +120,19 @@
         android:layout_marginTop="16dp"
         android:hint="@string/add_message_optional"
         app:boxBackgroundMode="outline"
-        app:boxBackgroundColor="#10FFFFFF"
+        app:boxBackgroundColor="@color/surface_variant"
         app:boxStrokeColor="#60A5FA"
         app:boxCornerRadiusTopStart="12dp"
         app:boxCornerRadiusTopEnd="12dp"
         app:boxCornerRadiusBottomStart="12dp"
         app:boxCornerRadiusBottomEnd="12dp"
-        app:hintTextColor="#80FFFFFF">
+        app:hintTextColor="@color/text_hint">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:inputType="textMultiLine"
             android:minLines="2"

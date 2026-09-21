@@ -106,7 +106,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_check"
-                        app:tint="@android:color/white"
+                        app:tint="@color/text_on_dark"
                         android:contentDescription="@null" />
 
                     <TextView
@@ -115,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:text="@string/watched"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_on_dark"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -151,7 +151,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_play"
-                        app:tint="@android:color/white"
+                        app:tint="@color/text_on_dark"
                         android:contentDescription="@null" />
 
                     <TextView
@@ -160,7 +160,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:text="@string/watching"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_on_dark"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -194,7 +194,7 @@
                         android:id="@+id/tvTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="22sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium"
@@ -315,8 +315,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:navigationIconTint="@android:color/white"
-                app:titleTextColor="@android:color/white" />
+                app:navigationIconTint="@color/text_on_dark"
+                app:titleTextColor="@color/text_on_dark" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -652,7 +652,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:textColor="@android:color/white"
+                                android:textColor="@color/text_primary"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:fontFamily="sans-serif-medium"
@@ -705,7 +705,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-medium"
@@ -716,7 +716,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/seasons"
-                            android:textColor="#80FFFFFF"
+                            android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -757,7 +757,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-medium"
@@ -768,7 +768,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/episodes"
-                            android:textColor="#80FFFFFF"
+                            android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -801,7 +801,7 @@
                             android:layout_height="28dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_time"
-                            app:tint="@android:color/white"
+                            app:tint="@color/text_on_dark"
                             android:contentDescription="@null" />
                     </FrameLayout>
 
@@ -816,7 +816,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/total_watch_time"
-                            android:textColor="#80FFFFFF"
+                            android:textColor="@color/text_secondary"
                             android:textSize="12sp"
                             android:fontFamily="sans-serif-medium" />
 
@@ -825,7 +825,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="24sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-medium"
@@ -853,7 +853,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/overview"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium" />
@@ -873,7 +873,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="20dp"
-                    android:textColor="@color/text_on_dark_secondary"
+                    android:textColor="@color/text_secondary"
                     android:textSize="15sp"
                     android:lineSpacingMultiplier="1.4"
                     android:fontFamily="sans-serif"
@@ -908,7 +908,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cast_title"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -954,7 +954,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/crew_title"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -976,6 +976,52 @@
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
+            <!-- Seasons Section (series, cartoons, anime — TMDB seasons) -->
+            <LinearLayout
+                android:id="@+id/layoutSeasons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginBottom="12dp">
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/bg_section_title_underline" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/seasons"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSeasons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:orientation="horizontal"
+                    tools:listitem="@layout/item_season_overview"
+                    tools:itemCount="4" />
+            </LinearLayout>
+
             <!-- Additional Info Section -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -995,7 +1041,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/additional_info"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium" />
@@ -1036,7 +1082,7 @@
                             android:id="@+id/tvFirstAirDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:fontFamily="sans-serif-medium"
                             tools:text="20.01.2008" />
@@ -1066,7 +1112,7 @@
                             android:id="@+id/tvLastAirDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:fontFamily="sans-serif-medium"
                             tools:text="29.09.2013" />
@@ -1096,7 +1142,7 @@
                             android:id="@+id/tvEpisodeRuntime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:fontFamily="sans-serif-medium"
                             tools:text="~45 хв" />
@@ -1156,7 +1202,7 @@
                             android:id="@+id/tvVoteCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:fontFamily="sans-serif-medium"
                             tools:text="12,456" />

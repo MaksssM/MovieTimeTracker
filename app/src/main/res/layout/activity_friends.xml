@@ -37,9 +37,9 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent"
             app:navigationIcon="@drawable/ic_arrow_back_24"
-            app:navigationIconTint="@android:color/white"
+            app:navigationIconTint="?attr/colorOnSurface"
             app:title="@string/friends"
-            app:titleTextColor="@android:color/white"
+            app:titleTextColor="?attr/colorOnSurface"
             app:titleCentered="false" />
 
         <!-- Not logged in state -->
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_to_use_friends"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:gravity="center"
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_friends_description"
-                android:textColor="#80FFFFFF"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 android:gravity="center"
                 android:layout_marginBottom="32dp"
@@ -124,7 +124,7 @@
                 app:cardCornerRadius="18dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp"
-                app:cardBackgroundColor="#15FFFFFF">
+                app:cardBackgroundColor="@color/surface_variant">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
@@ -135,8 +135,8 @@
                     app:tabGravity="fill"
                     app:tabIndicatorColor="#60A5FA"
                     app:tabIndicatorHeight="3dp"
-                    app:tabSelectedTextColor="@android:color/white"
-                    app:tabTextColor="#80FFFFFF"
+                    app:tabSelectedTextColor="@color/text_primary"
+                    app:tabTextColor="@color/text_secondary"
                     app:tabRippleColor="#2060A5FA"
                     app:tabTextAppearance="@style/TabTextStyle">
 

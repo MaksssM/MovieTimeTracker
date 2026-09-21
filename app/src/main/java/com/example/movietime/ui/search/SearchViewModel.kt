@@ -204,15 +204,21 @@ class SearchViewModel @Inject constructor(
     private var currentPage = 1
     private var isLastPage = false
     private var isSearching = false
+    private var searchJob: kotlinx.coroutines.Job? = null
 
     fun searchMulti(query: String, loadMore: Boolean = false) {
         if (query.isBlank()) {
+            searchJob?.cancel()
             _searchResult.value = emptyList()
             return
         }
 
-        if (isSearching) return
-        if (loadMore && isLastPage) return
+        if (loadMore) {
+            if (isSearching || isLastPage) return
+        } else {
+            // Cancel active search job for prior query
+            searchJob?.cancel()
+        }
 
         if (!loadMore) {
             currentPage = 1
@@ -242,7 +248,7 @@ class SearchViewModel @Inject constructor(
             Log.w("SearchViewModel", "TMDB API key looks unset.")
         }
 
-        viewModelScope.launch {
+        searchJob = viewModelScope.launch {
             try {
                 isSearching = true
                 if (!loadMore) _isLoading.value = true // Show full loader only for first page
@@ -317,12 +323,16 @@ class SearchViewModel @Inject constructor(
 
     fun searchPeopleOnly(query: String, loadMore: Boolean = false) {
         if (query.isBlank()) {
+            searchJob?.cancel()
             _searchResult.value = emptyList()
             return
         }
 
-        if (isSearching) return
-        if (loadMore && isLastPage) return
+        if (loadMore) {
+            if (isSearching || isLastPage) return
+        } else {
+            searchJob?.cancel()
+        }
 
         if (!loadMore) {
             currentPage = 1
@@ -330,7 +340,7 @@ class SearchViewModel @Inject constructor(
             lastSearchQuery = query
         }
 
-        viewModelScope.launch {
+        searchJob = viewModelScope.launch {
             try {
                 isSearching = true
                 if (!loadMore) _isLoading.value = true

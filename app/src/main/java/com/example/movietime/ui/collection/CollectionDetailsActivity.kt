@@ -33,6 +33,8 @@ import java.util.Locale
 class CollectionDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCollectionDetailsBinding
+
+    private var collectionId: Int = -1
     
     @Inject
     lateinit var repository: AppRepository
@@ -65,9 +67,18 @@ class CollectionDetailsActivity : AppCompatActivity() {
 
         val collectionId = intent.getIntExtra("COLLECTION_ID", -1)
         if (collectionId != -1) {
+            this.collectionId = collectionId
             loadCollectionDetails(collectionId)
         } else {
             finish()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Refresh watched marks — user may have marked a part as watched and come back
+        if (collectionId != -1) {
+            loadCollectionDetails(collectionId)
         }
     }
 
@@ -88,10 +99,13 @@ class CollectionDetailsActivity : AppCompatActivity() {
                     }
                 }
 
-                // 3. Sort parts by release date
+                // 3. Sort parts by release date; keep announced parts without
+                // a date (they go last instead of disappearing)
                 val sortedParts = details.parts
-                    .filter { !it.releaseDate.isNullOrEmpty() }
-                    .sortedBy { it.releaseDate }
+                    .sortedWith(
+                        compareBy<com.example.movietime.data.model.MovieResult> { it.releaseDate.isNullOrEmpty() }
+                            .thenBy { it.releaseDate ?: "" }
+                    )
 
                 // 4. Check watched status for each part
                 val watchedIds = mutableSetOf<Int>()

@@ -16,6 +16,9 @@ import com.example.movietime.data.db.TvShowProgress
 import com.example.movietime.data.db.TvShowProgressDao
 import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.data.db.WatchedItemDao
+import com.example.movietime.data.db.PlannedDao
+import com.example.movietime.data.db.WatchingDao
+import com.example.movietime.data.db.WatchingItem
 import com.example.movietime.data.model.TvSeasonDetails
 import com.example.movietime.data.model.TvShowResult
 import com.example.movietime.databinding.BottomSheetTvProgressBinding
@@ -45,6 +48,12 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
     
     @Inject
     lateinit var watchedItemDao: WatchedItemDao
+
+    @Inject
+    lateinit var plannedDao: PlannedDao
+
+    @Inject
+    lateinit var watchingDao: WatchingDao
 
     @Inject
     lateinit var languageManager: LanguageManager
@@ -198,10 +207,12 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                         "${ep.seasonNumber}_${ep.episodeNumber}" 
                     }
                     
-                    // Load seasons data
-                    val seasonsList = show.seasons?.filter { 
-                        // Include season 0 (specials) and regular seasons
-                        (it.seasonNumber ?: -1) >= 0 
+                    // Load seasons data.
+                    // Regular seasons only: season 0 (Specials) is behind-the-scenes
+                    // extras and would inflate totals with episodes that don't
+                    // really exist as watchable content.
+                    val seasonsList = show.seasons?.filter {
+                        (it.seasonNumber ?: -1) >= 1
                     } ?: emptyList()
                     
                     Log.d(TAG, "Loading ${seasonsList.size} seasons")
@@ -229,23 +240,31 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                     
                     Log.d(TAG, "Successfully loaded ${seasonDetails.size} seasons")
                     
-                    // Convert to UI models
+                    // Convert to UI models.
+                    // Skip unaired episodes (air date in the future or unknown):
+                    // they can't be watched yet and would make 100% unreachable.
+                    val today = java.time.LocalDate.now().toString()
                     seasons.clear()
                     seasonDetails.forEach { seasonDetail ->
                         val seasonNumber = seasonDetail.seasonNumber ?: 0
-                        val episodes = seasonDetail.episodes?.map { episode ->
-                            val key = "${seasonNumber}_${episode.episodeNumber}"
-                            val isWatched = progressMap[key]?.watched ?: false
-                            
-                            EpisodeUiModel(
-                                episodeNumber = episode.episodeNumber ?: 0,
-                                seasonNumber = seasonNumber,
-                                name = episode.name ?: getString(R.string.unknown_episode),
-                                runtime = episode.runtime,
-                                isWatched = isWatched
-                            )
-                        }?.toMutableList() ?: mutableListOf()
-                        
+                        val episodes = seasonDetail.episodes
+                            ?.filter { episode -> isAired(episode.airDate, today) }
+                            ?.map { episode ->
+                                val key = "${seasonNumber}_${episode.episodeNumber}"
+                                val isWatched = progressMap[key]?.watched ?: false
+
+                                EpisodeUiModel(
+                                    episodeNumber = episode.episodeNumber ?: 0,
+                                    seasonNumber = seasonNumber,
+                                    name = episode.name ?: getString(R.string.unknown_episode),
+                                    runtime = episode.runtime,
+                                    isWatched = isWatched
+                                )
+                            }?.toMutableList() ?: mutableListOf()
+
+                        // Skip seasons with nothing watchable (e.g. unreleased season stubs)
+                        if (episodes.isEmpty()) return@forEach
+
                         seasons.add(
                             SeasonUiModel(
                                 seasonNumber = seasonNumber,
@@ -255,9 +274,9 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                             )
                         )
                     }
-                    
-                    // Sort: season 0 last if exists, then by number
-                    seasons.sortWith(compareBy { if (it.seasonNumber == 0) Int.MAX_VALUE else it.seasonNumber })
+
+                    // Sort by season number
+                    seasons.sortBy { it.seasonNumber }
                     
                     Log.d(TAG, "Total episodes across all seasons: ${seasons.sumOf { it.totalCount }}")
                     
@@ -369,6 +388,20 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
         binding.tvWatchedTime.text = if (hours > 0) "${hours}г" else "${watchedRuntime}хв"
     }
     
+    /**
+     * An episode counts as watchable only if it has already aired.
+     * TMDB dates are "yyyy-MM-dd". Episodes without a date are kept
+     * (assume aired); unparseable dates are kept as well.
+     */
+    private fun isAired(airDate: String?, todayIso: String): Boolean {
+        if (airDate.isNullOrBlank()) return true
+        return try {
+            airDate <= todayIso
+        } catch (e: Exception) {
+            true
+        }
+    }
+
     private fun saveProgress() {
         val show = tvShow ?: return
         
@@ -424,30 +457,62 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                         else -> show.status
                     }
                     
-                    // Update or create WatchedItem
+                    // Update or create WatchedItem.
+                    // Lists are mutually exclusive for a finished title:
+                    //  - fully watched -> WATCHED only (leave planned/watching)
+                    //  - partial progress -> WATCHING only (leave planned/watched),
+                    //    a half-watched show must not sit in "Watched"
                     val existingItem = watchedItemDao.getById(tvShowId, "tv")
-                    
+                    // REPLACE insert would wipe these — preserve them across saves
+                    val preservedRating = existingItem?.userRating
+                    val preservedWatchCount = existingItem?.watchCount ?: 1
+
                     if (watchedEpisodes > 0) {
-                        val watchedItem = WatchedItem(
-                            id = tvShowId,
-                            title = show.name ?: "",
-                            posterPath = show.posterPath,
-                            releaseDate = show.firstAirDate,
-                            runtime = watchedRuntime,
-                            mediaType = "tv",
-                            overview = show.overview,
-                            voteAverage = show.voteAverage.toDouble(),
-                            episodeRuntime = if (watchedEpisodes > 0) watchedRuntime / watchedEpisodes else 0,
-                            totalEpisodes = totalEpisodes,
-                            isOngoing = isOngoing, // Keep original ongoing status
-                            status = finalStatus,
-                            lastUpdated = currentTime
-                        )
-                        
-                        // Always use insert with REPLACE strategy
-                        watchedItemDao.insert(watchedItem)
-                        
-                        Log.d(TAG, "Series saved - Progress: $watchedEpisodes/$totalEpisodes, isFullyWatched: $isFullyWatched, isOngoing: $isOngoing, finalStatus: $finalStatus")
+                        if (isFullyWatched) {
+                            val watchedItem = WatchedItem(
+                                id = tvShowId,
+                                title = show.name ?: "",
+                                posterPath = show.posterPath,
+                                releaseDate = show.firstAirDate,
+                                runtime = watchedRuntime,
+                                mediaType = "tv",
+                                overview = show.overview,
+                                voteAverage = show.voteAverage.toDouble(),
+                                userRating = preservedRating,
+                                episodeRuntime = if (watchedEpisodes > 0) watchedRuntime / watchedEpisodes else 0,
+                                totalEpisodes = totalEpisodes,
+                                isOngoing = isOngoing, // Keep original ongoing status
+                                status = finalStatus,
+                                lastUpdated = currentTime,
+                                watchCount = preservedWatchCount
+                            )
+
+                            // Always use insert with REPLACE strategy
+                            watchedItemDao.insert(watchedItem)
+                            plannedDao.deleteById(tvShowId, "tv")
+                            watchingDao.deleteById(tvShowId, "tv")
+
+                            Log.d(TAG, "Series saved - Progress: $watchedEpisodes/$totalEpisodes, isFullyWatched: $isFullyWatched, isOngoing: $isOngoing, finalStatus: $finalStatus")
+                        } else {
+                            // Partial progress -> track in WATCHING, keep WATCHED clean
+                            val existingWatching = watchingDao.getById(tvShowId, "tv")
+                            watchingDao.insert(
+                                WatchingItem(
+                                    id = tvShowId,
+                                    title = show.name ?: "",
+                                    posterPath = show.posterPath,
+                                    releaseDate = show.firstAirDate,
+                                    runtime = watchedRuntime,
+                                    mediaType = "tv",
+                                    currentEpisode = existingWatching?.currentEpisode,
+                                    currentSeason = existingWatching?.currentSeason
+                                )
+                            )
+                            plannedDao.deleteById(tvShowId, "tv")
+                            watchedItemDao.deleteById(tvShowId, "tv")
+
+                            Log.d(TAG, "Series partial progress - Progress: $watchedEpisodes/$totalEpisodes, moved to watching")
+                        }
                     } else {
                         // Remove from watched if no episodes watched and item exists
                         existingItem?.let {

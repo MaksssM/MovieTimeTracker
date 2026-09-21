@@ -59,7 +59,7 @@
                 android:id="@+id/txtUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_on_dark_tertiary"
+                android:textColor="@color/text_secondary"
                 android:textSize="13sp"
                 tools:text="@ivanpetrenko" />
 
@@ -74,7 +74,7 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:src="@drawable/ic_movie_24"
-                    app:tint="@color/text_on_dark_tertiary"
+                    app:tint="@color/text_secondary"
                     android:contentDescription="@null" />
 
                 <TextView
@@ -82,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:textColor="@color/text_on_dark_tertiary"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     tools:text="156 переглянуто" />
             </LinearLayout>
@@ -95,7 +95,7 @@
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_more_vert_24"
-            app:tint="@color/text_on_dark_tertiary"
+            app:tint="@color/text_secondary"
             android:contentDescription="@string/more_options" />
 
     </LinearLayout>

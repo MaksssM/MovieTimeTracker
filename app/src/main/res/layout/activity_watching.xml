@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="@color/background">
 
     <!-- Ambient nebula background view -->
     <com.example.movietime.ui.views.NebulaBackgroundView
@@ -99,8 +99,8 @@
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
             app:strokeWidth="1dp"
-            app:strokeColor="#141622"
-            app:cardBackgroundColor="#08090D">
+            app:strokeColor="@color/outline_variant"
+            app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -146,7 +146,7 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="32dp"
-                    android:background="#161822" />
+                    android:background="@color/divider" />
 
                 <!-- TV Series Stat -->
                 <LinearLayout
@@ -184,7 +184,7 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="32dp"
-                    android:background="#161822" />
+                    android:background="@color/divider" />
 
                 <!-- Movies Stat -->
                 <LinearLayout
@@ -231,8 +231,8 @@
             app:cardCornerRadius="18dp"
             app:cardElevation="0dp"
             app:strokeWidth="1dp"
-            app:strokeColor="#161822"
-            app:cardBackgroundColor="#08090D">
+            app:strokeColor="@color/outline_variant"
+            app:cardBackgroundColor="@color/card_background">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
@@ -285,8 +285,8 @@
                 app:cardCornerRadius="22dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="#161822"
-                app:cardBackgroundColor="#08090D">
+                app:strokeColor="@color/outline_variant"
+                app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -311,7 +311,7 @@
                         android:hint="@string/search_in_list"
                         android:textSize="13sp"
                         android:textColor="@color/text_primary"
-                        android:textColorHint="#475569"
+                        android:textColorHint="@color/text_hint"
                         android:inputType="text"
                         android:imeOptions="actionSearch"
                         android:maxLines="1"
@@ -403,9 +403,9 @@
                     android:layout_height="44dp"
                     android:text="@string/browse_content"
                     app:icon="@drawable/ic_search_24"
-                    app:iconTint="@color/icon_tint"
+                    app:iconTint="@color/text_on_dark"
                     app:backgroundTint="#10B981"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/text_on_dark"
                     android:textSize="13sp"
                     android:fontFamily="sans-serif-medium"
                     app:cornerRadius="22dp" />
@@ -451,7 +451,7 @@
         android:layout_margin="20dp"
         android:contentDescription="@string/add_to_watching"
         android:src="@drawable/ic_add_24"
-        app:tint="@color/icon_tint"
+        app:tint="@color/text_on_dark"
         app:backgroundTint="#10B981"
         app:elevation="8dp"
         app:borderWidth="0dp"

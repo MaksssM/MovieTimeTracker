@@ -128,6 +128,8 @@ class DetailsViewModel @Inject constructor(
                 // Add to watched
                 repository.addWatchedItem(item)
                 android.util.Log.d("DetailsViewModel", "Successfully added watched item: ${item.id}")
+                // Push to LiveData so badges/buttons update immediately (no reopen needed)
+                _watchedItem.value = item
                 callback(true)
             } catch (e: Exception) {
                 android.util.Log.e("DetailsViewModel", "Failed to add watched item: ${e.message}", e)
@@ -148,10 +150,15 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    // Add item to planned list
+    // Add item to planned list and remove from Watching (lists are mutually exclusive)
     fun addToPlanned(item: WatchedItem, callback: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
+                try {
+                    repository.removeFromWatching(item.id, item.mediaType)
+                } catch (e: Exception) {
+                    // Ignore if not in watching
+                }
                 repository.addToPlanned(item)
                 android.util.Log.d("DetailsViewModel", "Successfully added to planned: ${item.id}")
                 callback(true)
@@ -170,6 +177,17 @@ class DetailsViewModel @Inject constructor(
                 callback(found != null)
             } catch (e: Exception) {
                 callback(false)
+            }
+        }
+    }
+
+    // Re-read watched status from DB (e.g. after the episode sheet saved progress)
+    fun refreshWatchedItem(id: Int, mediaType: String) {
+        viewModelScope.launch {
+            try {
+                _watchedItem.value = repository.getWatchedItemById(id, mediaType)
+            } catch (e: Exception) {
+                android.util.Log.e("DetailsViewModel", "Failed to refresh watched item", e)
             }
         }
     }

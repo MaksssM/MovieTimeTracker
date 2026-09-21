@@ -108,7 +108,7 @@ class EpisodeProgressAdapter(
                 val textColor = if (isWatched) {
                     root.context.getColor(R.color.success)
                 } else {
-                    root.context.getColor(android.R.color.white)
+                    root.context.getColor(R.color.text_primary)
                 }
                 tvEpisodeName.setTextColor(textColor)
             }

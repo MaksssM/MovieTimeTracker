@@ -42,6 +42,10 @@
                 android:icon="@drawable/ic_trending"
                 android:title="@string/nav_trending" />
             <item
+                android:id="@+id/topsFragment"
+                android:icon="@drawable/ic_star_filled_24"
+                android:title="@string/tops_title" />
+            <item
                 android:id="@+id/settingsFragment"
                 android:icon="@drawable/ic_settings"
                 android:title="@string/nav_settings" />

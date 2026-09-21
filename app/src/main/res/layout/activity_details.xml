@@ -98,7 +98,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_check"
-                        app:tint="@android:color/white"
+                        app:tint="@color/text_on_dark"
                         android:contentDescription="@null" />
 
                     <TextView
@@ -107,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:text="@string/watched"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_on_dark"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -143,7 +143,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_bookmark"
-                        app:tint="@android:color/white"
+                        app:tint="@color/text_on_dark"
                         android:contentDescription="@null" />
 
                     <TextView
@@ -151,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:text="@string/planned"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_on_dark"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -187,7 +187,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_play"
-                        app:tint="@android:color/white"
+                        app:tint="@color/text_on_dark"
                         android:contentDescription="@null" />
 
                     <TextView
@@ -195,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:text="@string/watching"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_on_dark"
                         android:textSize="13sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -229,7 +229,7 @@
                         android:id="@+id/tvTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="22sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium"
@@ -371,8 +371,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:navigationIconTint="@android:color/white"
-                app:titleTextColor="@android:color/white" />
+                app:navigationIconTint="@color/text_on_dark"
+                app:titleTextColor="@color/text_on_dark" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -708,7 +708,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:textColor="@android:color/white"
+                                android:textColor="@color/text_primary"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:fontFamily="sans-serif-medium"
@@ -761,7 +761,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-medium"
@@ -813,7 +813,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-medium"
@@ -855,7 +855,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:text="@string/overview"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -873,7 +873,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="18dp"
-                        android:textColor="@color/text_on_dark_tertiary"
+                        android:textColor="@color/text_secondary"
                         android:textSize="15sp"
                         android:lineSpacingMultiplier="1.6"
                         android:fontFamily="sans-serif-light"
@@ -909,7 +909,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:text="@string/cast_title"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -955,7 +955,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:text="@string/crew_title"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -1036,7 +1036,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:textColor="@android:color/white"
+                                android:textColor="@color/text_primary"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 android:maxLines="2"
@@ -1083,7 +1083,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:text="@string/additional_info"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -1124,7 +1124,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:textColor="@android:color/white"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 tools:text="Christopher Nolan" />
                         </LinearLayout>
@@ -1152,7 +1152,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:textColor="@android:color/white"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 tools:text="$160,000,000" />
                         </LinearLayout>
@@ -1208,7 +1208,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:textColor="@android:color/white"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 tools:text="English" />
                         </LinearLayout>

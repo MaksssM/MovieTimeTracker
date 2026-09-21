@@ -463,6 +463,9 @@
     <string name="sort_by_rating_low">Рейтинг (Низкий)</string>
     <string name="sort_by_runtime_long">Время (Длинные)</string>
     <string name="sort_by_runtime_short">Время (Короткие)</string>
+    <string name="sort_by_year_newest">Год выхода (Новые)</string>
+    <string name="sort_by_year_oldest">Год выхода (Старые)</string>
+    <string name="tops_title">Подборки</string>
     
     <string name="selected_episodes_count">Выбрано %1$d из %2$d серий</string>
     <string name="total_runtime_format">~%s всего</string>
@@ -761,6 +764,20 @@
     <string name="source_recommendations">Умные AI-подборки</string>
     <string name="source_top_rated">Топ рейтинг</string>
     <string name="no_random_items">Не найдено контента по выбранным фильтрам</string>
+    <string name="type_all">Все</string>
+    <string name="type_movies">Фильмы</string>
+    <string name="type_tv">Сериалы</string>
+    <string name="category_all">Все жанры</string>
+    <string name="category_action">🍿 Боевик</string>
+    <string name="category_comedy">😂 Комедия</string>
+    <string name="category_drama">🎭 Драма</string>
+    <string name="category_scifi">🚀 Фантастика</string>
+    <string name="category_horror">👻 Ужасы</string>
+    <string name="category_thriller">🔍 Триллер</string>
+    <string name="category_animation">🎨 Анимация</string>
+    <string name="category_romance">❤️ Мелодрама</string>
+    <string name="category_crime">🔪 Криминал</string>
+    <string name="category_family">👨‍👩‍👧 Семейные</string>
     <string name="next_episode">Следующая серия</string>
     <string name="mark_episode_watched">Просмотрено +1</string>
     <string name="season_episode_format">S%1$02dE%2$02d</string>

@@ -416,7 +416,9 @@ class StatisticsActivity : AppCompatActivity() {
         }
 
         val primaryColor = ContextCompat.getColor(this, R.color.primary)
-        val onSurfaceColor = ContextCompat.getColor(this, R.color.white)
+        val onSurfaceColor = ContextCompat.getColor(this, R.color.text_primary)
+        val chartGridColor = ContextCompat.getColor(this, R.color.divider)
+        val chartAxisColor = ContextCompat.getColor(this, R.color.text_hint)
 
         val dataSet = BarDataSet(entries, getString(R.string.total_time)).apply {
             color = primaryColor
@@ -447,8 +449,8 @@ class StatisticsActivity : AppCompatActivity() {
             axisLeft.apply {
                 textColor = onSurfaceColor
                 setDrawGridLines(true)
-                gridColor = Color.parseColor("#22FFFFFF")
-                axisLineColor = Color.parseColor("#44FFFFFF")
+                gridColor = chartGridColor
+                axisLineColor = chartAxisColor
                 axisMinimum = 0f
                 granularity = 1f
             }

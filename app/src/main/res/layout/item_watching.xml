@@ -9,8 +9,8 @@
     app:cardCornerRadius="20dp"
     app:cardElevation="0dp"
     app:strokeWidth="1dp"
-    app:strokeColor="#141622"
-    app:cardBackgroundColor="#08090D"
+    app:strokeColor="@color/outline_variant"
+    app:cardBackgroundColor="@color/card_background"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
@@ -42,8 +42,8 @@
                 app:cardCornerRadius="14dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="#1A1D2B"
-                app:cardBackgroundColor="#0F111A"
+                app:strokeColor="@color/outline_variant"
+                app:cardBackgroundColor="@color/poster_placeholder_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -179,7 +179,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:textSize="12sp"
-                        android:textColor="#94A3B8"
+                        android:textColor="@color/text_secondary"
                         android:fontFamily="sans-serif"
                         tools:text="2008" />
 

@@ -42,7 +42,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/person_photo_description"
-                    android:background="#20FFFFFF"
+                    android:background="@color/poster_placeholder_dark"
                     tools:src="@tools:sample/avatars" />
 
             </com.google.android.material.card.MaterialCardView>

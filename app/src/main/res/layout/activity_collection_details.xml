@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:navigationIconTint="@android:color/white" />
+                app:navigationIconTint="@color/text_on_dark" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 tools:text="The Avengers Collection" />
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/text_on_dark_secondary"
+                android:textColor="@color/text_secondary"
                 android:textSize="15sp"
                 android:lineSpacingMultiplier="1.2"
                 tools:text="The Avengers are a team of superheroes assembled by Nick Fury of S.H.I.E.L.D. to combat threats too large for any single hero to handle." />
@@ -103,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/your_progress"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textStyle="bold"
                         android:textSize="16sp" />
 
@@ -130,7 +130,7 @@
                             android:id="@+id/tvProgressText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/text_on_dark_secondary"
+                            android:textColor="@color/text_secondary"
                             tools:text="2/4" />
                     </LinearLayout>
                 </LinearLayout>
@@ -185,7 +185,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textStyle="bold"
                             android:textSize="16sp"
                             android:maxLines="2"
@@ -196,7 +196,7 @@
                             android:id="@+id/tvNextUpDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/text_on_dark_secondary"
+                            android:textColor="@color/text_secondary"
                             android:textSize="12sp"
                             tools:text="2018" />
 
@@ -211,7 +211,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/collection_order"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 

@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_activity"
-            android:textColor="#80FFFFFF"
+            android:textColor="@color/text_secondary"
             android:textSize="16sp"
             android:gravity="center" />
 
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/activity_hint"
-            android:textColor="#60FFFFFF"
+            android:textColor="@color/text_hint"
             android:textSize="13sp"
             android:gravity="center"
             android:paddingHorizontal="32dp" />

@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:background="#20FFFFFF"
+            android:background="@color/poster_placeholder_dark"
             tools:src="@tools:sample/avatars" />
 
     </com.google.android.material.card.MaterialCardView>
@@ -33,7 +33,7 @@
         android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textColor="@android:color/white"
+        android:textColor="@color/text_primary"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

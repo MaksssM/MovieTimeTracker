@@ -40,9 +40,9 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent"
             app:title="@string/search"
-            app:titleTextColor="@android:color/white"
+            app:titleTextColor="?attr/colorOnSurface"
             app:navigationIcon="@drawable/ic_arrow_back_24"
-            app:navigationIconTint="@android:color/white" />
+            app:navigationIconTint="?attr/colorOnSurface" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/search_movies_tv_shows"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="26sp"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium"
@@ -100,7 +100,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_search_24"
-                            app:tint="#80FFFFFF"
+                            app:tint="@color/text_hint"
                             android:contentDescription="@null" />
                         
                         <EditText
@@ -111,8 +111,8 @@
                             android:layout_marginStart="16dp"
                             android:background="@android:color/transparent"
                             android:hint="@string/search_hint"
-                            android:textColorHint="#60FFFFFF"
-                            android:textColor="@android:color/white"
+                            android:textColorHint="@color/text_hint"
+                            android:textColor="@color/text_primary"
                             android:textSize="16sp"
                             android:imeOptions="actionSearch"
                             android:inputType="text"
@@ -128,7 +128,7 @@
                             android:background="@drawable/bg_search_clear_btn"
                             android:scaleType="centerInside"
                             android:padding="10dp"
-                            app:tint="#80FFFFFF"
+                            app:tint="@color/text_hint"
                             android:contentDescription="@string/clear_history"
                             android:visibility="gone"
                             tools:visibility="visible" />
@@ -194,7 +194,7 @@
                 app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp"
-                app:cardBackgroundColor="#15FFFFFF">
+                app:cardBackgroundColor="@color/surface_variant">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
@@ -206,8 +206,8 @@
                     app:tabIndicator="@drawable/bg_tab_indicator_gradient"
                     app:tabIndicatorHeight="3dp"
                     app:tabIndicatorFullWidth="false"
-                    app:tabSelectedTextColor="@android:color/white"
-                    app:tabTextColor="#80FFFFFF"
+                    app:tabSelectedTextColor="@color/text_primary"
+                    app:tabTextColor="@color/text_secondary"
                     app:tabRippleColor="#2060A5FA">
 
                     <com.google.android.material.tabs.TabItem
@@ -261,7 +261,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/search_results"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -283,7 +283,7 @@
                             android:layout_width="14dp"
                             android:layout_height="14dp"
                             android:src="@drawable/ic_sort"
-                            app:tint="@android:color/white"
+                            app:tint="@color/text_secondary"
                             android:contentDescription="@null" />
 
                         <TextView
@@ -292,7 +292,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:text="@string/sort_by_popularity"
-                            android:textColor="@android:color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="12sp"
                             android:fontFamily="sans-serif-medium" />
 
@@ -338,7 +338,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/recent_searches"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -393,7 +393,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/trending"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
@@ -478,7 +478,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/searching"
                     android:textSize="16sp"
-                    android:textColor="#80FFFFFF" />
+                    android:textColor="@color/text_secondary" />
 
             </LinearLayout>
 

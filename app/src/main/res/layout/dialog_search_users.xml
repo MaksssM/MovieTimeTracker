@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/find_friends"
-        android:textColor="@android:color/white"
+        android:textColor="@color/text_primary"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="16dp" />
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="14dp"
         app:cardElevation="0dp"
-        app:cardBackgroundColor="#20FFFFFF">
+        app:cardBackgroundColor="@color/surface_variant">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:src="@drawable/ic_search_24"
-                app:tint="#80FFFFFF"
+                app:tint="@color/text_hint"
                 android:contentDescription="@null" />
 
             <EditText
@@ -47,8 +47,8 @@
                 android:layout_marginStart="12dp"
                 android:background="@android:color/transparent"
                 android:hint="@string/search_username_hint"
-                android:textColor="@android:color/white"
-                android:textColorHint="#60FFFFFF"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
                 android:textSize="15sp"
                 android:inputType="text"
                 android:imeOptions="actionSearch"
@@ -92,7 +92,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_search_24"
-            app:tint="#40FFFFFF"
+            app:tint="@color/text_hint"
             android:contentDescription="@null" />
 
         <TextView
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/no_users_found"
-            android:textColor="#60FFFFFF"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             android:gravity="center" />
     </LinearLayout>

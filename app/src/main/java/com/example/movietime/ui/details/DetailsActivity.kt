@@ -167,7 +167,7 @@ class DetailsActivity : AppCompatActivity() {
                 1f
             )
             text = names
-            setTextColor(android.graphics.Color.WHITE)
+            setTextColor(resources.getColor(R.color.text_primary, theme))
             textSize = 14f
         }
         row.addView(roleView)
@@ -506,14 +506,12 @@ class DetailsActivity : AppCompatActivity() {
                         }
                     }
                     is com.example.movietime.data.model.TvShowResult -> {
-                        // Для серіалів відразу відкриваємо діалог вибору епізодів
+                        // Для серіалів відразу відкриваємо діалог вибору епізодів.
+                        // Після збереження оновлюємо статус з БД — observer сам
+                        // покаже правильний бейдж (переглянуто / в процесі).
                         runOnUiThread {
-                            val bottomSheet = TvProgressBottomSheet.newInstance(id) { watchedRuntime ->
-                                // Callback коли прогрес збережено
-                                if (watchedRuntime > 0) {
-                                    disableButton(binding.btnWatched)
-                                    Toast.makeText(this, getString(R.string.added_to_watched_toast), Toast.LENGTH_SHORT).show()
-                                }
+                            val bottomSheet = TvProgressBottomSheet.newInstance(id) {
+                                viewModel.refreshWatchedItem(id, mType)
                             }
                             bottomSheet.show(supportFragmentManager, "TvProgressBottomSheet")
                         }
@@ -568,7 +566,12 @@ class DetailsActivity : AppCompatActivity() {
                 viewModel.addToPlanned(planned) { success ->
                     runOnUiThread {
                         if (success) {
+                            // Move UI to planned state: show planned badge, hide watching badge,
+                            // lock planned button, unlock watching (user can move back)
+                            binding.cardWatchingBadge.visibility = View.GONE
+                            animateBadgeAppear(binding.cardPlannedBadge)
                             disableButton(binding.btnPlanned)
+                            enableButton(binding.btnWatching)
                             Toast.makeText(this, getString(R.string.added_to_planned), Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
@@ -624,7 +627,12 @@ class DetailsActivity : AppCompatActivity() {
                 viewModel.addToWatching(watching) { success ->
                     runOnUiThread {
                         if (success) {
+                            // Move UI to watching state: show watching badge, hide planned badge,
+                            // lock watching button, unlock planned (user can move back)
+                            binding.cardPlannedBadge.visibility = View.GONE
+                            animateBadgeAppear(binding.cardWatchingBadge)
                             disableButton(binding.btnWatching)
+                            enableButton(binding.btnPlanned)
                             Toast.makeText(this, getString(R.string.added_to_watching), Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
@@ -639,6 +647,12 @@ class DetailsActivity : AppCompatActivity() {
         view.alpha = 0.5f
         view.isClickable = false
         view.isFocusable = false
+    }
+
+    private fun enableButton(view: android.view.View) {
+        view.alpha = 1f
+        view.isClickable = true
+        view.isFocusable = true
     }
 
     private fun showRatingDialog(onRatingSelected: (Float?) -> Unit) {

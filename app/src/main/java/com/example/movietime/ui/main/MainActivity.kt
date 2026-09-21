@@ -78,7 +78,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.watchingFragment,
                 R.id.trendingFragment,
                 R.id.settingsFragment,
-                R.id.calendarFragment
+                R.id.calendarFragment,
+                R.id.topsFragment
             ), binding.drawerLayout
         )
 

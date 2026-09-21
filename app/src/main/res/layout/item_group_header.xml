@@ -14,7 +14,7 @@
     <View
         android:layout_width="4dp"
         android:layout_height="24dp"
-        android:background="@drawable/bg_chip" />
+        android:background="@drawable/bg_accent_bar_gradient" />
 
     <TextView
         android:id="@+id/tvHeaderTitle"

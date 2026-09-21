@@ -164,4 +164,9 @@
         android:name="com.example.movietime.ui.statistics.YearInReviewFragment"
         tools:layout="@layout/fragment_year_in_review" />
 
+    <fragment
+        android:id="@+id/topsFragment"
+        android:name="com.example.movietime.ui.tops.TopsFragment"
+        tools:layout="@layout/fragment_tops" />
+
 </navigation>

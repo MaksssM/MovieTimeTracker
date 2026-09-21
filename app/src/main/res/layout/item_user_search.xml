@@ -8,7 +8,7 @@
     app:cardCornerRadius="14dp"
     app:cardElevation="0dp"
     app:strokeWidth="0dp"
-    app:cardBackgroundColor="#12FFFFFF">
+    app:cardBackgroundColor="@color/card_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="Анна Мельник" />
@@ -59,7 +59,7 @@
                 android:id="@+id/txtUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#80FFFFFF"
+                android:textColor="@color/text_secondary"
                 android:textSize="12sp"
                 tools:text="@annamelnyk" />
         </LinearLayout>
@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/request_sent"
-            android:textColor="#80FFFFFF"
+            android:textColor="@color/text_secondary"
             android:textSize="12sp"
             android:visibility="gone"
             tools:visibility="gone" />

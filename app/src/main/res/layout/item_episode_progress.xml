@@ -8,7 +8,7 @@
     android:layout_marginHorizontal="4dp"
     app:cardCornerRadius="14dp"
     app:cardElevation="0dp"
-    app:cardBackgroundColor="#0CFFFFFF"
+    app:cardBackgroundColor="@color/surface_variant"
     app:rippleColor="#20FFFFFF">
 
     <LinearLayout
@@ -60,7 +60,7 @@
                 android:id="@+id/tvEpisodeName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:maxLines="1"
@@ -78,7 +78,7 @@
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:src="@drawable/ic_time_small"
-                    app:tint="#60FFFFFF"
+                    app:tint="@color/text_hint"
                     android:contentDescription="@null" />
 
                 <TextView
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:textColor="#60FFFFFF"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     tools:text="58 хв" />
             </LinearLayout>

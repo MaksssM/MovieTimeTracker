@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Night/dark variant of bg_chip -->
+<!-- Dark variant of bg_chip — dark gradient -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Subtle shadow -->
@@ -15,10 +15,10 @@
         <shape android:shape="rectangle">
             <gradient
                 android:angle="135"
-                android:startColor="#1E2033"
-                android:endColor="#161825" />
+                android:startColor="#1E2436"
+                android:endColor="#151A2C" />
             <corners android:radius="12dp" />
-            <stroke android:width="1dp" android:color="#1F2734" />
+            <stroke android:width="1dp" android:color="#2A3350" />
         </shape>
     </item>
 

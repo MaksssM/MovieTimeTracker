@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:text="PREMIERE"
             android:textColor="@color/secondary_container"
-            android:background="#20FFFFFF"
+            android:background="@color/chip_tv_bg"
             android:paddingHorizontal="8dp"
             android:paddingVertical="4dp"
             android:textSize="10sp"

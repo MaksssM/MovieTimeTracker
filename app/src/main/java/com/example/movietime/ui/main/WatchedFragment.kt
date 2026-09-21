@@ -48,7 +48,8 @@ class WatchedFragment : Fragment() {
         DATE_NEWEST, DATE_OLDEST,
         NAME_ASC, NAME_DESC,
         RATING_HIGH, RATING_LOW,
-        RUNTIME_LONG, RUNTIME_SHORT
+        RUNTIME_LONG, RUNTIME_SHORT,
+        YEAR_NEWEST, YEAR_OLDEST
     }
 
     override fun onCreateView(
@@ -204,7 +205,9 @@ class WatchedFragment : Fragment() {
             getString(R.string.sort_by_rating_high),
             getString(R.string.sort_by_rating_low),
             getString(R.string.sort_by_runtime_long),
-            getString(R.string.sort_by_runtime_short)
+            getString(R.string.sort_by_runtime_short),
+            getString(R.string.sort_by_year_newest),
+            getString(R.string.sort_by_year_oldest)
         )
 
         val currentIndex = when (currentSort) {
@@ -216,6 +219,8 @@ class WatchedFragment : Fragment() {
             SortType.RATING_LOW -> 5
             SortType.RUNTIME_LONG -> 6
             SortType.RUNTIME_SHORT -> 7
+            SortType.YEAR_NEWEST -> 8
+            SortType.YEAR_OLDEST -> 9
         }
 
         MaterialAlertDialogBuilder(requireContext())
@@ -230,6 +235,8 @@ class WatchedFragment : Fragment() {
                     5 -> SortType.RATING_LOW
                     6 -> SortType.RUNTIME_LONG
                     7 -> SortType.RUNTIME_SHORT
+                    8 -> SortType.YEAR_NEWEST
+                    9 -> SortType.YEAR_OLDEST
                     else -> SortType.DATE_NEWEST
                 }
                 updateFilteredList()
@@ -285,6 +292,8 @@ class WatchedFragment : Fragment() {
             SortType.RATING_LOW -> items.sortedBy { it.voteAverage ?: 0.0 }
             SortType.RUNTIME_LONG -> items.sortedByDescending { it.runtime ?: 0 }
             SortType.RUNTIME_SHORT -> items.sortedBy { it.runtime ?: 0 }
+            SortType.YEAR_NEWEST -> items.sortedByDescending { it.releaseDate?.take(4)?.toIntOrNull() ?: 0 }
+            SortType.YEAR_OLDEST -> items.sortedBy { it.releaseDate?.take(4)?.toIntOrNull() ?: 0 }
         }
     }
 

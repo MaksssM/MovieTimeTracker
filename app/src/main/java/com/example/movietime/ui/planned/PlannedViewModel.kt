@@ -72,8 +72,9 @@ class PlannedViewModel @Inject constructor(
     fun moveToWatched(item: WatchedItem) {
         viewModelScope.launch {
             try {
-                // Remove from planned and add to watched
+                // Remove from planned and watching, add to watched
                 repository.removeFromPlanned(item.id, item.mediaType)
+                repository.removeFromWatching(item.id, item.mediaType)
                 repository.addWatchedItem(item)
                 loadPlannedContent() // Reload to update the list
                 Log.d("PlannedViewModel", "Moved item to watched: ${item.title}")

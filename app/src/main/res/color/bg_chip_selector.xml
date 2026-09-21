@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Randomizer chips background (Light Mode): selected = brand purple with
+     white text, unselected = light surface with dark text -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="#2D3058" android:state_checked="true" />
-    <item android:color="#0F111A" />
+    <item android:color="@color/primary" android:state_checked="true" />
+    <item android:color="@color/surface_variant" />
 </selector>

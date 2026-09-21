@@ -528,6 +528,9 @@
     <string name="sort_by_rating_low">Rating (Lowest)</string>
     <string name="sort_by_runtime_long">Runtime (Longest)</string>
     <string name="sort_by_runtime_short">Runtime (Shortest)</string>
+    <string name="sort_by_year_newest">Release Year (Newest)</string>
+    <string name="sort_by_year_oldest">Release Year (Oldest)</string>
+    <string name="tops_title">Top Lists</string>
     
     <string name="selected_episodes_count">Selected %1$d of %2$d episodes</string>
     <string name="total_runtime_format">~%s total</string>
@@ -597,6 +600,20 @@
     <string name="source_recommendations">Smart AI Picks</string>
     <string name="source_top_rated">Top Rated</string>
     <string name="no_random_items">No content found for selected filters</string>
+    <string name="type_all">All</string>
+    <string name="type_movies">Movies</string>
+    <string name="type_tv">TV Shows</string>
+    <string name="category_all">All Genres</string>
+    <string name="category_action">🍿 Action</string>
+    <string name="category_comedy">😂 Comedy</string>
+    <string name="category_drama">🎭 Drama</string>
+    <string name="category_scifi">🚀 Sci-Fi</string>
+    <string name="category_horror">👻 Horror</string>
+    <string name="category_thriller">🔍 Thriller</string>
+    <string name="category_animation">🎨 Animation</string>
+    <string name="category_romance">❤️ Romance</string>
+    <string name="category_crime">🔪 Crime</string>
+    <string name="category_family">👨‍👩‍👧 Family</string>
     
     <!-- Next Episode Widget -->
     <string name="next_episode">Next Episode</string>

@@ -63,6 +63,9 @@ class EnhancedMainFragment : Fragment() {
 
     private var lastClickTime = 0L
     private val clickDebounceTime = 500L // 500ms debounce
+    private var lastWatchedCount = -1
+    private var lastPlannedCount = -1
+    private var lastWatchingCount = -1
 
     private fun setupClickListeners() {
         // Category cards - unified
@@ -140,6 +143,14 @@ class EnhancedMainFragment : Fragment() {
         binding.fabAdd.setOnClickListener {
             handleClickWithDebounce {
                 showQuickAddDialog()
+            }
+        }
+
+        // Randomizer / What to Watch bottom sheet
+        binding.btnRandomizer.setOnClickListener {
+            handleClickWithDebounce {
+                com.example.movietime.ui.randomizer.RandomizerBottomSheet.newInstance()
+                    .show(childFragmentManager, com.example.movietime.ui.randomizer.RandomizerBottomSheet.TAG)
             }
         }
     }
@@ -305,14 +316,24 @@ class EnhancedMainFragment : Fragment() {
             tvPlannedCount.text = totalPlanned.toString()
             tvWatchingCount.text = totalWatching.toString()
 
-            // Animate counter updates
-            animateCounterUpdate(tvWatchedCount, totalWatched)
-            animateCounterUpdate(tvPlannedCount, totalPlanned)
-            animateCounterUpdate(tvWatchingCount, totalWatching)
+            // Animate counters only when the value actually changed —
+            // otherwise every stats emission makes them bounce/flash
+            if (totalWatched != lastWatchedCount) {
+                lastWatchedCount = totalWatched
+                animateCounterUpdate(tvWatchedCount)
+            }
+            if (totalPlanned != lastPlannedCount) {
+                lastPlannedCount = totalPlanned
+                animateCounterUpdate(tvPlannedCount)
+            }
+            if (totalWatching != lastWatchingCount) {
+                lastWatchingCount = totalWatching
+                animateCounterUpdate(tvWatchingCount)
+            }
         }
     }
 
-    private fun animateCounterUpdate(textView: View, @Suppress("UNUSED_PARAMETER") newValue: Int) {
+    private fun animateCounterUpdate(textView: View) {
         // Scale bounce + color flash effect
         val scaleUp = AnimatorSet().apply {
             playTogether(
@@ -465,6 +486,8 @@ class EnhancedMainFragment : Fragment() {
         )
 
         cardsWithPressEffect.forEach { card ->
+            // Remember the resting elevation from XML (all these cards are flat, 0dp)
+            card.setTag(R.id.tag_rest_elevation, (card as? com.google.android.material.card.MaterialCardView)?.cardElevation ?: 0f)
             card.setOnTouchListener { v, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
@@ -481,7 +504,10 @@ class EnhancedMainFragment : Fragment() {
 
     private fun animatePress(view: View, isPressed: Boolean) {
         val scale = if (isPressed) 0.95f else 1f
-        val elevation = if (isPressed) 2f else 8f
+        // Return to the card's own resting elevation instead of a hardcoded value,
+        // otherwise flat cards keep a stuck 8dp shadow after the first tap.
+        val restingElevation = (view.getTag(R.id.tag_rest_elevation) as? Float) ?: 0f
+        val elevation = if (isPressed) 2f else restingElevation
         
         view.animate()
             .scaleX(scale)

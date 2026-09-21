@@ -58,19 +58,19 @@
 
     <!-- CollapsingToolbar Text Styles -->
     <style name="TextAppearance.App.CollapsingToolbar">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/text_on_dark</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextAppearance.App.CollapsingToolbar.Expanded">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/text_on_dark</item>
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">0.01</item>
         <item name="android:textSize">30sp</item>
     </style>
 
     <style name="TextAppearance.App.CollapsingToolbar.Collapsed">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
     </style>

@@ -41,7 +41,9 @@ class WatchingFragment : Fragment() {
     enum class SortType {
         DATE_NEWEST, DATE_OLDEST,
         NAME_ASC, NAME_DESC,
-        RATING_HIGH, RATING_LOW
+        RATING_HIGH, RATING_LOW,
+        RUNTIME_LONG, RUNTIME_SHORT,
+        YEAR_NEWEST, YEAR_OLDEST
     }
 
     override fun onCreateView(
@@ -217,7 +219,11 @@ class WatchingFragment : Fragment() {
             getString(R.string.sort_by_name_asc),
             getString(R.string.sort_by_name_desc),
             getString(R.string.sort_by_rating_high),
-            getString(R.string.sort_by_rating_low)
+            getString(R.string.sort_by_rating_low),
+            getString(R.string.sort_by_runtime_long),
+            getString(R.string.sort_by_runtime_short),
+            getString(R.string.sort_by_year_newest),
+            getString(R.string.sort_by_year_oldest)
         )
 
         val currentIndex = when (currentSort) {
@@ -227,6 +233,10 @@ class WatchingFragment : Fragment() {
             SortType.NAME_DESC -> 3
             SortType.RATING_HIGH -> 4
             SortType.RATING_LOW -> 5
+            SortType.RUNTIME_LONG -> 6
+            SortType.RUNTIME_SHORT -> 7
+            SortType.YEAR_NEWEST -> 8
+            SortType.YEAR_OLDEST -> 9
         }
 
         MaterialAlertDialogBuilder(requireContext())
@@ -239,6 +249,10 @@ class WatchingFragment : Fragment() {
                     3 -> SortType.NAME_DESC
                     4 -> SortType.RATING_HIGH
                     5 -> SortType.RATING_LOW
+                    6 -> SortType.RUNTIME_LONG
+                    7 -> SortType.RUNTIME_SHORT
+                    8 -> SortType.YEAR_NEWEST
+                    9 -> SortType.YEAR_OLDEST
                     else -> SortType.DATE_NEWEST
                 }
                 filterContent()
@@ -256,6 +270,10 @@ class WatchingFragment : Fragment() {
             SortType.NAME_DESC -> items.sortedByDescending { it.title.lowercase() }
             SortType.RATING_HIGH -> items.sortedByDescending { it.voteAverage ?: 0.0 }
             SortType.RATING_LOW -> items.sortedBy { it.voteAverage ?: 0.0 }
+            SortType.RUNTIME_LONG -> items.sortedByDescending { it.runtime ?: 0 }
+            SortType.RUNTIME_SHORT -> items.sortedBy { it.runtime ?: 0 }
+            SortType.YEAR_NEWEST -> items.sortedByDescending { it.releaseDate?.take(4)?.toIntOrNull() ?: 0 }
+            SortType.YEAR_OLDEST -> items.sortedBy { it.releaseDate?.take(4)?.toIntOrNull() ?: 0 }
         }
     }
 

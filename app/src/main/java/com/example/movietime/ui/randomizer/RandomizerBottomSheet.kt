@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.example.movietime.R
+import com.example.movietime.data.db.PlannedItem
 import com.example.movietime.data.db.WatchedItem
 import com.example.movietime.data.model.MovieResult
 import com.example.movietime.data.model.TvShowResult
@@ -33,7 +34,8 @@ data class RandomMovieCandidate(
     val rating: Double?,
     val mediaType: String,
     val releaseYear: String?,
-    val runtimeOrEpisodes: String?
+    val runtimeOrEpisodes: String?,
+    val genreIds: List<Int> = emptyList()
 )
 
 @AndroidEntryPoint
@@ -85,7 +87,7 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
             } else {
                 binding.chipRecommendations.isChecked = true
             }
-            loadCandidatesForCurrentSource()
+            loadCandidatesForCurrentFilters()
         }
     }
 
@@ -96,7 +98,19 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
 
         binding.chipGroupSource.setOnCheckedStateChangeListener { _, checkedIds ->
             if (checkedIds.isNotEmpty()) {
-                loadCandidatesForCurrentSource()
+                loadCandidatesForCurrentFilters()
+            }
+        }
+
+        binding.chipGroupType.setOnCheckedStateChangeListener { _, checkedIds ->
+            if (checkedIds.isNotEmpty()) {
+                loadCandidatesForCurrentFilters()
+            }
+        }
+
+        binding.chipGroupGenre.setOnCheckedStateChangeListener { _, checkedIds ->
+            if (checkedIds.isNotEmpty()) {
+                loadCandidatesForCurrentFilters()
             }
         }
 
@@ -123,13 +137,41 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun loadCandidatesForCurrentSource() {
+    private fun getSelectedGenreIds(): List<Int>? {
+        val safeBinding = _binding ?: return null
+        return when {
+            safeBinding.chipGenreAction.isChecked -> listOf(28, 12, 10759)
+            safeBinding.chipGenreComedy.isChecked -> listOf(35)
+            safeBinding.chipGenreDrama.isChecked -> listOf(18)
+            safeBinding.chipGenreScifi.isChecked -> listOf(878, 14, 10765)
+            safeBinding.chipGenreHorror.isChecked -> listOf(27)
+            safeBinding.chipGenreThriller.isChecked -> listOf(53, 9648)
+            safeBinding.chipGenreAnimation.isChecked -> listOf(16)
+            safeBinding.chipGenreRomance.isChecked -> listOf(10749, 10766)
+            safeBinding.chipGenreCrime.isChecked -> listOf(80)
+            safeBinding.chipGenreFamily.isChecked -> listOf(10751)
+            else -> null // All
+        }
+    }
+
+    private fun getSelectedMediaType(): String {
+        val safeBinding = _binding ?: return "all"
+        return when {
+            safeBinding.chipTypeMovies.isChecked -> "movie"
+            safeBinding.chipTypeTv.isChecked -> "tv"
+            else -> "all"
+        }
+    }
+
+    private fun loadCandidatesForCurrentFilters() {
         val safeBinding = _binding ?: return
         val source = when {
             safeBinding.chipRecommendations.isChecked -> CandidateSource.RECOMMENDATIONS
             safeBinding.chipTopRated.isChecked -> CandidateSource.TOP_RATED
             else -> CandidateSource.PLANNED
         }
+        val mediaType = getSelectedMediaType()
+        val genreIds = getSelectedGenreIds()
         val loadVersion = ++candidateLoadVersion
 
         selectedCandidate = null
@@ -141,7 +183,9 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
         safeBinding.btnSpin.text = getString(R.string.loading)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            val candidates = withContext(Dispatchers.IO) { loadCandidates(source) }
+            val candidates = withContext(Dispatchers.IO) {
+                loadCandidates(source, mediaType, genreIds)
+            }
             val currentBinding = _binding ?: return@launch
             if (loadVersion != candidateLoadVersion) return@launch
 
@@ -155,14 +199,16 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private suspend fun loadCandidates(source: CandidateSource): List<RandomMovieCandidate> = try {
-        when (source) {
+    private suspend fun loadCandidates(
+        source: CandidateSource,
+        targetMediaType: String,
+        genreIds: List<Int>?
+    ): List<RandomMovieCandidate> = try {
+        val rawCandidates: List<RandomMovieCandidate> = when (source) {
             CandidateSource.PLANNED -> {
                 val planned = repository.getPlannedItemsSync().map { it.toRandomCandidate() }
                 if (planned.isEmpty()) {
-                    // Fallback to top recommendations if planned list is empty
-                    val recs = recommendationService.getPersonalizedRecommendations()
-                    (recs.movies.map { it.toRandomCandidate() } + recs.tvShows.map { it.toRandomCandidate() }).shuffled()
+                    loadFromDiscover(targetMediaType, genreIds)
                 } else {
                     planned
                 }
@@ -171,36 +217,91 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
             CandidateSource.RECOMMENDATIONS -> {
                 val recommendations = recommendationService.getPersonalizedRecommendations()
                 val list = (recommendations.movies.map { it.toRandomCandidate() } +
-                    recommendations.tvShows.map { it.toRandomCandidate() }).shuffled()
-                list.ifEmpty { loadTopRatedFallback() }
+                        recommendations.tvShows.map { it.toRandomCandidate() }).shuffled()
+                list.ifEmpty { loadFromDiscover(targetMediaType, genreIds) }
             }
 
             CandidateSource.TOP_RATED -> {
-                loadTopRatedFallback()
+                loadFromDiscover(targetMediaType, genreIds)
             }
         }
+
+        // 1. Фільтрація за типом медіа (all, movie, tv)
+        var filtered = when (targetMediaType) {
+            "movie" -> rawCandidates.filter { it.mediaType == "movie" }
+            "tv" -> rawCandidates.filter { it.mediaType == "tv" }
+            else -> rawCandidates
+        }
+
+        // 2. Фільтрація за жанром, якщо вибрано
+        if (!genreIds.isNullOrEmpty()) {
+            val genreFiltered = filtered.filter { candidate ->
+                candidate.genreIds.any { it in genreIds }
+            }
+
+            if (genreFiltered.isNotEmpty()) {
+                filtered = genreFiltered
+            } else if (source != CandidateSource.TOP_RATED) {
+                // Якщо в локальних списках немає цього жанру, підвантажуємо з онлайн discover
+                val discoverMatches = loadFromDiscover(targetMediaType, genreIds)
+                if (discoverMatches.isNotEmpty()) {
+                    filtered = discoverMatches
+                }
+            }
+        }
+
+        filtered.shuffled()
     } catch (_: Exception) {
-        loadTopRatedFallback()
+        loadFromDiscover(targetMediaType, genreIds)
     }
 
-    private suspend fun loadTopRatedFallback(): List<RandomMovieCandidate> {
+    private suspend fun loadFromDiscover(
+        targetMediaType: String,
+        genreIds: List<Int>?
+    ): List<RandomMovieCandidate> {
         return try {
-            val popularMovies = repository.getPopularMovies().results
-            val popularTv = repository.getPopularTvShows().results
+            val results = repository.discoverByFilters(
+                mediaType = targetMediaType,
+                genreIds = genreIds,
+                sortBy = "popularity.desc"
+            )
             val seenIds = repository.getAllSeenItemIds()
                 .map { "${it.id}_${it.mediaType}" }
                 .toSet()
 
-            val unseenMovies = popularMovies.filter { "${it.id}_movie" !in seenIds }
-            val unseenTv = popularTv.filter { "${it.id}_tv" !in seenIds }
+            val candidates = results.mapNotNull { item ->
+                when (item) {
+                    is MovieResult -> if ("${item.id}_movie" !in seenIds) item.toRandomCandidate() else null
+                    is TvShowResult -> if ("${item.id}_tv" !in seenIds) item.toRandomCandidate() else null
+                    else -> null
+                }
+            }
 
-            val movies = (unseenMovies.ifEmpty { popularMovies }).map { it.toRandomCandidate() }
-            val tvShows = (unseenTv.ifEmpty { popularTv }).map { it.toRandomCandidate() }
-            (movies + tvShows).take(40).shuffled()
+            if (candidates.isEmpty()) {
+                results.mapNotNull { item ->
+                    when (item) {
+                        is MovieResult -> item.toRandomCandidate()
+                        is TvShowResult -> item.toRandomCandidate()
+                        else -> null
+                    }
+                }
+            } else {
+                candidates
+            }.take(50).shuffled()
         } catch (_: Exception) {
             emptyList()
         }
     }
+
+    private fun PlannedItem.toRandomCandidate() = RandomMovieCandidate(
+        id = id,
+        title = title,
+        posterPath = posterPath,
+        rating = null,
+        mediaType = mediaType,
+        releaseYear = releaseDate?.take(4),
+        runtimeOrEpisodes = (runtime ?: 0).takeIf { it > 0 }?.let { "${it / 60}h ${it % 60}m" }
+    )
 
     private fun WatchedItem.toRandomCandidate() = RandomMovieCandidate(
         id = id,
@@ -218,7 +319,8 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
                 "${minutes / 60}h ${minutes % 60}m"
             }
             else -> null
-        }
+        },
+        genreIds = genreIds?.split(",")?.mapNotNull { it.trim().toIntOrNull() } ?: emptyList()
     )
 
     private fun MovieResult.toRandomCandidate() = RandomMovieCandidate(
@@ -228,7 +330,8 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
         rating = voteAverage.toDouble(),
         mediaType = "movie",
         releaseYear = releaseDate?.take(4),
-        runtimeOrEpisodes = runtime?.takeIf { it > 0 }?.let { "${it / 60}h ${it % 60}m" }
+        runtimeOrEpisodes = runtime?.takeIf { it > 0 }?.let { "${it / 60}h ${it % 60}m" },
+        genreIds = genreIds ?: genres?.map { it.id } ?: emptyList()
     )
 
     private fun TvShowResult.toRandomCandidate() = RandomMovieCandidate(
@@ -239,7 +342,8 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
         mediaType = "tv",
         releaseYear = firstAirDate?.take(4),
         runtimeOrEpisodes = numberOfEpisodes?.takeIf { it > 0 }
-            ?.let { "$it ${getString(R.string.episodes)}" }
+            ?.let { "$it ${getString(R.string.episodes)}" },
+        genreIds = genreIds ?: genres?.map { it.id } ?: emptyList()
     )
 
     private fun spinWheel() {
@@ -248,7 +352,7 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
 
         if (currentCandidates.isEmpty()) {
             Toast.makeText(requireContext(), R.string.no_random_items, Toast.LENGTH_SHORT).show()
-            loadCandidatesForCurrentSource()
+            loadCandidatesForCurrentFilters()
             return
         }
 

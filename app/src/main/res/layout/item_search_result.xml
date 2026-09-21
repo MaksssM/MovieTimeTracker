@@ -55,7 +55,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/poster_description"
-                    android:background="#20FFFFFF"
+                    android:background="@color/poster_placeholder_dark"
                     tools:src="@tools:sample/backgrounds/scenic" />
 
             </com.google.android.material.card.MaterialCardView>

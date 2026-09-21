@@ -126,10 +126,15 @@ class TvDetailsViewModel @Inject constructor(
         }
     }
     
-    // Add item to planned list
+    // Add item to planned list and remove from Watching (lists are mutually exclusive)
     fun addToPlanned(item: WatchedItem, callback: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
+                try {
+                    repository.removeFromWatching(item.id, item.mediaType)
+                } catch (e: Exception) {
+                    // Ignore if not in watching
+                }
                 repository.addToPlanned(item)
                 android.util.Log.d("TvDetailsViewModel", "Successfully added to planned: ${item.id}")
                 callback(true)
@@ -170,6 +175,17 @@ class TvDetailsViewModel @Inject constructor(
             } catch (e: Exception) {
                 android.util.Log.e("TvDetailsViewModel", "Failed to add to watching: ${e.message}", e)
                 callback(false)
+            }
+        }
+    }
+
+    // Re-read watched status from DB (e.g. after the episode sheet saved progress)
+    fun refreshWatchedItem(id: Int) {
+        viewModelScope.launch {
+            try {
+                _watchedItem.value = repository.getWatchedItemById(id, "tv")
+            } catch (e: Exception) {
+                android.util.Log.e("TvDetailsViewModel", "Failed to refresh watched item", e)
             }
         }
     }

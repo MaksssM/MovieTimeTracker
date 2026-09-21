@@ -44,6 +44,7 @@ class TvDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTvDetailsBinding
     private val viewModel: TvDetailsViewModel by viewModels()
     private lateinit var castAdapter: CastAdapter
+    private lateinit var seasonsAdapter: SeasonsOverviewAdapter
 
     @Inject
     lateinit var episodeService: TvShowEpisodeService
@@ -129,6 +130,8 @@ class TvDetailsActivity : AppCompatActivity() {
                     binding.fabAdd.text = getString(R.string.track_progress)
                 }
             }
+            // Перечитуємо статус з БД — observer оновить бейджі та кнопки
+            viewModel.refreshWatchedItem(tvShow.id)
         }
         bottomSheet.show(supportFragmentManager, "TvProgressBottomSheet")
     }
@@ -213,7 +216,11 @@ class TvDetailsActivity : AppCompatActivity() {
                 viewModel.addToPlanned(plannedItem) { success ->
                     runOnUiThread {
                         if (success) {
+                            // Перехід у заплановані: ховаємо бейдж прогресу (був зі списку watching),
+                            // блочимо planned, розблочуємо watching для повернення
+                            binding.cardInProgressBadge.visibility = View.GONE
                             disableButton(binding.btnPlanned)
+                            enableButton(binding.btnWatching)
                             Toast.makeText(this, getString(R.string.added_to_planned), Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
@@ -250,7 +257,12 @@ class TvDetailsActivity : AppCompatActivity() {
                 viewModel.addToWatching(watchingItem) { success ->
                     runOnUiThread {
                         if (success) {
+                            // Перехід у watching: показуємо бейдж, блочимо watching,
+                            // розблочуємо planned для повернення
+                            binding.tvInProgressBadge.text = getString(R.string.watching)
+                            animateBadgeAppear(binding.cardInProgressBadge)
                             disableButton(binding.btnWatching)
+                            enableButton(binding.btnPlanned)
                             Toast.makeText(this, getString(R.string.added_to_watching), Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(this, getString(R.string.add_failed), Toast.LENGTH_SHORT).show()
@@ -265,6 +277,12 @@ class TvDetailsActivity : AppCompatActivity() {
         view.alpha = 0.5f
         view.isClickable = false
         view.isFocusable = false
+    }
+
+    private fun enableButton(view: View) {
+        view.alpha = 1f
+        view.isClickable = true
+        view.isFocusable = true
     }
     
     private fun animateBadgeAppear(badge: View) {
@@ -436,6 +454,12 @@ class TvDetailsActivity : AppCompatActivity() {
             adapter = castAdapter
             setHasFixedSize(true)
         }
+        seasonsAdapter = SeasonsOverviewAdapter { showEpisodeProgressSheet(currentTvShow ?: return@SeasonsOverviewAdapter) }
+        binding.rvSeasons.apply {
+            layoutManager = LinearLayoutManager(this@TvDetailsActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = seasonsAdapter
+            setHasFixedSize(true)
+        }
     }
 
     private fun observeCredits() {
@@ -504,7 +528,7 @@ class TvDetailsActivity : AppCompatActivity() {
                 1f
             )
             text = names
-            setTextColor(android.graphics.Color.WHITE)
+            setTextColor(resources.getColor(R.color.text_primary, theme))
             textSize = 14f
         }
         row.addView(roleView)
@@ -582,6 +606,17 @@ class TvDetailsActivity : AppCompatActivity() {
                     binding.tvTotalEpisodes.visibility = View.VISIBLE
                 } else {
                     binding.tvTotalEpisodes.visibility = View.GONE
+                }
+
+                // Seasons overview (series, cartoons, anime — same TMDB seasons data)
+                val overviewSeasons = (tvShow.seasons ?: emptyList())
+                    .filter { (it.seasonNumber ?: 0) >= 0 && (it.episodeCount ?: 0) > 0 }
+                    .sortedBy { it.seasonNumber ?: 0 }
+                if (overviewSeasons.isNotEmpty()) {
+                    binding.layoutSeasons.visibility = View.VISIBLE
+                    seasonsAdapter.submitList(overviewSeasons)
+                } else {
+                    binding.layoutSeasons.visibility = View.GONE
                 }
                 
                 // Additional info
@@ -759,7 +794,7 @@ class TvDetailsActivity : AppCompatActivity() {
             "Ended" -> 0xFF60A5FA.toInt() // Blue
             "Canceled" -> 0xFFEF4444.toInt() // Red
             "In Production" -> 0xFFFBBF24.toInt() // Yellow
-            else -> 0xFFFFFFFF.toInt() // White
+            else -> resources.getColor(R.color.text_primary, theme)
         }
     }
     

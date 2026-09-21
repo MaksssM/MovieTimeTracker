@@ -25,6 +25,7 @@ class CollectionsFragment : Fragment() {
 
     private val viewModel: CollectionsViewModel by viewModels()
     private lateinit var adapter: CollectionsAdapter
+    private var lastNavTime = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,10 +47,15 @@ class CollectionsFragment : Fragment() {
     private fun setupRecyclerView() {
         adapter = CollectionsAdapter(
             onCollectionClick = { collection ->
-                val bundle = Bundle().apply {
-                    putLong("collection_id", collection.collection.id)
+                // Debounce: rapid double-tap would push two detail screens
+                val now = System.currentTimeMillis()
+                if (now - lastNavTime > 500L) {
+                    lastNavTime = now
+                    val bundle = Bundle().apply {
+                        putLong("collection_id", collection.collection.id)
+                    }
+                    findNavController().navigate(R.id.action_collections_to_detail, bundle)
                 }
-                findNavController().navigate(R.id.action_collections_to_detail, bundle)
             }
         )
         

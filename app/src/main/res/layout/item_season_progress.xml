@@ -8,7 +8,7 @@
     android:layout_marginBottom="12dp"
     app:cardCornerRadius="20dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="#1A1A2E">
+    app:cardBackgroundColor="@color/card_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                     android:id="@+id/tvSeasonTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium"
@@ -74,7 +74,7 @@
                         android:id="@+id/tvSeasonInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#80FFFFFF"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp"
                         tools:text="7 / 10 серій" />
 
@@ -106,7 +106,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     app:indicatorColor="#22C55E"
-                    app:trackColor="#20FFFFFF"
+                    app:trackColor="@color/divider"
                     app:trackThickness="4dp"
                     app:indicatorSize="48dp"
                     android:progress="70" />
@@ -130,7 +130,7 @@
                 android:padding="4dp"
                 android:src="@drawable/ic_expand_more"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:tint="#60FFFFFF"
+                app:tint="@color/text_hint"
                 android:contentDescription="@null" />
         </LinearLayout>
 
@@ -140,7 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginHorizontal="16dp"
-            android:background="#10FFFFFF"
+            android:background="@color/divider"
             android:visibility="gone" />
 
         <!-- Episodes List - expandable -->

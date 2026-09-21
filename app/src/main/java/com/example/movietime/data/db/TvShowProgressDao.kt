@@ -71,6 +71,14 @@ interface TvShowProgressDao {
     // Видалити прогрес серіалу
     @Query("DELETE FROM tv_show_progress WHERE tvShowId = :tvShowId")
     suspend fun deleteProgressForShow(tvShowId: Int): Unit
+
+    // Видалити весь прогрес (для повного відновлення з бекапа)
+    @Query("DELETE FROM tv_show_progress")
+    suspend fun deleteAll(): Unit
+
+    // Весь прогрес для бекапа
+    @Query("SELECT * FROM tv_show_progress ORDER BY tvShowId, seasonNumber, episodeNumber")
+    suspend fun getAllSync(): List<TvShowProgress>
     
     // Видалити прогрес сезону
     @Query("DELETE FROM tv_show_progress WHERE tvShowId = :tvShowId AND seasonNumber = :seasonNumber")

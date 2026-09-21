@@ -32,8 +32,8 @@
         app:cardCornerRadius="24dp"
         app:cardElevation="0dp"
         app:strokeWidth="1.5dp"
-        app:strokeColor="#252854"
-        app:cardBackgroundColor="#0D0E17">
+        app:strokeColor="@color/outline_variant"
+        app:cardBackgroundColor="@color/poster_placeholder_dark">
 
         <ImageView
             android:id="@+id/ivActorPhoto"
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="#818CF8"
+            android:textColor="@color/primary"
             android:layout_marginTop="2dp"
             tools:text="6 фільмів • 14 год" />
 
@@ -91,7 +91,7 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/ic_chevron_right"
-        app:tint="#475569"
+        app:tint="@color/text_hint"
         android:contentDescription="@null" />
 
 </LinearLayout>
