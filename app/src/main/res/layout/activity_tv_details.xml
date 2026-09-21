@@ -853,10 +853,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/overview"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium" />
+                    style="@style/TextAppearance.MovieTime.SectionTitle" />
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
@@ -908,10 +905,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cast_title"
-                        android:textColor="@color/text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -954,10 +948,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/crew_title"
-                        android:textColor="@color/text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" />
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView

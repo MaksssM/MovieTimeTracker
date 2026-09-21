@@ -261,10 +261,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/search_results"
-                        android:textColor="@color/text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" />
 
                     <!-- Sort Button -->
                     <LinearLayout
@@ -338,10 +335,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/recent_searches"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" />
 
                     <TextView
                         android:id="@+id/btnClearHistory"
@@ -393,10 +387,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/trending"
-                        android:textColor="@color/text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" />
 
                 </LinearLayout>
 
