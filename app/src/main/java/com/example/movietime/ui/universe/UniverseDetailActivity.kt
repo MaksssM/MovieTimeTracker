@@ -5,7 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movietime.R
 import com.example.movietime.data.repository.EntryProgress
@@ -15,16 +15,13 @@ import com.example.movietime.ui.details.DetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UniverseDetailActivity : AppCompatActivity() {
+class UniverseDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityUniverseDetailBinding
     private val viewModel: UniverseDetailViewModel by viewModels()
 
     private var adapter: UniverseDetailAdapter? = null
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

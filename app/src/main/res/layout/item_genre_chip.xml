@@ -24,6 +24,7 @@
         android:textColor="@color/primary_text"
         android:textSize="13sp"
         android:fontFamily="@font/montserrat_semibold"
+        android:tag="font_heading"
         android:lines="2"
         android:minLines="1"
         android:maxLines="2"

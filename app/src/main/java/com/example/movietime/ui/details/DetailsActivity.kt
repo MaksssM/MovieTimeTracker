@@ -15,7 +15,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import coil.request.CachePolicy
@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import java.util.Locale
 
 @AndroidEntryPoint
-class DetailsActivity : AppCompatActivity() {
+class DetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityDetailsBinding
     private val viewModel: DetailsViewModel by viewModels()
@@ -42,9 +42,6 @@ class DetailsActivity : AppCompatActivity() {
         private const val TAG = "DetailsActivity"
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

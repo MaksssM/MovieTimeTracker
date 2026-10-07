@@ -445,9 +445,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/favorite_genres"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?attr/colorOnSurface"
+                            style="@style/TextAppearance.MovieTime.SectionTitle"
+                            android:tag="font_heading"
                             android:layout_marginStart="12dp" />
 
                     </LinearLayout>
@@ -457,7 +456,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
-                        tools:listitem="@layout/item_genre_stat" />
+                        android:orientation="horizontal"
+                        android:clipToPadding="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_genre_card" />
 
                     <TextView
                         android:id="@+id/tvNoGenres"
@@ -504,9 +506,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/favorite_directors"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?attr/colorOnSurface"
+                            style="@style/TextAppearance.MovieTime.SectionTitle"
+                            android:tag="font_heading"
                             android:layout_marginStart="12dp" />
 
                         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -526,7 +527,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
-                        tools:listitem="@layout/item_director_stat" />
+                        android:orientation="horizontal"
+                        android:clipToPadding="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_cast" />
 
                     <TextView
                         android:id="@+id/tvNoDirectors"
@@ -574,9 +578,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/favorite_actors"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?attr/colorOnSurface"
+                            style="@style/TextAppearance.MovieTime.SectionTitle"
+                            android:tag="font_heading"
                             android:layout_marginStart="12dp" />
 
                         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -596,7 +599,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
-                        tools:listitem="@layout/item_actor_stat" />
+                        android:orientation="horizontal"
+                        android:clipToPadding="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_cast" />
 
                     <TextView
                         android:id="@+id/tvNoActors"
@@ -693,9 +699,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/top_rated_content"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?attr/colorOnSurface"
+                            style="@style/TextAppearance.MovieTime.SectionTitle"
+                            android:tag="font_heading"
                             android:layout_marginStart="12dp" />
 
                     </LinearLayout>
@@ -1248,9 +1253,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/achievements"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?attr/colorOnSurface"
+                            style="@style/TextAppearance.MovieTime.SectionTitle"
+                            android:tag="font_heading"
                             android:layout_marginStart="12dp" />
 
                     </LinearLayout>
@@ -1369,9 +1373,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/viewing_trends"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?attr/colorOnSurface"
+                            style="@style/TextAppearance.MovieTime.SectionTitle"
+                            android:tag="font_heading"
                             android:layout_marginStart="12dp" />
 
                     </LinearLayout>
@@ -1566,9 +1569,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/extended_statistics"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?attr/colorOnSurface"
+                            style="@style/TextAppearance.MovieTime.SectionTitle"
+                            android:tag="font_heading"
                             android:layout_marginStart="12dp" />
 
                     </LinearLayout>
@@ -1812,9 +1814,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/watch_time_breakdown"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?attr/colorOnSurface"
+                            style="@style/TextAppearance.MovieTime.SectionTitle"
+                            android:tag="font_heading"
                             android:layout_marginStart="12dp" />
 
                     </LinearLayout>

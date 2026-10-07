@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movietime.databinding.ActivityUniversesBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UniversesActivity : AppCompatActivity() {
+class UniversesActivity : BaseActivity() {
 
     private lateinit var binding: ActivityUniversesBinding
     private val viewModel: UniversesViewModel by viewModels()
@@ -23,9 +23,6 @@ class UniversesActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

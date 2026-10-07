@@ -11,6 +11,8 @@ import com.example.movietime.data.repository.StatisticsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -50,6 +52,7 @@ class StatisticsViewModel @Inject constructor(
             _isLoading.value = true
             _error.value = null
             try {
+                // First paint: instant stats from local DB only (no network).
                 val stats = statisticsRepository.getDetailedStatistics(directorCache)
                 val enrichedStats = if (actorCache.isNotEmpty()) {
                     stats.copy(
@@ -59,10 +62,18 @@ class StatisticsViewModel @Inject constructor(
                     stats
                 }
                 _statistics.value = enrichedStats
-                
+
                 // Load directors and actors in background if not cached
                 if (directorCache.isEmpty() || actorCache.isEmpty()) {
                     loadCastAndCrew()
+                }
+
+                // Backfill missing genreIds in background, then recompute once.
+                // Runs AFTER first paint so a slow network never blocks the screen.
+                backfillMissingGenreIds { fixedCount ->
+                    if (fixedCount > 0) {
+                        refreshStatsOnly()
+                    }
                 }
             } catch (e: Exception) {
                 _error.value = e.message
@@ -72,86 +83,119 @@ class StatisticsViewModel @Inject constructor(
         }
     }
 
+    private fun refreshStatsOnly() {
+        viewModelScope.launch {
+            try {
+                val stats = statisticsRepository.getDetailedStatistics(directorCache)
+                val enriched = if (actorCache.isNotEmpty()) {
+                    stats.copy(
+                        favoriteActors = actorCache.values.sortedByDescending { it.moviesWatched }.take(10)
+                    )
+                } else {
+                    stats
+                }
+                _statistics.value = enriched
+            } catch (_: Exception) {
+            }
+        }
+    }
+
     private fun loadCastAndCrew() {
         viewModelScope.launch {
             _directorsLoading.value = true
             _actorsLoading.value = true
             try {
-                val movieIds = statisticsRepository.getWatchedMovieIds()
-                val directorCounts = mutableMapOf<Int, MutableList<Pair<String, Int>>>() // directorId -> list of (movieTitle, runtime)
-                val directorInfo = mutableMapOf<Int, Pair<String, String?>>() // directorId -> (name, profilePath)
+                // Movies AND tv shows (cartoons/anime included — same credits API).
+                // Title/runtime come straight from WatchedItem: no extra details calls.
+                val allWatched = withContext(Dispatchers.IO) {
+                    appRepository.getWatchedItemsForBackup()
+                }
+                val itemsToFetch = allWatched.take(60)
 
-                val actorCounts = mutableMapOf<Int, MutableList<Pair<String, Int>>>() // actorId -> list of (movieTitle, runtime)
-                val actorInfo = mutableMapOf<Int, Pair<String, String?>>() // actorId -> (name, profilePath)
-                
-                // Fetch credits for watched movies (up to 50)
-                val moviesToFetch = movieIds.take(50)
-                
+                val newDirectorCounts = mutableMapOf<Int, MutableList<Pair<String, Int>>>()
+                val newDirectorInfo = mutableMapOf<Int, Pair<String, String?>>()
+                val newActorCounts = mutableMapOf<Int, MutableList<Pair<String, Int>>>()
+                val newActorInfo = mutableMapOf<Int, Pair<String, String?>>()
+                val lock = Any()
+
                 withContext(Dispatchers.IO) {
-                    moviesToFetch.forEach { movieId ->
-                        try {
-                            val credits = appRepository.getMovieCredits(movieId)
-                            val movieDetails = appRepository.getMovieDetails(movieId)
-                            val runtime = movieDetails.runtime ?: 0
-                            val title = movieDetails.title ?: "Unknown"
-                            
-                            // 1. Process Directors
-                            credits?.crew
-                                ?.filter { it.job == "Director" }
-                                ?.forEach { director ->
-                                    val id = director.id
-                                    directorInfo[id] = Pair(director.name, director.profilePath)
-                                    directorCounts.getOrPut(id) { mutableListOf() }
-                                        .add(Pair(title, runtime))
-                                }
+                    // Bounded parallelism: chunks of 8 instead of 100 sequential calls
+                    itemsToFetch.chunked(8).forEach { chunk ->
+                        chunk.map { item ->
+                            async {
+                                try {
+                                    val credits = if (item.mediaType == "tv") {
+                                        appRepository.getTvCredits(item.id)
+                                    } else {
+                                        appRepository.getMovieCredits(item.id)
+                                    } ?: return@async
+                                    val runtime = item.runtime ?: 0
+                                    val title = item.title
 
-                            // 2. Process Actors (top 5 cast per movie)
-                            credits?.cast
-                                ?.take(5)
-                                ?.forEach { cast ->
-                                    val id = cast.id
-                                    actorInfo[id] = Pair(cast.name, cast.profilePath)
-                                    actorCounts.getOrPut(id) { mutableListOf() }
-                                        .add(Pair(title, runtime))
+                                    // 1. Directors (series have per-episode/series directors)
+                                    credits.crew
+                                        ?.filter { it.job == "Director" || it.job == "Series Director" }
+                                        ?.forEach { director ->
+                                            synchronized(lock) {
+                                                newDirectorInfo[director.id] =
+                                                    Pair(director.name, director.profilePath)
+                                                newDirectorCounts.getOrPut(director.id) { mutableListOf() }
+                                                    .add(Pair(title, runtime))
+                                            }
+                                        }
+
+                                    // 2. Actors (top 5 cast)
+                                    credits.cast
+                                        ?.take(5)
+                                        ?.forEach { cast ->
+                                            synchronized(lock) {
+                                                newActorInfo[cast.id] =
+                                                    Pair(cast.name, cast.profilePath)
+                                                newActorCounts.getOrPut(cast.id) { mutableListOf() }
+                                                    .add(Pair(title, runtime))
+                                            }
+                                        }
+                                } catch (_: Exception) {
+                                    // Skip failed individual requests
                                 }
-                        } catch (e: Exception) {
-                            // Skip failed individual movie requests
-                        }
+                            }
+                        }.awaitAll()
                     }
                 }
-                
-                // Build director stats
-                directorCache.clear()
-                directorCounts.forEach { (directorId, movies) ->
-                    val info = directorInfo[directorId] ?: return@forEach
-                    val totalRuntime = movies.sumOf { it.second.toLong() }
-                    
-                    directorCache[directorId] = DirectorStatItem(
-                        directorId = directorId,
-                        directorName = info.first,
-                        profilePath = info.second,
-                        moviesWatched = movies.size,
-                        totalWatchTimeMinutes = totalRuntime,
-                        movieTitles = movies.map { it.first }
-                    )
+
+                // Swap caches only after successful build (no wipe-on-failure)
+                if (newDirectorCounts.isNotEmpty() || newActorCounts.isNotEmpty()) {
+                    directorCache.clear()
+                    newDirectorCounts.forEach { (directorId, movies) ->
+                        val info = newDirectorInfo[directorId] ?: return@forEach
+                        val totalRuntime = movies.sumOf { it.second.toLong() }
+
+                        directorCache[directorId] = DirectorStatItem(
+                            directorId = directorId,
+                            directorName = info.first,
+                            profilePath = info.second,
+                            moviesWatched = movies.size,
+                            totalWatchTimeMinutes = totalRuntime,
+                            movieTitles = movies.map { it.first }
+                        )
+                    }
+
+                    actorCache.clear()
+                    newActorCounts.forEach { (actorId, movies) ->
+                        val info = newActorInfo[actorId] ?: return@forEach
+                        val totalRuntime = movies.sumOf { it.second.toLong() }
+
+                        actorCache[actorId] = ActorStatItem(
+                            actorId = actorId,
+                            actorName = info.first,
+                            profilePath = info.second,
+                            moviesWatched = movies.size,
+                            totalWatchTimeMinutes = totalRuntime,
+                            movieTitles = movies.map { it.first }
+                        )
+                    }
                 }
 
-                // Build actor stats
-                actorCache.clear()
-                actorCounts.forEach { (actorId, movies) ->
-                    val info = actorInfo[actorId] ?: return@forEach
-                    val totalRuntime = movies.sumOf { it.second.toLong() }
-
-                    actorCache[actorId] = ActorStatItem(
-                        actorId = actorId,
-                        actorName = info.first,
-                        profilePath = info.second,
-                        moviesWatched = movies.size,
-                        totalWatchTimeMinutes = totalRuntime,
-                        movieTitles = movies.map { it.first }
-                    )
-                }
-                
                 // Refresh statistics with director and actor data
                 val updatedStats = statisticsRepository.getDetailedStatistics(directorCache)
                 val sortedActors = actorCache.values
@@ -161,7 +205,7 @@ class StatisticsViewModel @Inject constructor(
                 _statistics.value = updatedStats.copy(
                     favoriteActors = sortedActors
                 )
-                
+
             } catch (e: Exception) {
                 // Cast/crew loading failed, but we still have core stats
             } finally {
@@ -202,5 +246,46 @@ class StatisticsViewModel @Inject constructor(
     fun refreshData() {
         directorCache.clear()
         loadStatistics()
+    }
+
+    /**
+     * Fills genreIds for watched rows saved without them (legacy rows and
+     * TV rows from the episode sheet). Capped and chunked to stay fast;
+     * details responses are LRU-cached in the repository.
+     * Reports how many rows were fixed via [onDone] (0 = nothing changed).
+     */
+    private suspend fun backfillMissingGenreIds(onDone: (Int) -> Unit = {}) = withContext(Dispatchers.IO) {
+        var fixedCount = 0
+        try {
+            val missing = appRepository.getWatchedItemsForBackup()
+                .filter { it.genreIds.isNullOrBlank() }
+                .take(80)
+            if (missing.isEmpty()) return@withContext
+            missing.chunked(8).forEach { chunk ->
+                chunk.map { item ->
+                    async {
+                        try {
+                            val genres: String? = if (item.mediaType == "tv") {
+                                val details = appRepository.getTvShowDetails(item.id)
+                                details.genres?.map { it.id }?.joinToString(",")
+                                    ?: details.genreIds?.joinToString(",")
+                            } else {
+                                val details = appRepository.getMovieDetails(item.id)
+                                details.genres?.map { it.id }?.joinToString(",")
+                                    ?: details.genreIds?.joinToString(",")
+                            }
+                            if (!genres.isNullOrBlank()) {
+                                appRepository.updateWatchedItem(item.copy(genreIds = genres))
+                                fixedCount++
+                            }
+                        } catch (_: Exception) {
+                        }
+                    }
+                }.awaitAll()
+            }
+            onDone(fixedCount)
+        } catch (_: Exception) {
+            onDone(0)
+        }
     }
 }

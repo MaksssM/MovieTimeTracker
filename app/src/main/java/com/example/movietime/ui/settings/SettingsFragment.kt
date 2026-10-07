@@ -57,6 +57,7 @@ class SettingsFragment : Fragment() {
     private lateinit var tvCurrentLanguage: TextView
     private lateinit var tvCurrentContentLanguage: TextView
     private lateinit var tvCurrentTheme: TextView
+    private lateinit var tvCurrentFont: TextView
     private lateinit var tvCacheSize: TextView
 
     override fun onCreateView(
@@ -76,17 +77,22 @@ class SettingsFragment : Fragment() {
         tvCurrentLanguage = view.findViewById(R.id.tvCurrentLanguage)
         tvCurrentContentLanguage = view.findViewById(R.id.tvCurrentContentLanguage)
         tvCurrentTheme = view.findViewById(R.id.tvCurrentTheme)
+        tvCurrentFont = view.findViewById(R.id.tvCurrentFont)
         tvCacheSize = view.findViewById(R.id.tvCacheSize)
-        
+
         // Update Labels
         updateLanguageText()
         updateContentLanguageText()
         updateThemeText()
+        updateFontText()
         updateCacheSize()
-        
+        view.findViewById<TextView>(R.id.tvAppVersion).text =
+            "v${com.example.movietime.BuildConfig.VERSION_NAME} • ${com.example.movietime.BuildConfig.BUILD_TIME}"
+
         val optLanguage = view.findViewById<LinearLayout>(R.id.optLanguage)
         val optContentLanguage = view.findViewById<LinearLayout>(R.id.optContentLanguage)
         val optTheme = view.findViewById<LinearLayout>(R.id.optTheme)
+        val optFont = view.findViewById<LinearLayout>(R.id.optFont)
         val btnClearCache = view.findViewById<LinearLayout>(R.id.optClearCache)
         val btnCreateBackup = view.findViewById<LinearLayout>(R.id.optCreateBackup)
         val btnManageBackups = view.findViewById<LinearLayout>(R.id.optManageBackups)
@@ -95,6 +101,7 @@ class SettingsFragment : Fragment() {
         optLanguage.setOnClickListener { showLanguageDialog() }
         optContentLanguage.setOnClickListener { showContentLanguageDialog() }
         optTheme.setOnClickListener { showThemeDialog() }
+        optFont.setOnClickListener { showFontDialog() }
         btnClearCache.setOnClickListener { clearCache() }
         btnCreateBackup.setOnClickListener { createBackup() }
         btnManageBackups.setOnClickListener { showBackupManagerDialog() }
@@ -359,6 +366,32 @@ class SettingsFragment : Fragment() {
             "dark" -> getString(R.string.theme_dark)
             else -> getString(R.string.theme_system)
         }
+    }
+
+    private fun updateFontText() {
+        val code = com.example.movietime.ui.base.FontManager.getSavedFont(requireContext())
+        tvCurrentFont.text = getString(com.example.movietime.ui.base.FontManager.displayNameRes(code))
+    }
+
+    private fun showFontDialog() {
+        val codes = com.example.movietime.ui.base.FontManager.OPTIONS.toTypedArray()
+        val names = codes.map { getString(com.example.movietime.ui.base.FontManager.displayNameRes(it)) }.toTypedArray()
+
+        val currentCode = com.example.movietime.ui.base.FontManager.getSavedFont(requireContext())
+        val checkedItem = codes.indexOf(currentCode).takeIf { it != -1 } ?: 0
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.font_title))
+            .setSingleChoiceItems(names, checkedItem) { dialog, which ->
+                val selectedCode = codes[which]
+                if (selectedCode != currentCode) {
+                    com.example.movietime.ui.base.FontManager.saveFont(requireContext(), selectedCode)
+                    updateFontText()
+                    requireActivity().recreate()
+                }
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun showThemeDialog() {

@@ -13,7 +13,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.example.movietime.databinding.ActivityTvDetailsBinding
@@ -39,7 +39,7 @@ import com.example.movietime.utils.HapticFeedbackHelper
 
 
 @AndroidEntryPoint
-class TvDetailsActivity : AppCompatActivity() {
+class TvDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTvDetailsBinding
     private val viewModel: TvDetailsViewModel by viewModels()
@@ -55,9 +55,6 @@ class TvDetailsActivity : AppCompatActivity() {
         private const val TAG = "TvDetailsActivity"
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

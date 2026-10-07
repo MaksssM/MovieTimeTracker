@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Properties
 
 val localProperties = Properties()
@@ -36,8 +38,8 @@ android {
         applicationId = "com.example.movietime"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -45,6 +47,11 @@ android {
             type = "String",
             name = "TMDB_API_KEY",
             value = "\"${localProperties.getProperty("TMDB_API_KEY", "YOUR_DEFAULT_KEY")}\""
+        )
+        buildConfigField(
+            type = "String",
+            name = "BUILD_TIME",
+            value = "\"" + SimpleDateFormat("dd.MM HH:mm").format(Date()) + "\""
         )
     }
 

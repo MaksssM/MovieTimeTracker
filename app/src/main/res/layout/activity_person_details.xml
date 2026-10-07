@@ -65,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 style="@style/TextAppearance.MovieTime.Display"
+                android:tag="font_heading_bold"
                 android:layout_marginBottom="8dp"
                 tools:text="Tom Hanks" />
 
@@ -80,6 +81,7 @@
                 android:textSize="14sp"
                 android:textColor="#60A5FA"
                 android:fontFamily="@font/montserrat_semibold"
+                android:tag="font_heading"
                 android:layout_marginBottom="20dp"
                 tools:text="Актор" />
 

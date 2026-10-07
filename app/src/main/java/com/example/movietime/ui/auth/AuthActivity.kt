@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.movietime.R
 import com.example.movietime.databinding.ActivityAuthBinding
@@ -19,14 +19,11 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
-class AuthActivity : AppCompatActivity() {
+class AuthActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAuthBinding
     private val viewModel: AuthViewModel by viewModels()
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

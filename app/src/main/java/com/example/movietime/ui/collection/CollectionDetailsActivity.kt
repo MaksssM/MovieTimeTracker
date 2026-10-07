@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
@@ -30,7 +30,7 @@ import com.example.movietime.data.repository.AppRepository
 import java.util.Locale
 
 @AndroidEntryPoint
-class CollectionDetailsActivity : AppCompatActivity() {
+class CollectionDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCollectionDetailsBinding
 
@@ -39,9 +39,6 @@ class CollectionDetailsActivity : AppCompatActivity() {
     @Inject
     lateinit var repository: AppRepository
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
 
     private val adapter = CollectionAdapter(
         onItemClick = { movie, sharedView ->

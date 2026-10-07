@@ -564,7 +564,14 @@
     <string name="filter_rating_format">Rating ≥ %1$s</string>
     <string name="filters_none_selected">No filters selected</string>
     <string name="related_header">Related</string>
+    <string name="friends_coming_soon_title">Friends are coming soon</string>
+    <string name="friends_coming_soon_text">We\'re rebuilding social features. Lists, stats and everything else already works — friends will return in a future update.</string>
     <string name="tops_title">Top Lists</string>
+    <string name="font_title">Heading font</string>
+    <string name="font_montserrat">Montserrat</string>
+    <string name="font_inter_tight">Inter Tight</string>
+    <string name="font_press_start">Press Start 2P</string>
+    <string name="font_rubik">Rubik</string>
     
     <string name="selected_episodes_count">Selected %1$d of %2$d episodes</string>
     <string name="total_runtime_format">~%s total</string>

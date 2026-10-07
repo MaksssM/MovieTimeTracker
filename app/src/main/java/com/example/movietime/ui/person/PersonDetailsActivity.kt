@@ -5,7 +5,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.example.movietime.R
@@ -18,14 +18,11 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
-class PersonDetailsActivity : AppCompatActivity() {
+class PersonDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityPersonDetailsBinding
     private val viewModel: PersonDetailsViewModel by viewModels()
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
 
     private val actingAdapter by lazy {
         CombinedCreditsAdapter { id, mediaType ->

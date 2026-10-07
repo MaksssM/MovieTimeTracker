@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movietime.R
@@ -21,11 +21,8 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class TodayActivity : AppCompatActivity() {
+class TodayActivity : BaseActivity() {
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
 
     private lateinit var binding: ActivityTodayBinding
     private val viewModel: TodayViewModel by viewModels()

@@ -74,6 +74,7 @@
                 android:textColor="@color/text_primary"
                 android:textStyle="bold"
                 android:fontFamily="@font/montserrat_semibold"
+                android:tag="font_heading"
                 android:letterSpacing="-0.01" />
 
             <TextView

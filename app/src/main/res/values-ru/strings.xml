@@ -499,7 +499,14 @@
     <string name="filter_rating_format">Рейтинг ≥ %1$s</string>
     <string name="filters_none_selected">Фильтры не выбраны</string>
     <string name="related_header">Связанное</string>
+    <string name="friends_coming_soon_title">Друзья скоро будут</string>
+    <string name="friends_coming_soon_text">Мы переделываем социальные функции. Списки, статистика и всё остальное уже работает — друзья вернутся в одном из следующих обновлений.</string>
     <string name="tops_title">Подборки</string>
+    <string name="font_title">Шрифт заголовков</string>
+    <string name="font_montserrat">Montserrat</string>
+    <string name="font_inter_tight">Inter Tight</string>
+    <string name="font_press_start">Press Start 2P</string>
+    <string name="font_rubik">Rubik</string>
     
     <string name="selected_episodes_count">Выбрано %1$d из %2$d серий</string>
     <string name="total_runtime_format">~%s всего</string>

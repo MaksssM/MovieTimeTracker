@@ -68,6 +68,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/text_primary"
                     android:fontFamily="@font/montserrat_semibold"
+                    android:tag="font_heading"
                     android:textStyle="bold"
                     android:maxLines="2"
                     android:ellipsize="end"
@@ -83,6 +84,7 @@
                     android:textSize="12sp"
                     android:textColor="#60A5FA"
                     android:fontFamily="@font/montserrat_semibold"
+                    android:tag="font_heading"
                     tools:text="Актор" />
 
                 <!-- Known For -->

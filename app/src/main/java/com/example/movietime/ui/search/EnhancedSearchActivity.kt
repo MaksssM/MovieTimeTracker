@@ -9,7 +9,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,7 +31,7 @@ import java.util.Locale
 import com.example.movietime.ui.person.PersonDetailsActivity
 
 @AndroidEntryPoint
-class EnhancedSearchActivity : AppCompatActivity() {
+class EnhancedSearchActivity : BaseActivity() {
 
     private lateinit var binding: ActivityEnhancedSearchBinding
     private val viewModel: SearchViewModel by viewModels()
@@ -44,9 +44,6 @@ class EnhancedSearchActivity : AppCompatActivity() {
     private var allSearchResults: List<GroupedSearchItem> = emptyList()
     private var currentSortMode = "popularity"
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

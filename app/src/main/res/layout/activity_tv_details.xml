@@ -118,7 +118,7 @@
                         android:textColor="@color/text_on_dark"
                         android:textSize="13sp"
                         android:textStyle="bold"
-                        android:fontFamily="@font/montserrat_semibold" />
+                        android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
 
                 </LinearLayout>
 
@@ -163,7 +163,7 @@
                         android:textColor="@color/text_on_dark"
                         android:textSize="13sp"
                         android:textStyle="bold"
-                        android:fontFamily="@font/montserrat_semibold" />
+                        android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
 
                 </LinearLayout>
 
@@ -198,6 +198,7 @@
                         android:textSize="22sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/montserrat_semibold"
+                        android:tag="font_heading"
                         android:letterSpacing="0.01"
                         android:lineSpacingMultiplier="1.15"
                         android:maxLines="2"
@@ -238,6 +239,7 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/montserrat_semibold"
+                                android:tag="font_heading"
                                 tools:text="9.5" />
                         </LinearLayout>
 
@@ -286,7 +288,7 @@
                                 android:text="@string/tv_shows"
                                 android:textColor="#A78BFA"
                                 android:textSize="11sp"
-                                android:fontFamily="@font/montserrat_semibold" />
+                                android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -388,7 +390,7 @@
                                 android:text="@string/add_to_collection"
                                 android:textColor="@color/action_collection"
                                 android:textSize="14sp"
-                                android:fontFamily="@font/montserrat_semibold" />
+                                android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -431,7 +433,7 @@
                                 android:text="@string/planned"
                                 android:textColor="@color/action_planned"
                                 android:textSize="14sp"
-                                android:fontFamily="@font/montserrat_semibold" />
+                                android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -474,7 +476,7 @@
                                 android:text="@string/watched"
                                 android:textColor="@color/action_watched"
                                 android:textSize="14sp"
-                                android:fontFamily="@font/montserrat_semibold" />
+                                android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -517,7 +519,7 @@
                                 android:text="@string/watching"
                                 android:textColor="@color/action_watching"
                                 android:textSize="14sp"
-                                android:fontFamily="@font/montserrat_semibold" />
+                                android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -558,7 +560,7 @@
                                 android:text="@string/rate"
                                 android:textColor="@color/action_rate"
                                 android:textSize="14sp"
-                                android:fontFamily="@font/montserrat_semibold" />
+                                android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -598,7 +600,7 @@
                                 android:text="@string/share"
                                 android:textColor="@color/action_share"
                                 android:textSize="14sp"
-                                android:fontFamily="@font/montserrat_semibold" />
+                                android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
@@ -656,6 +658,7 @@
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/montserrat_semibold"
+                                android:tag="font_heading"
                                 tools:text="85%" />
                         </FrameLayout>
 
@@ -709,6 +712,7 @@
                             android:textSize="15sp"
                             android:textStyle="bold"
                             android:fontFamily="@font/montserrat_semibold"
+                            android:tag="font_heading"
                             tools:text="5" />
 
                         <TextView
@@ -761,6 +765,7 @@
                             android:textSize="15sp"
                             android:textStyle="bold"
                             android:fontFamily="@font/montserrat_semibold"
+                            android:tag="font_heading"
                             tools:text="62" />
 
                         <TextView
@@ -818,7 +823,7 @@
                             android:text="@string/total_watch_time"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp"
-                            android:fontFamily="@font/montserrat_semibold" />
+                            android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
 
                         <TextView
                             android:id="@+id/tvTotalWatchTime"
@@ -829,6 +834,7 @@
                             android:textSize="24sp"
                             android:textStyle="bold"
                             android:fontFamily="@font/montserrat_semibold"
+                            android:tag="font_heading"
                             tools:text="62 год 15 хв" />
                     </LinearLayout>
                 </LinearLayout>
@@ -853,7 +859,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/overview"
-                    style="@style/TextAppearance.MovieTime.SectionTitle" />
+                    style="@style/TextAppearance.MovieTime.SectionTitle" android:tag="font_heading" />
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
@@ -905,7 +911,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cast_title"
-                        style="@style/TextAppearance.MovieTime.SectionTitle" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" android:tag="font_heading" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -948,7 +954,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/crew_title"
-                        style="@style/TextAppearance.MovieTime.SectionTitle" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" android:tag="font_heading" />
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
@@ -995,7 +1001,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/seasons"
-                        style="@style/TextAppearance.MovieTime.SectionTitle" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" android:tag="font_heading" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -1032,7 +1038,7 @@
                     android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:fontFamily="@font/montserrat_semibold" />
+                    android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
             </LinearLayout>
 
             <!-- Info Grid -->
@@ -1073,6 +1079,7 @@
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:fontFamily="@font/montserrat_semibold"
+                            android:tag="font_heading"
                             tools:text="20.01.2008" />
                     </LinearLayout>
 
@@ -1103,6 +1110,7 @@
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:fontFamily="@font/montserrat_semibold"
+                            android:tag="font_heading"
                             tools:text="29.09.2013" />
                     </LinearLayout>
 
@@ -1133,6 +1141,7 @@
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:fontFamily="@font/montserrat_semibold"
+                            android:tag="font_heading"
                             tools:text="~45 хв" />
                     </LinearLayout>
 
@@ -1163,6 +1172,7 @@
                             android:textColor="@color/action_watching"
                             android:textSize="14sp"
                             android:fontFamily="@font/montserrat_semibold"
+                            android:tag="font_heading"
                             tools:text="Завершений" />
                     </LinearLayout>
 
@@ -1193,6 +1203,7 @@
                             android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:fontFamily="@font/montserrat_semibold"
+                            android:tag="font_heading"
                             tools:text="12,456" />
                     </LinearLayout>
                 </LinearLayout>

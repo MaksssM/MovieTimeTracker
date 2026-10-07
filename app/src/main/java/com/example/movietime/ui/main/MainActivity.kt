@@ -7,7 +7,7 @@ import android.os.Build
 import android.view.MenuItem
 import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -28,7 +28,7 @@ import com.example.movietime.ui.today.TodayActivity
 import com.google.android.material.snackbar.Snackbar
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: DrawerlayoutBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -48,9 +48,6 @@ class MainActivity : AppCompatActivity() {
         private var lastClickTime = 0L
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

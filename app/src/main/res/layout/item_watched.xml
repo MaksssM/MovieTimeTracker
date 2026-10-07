@@ -81,6 +81,7 @@
                         android:textSize="9sp"
                         android:textColor="@color/text_primary"
                         android:fontFamily="@font/montserrat_semibold"
+                        android:tag="font_heading"
                         android:textAllCaps="true"
                         tools:text="ФІЛЬМ" />
 
@@ -112,6 +113,7 @@
                             android:textSize="10sp"
                             android:textColor="#FBBF24"
                             android:fontFamily="@font/montserrat_semibold"
+                            android:tag="font_heading"
                             android:textStyle="bold"
                             tools:text="8.5" />
 
@@ -144,6 +146,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
                     android:fontFamily="@font/montserrat_semibold"
+                    android:tag="font_heading"
                     android:maxLines="2"
                     android:ellipsize="end"
                     android:lineSpacingMultiplier="1.15"
@@ -202,6 +205,7 @@
                         android:textSize="11sp"
                         android:textColor="#A5B4FC"
                         android:fontFamily="@font/montserrat_semibold"
+                        android:tag="font_heading"
                         tools:text="2 год 49 хв" />
 
                 </LinearLayout>
@@ -235,6 +239,7 @@
                         android:textSize="11sp"
                         android:textColor="#34D399"
                         android:fontFamily="@font/montserrat_semibold"
+                        android:tag="font_heading"
                         tools:text="×3" />
 
                 </LinearLayout>

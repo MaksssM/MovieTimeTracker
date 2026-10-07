@@ -101,7 +101,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="@string/user_rank_movie_buff"
-                            style="@style/TextAppearance.MovieTime.Display" />
+                            style="@style/TextAppearance.MovieTime.Display" android:tag="font_heading_bold" />
 
                     </LinearLayout>
 
@@ -191,6 +191,7 @@
                         android:textSize="38sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/montserrat_bold"
+                        android:tag="font_heading_bold"
                         android:maxLines="1"
                         android:autoSizeTextType="uniform"
                         android:autoSizeMinTextSize="20sp"
@@ -235,6 +236,7 @@
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/montserrat_semibold"
+                                android:tag="font_heading"
                                 tools:text="8" />
 
                             <TextView
@@ -277,6 +279,7 @@
                                     android:textSize="20sp"
                                     android:textStyle="bold"
                                     android:fontFamily="@font/montserrat_semibold"
+                                    android:tag="font_heading"
                                     tools:text="8.4" />
 
                             </LinearLayout>
@@ -307,6 +310,7 @@
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/montserrat_semibold"
+                                android:tag="font_heading"
                                 tools:text="45" />
 
                             <TextView
@@ -335,6 +339,7 @@
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/montserrat_semibold"
+                                android:tag="font_heading"
                                 tools:text="12" />
 
                             <TextView
@@ -375,6 +380,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="10dp"
                     style="@style/TextAppearance.MovieTime.SectionTitle"
+                    android:tag="font_heading"
                     android:text="@string/continue_watching"
                     tools:text="Continue Watching" />
 
@@ -723,7 +729,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/categories"
-                        style="@style/TextAppearance.MovieTime.SectionTitle" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" android:tag="font_heading" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -795,6 +801,7 @@
                                 android:textSize="32sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/montserrat_semibold"
+                                android:tag="font_heading"
                                 tools:text="23" />
 
                             <TextView
@@ -867,6 +874,7 @@
                                 android:textSize="32sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/montserrat_semibold"
+                                android:tag="font_heading"
                                 tools:text="8" />
 
                             <TextView
@@ -949,6 +957,7 @@
                             android:textSize="30sp"
                             android:textStyle="bold"
                             android:fontFamily="@font/montserrat_semibold"
+                            android:tag="font_heading"
                             tools:text="3" />
 
                     </LinearLayout>
@@ -1042,6 +1051,7 @@
                                     android:textStyle="bold"
                                     android:textColor="@color/text_primary"
                                     android:fontFamily="@font/montserrat_semibold"
+                                    android:tag="font_heading"
                                     android:maxLines="1"
                                     android:ellipsize="end"
                                     tools:text="Чорне дзеркало" />
@@ -1110,7 +1120,7 @@
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:fontFamily="@font/montserrat_semibold" />
+                    android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1167,7 +1177,7 @@
                             android:textColor="@color/text_primary"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            android:fontFamily="@font/montserrat_semibold" />
+                            android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
 
                         <TextView
                             android:layout_width="wrap_content"

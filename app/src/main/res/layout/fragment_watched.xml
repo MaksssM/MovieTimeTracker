@@ -85,6 +85,7 @@
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"
                                 android:fontFamily="@font/montserrat_semibold"
+                                android:tag="font_heading"
                                 tools:text="42 год 15 хв" />
 
                             <TextView
@@ -140,6 +141,7 @@
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"
                                 android:fontFamily="@font/montserrat_semibold"
+                                android:tag="font_heading"
                                 tools:text="127" />
 
                             <TextView

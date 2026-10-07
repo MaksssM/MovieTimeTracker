@@ -69,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 style="@style/TextAppearance.MovieTime.Display"
+                android:tag="font_heading_bold"
                 tools:text="The Avengers Collection" />
 
             <TextView

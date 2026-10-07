@@ -13,7 +13,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        style="@style/TextAppearance.MovieTime.SectionTitle" />
+        style="@style/TextAppearance.MovieTime.SectionTitle" android:tag="font_heading" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRow"

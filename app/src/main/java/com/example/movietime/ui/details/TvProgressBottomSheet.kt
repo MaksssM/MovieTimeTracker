@@ -466,6 +466,8 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                     // REPLACE insert would wipe these — preserve them across saves
                     val preservedRating = existingItem?.userRating
                     val preservedWatchCount = existingItem?.watchCount ?: 1
+                    val genreIds = show.genreIds?.joinToString(",")
+                        ?: show.genres?.map { it.id }?.joinToString(",")
 
                     if (watchedEpisodes > 0) {
                         if (isFullyWatched) {
@@ -484,6 +486,7 @@ class TvProgressBottomSheet : BottomSheetDialogFragment() {
                                 isOngoing = isOngoing, // Keep original ongoing status
                                 status = finalStatus,
                                 lastUpdated = currentTime,
+                                genreIds = genreIds,
                                 watchCount = preservedWatchCount
                             )
 

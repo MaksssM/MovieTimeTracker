@@ -71,6 +71,7 @@
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/montserrat_semibold"
+                        android:tag="font_heading"
                         tools:text="8.5" />
 
                 </LinearLayout>
@@ -92,6 +93,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:fontFamily="@font/montserrat_semibold"
+                    android:tag="font_heading"
                     android:maxLines="2"
                     android:ellipsize="end"
                     android:minLines="2"

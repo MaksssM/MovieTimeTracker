@@ -12,7 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
-class FriendsActivity : AppCompatActivity() {
+class FriendsActivity : BaseActivity() {
 
     private val viewModel: FriendsViewModel by viewModels()
     
@@ -54,9 +54,6 @@ class FriendsActivity : AppCompatActivity() {
     private lateinit var fabSearch: FloatingActionButton
     private lateinit var loadingOverlay: FrameLayout
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(com.example.movietime.util.LocaleHelper.wrap(newBase))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

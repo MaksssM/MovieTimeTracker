@@ -69,6 +69,7 @@
                 android:textSize="15sp"
                 android:textColor="@color/text_primary"
                 android:fontFamily="@font/montserrat_semibold"
+                android:tag="font_heading"
                 android:textStyle="bold"
                 android:maxLines="2"
                 android:ellipsize="end"

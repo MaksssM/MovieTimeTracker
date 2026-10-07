@@ -65,6 +65,7 @@
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="15sp"
                 android:fontFamily="@font/montserrat_semibold"
+                android:tag="font_heading"
                 android:textStyle="bold"
                 android:ellipsize="end"
                 android:maxLines="1" />

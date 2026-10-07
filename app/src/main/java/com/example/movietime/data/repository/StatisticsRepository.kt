@@ -2,6 +2,7 @@ package com.example.movietime.data.repository
 
 import android.util.Log
 import com.example.movietime.data.db.*
+import com.example.movietime.util.LanguageManager
 import com.example.movietime.data.model.Genre
 import com.example.movietime.data.model.DetailedStatistics
 import com.example.movietime.data.model.GenreStatItem
@@ -26,7 +27,8 @@ class StatisticsRepository @Inject constructor(
     private val watchedItemDao: WatchedItemDao,
     private val rewatchDao: RewatchDao,
     private val yearlyStatsDao: YearlyStatsDao,
-    private val tvShowProgressDao: TvShowProgressDao
+    private val tvShowProgressDao: TvShowProgressDao,
+    private val languageManager: LanguageManager
 ) {
     companion object {
         private const val TAG = "StatisticsRepository"
@@ -53,6 +55,18 @@ class StatisticsRepository @Inject constructor(
             10759 to "Боевик", 10762 to "Детский", 10763 to "Новости", 
             10764 to "Реалити", 10765 to "Фантастика", 10766 to "Мыльная опера", 
             10767 to "Ток-шоу", 10768 to "Военный"
+        )
+
+        // Localized genre names (Ukrainian)
+        private val GENRE_NAMES_UK = mapOf(
+            28 to "Бойовик", 12 to "Пригоди", 16 to "Мультфільм", 35 to "Комедія",
+            80 to "Кримінал", 99 to "Документальний", 18 to "Драма", 10751 to "Сімейний",
+            14 to "Фентезі", 36 to "Історія", 27 to "Жахи", 10402 to "Музика",
+            9648 to "Детектив", 10749 to "Мелодрама", 878 to "Фантастика", 10770 to "Телефільм",
+            53 to "Трилер", 10752 to "Воєнний", 37 to "Вестерн",
+            10759 to "Бойовик і пригоди", 10762 to "Дитячий", 10763 to "Новини",
+            10764 to "Реаліті", 10765 to "Фантастика", 10766 to "Мильна опера",
+            10767 to "Ток-шоу", 10768 to "Воєнний"
         )
     }
 
@@ -291,11 +305,16 @@ class StatisticsRepository @Inject constructor(
         return GENRE_NAMES[id] ?: "Unknown"
     }
     
-    fun getGenreNameLocalized(id: Int, languageCode: String = "ru"): String {
-        return if (languageCode.startsWith("ru")) {
-            GENRE_NAMES_RU[id] ?: GENRE_NAMES[id] ?: "Unknown"
-        } else {
-            GENRE_NAMES[id] ?: "Unknown"
+    fun getGenreNameLocalized(id: Int, languageCode: String? = null): String {
+        val lang = (languageCode ?: try {
+            languageManager.getApiLanguage()
+        } catch (e: Exception) {
+            "en-US"
+        }).lowercase()
+        return when {
+            lang.startsWith("uk") -> GENRE_NAMES_UK[id] ?: GENRE_NAMES[id] ?: "Unknown"
+            lang.startsWith("ru") -> GENRE_NAMES_RU[id] ?: GENRE_NAMES[id] ?: "Unknown"
+            else -> GENRE_NAMES[id] ?: "Unknown"
         }
     }
     
@@ -593,7 +612,20 @@ class StatisticsRepository @Inject constructor(
         
         // Most popular genre name
         val mostPopularGenre = favoriteGenres.firstOrNull()?.genreName ?: ""
-        
+
+        // Current watch streak: consecutive active days ending today (or yesterday
+        // if today is still empty — the streak is alive). Day = UTC epoch day.
+        val activeDays = allWatched.mapNotNull { it.lastUpdated }
+            .map { it / 86_400_000L }
+            .toSet()
+        var currentStreak = 0
+        var streakDay = System.currentTimeMillis() / 86_400_000L
+        if (!activeDays.contains(streakDay)) streakDay -= 1
+        while (activeDays.contains(streakDay)) {
+            currentStreak++
+            streakDay--
+        }
+
         DetailedStatistics(
             totalWatchTimeMinutes = totalWatchTime,
             totalMovies = movies.size,
@@ -632,7 +664,8 @@ class StatisticsRepository @Inject constructor(
             highestRatedMovie = highestRatedMovie,
             highestRatedTvShow = highestRatedTvShow,
             mostPopularGenre = mostPopularGenre,
-            avgContentPerMonth = avgContentPerMonth
+            avgContentPerMonth = avgContentPerMonth,
+            currentStreak = currentStreak
         )
     }
     

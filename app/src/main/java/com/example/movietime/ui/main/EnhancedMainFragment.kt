@@ -18,7 +18,6 @@ import com.example.movietime.R
 import com.example.movietime.databinding.FragmentEnhancedMainBinding
 import com.example.movietime.data.model.BasicStatistics
 import com.example.movietime.ui.search.EnhancedSearchActivity
-import com.example.movietime.ui.friends.FriendsActivity
 import com.example.movietime.ui.details.DetailsActivity
 import com.example.movietime.ui.details.TvDetailsActivity
 import com.example.movietime.data.model.RecentActivityItem
@@ -124,7 +123,12 @@ class EnhancedMainFragment : Fragment() {
 
         binding.btnFriends.setOnClickListener {
             handleClickWithDebounce {
-                startActivity(Intent(requireActivity(), FriendsActivity::class.java))
+                // Friends backend is down — show a stub instead of crashing
+                com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.friends_coming_soon_title)
+                    .setMessage(R.string.friends_coming_soon_text)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show()
             }
         }
 

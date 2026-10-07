@@ -710,7 +710,14 @@
     <string name="filter_rating_format">Рейтинг ≥ %1$s</string>
     <string name="filters_none_selected">Фільтри не вибрані</string>
     <string name="related_header">Пов\'язане</string>
+    <string name="friends_coming_soon_title">Друзі скоро будуть</string>
+    <string name="friends_coming_soon_text">Ми перероблюємо соціальні функції. Списки, статистика та все інше вже працює — друзі повернуться в одному з наступних оновлень.</string>
     <string name="tops_title">Добірки</string>
+    <string name="font_title">Шрифт заголовків</string>
+    <string name="font_montserrat">Montserrat</string>
+    <string name="font_inter_tight">Inter Tight</string>
+    <string name="font_press_start">Press Start 2P</string>
+    <string name="font_rubik">Rubik</string>
     <string name="new_collection">Нова колекція</string>
     <string name="create_collection">Створити</string>
     <string name="edit_collection">Редагувати колекцію</string>

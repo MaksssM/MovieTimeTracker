@@ -75,7 +75,7 @@
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:fontFamily="@font/montserrat_semibold" />
+                    android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -127,6 +127,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
                         android:fontFamily="@font/montserrat_semibold"
+                        android:tag="font_heading"
                         tools:text="5" />
 
                     <TextView
@@ -165,6 +166,7 @@
                         android:textStyle="bold"
                         android:textColor="#34D399"
                         android:fontFamily="@font/montserrat_semibold"
+                        android:tag="font_heading"
                         tools:text="3" />
 
                     <TextView
@@ -203,6 +205,7 @@
                         android:textStyle="bold"
                         android:textColor="#7CA8FF"
                         android:fontFamily="@font/montserrat_semibold"
+                        android:tag="font_heading"
                         tools:text="2" />
 
                     <TextView
@@ -385,6 +388,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
                     android:fontFamily="@font/montserrat_semibold"
+                    android:tag="font_heading"
                     android:gravity="center" />
 
                 <TextView
@@ -408,6 +412,7 @@
                     android:textColor="@color/text_on_dark"
                     android:textSize="13sp"
                     android:fontFamily="@font/montserrat_semibold"
+                    android:tag="font_heading"
                     app:cornerRadius="22dp" />
 
             </LinearLayout>

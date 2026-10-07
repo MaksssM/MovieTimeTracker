@@ -1,5 +1,6 @@
 package com.example.movietime.ui.search
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.movietime.data.api.TmdbApi
 import com.example.movietime.data.db.WatchedItem
@@ -39,6 +40,7 @@ class SearchViewModelTest {
     private val repository: AppRepository = mock()
     private val api: TmdbApi = mock()
     private val languageManager: LanguageManager = mock()
+    private val appContext: Context = mock()
 
     private lateinit var viewModel: SearchViewModel
 
@@ -94,7 +96,7 @@ class SearchViewModelTest {
     }
 
     private fun initViewModel() {
-        viewModel = SearchViewModel(repository, api, languageManager)
+        viewModel = SearchViewModel(repository, api, languageManager, appContext)
         testDispatcher.scheduler.advanceUntilIdle()
     }
 

@@ -13,7 +13,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import com.example.movietime.ui.base.BaseActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,7 +36,7 @@ import java.text.DateFormatSymbols
 import java.util.Locale
 
 @AndroidEntryPoint
-class StatisticsActivity : AppCompatActivity() {
+class StatisticsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityStatisticsBinding
     private val viewModel: StatisticsViewModel by viewModels()
@@ -46,9 +46,6 @@ class StatisticsActivity : AppCompatActivity() {
     private lateinit var actorAdapter: ActorStatAdapter
     private lateinit var topRatedAdapter: TopRatedAdapter
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(LocaleHelper.wrap(newBase))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,12 +123,14 @@ class StatisticsActivity : AppCompatActivity() {
     }
 
     private fun animateCounterValue(textView: TextView, value: String) {
+        // Set the value FIRST so it is always visible, then pulse.
+        // (Previously the text was set only in withEndAction and could stay blank.)
+        textView.text = value
         textView.animate()
             .scaleX(1.1f)
             .scaleY(1.1f)
             .setDuration(150)
             .withEndAction {
-                textView.text = value
                 textView.animate()
                     .scaleX(1f)
                     .scaleY(1f)
@@ -146,8 +145,8 @@ class StatisticsActivity : AppCompatActivity() {
         genreAdapter = GenreStatAdapter()
         binding.rvGenres.apply {
             adapter = genreAdapter
-            layoutManager = LinearLayoutManager(this@StatisticsActivity)
-            setHasFixedSize(false)
+            layoutManager = LinearLayoutManager(this@StatisticsActivity, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
         }
 
         directorAdapter = DirectorStatAdapter { director ->
@@ -159,8 +158,8 @@ class StatisticsActivity : AppCompatActivity() {
         }
         binding.rvDirectors.apply {
             adapter = directorAdapter
-            layoutManager = LinearLayoutManager(this@StatisticsActivity)
-            setHasFixedSize(false)
+            layoutManager = LinearLayoutManager(this@StatisticsActivity, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
         }
 
         actorAdapter = ActorStatAdapter { actor ->
@@ -172,19 +171,21 @@ class StatisticsActivity : AppCompatActivity() {
         }
         binding.rvActors.apply {
             adapter = actorAdapter
-            layoutManager = LinearLayoutManager(this@StatisticsActivity)
-            setHasFixedSize(false)
+            layoutManager = LinearLayoutManager(this@StatisticsActivity, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
         }
 
         topRatedAdapter = TopRatedAdapter { item ->
             if (item.mediaType == "movie") {
                 val intent = Intent(this, DetailsActivity::class.java).apply {
-                    putExtra("MOVIE_ID", item.id)
+                    putExtra("ITEM_ID", item.id)
+                    putExtra("MEDIA_TYPE", "movie")
                 }
                 startActivity(intent)
             } else {
                 val intent = Intent(this, TvDetailsActivity::class.java).apply {
-                    putExtra("TV_SHOW_ID", item.id)
+                    putExtra("ITEM_ID", item.id)
+                    putExtra("MEDIA_TYPE", "tv")
                 }
                 startActivity(intent)
             }

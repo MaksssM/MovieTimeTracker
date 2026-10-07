@@ -61,6 +61,7 @@
             android:textColor="@color/text_primary"
             android:textStyle="bold"
             android:fontFamily="@font/montserrat_semibold"
+            android:tag="font_heading"
             android:maxLines="1"
             android:ellipsize="end"
             tools:text="Леонардо Ді Капріо" />

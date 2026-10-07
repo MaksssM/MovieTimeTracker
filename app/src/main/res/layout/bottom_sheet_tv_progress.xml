@@ -46,7 +46,7 @@
                         android:textColor="@color/text_primary"
                         android:textSize="22sp"
                         android:textStyle="bold"
-                        android:fontFamily="@font/montserrat_semibold" />
+                        android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
 
                     <TextView
                         android:id="@+id/tvTotalProgress"

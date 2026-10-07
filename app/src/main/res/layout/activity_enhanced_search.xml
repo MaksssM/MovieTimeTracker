@@ -69,6 +69,7 @@
                 android:textSize="26sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/montserrat_semibold"
+                android:tag="font_heading"
                 android:layout_marginBottom="20dp"
                 android:layout_marginStart="4dp"/>
 
@@ -168,7 +169,7 @@
                     android:text="@string/advanced_filters"
                     android:textColor="#C084FC"
                     android:textSize="13sp"
-                    android:fontFamily="@font/montserrat_semibold" />
+                    android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
 
                 <TextView
                     android:id="@+id/tvActiveFilterCount"
@@ -261,7 +262,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/search_results"
-                        style="@style/TextAppearance.MovieTime.SectionTitle" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" android:tag="font_heading" />
 
                     <!-- Sort Button -->
                     <LinearLayout
@@ -291,7 +292,7 @@
                             android:text="@string/sort_by_popularity"
                             android:textColor="@color/text_primary"
                             android:textSize="12sp"
-                            android:fontFamily="@font/montserrat_semibold" />
+                            android:fontFamily="@font/montserrat_semibold" android:tag="font_heading" />
 
                     </LinearLayout>
                         
@@ -335,7 +336,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/recent_searches"
-                        style="@style/TextAppearance.MovieTime.SectionTitle" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" android:tag="font_heading" />
 
                     <TextView
                         android:id="@+id/btnClearHistory"
@@ -387,7 +388,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/trending"
-                        style="@style/TextAppearance.MovieTime.SectionTitle" />
+                        style="@style/TextAppearance.MovieTime.SectionTitle" android:tag="font_heading" />
 
                 </LinearLayout>
 
