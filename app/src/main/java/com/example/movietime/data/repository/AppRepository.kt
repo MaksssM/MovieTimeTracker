@@ -202,6 +202,14 @@ class AppRepository @Inject constructor(
         return api.getPopularTvShows(apiKey, languageManager.getApiLanguage())
     }
 
+    suspend fun getTopRatedMovies(): MoviesResponse {
+        return api.getTopRatedMovies(apiKey, languageManager.getApiLanguage())
+    }
+
+    suspend fun getTopRatedTvShows(): TvShowsResponse {
+        return api.getTopRatedTvShows(apiKey, languageManager.getApiLanguage())
+    }
+
     fun getWatchedItems(): LiveData<List<WatchedItem>> {
         return dao.getAll()
     }

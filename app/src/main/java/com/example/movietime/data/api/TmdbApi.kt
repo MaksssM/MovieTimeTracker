@@ -46,6 +46,20 @@ interface TmdbApi {
         @Query("language") language: String = "en-US"
     ): TvShowsResponse
 
+    @GET("movie/top_rated")
+    suspend fun getTopRatedMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1
+    ): MoviesResponse
+
+    @GET("tv/top_rated")
+    suspend fun getTopRatedTvShows(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1
+    ): TvShowsResponse
+
     // Upcoming Movies (returns movies that are being released soon)
     @GET("movie/upcoming")
     suspend fun getUpcomingMovies(

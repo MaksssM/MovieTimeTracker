@@ -222,7 +222,7 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
             }
 
             CandidateSource.TOP_RATED -> {
-                loadFromDiscover(targetMediaType, genreIds)
+                loadTopRatedCandidates(targetMediaType)
             }
         }
 
@@ -241,7 +241,9 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
 
             if (genreFiltered.isNotEmpty()) {
                 filtered = genreFiltered
-            } else if (source != CandidateSource.TOP_RATED) {
+            } else if (source == CandidateSource.TOP_RATED) {
+                filtered = emptyList()
+            } else {
                 // Якщо в локальних списках немає цього жанру, підвантажуємо з онлайн discover
                 val discoverMatches = loadFromDiscover(targetMediaType, genreIds)
                 if (discoverMatches.isNotEmpty()) {
@@ -252,7 +254,31 @@ class RandomizerBottomSheet : BottomSheetDialogFragment() {
 
         filtered.shuffled()
     } catch (_: Exception) {
-        loadFromDiscover(targetMediaType, genreIds)
+        if (source == CandidateSource.TOP_RATED) emptyList()
+        else loadFromDiscover(targetMediaType, genreIds)
+    }
+
+    private suspend fun loadTopRatedCandidates(targetMediaType: String): List<RandomMovieCandidate> {
+        val seenIds = repository.getAllSeenItemIds()
+            .map { "${it.id}_${it.mediaType}" }
+            .toSet()
+
+        val movies = if (targetMediaType != "tv") {
+            repository.getTopRatedMovies().results
+                .filter { "${it.id}_movie" !in seenIds }
+                .map { it.toRandomCandidate() }
+        } else {
+            emptyList()
+        }
+        val tvShows = if (targetMediaType != "movie") {
+            repository.getTopRatedTvShows().results
+                .filter { "${it.id}_tv" !in seenIds }
+                .map { it.toRandomCandidate() }
+        } else {
+            emptyList()
+        }
+
+        return (movies + tvShows).take(50)
     }
 
     private suspend fun loadFromDiscover(

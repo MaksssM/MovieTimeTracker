@@ -17,13 +17,22 @@ import androidx.navigation.fragment.findNavController
 import com.example.movietime.R
 import com.example.movietime.databinding.FragmentEnhancedMainBinding
 import com.example.movietime.data.model.BasicStatistics
+import com.example.movietime.data.db.TvShowProgress
+import com.example.movietime.data.db.TvShowProgressDao
+import com.example.movietime.data.db.WatchedItem
+import com.example.movietime.data.db.WatchingItem
+import com.example.movietime.data.repository.AppRepository
 import com.example.movietime.ui.search.EnhancedSearchActivity
 import com.example.movietime.ui.details.DetailsActivity
 import com.example.movietime.ui.details.TvDetailsActivity
 import com.example.movietime.data.model.RecentActivityItem
 import dagger.hilt.android.AndroidEntryPoint
+import coil.load
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 @AndroidEntryPoint
 class EnhancedMainFragment : Fragment() {
@@ -35,6 +44,22 @@ class EnhancedMainFragment : Fragment() {
     private lateinit var recentActivityAdapter: RecentActivityAdapter
     private lateinit var recommendationsAdapter: com.example.movietime.ui.adapters.RecommendationsAdapter
     private lateinit var continueWatchingAdapter: com.example.movietime.ui.today.adapters.ContinueWatchingAdapter
+
+    @javax.inject.Inject
+    lateinit var appRepository: AppRepository
+
+    @javax.inject.Inject
+    lateinit var tvShowProgressDao: TvShowProgressDao
+
+    private data class NextEpisodeToWatch(
+        val show: WatchingItem,
+        val seasonNumber: Int,
+        val episodeNumber: Int,
+        val episodeName: String?,
+        val watchedEpisodes: Int,
+        val totalEpisodes: Int,
+        val hasDetailedProgress: Boolean
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -575,6 +600,226 @@ class EnhancedMainFragment : Fragment() {
         viewModel.loadRecommendations()
         viewModel.loadTrendingForBackground()
         viewModel.loadContinueWatching()
+        loadNextEpisodeWidget()
+    }
+
+    private fun loadNextEpisodeWidget() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val nextEpisode = runCatching {
+                withContext(Dispatchers.IO) { findNextEpisodeToWatch() }
+            }.getOrNull()
+
+            val currentBinding = _binding ?: return@launch
+            if (nextEpisode == null) {
+                currentBinding.cardNextEpisodeWidget.visibility = View.GONE
+            } else {
+                bindNextEpisode(nextEpisode)
+            }
+        }
+    }
+
+    private suspend fun findNextEpisodeToWatch(): NextEpisodeToWatch? {
+        val watchingShows = appRepository.getWatchingItemsRawSync()
+            .filter { it.mediaType == "tv" }
+
+        for (show in watchingShows) {
+            val episodes = tvShowProgressDao.getProgressForShowSync(show.id)
+                .filter { it.seasonNumber > 0 }
+
+            if (episodes.isEmpty()) {
+                return NextEpisodeToWatch(
+                    show = show,
+                    seasonNumber = show.currentSeason?.coerceAtLeast(1) ?: 1,
+                    episodeNumber = show.currentEpisode?.coerceAtLeast(1) ?: 1,
+                    episodeName = null,
+                    watchedEpisodes = 0,
+                    totalEpisodes = 0,
+                    hasDetailedProgress = false
+                )
+            }
+
+            val next = episodes.asSequence()
+                .filterNot { it.watched }
+                .minWithOrNull(compareBy<TvShowProgress> { it.seasonNumber }.thenBy { it.episodeNumber })
+                ?: continue
+
+            return NextEpisodeToWatch(
+                show = show,
+                seasonNumber = next.seasonNumber,
+                episodeNumber = next.episodeNumber,
+                episodeName = next.episodeName,
+                watchedEpisodes = episodes.count { it.watched },
+                totalEpisodes = episodes.size,
+                hasDetailedProgress = true
+            )
+        }
+
+        return null
+    }
+
+    private fun bindNextEpisode(nextEpisode: NextEpisodeToWatch) = with(binding) {
+        cardNextEpisodeWidget.visibility = View.VISIBLE
+        tvNextEpisodeShowTitle.text = nextEpisode.show.title
+
+        val episodeCode = getString(
+            R.string.season_episode_format,
+            nextEpisode.seasonNumber,
+            nextEpisode.episodeNumber
+        )
+        tvNextEpisodeCode.text = nextEpisode.episodeName
+            ?.takeIf { it.isNotBlank() }
+            ?.let { "$episodeCode • $it" }
+            ?: episodeCode
+        tvNextEpisodeProgress.text = if (nextEpisode.totalEpisodes > 0) {
+            getString(
+                R.string.episodes_progress,
+                nextEpisode.watchedEpisodes,
+                nextEpisode.totalEpisodes
+            )
+        } else {
+            getString(R.string.no_data)
+        }
+
+        ivNextEpisodePoster.load(nextEpisode.show.posterPath?.let {
+            "https://image.tmdb.org/t/p/w185$it"
+        }) {
+            crossfade(true)
+            placeholder(R.drawable.ic_placeholder)
+            error(R.drawable.ic_placeholder)
+        }
+
+        cardNextEpisodeWidget.setOnClickListener {
+            startActivity(Intent(requireContext(), TvDetailsActivity::class.java).apply {
+                putExtra("ITEM_ID", nextEpisode.show.id)
+                putExtra("MEDIA_TYPE", "tv")
+            })
+        }
+
+        btnMarkNextEpisodeWatched.isEnabled = true
+        btnMarkNextEpisodeWatched.setOnClickListener { actionView ->
+            actionView.isEnabled = false
+            actionView.animate().scaleX(0.94f).scaleY(0.94f).setDuration(100).withEndAction {
+                actionView.animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+            }.start()
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                val saved = runCatching {
+                    withContext(Dispatchers.IO) { markNextEpisodeWatched(nextEpisode) }
+                }.isSuccess
+
+                if (_binding == null) return@launch
+                if (saved) {
+                    android.widget.Toast.makeText(
+                        requireContext(),
+                        R.string.episode_marked_toast,
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                    loadNextEpisodeWidget()
+                    viewModel.loadContinueWatching()
+                } else {
+                    actionView.isEnabled = true
+                }
+            }
+        }
+    }
+
+    private suspend fun markNextEpisodeWatched(nextEpisode: NextEpisodeToWatch) {
+        val now = System.currentTimeMillis()
+        var episodes: List<TvShowProgress>
+
+        if (!nextEpisode.hasDetailedProgress) {
+            episodes = seedEpisodeProgress(nextEpisode, now) ?: run {
+                appRepository.updateWatchingEpisodePosition(
+                    id = nextEpisode.show.id,
+                    mediaType = nextEpisode.show.mediaType,
+                    seasonNumber = nextEpisode.seasonNumber,
+                    episodeNumber = nextEpisode.episodeNumber + 1
+                )
+                return
+            }
+        } else {
+            tvShowProgressDao.setEpisodeWatched(
+                tvShowId = nextEpisode.show.id,
+                seasonNumber = nextEpisode.seasonNumber,
+                episodeNumber = nextEpisode.episodeNumber,
+                watched = true,
+                watchedAt = now
+            )
+            episodes = tvShowProgressDao.getProgressForShowSync(nextEpisode.show.id)
+                .filter { it.seasonNumber > 0 }
+        }
+
+        val watchedEpisodes = episodes.filter { it.watched }
+        val averageEpisodeRuntime = episodes
+            .mapNotNull { it.episodeRuntime?.takeIf { runtime -> runtime > 0 } }
+            .average()
+            .takeIf { !it.isNaN() }
+            ?.toInt()
+        val existingItem = appRepository.getWatchedItemById(nextEpisode.show.id, "tv")
+        val updatedItem = existingItem?.copy(
+            runtime = watchedEpisodes.sumOf { it.episodeRuntime ?: 0 },
+            totalEpisodes = episodes.size,
+            episodeRuntime = averageEpisodeRuntime,
+            lastUpdated = now
+        ) ?: WatchedItem(
+            id = nextEpisode.show.id,
+            title = nextEpisode.show.title,
+            posterPath = nextEpisode.show.posterPath,
+            releaseDate = nextEpisode.show.releaseDate,
+            runtime = watchedEpisodes.sumOf { it.episodeRuntime ?: 0 },
+            mediaType = "tv",
+            episodeRuntime = averageEpisodeRuntime,
+            totalEpisodes = episodes.size,
+            lastUpdated = now
+        )
+        appRepository.addWatchedItem(updatedItem)
+    }
+
+    private suspend fun seedEpisodeProgress(
+        nextEpisode: NextEpisodeToWatch,
+        watchedAt: Long
+    ): List<TvShowProgress>? {
+        val showDetails = appRepository.getTvShowDetails(nextEpisode.show.id)
+        val seasonCount = maxOf(
+            showDetails.numberOfSeasons ?: 0,
+            showDetails.seasons?.mapNotNull { it.seasonNumber }?.filter { it > 0 }?.maxOrNull() ?: 0
+        )
+        if (seasonCount <= 0) return null
+
+        val today = LocalDate.now().toString()
+        val rows = appRepository.getAllSeasonsDetails(nextEpisode.show.id, seasonCount)
+            .flatMap { season ->
+                val defaultSeasonNumber = season.seasonNumber ?: 0
+                season.episodes.orEmpty().mapNotNull { episode ->
+                    val seasonNumber = episode.seasonNumber ?: defaultSeasonNumber
+                    val episodeNumber = episode.episodeNumber ?: 0
+                    val airDate = episode.airDate
+                    if (seasonNumber <= 0 || episodeNumber <= 0 ||
+                        (airDate != null && airDate.isNotBlank() && airDate > today)
+                    ) return@mapNotNull null
+
+                    val watched = seasonNumber < nextEpisode.seasonNumber ||
+                        (seasonNumber == nextEpisode.seasonNumber && episodeNumber <= nextEpisode.episodeNumber)
+                    TvShowProgress(
+                        tvShowId = nextEpisode.show.id,
+                        seasonNumber = seasonNumber,
+                        episodeNumber = episodeNumber,
+                        episodeName = episode.name,
+                        episodeRuntime = episode.runtime,
+                        watched = watched,
+                        watchedAt = if (
+                            seasonNumber == nextEpisode.seasonNumber &&
+                            episodeNumber == nextEpisode.episodeNumber
+                        ) watchedAt else null
+                    )
+                }
+            }
+            .distinctBy { Triple(it.seasonNumber, it.episodeNumber, it.tvShowId) }
+            .sortedWith(compareBy<TvShowProgress> { it.seasonNumber }.thenBy { it.episodeNumber })
+
+        if (rows.isEmpty()) return null
+        tvShowProgressDao.insertEpisodes(rows)
+        return rows
     }
 
     override fun onResume() {
